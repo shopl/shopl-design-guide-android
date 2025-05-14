@@ -26,8 +26,24 @@ render.experimental.xml
 *.jks
 *.keystore
 
-# Google Services (e.g. APIs or Firebase)
-google-services.json
-
 # Android Profiling
 *.hprof
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+
+# generated .kotlin
+.kotlin/
+
+# 바이너리 파일
+*.bin
+
+# 락 파일
+*.lock
+
+# Android Studio 프로젝트 파일
+/app.iml
+
+# Gradle wrapper
+/gradlew
