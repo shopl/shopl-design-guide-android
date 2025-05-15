@@ -20,5 +20,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "ShoplDesignGuide"
+
 include(":app")
+
 include(":sdg-resource")
