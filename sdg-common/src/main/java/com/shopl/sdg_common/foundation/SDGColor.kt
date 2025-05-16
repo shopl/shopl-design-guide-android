@@ -8,14 +8,10 @@ import androidx.compose.ui.graphics.Color
  */
 object SDGColor {
 
-    /**==========================================
-     *
-     *                  Neutral
-     *
-    =============================================*/
     @Stable
     val Transparent = Color(0x00000000)
 
+    /** Neutral **/
     @Stable
     val Neutral900 = Color(0xFF000000)
 
@@ -106,11 +102,7 @@ object SDGColor {
     @Stable
     val Neutral0_a90 = Color(0xE6FFFFFF)
 
-    /**==========================================
-     *
-     *                  Brand - Primary
-     *
-    =============================================*/
+    /** Brand - Primary **/
     @Stable
     val Primary400 = Color(0xFF2B82D8)
 
@@ -126,11 +118,7 @@ object SDGColor {
     @Stable
     val Primary50 = Color(0xFFDDECFA)
 
-    /**==========================================
-     *
-     *                  Brand - Secondary
-     *
-    =============================================*/
+    /** Brand - Secondary **/
     @Stable
     val Secondary400 = Color(0xFF35485B)
 
@@ -149,11 +137,7 @@ object SDGColor {
     @Stable
     val Secondary50 = Color(0xFFDFE8EF)
 
-    /**==========================================
-     *
-     *                 Point Color
-     *
-    =============================================*/
+    /** Point Color **/
     @Stable
     val Red400 = Color(0xFFD96767)
 
@@ -190,12 +174,7 @@ object SDGColor {
     @Stable
     val GreenG_a10 = Color(0x1A64BBA5)
 
-    /**==========================================
-     *
-     *                 Special Color
-     *
-    =============================================*/
-
+    /** Special Color **/
     @Stable
     val PinkPK = Color(0xFFFFB2C5)
 
