@@ -13,6 +13,7 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -25,5 +26,7 @@ rootProject.name = "ShoplDesignGuide"
 
 include(":app")
 
-include(":sdg-resource")
-include(":sdg-common")
+include(
+    ":sdg-resource",
+    ":sdg-common"
+)
