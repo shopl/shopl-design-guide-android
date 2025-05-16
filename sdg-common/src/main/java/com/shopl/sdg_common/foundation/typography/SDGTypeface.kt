@@ -3,7 +3,7 @@ package com.shopl.sdg_common.foundation.typography
 import android.graphics.Typeface
 import androidx.compose.ui.text.font.FontFamily
 
-internal enum class IOTypeface {
+internal enum class SDGTypeface {
     REGULAR, SEMI_BOLD;
 
     val fontFamily: FontFamily by lazy {
