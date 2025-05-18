@@ -18,6 +18,10 @@ composeBom = "2025.05.00"
 ## https://github.com/JetBrains/kotlin
 kotlin = "2.1.20"
 
+# Coil
+## https://github.com/coil-kt/coil
+coilCompose = "3.2.0"
+
 # Test
 ## https://github.com/junit-team/junit4
 junit = "4.13.2"
@@ -38,9 +42,12 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
+
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
 [plugins]
