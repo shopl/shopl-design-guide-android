@@ -1,17 +1,26 @@
 package com.shopl.sdg_common.foundation.typography
 
-import android.graphics.Typeface
+import androidx.compose.runtime.Immutable
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import com.shopl.sdg_resource.R
 
-internal enum class SDGTypeface {
-    REGULAR, SEMI_BOLD;
-
-    val fontFamily: FontFamily by lazy {
+/**
+ * [SDGTypography]를 위한 Typeface 정의
+ */
+@Immutable
+internal enum class SDGTypeface(val fontFamily: FontFamily) {
+    REGULAR(
         FontFamily(
-            typeface = when (this) {
-                REGULAR -> Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                SEMI_BOLD -> Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-            }
+            Font(R.font.pretendard_regular, weight = FontWeight.Normal),
+            Font(R.font.pretendard_jp_regular, weight = FontWeight.Normal)
         )
-    }
+    ),
+    SEMI_BOLD(
+        FontFamily(
+            Font(R.font.pretendard_semibold, weight = FontWeight.SemiBold),
+            Font(R.font.pretendard_jp_semibold, weight = FontWeight.SemiBold)
+        )
+    );
 }
