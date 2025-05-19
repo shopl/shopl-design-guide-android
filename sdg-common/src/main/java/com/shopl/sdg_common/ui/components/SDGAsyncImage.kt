@@ -1,6 +1,7 @@
 package com.shopl.sdg_common.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -8,9 +9,13 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultFilterQuality
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.rememberAsyncImagePainter
+import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.animation.ShimmerAnimation
+import com.shopl.sdg_resource.R
 
 /**
  * 공통 [SubcomposeAsyncImage] - 실패 시 실패 이미지
@@ -98,5 +103,38 @@ fun SDGAsyncImage(
         contentScale = contentScale,
         filterQuality = filterQuality,
         colorFilter = colorFilter,
+    )
+}
+
+@Preview(
+    name = "SDGAsyncImage Failure Image Preview",
+    showBackground = true,
+    backgroundColor = 0xFFF0F0F0
+)
+@Composable
+fun SDGAsyncImagePreview() {
+    SDGAsyncImage(
+        modifier = Modifier.size(64.dp),
+        imageModel = "imageUrl",
+        failureImageResourceId = R.drawable.avatar_empty,
+    )
+}
+
+@Preview(
+    name = "SDGAsyncImage Failure Composable Preview",
+    showBackground = true,
+    backgroundColor = 0xFFF0F0F0
+)
+@Composable
+fun SDGAsyncImageFailurePreview() {
+    SDGAsyncImage(
+        modifier = Modifier.size(64.dp),
+        imageModel = null,
+        failureImage = {
+            SDGImage(
+                resId = R.drawable.avatar_empty,
+                color = SDGColor.Primary300
+            )
+        },
     )
 }

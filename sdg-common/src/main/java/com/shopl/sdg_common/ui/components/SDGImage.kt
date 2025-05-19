@@ -10,6 +10,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.shopl.sdg_resource.R
 
 /**
  * 공통 [Image]
@@ -37,5 +39,14 @@ fun SDGImage(
         contentScale = contentScale,
         alpha = alpha,
         colorFilter = color?.let { ColorFilter.tint(it) }
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PrevSDGImage() {
+    SDGImage(
+        resId = R.drawable.admin_badge,
+        color = null
     )
 }
