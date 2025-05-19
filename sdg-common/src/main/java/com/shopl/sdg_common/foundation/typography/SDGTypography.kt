@@ -1,11 +1,13 @@
 package com.shopl.sdg_common.foundation.typography
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 
 /**
  * Foundation - Typography
  */
+@Immutable
 sealed class SDGTypography(val style: TextStyle) {
     data object NaviTitle : SDGTypography(
         TextStyle(

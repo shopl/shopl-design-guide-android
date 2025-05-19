@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    //TODO: 라이브러리 외부로 미노출
 }
 
 android {
