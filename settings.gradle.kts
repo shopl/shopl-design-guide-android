@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 pluginManagement {
     repositories {
         google {
@@ -20,5 +22,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "ShoplDesignGuide"
+
 include(":app")
- 
+
+include(":sdg-resource")
