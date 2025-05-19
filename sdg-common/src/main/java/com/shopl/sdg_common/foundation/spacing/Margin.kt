@@ -3,6 +3,7 @@ package com.shopl.sdg_common.foundation.spacing
 import androidx.compose.ui.unit.dp
 
 /**
+ * SDG - Spacing - Margin
  * 페이지 및 컨텐츠 Wrap 마진
  */
 object Margin {

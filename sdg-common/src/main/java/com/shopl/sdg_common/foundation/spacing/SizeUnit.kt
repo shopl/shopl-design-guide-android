@@ -3,6 +3,7 @@ package com.shopl.sdg_common.foundation.spacing
 import androidx.compose.ui.unit.dp
 
 /**
+ * SDG - Size Unit
  * 스페이스의 기본 단위
  */
 object SizeUnit {

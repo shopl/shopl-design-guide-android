@@ -4,7 +4,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 
 /**
- * Foundation - Color
+ * SDG - Foundation - Color
  */
 object SDGColor {
 

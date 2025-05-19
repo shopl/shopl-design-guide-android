@@ -3,6 +3,7 @@ package com.shopl.sdg_common.foundation
 import androidx.compose.ui.unit.dp
 
 /**
+ * SDG - Foundation - Corner Radius
  * 화면 및 카드의 Radius 값 정의
  */
 object CornerRadius {

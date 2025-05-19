@@ -3,6 +3,7 @@ package com.shopl.sdg_common.foundation.spacing
 import androidx.compose.ui.unit.dp
 
 /**
+ * SDG - Spacing - Padding
  * 컨텐츠 패딩
  */
 object Padding {

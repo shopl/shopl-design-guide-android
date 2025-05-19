@@ -3,6 +3,7 @@ package com.shopl.sdg_common.foundation.spacing
 import androidx.compose.ui.unit.dp
 
 /**
+ * SDG - Spacing - Gap
  * 아이콘과 텍스트 사이 간격, 버튼 또는 컨텐츠간 간격
  */
 object Gap {
