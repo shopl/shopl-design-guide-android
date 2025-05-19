@@ -1,7 +1,5 @@
 package com.shopl.sdg.component.badge.capsule
 
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.typography.SDGTypography
@@ -9,7 +7,6 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 /**
  * [SDGCapsuleBadge] Size
  */
-@Immutable
 sealed class SDGCapsuleBadgeSize(
     val verticalPadding: Dp,
     val radius: Dp,
@@ -18,7 +15,6 @@ sealed class SDGCapsuleBadgeSize(
     val typography: SDGTypography,
 ) {
     //TODO: 디자인 시스템 내 제거 예정
-    @Stable
     data object Medium : SDGCapsuleBadgeSize(
         radius = 18.dp,
         verticalPadding = 36.dp,
@@ -27,7 +23,6 @@ sealed class SDGCapsuleBadgeSize(
         typography = SDGTypography.Body2R,
     )
 
-    @Stable
     data object Small : SDGCapsuleBadgeSize(
         radius = 15.dp,
         verticalPadding = 6.dp,
@@ -36,7 +31,6 @@ sealed class SDGCapsuleBadgeSize(
         typography = SDGTypography.Body2R,
     )
 
-    @Stable
     data object XSmall : SDGCapsuleBadgeSize(
         radius = 10.dp,
         verticalPadding = 2.dp,
