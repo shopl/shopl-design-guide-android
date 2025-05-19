@@ -30,3 +30,4 @@ include(
     ":sdg-resource",
     ":sdg-common"
 )
+include(":sdg")
