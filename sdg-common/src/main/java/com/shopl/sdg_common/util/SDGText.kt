@@ -15,6 +15,16 @@ import androidx.compose.ui.unit.sp
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 
+/**
+ * 공통 [Text] - [String]
+ *
+ * @param textAlign      텍스트 정렬 방식 (기본값은 Start)
+ * @param overflow       텍스트가 영역을 벗어날 때 처리 방식 (기본값은 Clip)
+ * @param letterSpacing  문자 간격 (기본값은 0.sp)
+ * @param textDecoration 텍스트 장식(밑줄, 취소선 등)
+ * @param onTextLayout   텍스트 레이아웃 결과 콜백
+ * @param softWrap       단어 단위 줄바꿈 여부 (기본값은 true)
+ */
 @Composable
 fun SDGText(
     modifier: Modifier = Modifier,
@@ -46,7 +56,16 @@ fun SDGText(
     )
 }
 
-
+/**
+ * 공통 [Text] - [AnnotatedString]
+ *
+ * @param textAlign      텍스트 정렬 방식 (기본값은 Start)
+ * @param overflow       텍스트가 영역을 벗어날 때 처리 방식 (기본값은 Clip)
+ * @param letterSpacing  문자 간격 (기본값은 0.sp)
+ * @param textDecoration 텍스트 장식(밑줄, 취소선 등)
+ * @param onTextLayout   텍스트 레이아웃 결과 콜백
+ * @param softWrap       단어 단위 줄바꿈 여부 (기본값은 true)
+ */
 @Composable
 fun SDGText(
     modifier: Modifier = Modifier,
