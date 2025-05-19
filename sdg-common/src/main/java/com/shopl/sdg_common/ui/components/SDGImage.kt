@@ -1,4 +1,4 @@
-package com.shopl.sdg_common.util
+package com.shopl.sdg_common.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image

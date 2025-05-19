@@ -1,4 +1,4 @@
-package com.shopl.sdg_common.util
+package com.shopl.sdg_common.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultFilterQ
 import androidx.compose.ui.layout.ContentScale
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.rememberAsyncImagePainter
+import com.shopl.sdg_common.ui.animation.ShimmerAnimation
 
 /**
  * 공통 [SubcomposeAsyncImage] - 실패 시 실패 이미지

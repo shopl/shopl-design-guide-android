@@ -1,4 +1,4 @@
-package com.shopl.sdg_common.util
+package com.shopl.sdg_common.ui.components
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

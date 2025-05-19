@@ -1,23 +1,24 @@
-package com.shopl.sdg_common.util
+package com.shopl.sdg_common.ui.animation
 
-import androidx.compose.runtime.getValue
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import com.shopl.sdg_common.foundation.SDGColor
 
+/**
+ * Shimmer 효과용 브러시 생성하고 ShimmerItem을 렌더링
+ */
 @Composable
 fun ShimmerAnimation(
-    modifier:Modifier
+    modifier: Modifier
 ) {
     val transition = rememberInfiniteTransition()
     val translateAnim by transition.animateFloat(
@@ -38,16 +39,5 @@ fun ShimmerAnimation(
     ShimmerItem(
         brush = brush,
         modifier = modifier,
-    )
-}
-
-@Composable
-fun ShimmerItem(
-    brush: Brush,
-    modifier: Modifier
-) {
-    Spacer(
-        modifier = modifier
-            .background(brush = brush)
     )
 }
