@@ -1,4 +1,4 @@
-package com.shopl.sdg.util
+package com.shopl.sdg.component.util
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
