@@ -28,8 +28,7 @@ import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 
 /**
- * [SDGBoxBadge]
- * 사용 편의를 위한 RowScope 정의
+ * [RowScope] [SDGBoxBadge]
  */
 @Composable
 fun RowScope.SDGBoxBadge(
