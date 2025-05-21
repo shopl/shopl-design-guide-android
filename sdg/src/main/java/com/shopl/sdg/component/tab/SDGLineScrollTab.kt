@@ -150,23 +150,3 @@ private fun Indicator(
             .background(color = color)
     )
 }
-
-@Composable
-@Preview
-private fun PreviewTwoOptions() {
-    IOLineFixedTab(
-        tabTitles = listOf("Label", "Label"),
-        selectedTabIndex = 0,
-    ) {}
-}
-
-@Composable
-@Preview
-private fun PreviewThreeOptions() {
-    IOLineFixedTab(
-        tabTitles = listOf("Label", "Label", "Label"),
-        selectedTabIndex = 1,
-        indicatorColor = SDGColor.Primary300,
-        dividerColor = SDGColor.Red300
-    ) {}
-}
