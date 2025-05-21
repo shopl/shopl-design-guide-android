@@ -22,6 +22,10 @@ kotlin = "2.1.20"
 ## https://github.com/coil-kt/coil
 coilCompose = "3.2.0"
 
+# Joda - DateTime
+## https://www.joda.org/joda-time/
+joda = "2.12.5"
+
 # Test
 ## https://github.com/junit-team/junit4
 junit = "4.13.2"
@@ -44,6 +48,8 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 compose-runtime = { module = "androidx.compose.runtime:runtime"}
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
+
+joda = { group = "net.danlew", name = "android.joda", version.ref = "joda" }
 
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
