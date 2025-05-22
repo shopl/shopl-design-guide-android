@@ -28,6 +28,20 @@ import com.shopl.sdg_common.ui.components.SDGText
 /**
  * SDG - Badge - Box Badge
  * 특정 상태나 데이터 구분 또는 전달을 위한 컴포넌트
+ *
+ * @param size [SDGBoxBadgeSize]
+ * @param type [SDGBoxBadgeType]
+ * @param label 라벨 텍스트
+ * @param labelColor 라벨 텍스트 색상
+ * @param backgroundColor 배경 색상
+ * @param isFillMaxWidth true일 경우 가로 너비를 부모에 맞춰 채웁니다
+ * @param enable true일 경우 클릭 가능, false이면 클릭 비활성화
+ * @param leftIcon 왼쪽에 표시할 Drawable 리소스 ID (null이면 아이콘 없음)
+ * @param leftIconTint 왼쪽 아이콘에 적용할 Tint 색상 (null이면 색상 필터 없음)
+ * @param rightIcon 오른쪽에 표시할 Drawable 리소스 ID (null이면 아이콘 없음)
+ * @param rightIconTint 오른쪽 아이콘에 적용할 Tint 색상 (null이면 색상 필터 없음)
+ * @param marginValues 컴포넌트 외부 여백(PaddingValues)
+ * @param onClick 클릭 람다
  */
 @Composable
 fun SDGBoxBadge(
