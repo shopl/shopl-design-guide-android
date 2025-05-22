@@ -99,7 +99,7 @@ fun SDGText(
 
 @Preview(name = "NaviTitle", group = "SDGTypography")
 @Composable
-fun PreviewNaviTitle() {
+private fun PreviewNaviTitle() {
     SDGText(
         text = "NaviTitle",
         typography = SDGTypography.NaviTitle,
@@ -109,7 +109,7 @@ fun PreviewNaviTitle() {
 
 @Preview(name = "Title1SB", group = "SDGTypography")
 @Composable
-fun PreviewTitle1SB() {
+private fun PreviewTitle1SB() {
     SDGText(
         text = "Title1SB",
         typography = SDGTypography.Title1SB,
@@ -119,7 +119,7 @@ fun PreviewTitle1SB() {
 
 @Preview(name = "Title1R", group = "SDGTypography")
 @Composable
-fun PreviewTitle1R() {
+private fun PreviewTitle1R() {
     SDGText(
         text = "Title1R",
         typography = SDGTypography.Title1R,
@@ -129,7 +129,7 @@ fun PreviewTitle1R() {
 
 @Preview(name = "Body1SB", group = "SDGTypography")
 @Composable
-fun PreviewBody1SB() {
+private fun PreviewBody1SB() {
     SDGText(
         text = "Body1SB",
         typography = SDGTypography.Body1SB,
@@ -139,7 +139,7 @@ fun PreviewBody1SB() {
 
 @Preview(name = "Body1R", group = "SDGTypography")
 @Composable
-fun PreviewBody1R() {
+private fun PreviewBody1R() {
     SDGText(
         text = "Body1R",
         typography = SDGTypography.Body1R,
@@ -149,7 +149,7 @@ fun PreviewBody1R() {
 
 @Preview(name = "Body2SB", group = "SDGTypography")
 @Composable
-fun PreviewBody2SB() {
+private fun PreviewBody2SB() {
     SDGText(
         text = "Body2SB",
         typography = SDGTypography.Body2SB,

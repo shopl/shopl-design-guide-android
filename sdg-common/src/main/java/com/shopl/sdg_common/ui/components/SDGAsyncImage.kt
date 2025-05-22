@@ -112,7 +112,7 @@ fun SDGAsyncImage(
     backgroundColor = 0xFFF0F0F0
 )
 @Composable
-fun SDGAsyncImagePreview() {
+private fun SDGAsyncImagePreview() {
     SDGAsyncImage(
         modifier = Modifier.size(64.dp),
         imageModel = "imageUrl",
@@ -126,7 +126,7 @@ fun SDGAsyncImagePreview() {
     backgroundColor = 0xFFF0F0F0
 )
 @Composable
-fun SDGAsyncImageFailurePreview() {
+private fun SDGAsyncImageFailurePreview() {
     SDGAsyncImage(
         modifier = Modifier.size(64.dp),
         imageModel = null,
