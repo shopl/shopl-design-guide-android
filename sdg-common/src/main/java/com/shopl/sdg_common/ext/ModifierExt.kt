@@ -47,7 +47,7 @@ import kotlinx.coroutines.launch
 
 fun Modifier.clickable(
     hasRipple: Boolean = true,
-    rippleColor: Color = SDGColor.Primary300,
+    rippleColor: Color = SDGColor.Neutral900_a10,
     enabled: Boolean = true,
     onClickLabel: String? = null,
     debounceTimeMills: Long = 500,
