@@ -35,15 +35,15 @@ import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_resource.R
 
 @Stable
-sealed interface IOBasicDropdownState {
-    data object Default : IOBasicDropdownState
-    data object Error : IOBasicDropdownState
+sealed interface SDGBasicDropdownState {
+    data object Default : SDGBasicDropdownState
+    data object Error : SDGBasicDropdownState
 }
 
 @Composable
-fun IOBasicDropdown(
+fun SDGBasicDropdown(
     text: String? = null,
-    state: IOBasicDropdownState = IOBasicDropdownState.Default,
+    state: SDGBasicDropdownState = SDGBasicDropdownState.Default,
     hasSelectedItem: Boolean = false,
     enable: Boolean = false,
     backgroundColor: Color = SDGColor.Neutral0,
@@ -66,12 +66,12 @@ fun IOBasicDropdown(
             .clip(shape = RoundedCornerShape(12.dp))
             .then(
                 when (state) {
-                    IOBasicDropdownState.Default -> Modifier.background(
+                    SDGBasicDropdownState.Default -> Modifier.background(
                         color = backgroundColor,
                         shape = RoundedCornerShape(12.dp),
                     )
 
-                    IOBasicDropdownState.Error -> Modifier.background(
+                    SDGBasicDropdownState.Error -> Modifier.background(
                         color = SDGColor.Red300_a10,
                         shape = RoundedCornerShape(12.dp),
                     )
@@ -121,7 +121,7 @@ fun IOBasicDropdown(
 }
 
 @Composable
-fun RowScope.IOBasicDropdown(
+fun RowScope.SDGBasicDropdown(
     weight: Float,
     text: String? = null,
     hasSelectedItem: Boolean = false,
@@ -131,7 +131,7 @@ fun RowScope.IOBasicDropdown(
     onClick: (() -> Unit)? = null,
 ) {
     Box(Modifier.weight(weight)) {
-        IOBasicDropdown(
+        SDGBasicDropdown(
             text = text,
             hasSelectedItem = hasSelectedItem,
             enable = enable,
@@ -144,7 +144,7 @@ fun RowScope.IOBasicDropdown(
 
 @Preview
 @Composable
-fun IODropdownPreview() {
+fun SDGDropdownPreview() {
     Surface {
         Box(
             modifier = Modifier
@@ -156,7 +156,7 @@ fun IODropdownPreview() {
                 mutableStateOf(false)
             }
             Column {
-                IOBasicDropdown(
+                SDGBasicDropdown(
                     text = test,
                     hasSelectedItem = isSelected,
                     enable = true,
@@ -172,7 +172,7 @@ fun IODropdownPreview() {
                 )
 
                 Row {
-                    IOBasicDropdown(
+                    SDGBasicDropdown(
                         weight = 1F,
                         text = test,
                         hasSelectedItem = isSelected,
@@ -188,7 +188,7 @@ fun IODropdownPreview() {
                         },
                     )
 
-                    IOBasicDropdown(
+                    SDGBasicDropdown(
                         width = 112.dp,
                         text = test,
                         hasSelectedItem = isSelected,
