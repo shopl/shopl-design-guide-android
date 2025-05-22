@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.dp
  * SDG - Spacing - Padding
  * 컨텐츠 패딩
  */
-object Padding {
+object SDGPadding {
     /** Padding - Basic **/
     val PaddingBasicTop20 = 20.dp
     val PaddingBasicBottom20 = 20.dp
