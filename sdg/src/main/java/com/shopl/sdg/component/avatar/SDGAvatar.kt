@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -107,5 +108,75 @@ private fun PrevAvatar() {
         SDGAvatar(avatarSize = SDGAvatarSize.M, avatarBadge = SDGAvatarBadge.Admin, userRegImg = null)
         SDGAvatar(avatarSize = SDGAvatarSize.L, avatarBadge = SDGAvatarBadge.Leader, userRegImg = null)
         SDGAvatar(avatarSize = SDGAvatarSize.XL, avatarBadge = SDGAvatarBadge.None, userRegImg = null)
+    }
+}
+
+@Deprecated("연관된 디자인 시스템으로 인한 임시 추가")
+@Composable
+fun IOAvatar(
+    avatarSize: SDGAvatarSize,
+    roleType: String,
+    userRegImg: String?,
+    @DrawableRes emptyImage: Int? = null,
+    @DrawableRes badgeImage: Int? = null,
+    badgeImageTintColor: Color = SDGColor.Neutral700,
+    isMaternity: Boolean = false,
+    alpha: Float = 1f,
+    onClickAvatar: (() -> Unit)? = null
+) {
+    val empty = emptyImage ?: R.drawable.profile_small
+
+    val badge = when (roleType) {
+        in listOf("2", "7", "9") -> painterResource(id = R.drawable.admin_badge)
+        "1" -> painterResource(id = R.drawable.leader_badge)
+        else -> ColorPainter(Color.Transparent)
+    }
+
+    Box(
+        modifier = Modifier
+            .size(avatarSize.size)
+            .clickable(false) { onClickAvatar?.invoke() }
+    ) {
+        SDGAsyncImage(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(CircleShape)
+                .alpha(alpha)
+                .then(
+                    if (isMaternity) {
+                        Modifier.border(
+                            width = avatarSize.borderSize,
+                            color = SDGColor.PinkPK,
+                            shape = CircleShape
+                        )
+                    } else Modifier
+                ),
+            imageModel = if (userRegImg.isNullOrBlank()) empty else userRegImg,
+            failureImageResourceId = empty,
+        )
+        badgeImage?.let {
+            // 현재 사이즈 정의는 M 기준으로 되어있음
+            // 이후 다른 사이즈 추가 시 수정 필요
+            Image(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .size(18.dp)
+                    .shadow(elevation = 4.dp)
+                    .background(
+                        color = SDGColor.Neutral0,
+                        shape = CircleShape
+                    )
+                    .padding(3.dp),
+                painter = painterResource(it),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(badgeImageTintColor)
+            )
+        } ?: Image(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .size(avatarSize.badgeSize),
+            painter = badge,
+            contentDescription = null
+        )
     }
 }
