@@ -34,7 +34,7 @@ joda = "2.12.5"
 
 # Kotlin Symbol Processing
 ## https://github.com/google/ksp/
-ksp = "2.0.0-1.0.22"
+ksp = "2.1.21-2.0.1"
 
 # Maven
 ## https://vanniktech.github.io/gradle-maven-publish-plugin/central/
