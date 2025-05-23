@@ -9,6 +9,9 @@ plugins {
     alias(libs.plugins.vanniktech.maven)
 }
 
+group = "io.github.shopl-dev"
+version = "0.0.6"
+
 android {
     namespace = "com.shopl.sdg"
     compileSdk = 35
@@ -39,8 +42,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":sdg-resource"))
-    implementation(project(":sdg-common"))
+    // Public
+    api(project(":sdg-resource"))
+    api(project(":sdg-common"))
 
     implementation(libs.androidx.material3)
 
@@ -71,7 +75,7 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("io.github.shopl-dev", "SDG-Android", "0.0.0")
+    coordinates("io.github.shopl-dev", "SDG-Android", "$version")
 
     pom {
         name = "Shopl-Design-Guide"

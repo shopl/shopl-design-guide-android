@@ -27,7 +27,7 @@ rootProject.name = "ShoplDesignGuide"
 include(":app")
 
 include(
+    ":sdg",
     ":sdg-resource",
     ":sdg-common"
 )
-include(":sdg")
