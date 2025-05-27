@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.dp
  * SDG - Spacing - Margin
  * 페이지 및 컨텐츠 Wrap 마진
  */
-object Margin {
+object SDGMargin {
     /** Margin - Basic **/
     val MarginBasicTop = 10.dp
     val MarginBasicBottom = 40.dp

@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.dp
  * SDG - Size Unit
  * 스페이스의 기본 단위
  */
-object SizeUnit {
+object SDGSizeUnit {
     val SizeUnit2 = 2.dp
     val SizeUnit4 = 4.dp
     val SizeUnit8 = 8.dp

@@ -195,4 +195,12 @@ object SDGColor {
 
     @Stable
     val SpecialOR_a10 = Color(0x1AFFB200)
+
+    /** ETC **/
+    @Stable
+    val ShimmerColorShades = listOf(
+        Neutral200.copy(alpha = 0.9f),
+        Neutral200.copy(alpha = 0.2f),
+        Neutral200.copy(alpha = 0.9f)
+    )
 }
