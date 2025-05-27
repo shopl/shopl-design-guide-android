@@ -1,9 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.vanniktech.maven)
     alias(libs.plugins.sdg.plugin.library.publishing)
 }
+
+extra["artifactId"] = "SDG-Android-Resource"
+group = "io.github.shopl-dev"
+version = "0.0.20"
 
 android {
     namespace = "com.shopl.sdg_resource"
