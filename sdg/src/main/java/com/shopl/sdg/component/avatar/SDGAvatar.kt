@@ -29,6 +29,7 @@ import com.shopl.sdg_resource.R
 
 /**
  * SDG - Avatar
+ *
  * 직원, 작성자 등 사람의 사진과 정보를 보여주는 컴포넌트
  */
 @Composable

@@ -27,6 +27,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 
 /**
  * SDG - Badge - Box Badge
+ *
  * 특정 상태나 데이터 구분 또는 전달을 위한 컴포넌트
  *
  * @param size [SDGBoxBadgeSize]
