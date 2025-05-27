@@ -4,7 +4,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.sdg.plugin.library.publishing)
+    alias(libs.plugins.sdg.plugin.publishing)
+    alias(libs.plugins.sdg.plugin.android.library)
 }
 
 extra["artifactId"] = PublishingConfig.SDG_COMMON_ARTIFACT_ID

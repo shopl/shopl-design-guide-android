@@ -1,4 +1,4 @@
-package com.shopl.sdg.build_logic
+package com.shopl.sdg.build_logic.convention
 
 import com.shopl.sdg.build_logic.PublishingConfig.GROUP
 import com.shopl.sdg.build_logic.PublishingConfig.VERSION

@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.sdg.plugin.library.publishing)
+    alias(libs.plugins.sdg.plugin.publishing)
 }
 
 extra["artifactId"] = PublishingConfig.SDG_ARTIFACT_ID

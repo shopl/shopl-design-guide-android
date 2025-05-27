@@ -96,4 +96,5 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 vanniktech-maven = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven" }
 
 # 프로젝트 내 정의된 Plugin
-sdg-plugin-library-publishing = { id = "sdg.plugin.library.publishing", version = "unspecified" }
+sdg-plugin-publishing = { id = "sdg.plugin.publishing", version = "unspecified" }
+sdg-plugin-android-library = { id = "sdg.plugin.android.library", version = "unspecified" }

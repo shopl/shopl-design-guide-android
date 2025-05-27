@@ -14,8 +14,13 @@ dependencies {
 gradlePlugin {
     plugins {
         register("SDGLibraryPublishingConventionPlugin") {
-            id = "sdg.plugin.library.publishing"
-            implementationClass = "com.shopl.sdg.build_logic.SDGLibraryPublishingConventionPlugin"
+            id = "sdg.plugin.publishing"
+            implementationClass = "com.shopl.sdg.build_logic.convention.SDGLibraryPublishingConventionPlugin"
+        }
+
+        register("AndroidLibraryConventionPlugin") {
+            id = "sdg.plugin.android.library"
+            implementationClass = "com.shopl.sdg.build_logic.convention.AndroidLibraryConventionPlugin"
         }
     }
 }
