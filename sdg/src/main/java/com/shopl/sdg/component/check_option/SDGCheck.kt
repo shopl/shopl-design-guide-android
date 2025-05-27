@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.control.check
+package com.shopl.sdg.component.check_option
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing

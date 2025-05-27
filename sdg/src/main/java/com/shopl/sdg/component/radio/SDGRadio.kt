@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.control.radio
+package com.shopl.sdg.component.radio
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
@@ -34,7 +34,7 @@ import kotlin.math.roundToInt
 
 
 @Composable
-fun IORadio(
+fun SDGRadio(
     isChecked: Boolean = false,
     isEnabled: Boolean = true,
     checkedTextColor: Color = SDGColor.Neutral700,
@@ -104,7 +104,7 @@ private fun IORadioPreview() {
             modifier = Modifier
                 .wrapContentHeight(),
         ) {
-            IORadio(
+            SDGRadio(
                 isChecked = isChecked,
                 text = "TEST \nCASE \nCASDASD",
                 onClick = {
