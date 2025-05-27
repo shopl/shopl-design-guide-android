@@ -1,10 +1,9 @@
 package com.shopl.sdg.build_logic
 
 import com.android.build.api.dsl.CommonExtension
+import com.shopl.sdg.build_logic.convention.libs
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
 
 /**
  * Compose 구성 세팅
@@ -12,8 +11,6 @@ import org.gradle.kotlin.dsl.getByType
 internal fun Project.configureAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
-    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-
     commonExtension.apply {
         buildFeatures.compose = true
 

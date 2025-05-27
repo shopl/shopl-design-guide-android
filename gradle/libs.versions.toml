@@ -99,3 +99,4 @@ vanniktech-maven = { id = "com.vanniktech.maven.publish", version.ref = "vannikt
 sdg-plugin-publishing = { id = "sdg.plugin.publishing", version = "unspecified" }
 sdg-plugin-android-library = { id = "sdg.plugin.android.library", version = "unspecified" }
 sdg-plugin-compose = { id = "sdg.plugin.compose", version = "unspecified" }
+sdg-plugin-hilt-android = { id = "sdg.plugin.hilt.android", version = "unspecifiedo" }

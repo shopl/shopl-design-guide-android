@@ -27,5 +27,10 @@ gradlePlugin {
             id = "sdg.plugin.compose"
             implementationClass = "com.shopl.sdg.build_logic.convention.ComposeConventionPlugin"
         }
+
+        register("HiltAndroidConventionPlugin") {
+            id = "sdg.plugin.hilt.android"
+            implementationClass = "com.shopl.sdg.build_logic.convention.HiltAndroidConventionPlugin"
+        }
     }
 }
