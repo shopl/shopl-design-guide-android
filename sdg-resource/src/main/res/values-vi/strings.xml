@@ -45,4 +45,5 @@
     <string name="place_my_routine_workplace">Nơi làm việc cố định</string>
     <string name="some_days">%1$s ngày</string>
     <string name="assigned_workplace">Nơi làm việc phụ trách</string>
+    <string name="no_registered_members">Chưa có thành viên nào đăng ký.</string>
 </resources>

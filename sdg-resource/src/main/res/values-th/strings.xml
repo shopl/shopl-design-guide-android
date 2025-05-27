@@ -45,4 +45,5 @@
     <string name="place_my_routine_workplace">สถานที่ทำงานหลัก</string>
     <string name="some_days">%1$s วัน</string>
     <string name="assigned_workplace">สถานที่ทำงานที่จัดการ</string>
+    <string name="no_registered_members">ไม่มีสมาชิกที่ลงทะเบียน</string>
 </resources>

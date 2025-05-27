@@ -45,4 +45,5 @@
     <string name="time_h_m">%1$ss %2$sm</string>
     <string name="time_h">%1$ss</string>
     <string name="time_m">%1$sm</string>
+    <string name="no_registered_members">Keine registrierten Mitglieder</string>
 </resources>
