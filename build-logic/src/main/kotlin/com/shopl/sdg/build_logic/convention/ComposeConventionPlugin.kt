@@ -13,7 +13,7 @@ class ComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(plugins) {
-                apply("org.jetbrains.kotlin.plugin.compose")
+                apply(libs.findPlugin("kotlin.compose").get().get().pluginId)
             }
 
             extensions.configure<LibraryExtension> {

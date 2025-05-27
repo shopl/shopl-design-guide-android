@@ -13,7 +13,10 @@ import org.gradle.kotlin.dsl.configure
  */
 class SDGLibraryPublishingConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        pluginManager.apply("com.vanniktech.maven.publish")
+        with(pluginManager) {
+            apply(libs.findPlugin("vanniktech.maven").get().get().pluginId)
+        }
+
         afterEvaluate {
             extensions.configure<MavenPublishBaseExtension> {
                 val publishArtifact = (target.findProperty("artifactId") as? String)
