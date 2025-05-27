@@ -46,5 +46,7 @@ dependencies {
 
     implementation(libs.coil.compose)
 
+    implementation(libs.joda)
+
     debugImplementation(libs.androidx.ui.tooling)
 }
