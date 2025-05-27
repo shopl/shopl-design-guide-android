@@ -1,3 +1,5 @@
+import com.shopl.sdg.build_logic.PublishingConfig
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -7,9 +9,7 @@ plugins {
     alias(libs.plugins.sdg.plugin.library.publishing)
 }
 
-extra["artifactId"] = "SDG-Android"
-group = "io.github.shopl-dev"
-version = "0.0.20"
+extra["artifactId"] = PublishingConfig.SDG_ARTIFACT_ID
 
 android {
     namespace = "com.shopl.sdg"
