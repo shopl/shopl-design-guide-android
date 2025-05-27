@@ -22,5 +22,10 @@ gradlePlugin {
             id = "sdg.plugin.android.library"
             implementationClass = "com.shopl.sdg.build_logic.convention.AndroidLibraryConventionPlugin"
         }
+
+        register("ComposeConventionPlugin") {
+            id = "sdg.plugin.compose"
+            implementationClass = "com.shopl.sdg.build_logic.convention.ComposeConventionPlugin"
+        }
     }
 }

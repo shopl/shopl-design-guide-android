@@ -98,3 +98,4 @@ vanniktech-maven = { id = "com.vanniktech.maven.publish", version.ref = "vannikt
 # 프로젝트 내 정의된 Plugin
 sdg-plugin-publishing = { id = "sdg.plugin.publishing", version = "unspecified" }
 sdg-plugin-android-library = { id = "sdg.plugin.android.library", version = "unspecified" }
+sdg-plugin-compose = { id = "sdg.plugin.compose", version = "unspecified" }
