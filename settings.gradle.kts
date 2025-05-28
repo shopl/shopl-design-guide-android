@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -27,7 +28,7 @@ rootProject.name = "ShoplDesignGuide"
 include(":app")
 
 include(
+    ":sdg",
     ":sdg-resource",
     ":sdg-common"
 )
-include(":sdg")
