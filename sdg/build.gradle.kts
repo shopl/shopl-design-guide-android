@@ -14,7 +14,6 @@ android {
 }
 
 dependencies {
-    // Public
     api(project(":sdg-resource"))
     api(project(":sdg-common"))
 
