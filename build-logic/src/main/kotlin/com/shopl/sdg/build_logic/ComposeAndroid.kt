@@ -1,7 +1,6 @@
 package com.shopl.sdg.build_logic
 
 import com.android.build.api.dsl.CommonExtension
-import com.shopl.sdg.build_logic.convention.libs
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 

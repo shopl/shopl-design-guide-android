@@ -2,6 +2,7 @@ package com.shopl.sdg.build_logic.convention
 
 import com.shopl.sdg.build_logic.PublishingConfig.GROUP
 import com.shopl.sdg.build_logic.PublishingConfig.VERSION
+import com.shopl.sdg.build_logic.libs
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.SonatypeHost
 import org.gradle.api.Plugin

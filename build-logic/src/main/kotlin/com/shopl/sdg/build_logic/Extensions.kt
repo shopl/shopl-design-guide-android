@@ -1,4 +1,4 @@
-package com.shopl.sdg.build_logic.convention
+package com.shopl.sdg.build_logic
 
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog

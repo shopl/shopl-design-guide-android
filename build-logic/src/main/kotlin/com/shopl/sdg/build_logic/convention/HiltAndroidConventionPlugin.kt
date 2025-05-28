@@ -1,5 +1,6 @@
 package com.shopl.sdg.build_logic.convention
 
+import com.shopl.sdg.build_logic.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
