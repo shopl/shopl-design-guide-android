@@ -6,7 +6,7 @@ androidGradlePlugin = "8.10.0"
 ## https://developer.android.com/jetpack/androidx/releases/core
 androidxCoreKtx = "1.16.0"
 ## https://developer.android.com/jetpack/androidx/releases/lifecycle
-androidxLifecycleRuntimeCompose = "2.9.0"
+androidxLifecycle = "2.9.0"
 ## https://developer.android.com/jetpack/androidx/releases/activity
 androidxActivityCompose = "1.10.1"
 
@@ -24,9 +24,17 @@ kotlinxImmutable = "0.3.7"
 ## https://github.com/coil-kt/coil
 coilCompose = "3.2.0"
 
+# Hilt
+## https://github.com/google/dagger/releases
+hilt = "2.51.1"
+
 # Joda - DateTime
 ## https://www.joda.org/joda-time/
 joda = "2.12.5"
+
+# Kotlin Symbol Processing
+## https://github.com/google/ksp/
+ksp = "2.0.0-1.0.22"
 
 # Test
 ## https://github.com/junit-team/junit4
@@ -38,7 +46,8 @@ espressoCore = "3.6.1"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCoreKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycleRuntimeCompose" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
@@ -53,6 +62,9 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCo
 
 kotlinx-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxImmutable" }
 
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+
 joda = { group = "net.danlew", name = "android.joda", version.ref = "joda" }
 
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
@@ -66,4 +78,6 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shopl.sdg_common.ext.clickable
@@ -64,4 +65,15 @@ fun SDGSimpleDocument(
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun PrevSDGSimpleDocument() {
+    SDGSimpleDocument(
+        documentName = "파일의 제목 길어지면 줄임말",
+        documentExtension = "pdf",
+        documentSize = "1.2MB",
+        onClick = {}
+    )
 }
