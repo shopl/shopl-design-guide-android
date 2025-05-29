@@ -1,0 +1,102 @@
+[versions]
+# Android gradle plugin
+androidGradlePlugin = "8.10.0"
+
+# AndroidX
+## https://developer.android.com/jetpack/androidx/releases/core
+androidxCoreKtx = "1.16.0"
+## https://developer.android.com/jetpack/androidx/releases/lifecycle
+androidxLifecycle = "2.9.0"
+## https://developer.android.com/jetpack/androidx/releases/activity
+androidxActivityCompose = "1.10.1"
+
+# Compose
+## https://developer.android.com/develop/ui/compose/bom/bom-mapping
+composeBom = "2025.05.01"
+
+# Kotlin
+## https://github.com/JetBrains/kotlin
+kotlin = "2.1.20"
+# https://github.com/Kotlin/kotlinx.collections.immutable
+kotlinxImmutable = "0.3.7"
+
+# Coil
+## https://github.com/coil-kt/coil
+coilCompose = "3.2.0"
+
+# Hilt
+## https://github.com/google/dagger/releases
+hilt = "2.51.1"
+
+# Joda - DateTime
+## https://www.joda.org/joda-time/
+joda = "2.12.5"
+
+# Kotlin Symbol Processing
+## https://github.com/google/ksp/
+ksp = "2.1.21-2.0.1"
+
+# Maven
+## https://vanniktech.github.io/gradle-maven-publish-plugin/central/
+vanniktech-maven = "0.32.0"
+
+# Test
+## https://github.com/junit-team/junit4
+junit = "4.13.2"
+## https://developer.android.com/jetpack/androidx/releases/test
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+
+[libraries]
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+maven-publish-gradlePlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktech-maven" }
+
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCoreKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+compose-runtime = { module = "androidx.compose.runtime:runtime" }
+compose-compiler-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
+
+kotlinx-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxImmutable" }
+
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+
+joda = { group = "net.danlew", name = "android.joda", version.ref = "joda" }
+
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+vanniktech-maven = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven" }
+
+# 프로젝트 내 정의된 Plugin
+sdg-plugin-publishing = { id = "sdg.plugin.publishing", version = "unspecified" }
+sdg-plugin-android-library = { id = "sdg.plugin.android.library", version = "unspecified" }
+sdg-plugin-compose = { id = "sdg.plugin.compose", version = "unspecified" }
+sdg-plugin-hilt-android = { id = "sdg.plugin.hilt.android", version = "unspecifiedo" }
