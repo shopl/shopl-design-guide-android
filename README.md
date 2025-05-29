@@ -10,7 +10,7 @@
 
 ## Installation
 
-SDG는 Maven Central을 통해 제공됩니다. 따라서 프로젝트에 배낭을 추가하기 전에 Maven Central이 Repository 리스트에 있는지 확인하세요.
+SDG는 Maven Central을 통해 제공됩니다. 따라서 프로젝트에 SDG를 추가하기 전에 Maven Central이 Repository 리스트에 있는지 확인하세요.
 
 ```gradle
 repositories {
