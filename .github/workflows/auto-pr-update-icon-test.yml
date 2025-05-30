@@ -2,31 +2,37 @@ name: Auto PR for update/icon
 
 on:
   create:
-    branches:
-      - 'update/icon'
+    branches: ['update/icon']
   push:
-    branches:
-      - 'update/icon'
+    branches: ['update/icon']
+
+permissions:
+  contents: write    # GITHUB_TOKEN에 쓰기 권한 부여
 
 jobs:
   create_pr:
     runs-on: ubuntu-latest
+    if: ${{ github.actor != 'github-actions[bot]' }}
 
     steps:
       - name: Checkout update/icon
         uses: actions/checkout@v3
         with:
           ref: update/icon
-          fetch-depth: 0           # 전체 커밋 기록을 가져와서 충돌 방지
+          fetch-depth: 0
 
-      - name: Create Pull Request
+      - name: Create or Update Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: resource
-          branch: update/icon
+          head: update/icon          # 비교 대상 브랜치
+          branch: pr/update-icon     # PR용 임시 브랜치명 (혼동 방지용)
           title: '[자동 PR] update/icon → resource'
           body: |
-            `update/icon` 브랜치에 변경사항이 감지되어 자동으로 PR을 생성합니다.
+            `update/icon` 브랜치 변경사항을 resource 브랜치로 PR 합니다.
           labels: automated-pr
-          log-level: debug          # (선택) 디버그 로그 출력
+          allow-empty: true          # 변경점 없어도 PR 생성
+          force: true                # 강제 푸시
+          recreate-closed: true      # 닫힌 PR도 재생성
+          log-level: debug
