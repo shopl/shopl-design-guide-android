@@ -1,0 +1,35 @@
+name: Auto PR for update/icon
+
+on:
+  create:
+    branches:
+      - 'update/icon'
+  push:
+    branches:
+      - 'update/icon'
+
+jobs:
+  create_pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout update/icon
+        uses: actions/checkout@v3
+        with:
+          # checkout the pushed branch
+          ref: update/icon
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # PR를 생성할 타겟 브랜치 (기본 브랜치)
+          base: action-test
+          # PR을 생성할 소스 브랜치
+          branch: update/icon
+          title: '[자동 PR] update/icon → action-test'
+          body: |
+            `update/icon` 브랜치에 변경사항이 감지되어 자동으로 PR을 생성합니다.
+          labels: automated-pr
+          # 중복 생성 방지
+          draft: false
