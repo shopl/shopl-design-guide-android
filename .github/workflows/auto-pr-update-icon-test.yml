@@ -1,4 +1,4 @@
-name: Auto PR for update/icon TEST
+name: Auto PR for update/icon
 
 on:
   create:
@@ -16,20 +16,17 @@ jobs:
       - name: Checkout update/icon
         uses: actions/checkout@v3
         with:
-          # checkout the pushed branch
           ref: update/icon
+          fetch-depth: 0           # 전체 커밋 기록을 가져와서 충돌 방지
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          # PR를 생성할 타겟 브랜치 (기본 브랜치)
           base: resource
-          # PR을 생성할 소스 브랜치
           branch: update/icon
           title: '[자동 PR] update/icon → resource'
           body: |
             `update/icon` 브랜치에 변경사항이 감지되어 자동으로 PR을 생성합니다.
           labels: automated-pr
-          # 중복 생성 방지
-          draft: false
+          log-level: debug          # (선택) 디버그 로그 출력
