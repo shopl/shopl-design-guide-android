@@ -24,7 +24,11 @@ internal fun Project.configureAndroid(
         }
         packaging {
             resources {
-                excludes.add("META-INF/**")
+                excludes.apply {
+                    add("META-INF/AL2.0")
+                    add("META-INF/LGPL2.1")
+                    add("META-INF/licenses/**")
+                }
             }
         }
 
