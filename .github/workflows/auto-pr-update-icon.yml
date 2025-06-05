@@ -16,11 +16,20 @@ jobs:
           script: |
             const branchName = context.ref.replace('refs/heads/', '');
 
-            await github.rest.pulls.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: "아이콘 업데이트",
-              head: branchName,
-              base: "main",
-              body: "아이콘 변경사항이 있습니다."
-            });
+            try {
+              await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: "아이콘 업데이트",
+                head: branchName,
+                base: "main",
+                body: "아이콘 변경사항이 있습니다."
+              });
+              console.log("새 PR을 생성했습니다.");
+            } catch (e) {
+              if (e.status === 422 && e.message.includes("A pull request already exists")) {
+                console.log("이미 PR이 존재하므로 생성 작업을 건너뜁니다.");
+              } else {
+                throw e;
+              }
+            }
