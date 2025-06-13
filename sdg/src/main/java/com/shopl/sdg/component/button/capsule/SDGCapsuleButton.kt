@@ -93,6 +93,13 @@ sealed class SDGCapsuleButtonType {
     data class Line(val lineColor: Color) : SDGCapsuleButtonType()
 }
 
+/**
+ * SDG - Button - Capsule Button
+ *
+ * 화면의 내용 영역에 배치하여 사용한느 좌우가 동그란 형태의 버튼 컴포넌트
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7102-15078&m=dev">Figma</a>
+ */
 @Composable
 fun SDGCapsuleButton(
     isFillMaxWidth: Boolean = false,
