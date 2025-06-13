@@ -84,6 +84,15 @@ sealed class SDGBoxButtonType {
     data class Line(val lineColor: Color) : SDGBoxButtonType()
 }
 
+/**
+ * SDG - Button - Box Button
+ *
+ * 화면의 내용 영역에 배치하여 사용하는 일반적인 사각 형태의 버튼 컴포넌트
+ *
+ * @param debounceTimeMills 중복 클릭 방지 시간
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7102-15102&m=dev">Figma</a>
+ */
 @Composable
 fun SDGBoxButton(
     isFillMaxWidth: Boolean = false,
