@@ -30,10 +30,10 @@ import com.shopl.sdg_common.ui.components.SDGText
 @Composable
 fun SDGBottomButton(
     title: String,
+    onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
     type: SDGBottomButtonType = SDGBottomButtonType.POSITIVE,
-    enabled: Boolean = true,
-    onClick: () -> Unit
+    enabled: Boolean = true
 ) {
     val (activeColor, disabledColor, textColor) = when (type) {
         SDGBottomButtonType.POSITIVE -> Triple(SDGColor.Primary300, SDGColor.Primary50, SDGColor.Neutral0)
