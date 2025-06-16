@@ -127,17 +127,17 @@ fun SDGGhostButton(
 @Composable
 fun RowScope.SDGGhostButton(
     weight: Float,
-    enable: Boolean = true,
     size: SDGGhostButtonSize,
     label: String,
     labelColor: Color,
+    onClick: () -> Unit,
+    enable: Boolean = true,
     labelTypeface: IOTypeface = IOTypeface.REGULAR,
     @DrawableRes leftIcon: Int? = null,
     leftIconTint: Color? = null,
     @DrawableRes rightIcon: Int? = null,
     rightIconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
-    onClick: () -> Unit,
 ) {
     Box(Modifier.weight(weight)) {
         SDGGhostButton(
@@ -161,17 +161,17 @@ fun RowScope.SDGGhostButton(
 fun BoxScope.SDGGhostButton(
     alignment: Alignment,
     isFillMaxWidth: Boolean,
-    enable: Boolean = true,
     size: SDGGhostButtonSize,
     label: String,
     labelColor: Color,
+    onClick: () -> Unit,
+    enable: Boolean = true,
     labelTypeface: IOTypeface = IOTypeface.REGULAR,
     @DrawableRes leftIcon: Int? = null,
     leftIconTint: Color? = null,
     @DrawableRes rightIcon: Int? = null,
     rightIconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
-    onClick: () -> Unit,
 ) {
     Box(Modifier.align(alignment)) {
         SDGGhostButton(
@@ -193,7 +193,7 @@ fun BoxScope.SDGGhostButton(
 
 @Composable
 @Preview
-private fun PrevTest() {
+private fun PrevSDGGhostButton() {
     Surface(Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -228,7 +228,8 @@ private fun PrevTest() {
                     size = SDGGhostButtonSize.Medium,
                     label = "작성하기",
                     labelColor = SDGColor.Neutral700,
-                ) {}
+                    onClick = {}
+                )
 
                 SDGGhostButton(
                     enable = false,
@@ -236,7 +237,8 @@ private fun PrevTest() {
                     size = SDGGhostButtonSize.Medium,
                     label = "작성하기",
                     labelColor = SDGColor.Neutral700,
-                ) {}
+                    onClick = {}
+                )
 
                 SDGGhostButton(
                     enable = false,
@@ -244,10 +246,9 @@ private fun PrevTest() {
                     size = SDGGhostButtonSize.Medium,
                     label = "작성하기",
                     labelColor = SDGColor.Neutral700,
-                ) {}
-
+                    onClick = {}
+                )
             }
-
         }
     }
 }
