@@ -165,7 +165,7 @@ private fun Divider(
 }
 
 @Composable
-fun rememberMaxTextWidthForIndicator(
+private fun rememberMaxTextWidthForIndicator(
     maxWidth: Dp,
     stepsSize: Int,
 ): Dp {
@@ -177,7 +177,7 @@ fun rememberMaxTextWidthForIndicator(
 
 @Preview
 @Composable
-private fun SDGTextIndicatorPreview() {
+private fun PreviewSDGTextIndicator() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -242,7 +242,7 @@ private fun SDGTextIndicatorPreview() {
 
 @Preview
 @Composable
-private fun SDGTextIndicatorAnimatedPreview() {
+private fun PreviewSDGTextIndicatorAnimated() {
     val steps = persistentListOf("Step 1", "Step 2", "Step 3", "SDGTextIndicatorSDGTextIndicatorSDGTextIndicatorStep 4", "Step 5")
     var currentStep by remember { mutableIntStateOf(0) }
     Column(
