@@ -26,7 +26,14 @@ import com.shopl.sdg_common.ui.components.SDGText
 
 /**
  * SDG - Badge - Capsule Badge
+ *
  * 특정 상태나 데이터 구분 또는 전달을 위한 컴포넌트
+ *
+ * @param size [SDGCapsuleBadgeSize]
+ * @param type [SDGCapsuleBadgeType]
+ * @param marginValues [PaddingValues] 컴포넌트 외부 여백
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6863-15016&m=dev">Figma</a>
  */
 @Composable
 fun SDGCapsuleBadge(

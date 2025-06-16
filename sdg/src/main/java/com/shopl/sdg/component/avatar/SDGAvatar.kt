@@ -32,6 +32,12 @@ import com.shopl.sdg_resource.R
  * SDG - Avatar
  *
  * 직원, 작성자 등 사람의 사진과 정보를 보여주는 컴포넌트
+ *
+ * @param avatarSize [SDGAvatarSize]
+ * @param avatarBadge [SDGAvatarBadge]
+ * @param isMaternity 임산부 여부(프로필 사진 내 임산부 표시에 사용)
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6837-15581&m=dev">Figma</a>
  */
 @Composable
 fun SDGAvatar(

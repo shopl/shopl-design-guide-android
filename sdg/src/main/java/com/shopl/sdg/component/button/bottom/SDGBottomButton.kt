@@ -22,7 +22,10 @@ import com.shopl.sdg_common.ui.components.SDGText
 
 /**
  * SDG - Button - Bottom Button
+ *
  * 화면 하단에 고정으로 위치한 풀사이즈 버튼 컴포넌트
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7097-15078&m=dev">Figma</a>
  */
 @Composable
 fun SDGBottomButton(

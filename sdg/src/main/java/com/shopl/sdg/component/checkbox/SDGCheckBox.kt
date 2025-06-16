@@ -26,6 +26,13 @@ import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_resource.R
 
+/**
+ * SDG - Checkbox
+ *
+ * 여러개의 옵션 중 다중선택을 위한 컴포넌트
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6869-15090&m=dev">Figma</a>
+ */
 @Composable
 fun SDGCheckBox(
     isChecked: Boolean,
