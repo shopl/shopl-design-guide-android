@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,10 +30,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.IOText
@@ -52,20 +48,20 @@ import com.shopl.sdg_resource.R
  */
 @Composable
 fun SDGBoxButton(
-    isFillMaxWidth: Boolean = false,
-    enable: Boolean = true,
     size: SDGBoxButtonSize,
     type: SDGBoxButtonType,
     label: String,
     labelColor: Color,
     backgroundColor: Color,
+    onClick: () -> Unit,
+    enable: Boolean = true,
+    isFillMaxWidth: Boolean = false,
     @DrawableRes leftIcon: Int? = null,
     leftIconTint: Color? = null,
     @DrawableRes rightIcon: Int? = null,
     rightIconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
     debounceTimeMills: Long = 500,
-    onClick: () -> Unit,
 ) {
 
     Box(
@@ -243,8 +239,9 @@ private fun PrevTest() {
                 leftIconTint = SDGColor.Neutral0,
                 label = "작성하기",
                 labelColor = SDGColor.Neutral0,
-                backgroundColor = SDGColor.Neutral600
-            ) {}
+                backgroundColor = SDGColor.Neutral600,
+                onClick = {}
+            )
 
             SDGBoxButton(
                 size = SDGBoxButtonSize.Medium,
@@ -253,8 +250,9 @@ private fun PrevTest() {
                 leftIconTint = SDGColor.Neutral700,
                 label = "작성하기",
                 labelColor = SDGColor.Neutral700,
-                backgroundColor = SDGColor.Neutral0
-            ) {}
+                backgroundColor = SDGColor.Neutral0,
+                onClick = {}
+            )
 
             SDGBoxButton(
                 isFillMaxWidth = true,
@@ -264,8 +262,9 @@ private fun PrevTest() {
                 leftIconTint = SDGColor.Neutral700,
                 label = "작성하기",
                 labelColor = SDGColor.Neutral700,
-                backgroundColor = SDGColor.Neutral0
-            ) {}
+                backgroundColor = SDGColor.Neutral0,
+                onClick = {}
+            )
 
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 SDGBoxButton(
@@ -374,8 +373,9 @@ private fun PrevTest() {
                 type = SDGBoxButtonType.Solid,
                 label = "작성하기",
                 labelColor = SDGColor.Neutral0,
-                backgroundColor = SDGColor.Neutral700
-            ) {}
+                backgroundColor = SDGColor.Neutral700,
+                onClick = {}
+            )
 
             SDGBoxButton(
                 enable = false,
@@ -385,8 +385,9 @@ private fun PrevTest() {
                 leftIconTint = SDGColor.Neutral700,
                 label = "작성하기",
                 labelColor = SDGColor.Neutral0,
-                backgroundColor = SDGColor.Neutral700
-            ) {}
+                backgroundColor = SDGColor.Neutral700,
+                onClick = {}
+            )
 
             SDGBoxButton(
                 enable = false,
