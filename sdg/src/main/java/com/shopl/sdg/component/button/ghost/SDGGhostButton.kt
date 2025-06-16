@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,50 +27,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
 import com.shopl.sdg_resource.R
-
-sealed class SDGGhostButtonSize(
-    val height: Dp,
-    val horizontalPadding: Dp,
-    val gap: Dp,
-    val labelSize: TextUnit,
-    val rippleRadius: Dp,
-) {
-    @Stable
-    data object Large : SDGGhostButtonSize(
-        height = 42.dp,
-        horizontalPadding = 16.dp,
-        gap = 6.dp,
-        labelSize = 16.sp,
-        rippleRadius = 14.dp,
-    )
-
-    @Stable
-    data object Medium : SDGGhostButtonSize(
-        height = 36.dp,
-        horizontalPadding = 10.dp,
-        gap = 4.dp,
-        labelSize = 14.sp,
-        rippleRadius = 12.dp,
-    )
-
-    @Stable
-    data object Small : SDGGhostButtonSize(
-        height = 28.dp,
-        horizontalPadding = 6.dp,
-        gap = 2.dp,
-        labelSize = 12.sp,
-        rippleRadius = 9.dp,
-    )
-}
 
 /**
  * SDG - Button - Ghost Button
@@ -82,18 +43,18 @@ sealed class SDGGhostButtonSize(
  */
 @Composable
 fun SDGGhostButton(
-    isFillMaxWidth: Boolean = false,
-    enable: Boolean = true,
     size: SDGGhostButtonSize,
     label: String,
     labelColor: Color,
+    onClick: () -> Unit,
+    isFillMaxWidth: Boolean = false,
+    enable: Boolean = true,
     labelTypeface: IOTypeface = IOTypeface.REGULAR,
     @DrawableRes leftIcon: Int? = null,
     leftIconTint: Color? = null,
     @DrawableRes rightIcon: Int? = null,
     rightIconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
-    onClick: () -> Unit,
 ) {
 
     Box(
@@ -245,7 +206,8 @@ private fun PrevTest() {
                 size = SDGGhostButtonSize.Medium,
                 label = "작성하기",
                 labelColor = SDGColor.Neutral700,
-            ) {}
+                onClick = {}
+            )
 
             SDGGhostButton(
                 isFillMaxWidth = true,
@@ -254,7 +216,8 @@ private fun PrevTest() {
                 leftIconTint = SDGColor.Neutral700,
                 label = "작성하기",
                 labelColor = SDGColor.Neutral700,
-            ) {}
+                onClick = {}
+            )
 
 
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
