@@ -84,7 +84,7 @@ fun SDGCheckBox(
 
 @Preview
 @Composable
-private fun SDGCheckBoxPreView() {
+private fun PrevSDGCheckBox() {
     var test by remember {
         mutableStateOf(false)
     }

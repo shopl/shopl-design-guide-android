@@ -1,3 +1,0 @@
-unstable class MainActivity {
-  <runtime stability> = Unstable
-}
