@@ -53,13 +53,13 @@ enum class SDGFormType {
 fun SDGDropdownForm(
     type: SDGFormType,
     title: String,
-    hint: String? = null,
     value: String?,
+    onDropdownClick: () -> Unit,
+    hint: String? = null,
     dropdownState: SDGBasicDropdownState = SDGBasicDropdownState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
-    onDropdownClick: () -> Unit,
     onResetClick: (() -> Unit)? = null,
 ) {
     Column(
@@ -124,13 +124,13 @@ fun SDGDropdownForm(
 fun SDGDropdownForm(
     type: SDGFormType,
     title: AnnotatedString,
-    hint: String? = null,
     value: String?,
+    onDropdownClick: () -> Unit,
+    hint: String? = null,
     dropdownState: SDGBasicDropdownState = SDGBasicDropdownState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
-    onDropdownClick: () -> Unit,
     onResetClick: (() -> Unit)? = null,
 ) {
     Column(
@@ -194,14 +194,14 @@ fun SDGDropdownForm(
 fun SDGSelectedInputForm(
     type: SDGFormType,
     title: String,
-    hint: String? = null,
     value: String?,
+    onInputClick: () -> Unit,
+    hint: String? = null,
     selectedInputState: SDGSelectedInputState = SDGSelectedInputState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     inputStartIcon: @Composable (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
-    onInputClick: () -> Unit,
     onResetClick: (() -> Unit)? = null,
 ) {
     Column(
@@ -268,14 +268,14 @@ fun SDGSelectedInputForm(
 fun SDGSelectedInputForm(
     type: SDGFormType,
     title: AnnotatedString,
-    hint: String? = null,
     value: String?,
+    onInputClick: () -> Unit,
+    hint: String? = null,
     selectedInputState: SDGSelectedInputState = SDGSelectedInputState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     inputStartIcon: @Composable (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
-    onInputClick: () -> Unit,
     onResetClick: (() -> Unit)? = null,
 ) {
     Column(
@@ -342,12 +342,12 @@ fun SDGSelectedInputForm(
 fun SDGFixedInputForm(
     type: SDGFormType,
     title: AnnotatedString,
-    hint: String? = null,
     value: String?,
+    onValueChange: (String) -> Unit,
+    hint: String? = null,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
-    onValueChange: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -396,13 +396,13 @@ fun SDGFixedInputForm(
 fun SDGFixedInputForm(
     type: SDGFormType,
     title: String,
-    hint: String? = null,
     value: String?,
+    onValueChange: (String) -> Unit,
+    hint: String? = null,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     inputBackgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
-    onValueChange: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -453,11 +453,11 @@ fun SDGTimeSelectedForm(
     title: String,
     startTime: String?,
     endTime: String?,
+    onResetClick: (() -> Unit)? = null,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
     onTimeSelectClick: (isStart: Boolean) -> Unit,
-    onResetClick: (() -> Unit)? = null,
 ) {
     SDGTimeSelectedForm(
         type = type,
@@ -478,10 +478,10 @@ fun SDGTimeSelectedForm(
     title: AnnotatedString,
     startTime: String?,
     endTime: String?,
+    onTimeSelectClick: (isClickStart: Boolean) -> Unit,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
-    onTimeSelectClick: (isClickStart: Boolean) -> Unit,
     onResetClick: (() -> Unit)? = null,
 ) {
     Column(
@@ -580,9 +580,10 @@ private fun PrevForm(
                 onInputClick = {},
                 onResetClick = {},
                 inputStartIcon = {
-                    Box(modifier = Modifier
-                        .size(24.dp)
-                        .background(SDGColor.Neutral400)
+                    Box(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .background(SDGColor.Neutral400)
                     )
                 }
             )
