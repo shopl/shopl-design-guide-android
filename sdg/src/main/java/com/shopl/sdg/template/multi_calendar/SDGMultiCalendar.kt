@@ -528,7 +528,7 @@ private fun DaySingleCalendar(
         ),
         onSelectDate = onSelectDate
     )
-    val label = startDay?.let { dayFormatter01.print(it) } ?: ""
+    val label = startDay?.let { dayFormatter03.print(it) } ?: ""
     IOText(
         modifier = Modifier
             .padding(top = 20.dp)
