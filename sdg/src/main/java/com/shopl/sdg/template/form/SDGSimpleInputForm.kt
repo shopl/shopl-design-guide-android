@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +54,7 @@ fun SDGSimpleInputForm(
     onClickIcon: (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
     inputState: InputState = InputState.Enable,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     val titleAnnotatedString = if(essential) {
         title.plus("*").withColor(SDGColor.Red300, "*")
@@ -120,6 +122,7 @@ fun SDGSimpleInputForm(
             state = inputState,
             backgroundColor = SDGColor.Neutral50,
             onInputChange = onValueChange,
+            keyboardOptions = keyboardOptions
         )
     }
 }
