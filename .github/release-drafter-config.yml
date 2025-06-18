@@ -1,0 +1,27 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+categories:
+  - title: '🚀 새로운 디자인 시스템 요소가 추가되었어요.'
+    labels: [ 'add' ]
+  - title: '🔧 기존 기능이 개선되거나 요소가 변경되었어요.'
+    labels: [ 'update' ]
+  - title: '📝 문서나 주석이 추가되었거나 개선되었어요.'
+    labels: [ 'document' ]
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+template: |
+  ## 이번 변경사항은 아래와 같아요
+  $CHANGES
+
+no-changes-template: '변경사항이 없어요'
+
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
