@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -198,6 +199,7 @@ fun SDGSelectedInputForm(
     selectedInputState: SDGSelectedInputState = SDGSelectedInputState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
+    inputStartIcon: @Composable (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
     onInputClick: () -> Unit,
     onResetClick: (() -> Unit)? = null,
@@ -257,6 +259,7 @@ fun SDGSelectedInputForm(
             enable = true,
             hasSelectedItem = value != null,
             onClick = onInputClick,
+            icon = inputStartIcon
         )
     }
 }
@@ -270,6 +273,7 @@ fun SDGSelectedInputForm(
     selectedInputState: SDGSelectedInputState = SDGSelectedInputState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
+    inputStartIcon: @Composable (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
     onInputClick: () -> Unit,
     onResetClick: (() -> Unit)? = null,
@@ -329,6 +333,7 @@ fun SDGSelectedInputForm(
             enable = true,
             hasSelectedItem = value != null,
             onClick = onInputClick,
+            icon = inputStartIcon
         )
     }
 }
@@ -557,13 +562,29 @@ private fun PrevForm(
             )
             SDGSelectedInputForm(
                 type = SDGFormType.NORMAL,
-                title = "SDGSelectedInputForm",
+                title = "SDGSelectedInputForm 1",
                 hint = null,
                 value = null,
                 iconResId = null,
                 iconTint = null,
                 onInputClick = {},
                 onResetClick = {},
+            )
+            SDGSelectedInputForm(
+                type = SDGFormType.NORMAL,
+                title = "SDGSelectedInputForm 2",
+                hint = null,
+                value = null,
+                iconResId = null,
+                iconTint = null,
+                onInputClick = {},
+                onResetClick = {},
+                inputStartIcon = {
+                    Box(modifier = Modifier
+                        .size(24.dp)
+                        .background(SDGColor.Neutral400)
+                    )
+                }
             )
             SDGFixedInputForm(
                 type = SDGFormType.NORMAL,
