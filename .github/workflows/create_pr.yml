@@ -1,0 +1,158 @@
+name: PR Info 자동화
+
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize, ready_for_review ]
+
+jobs:
+  auto-label-title:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Jira 이슈 summary로 PR 타이틀 업데이트
+        uses: actions/github-script@v6
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.payload.pull_request.number;
+            const branchName = context.payload.pull_request.head.ref;
+
+            // 이슈번호 추출 (예: SH-1115)
+            let issueKey = null;
+            try {
+              const issueMatch = branchName.match(/(SH-\d{1,})/);
+              issueKey = issueMatch ? issueMatch[1] : null;
+              console.log('이슈번호:', issueKey);
+            } catch (e) {
+              console.log('이슈번호 추출 실패:', e);
+            }
+
+            // Jira 이슈 summary 가져오기
+            let jiraTitle = null;
+            try {
+              if (issueKey) {
+                const jiraBaseUrl = process.env.JIRA_BASE_URL;
+                const jiraEmail = process.env.JIRA_EMAIL;
+                const jiraToken = process.env.JIRA_API_TOKEN;
+
+                const basicAuth = Buffer.from(`${jiraEmail}:${jiraToken}`).toString('base64');
+                const res = await fetch(
+                  `${jiraBaseUrl}/rest/api/3/issue/${issueKey}`,
+                  {
+                    method: 'GET',
+                    headers: {
+                      'Authorization': `Basic ${basicAuth}`,
+                      'Accept': 'application/json'
+                    }
+                  }
+                );
+
+                if (res.ok) {
+                  const data = await res.json();
+                  jiraTitle = data.fields.summary;
+                }
+              }
+            } catch (e) {
+              console.log('Jira summary 조회 실패:', e);
+            }
+
+            // PR 타이틀: [SH-1115] 이슈 summary
+            let prTitle = null;
+            try {
+              prTitle = (issueKey && jiraTitle) ? `[${issueKey}] ${jiraTitle}` :
+                        (issueKey ? `[${issueKey}]` : context.payload.pull_request.title);
+
+              if (context.payload.pull_request.title !== prTitle) {
+                await github.rest.pulls.update({
+                  owner,
+                  repo,
+                  pull_number: prNumber,
+                  title: prTitle
+                });
+              }
+            } catch (e) {
+              console.log('PR 타이틀 업데이트 실패:', e);
+            }
+
+      - name: 리뷰어/Assignee/라벨 자동 지정
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GIT_DEV_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const org = owner;
+            const prNumber = context.payload.pull_request.number;
+            const branchName = context.payload.pull_request.head.ref;
+            const teamSlug = "android";
+            const prAuthor = context.payload.pull_request.user.login;
+
+            // 팀 멤버 목록 가져오기
+            let teamMembers = [];
+            try {
+              const res = await github.rest.teams.listMembersInOrg({
+                org,
+                team_slug: teamSlug,
+              });
+              teamMembers = res.data.map(member => member.login);
+            } catch (e) {
+              console.log('팀 멤버 목록 조회 실패:', e);
+            }
+
+            // reviewer는 PR 작성자 제외
+            const reviewers = teamMembers.filter(login => login !== prAuthor);
+
+            // reviewer 지정
+            try {
+              if (reviewers.length > 0) {
+                await github.rest.pulls.requestReviewers({
+                  owner,
+                  repo,
+                  pull_number: prNumber,
+                  reviewers: reviewers,
+                });
+                console.log("리뷰어 지정:", reviewers);
+              }
+            
+            } catch (e) {
+              console.log('Reviewer 지정 실패:', e);
+            }
+
+            // assignee 지정
+            try {
+              await github.rest.issues.addAssignees({
+                owner,
+                repo,
+                issue_number: prNumber,
+                assignees: [prAuthor],
+              });
+            } catch (e) {
+              console.log('Assignees 지정 실패:', e);
+            }
+
+            // 브랜치에 따라 라벨 결정
+            let label = null;
+            try {
+              if (/^add\/[^/]+\/SH-\d+(-.+)?$/.test(branchName)) {
+                label = "add";
+              } else if (/^update\/[^/]+\/SH-\d+(-.+)?$/.test(branchName)) {
+                label = "update";
+              } else if (/^document\/[^/]+\/SH-\d+(-.+)?$/.test(branchName)) {
+                label = "document";
+              }
+              if (label) {
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  labels: [label],
+                });
+              }
+              console.log('label:', label);
+            } catch (e) {
+              console.log('label 지정 실패:', e);
+            }
