@@ -33,7 +33,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shopl.sdg.component.text_input.InputState
-import com.shopl.sdg.component.text_input.SDGSimpleInputType
 import com.shopl.sdg.component.text_input.keyboardAsState
 import com.shopl.sdg_common.enums.Keyboard
 import com.shopl.sdg_common.foundation.SDGColor

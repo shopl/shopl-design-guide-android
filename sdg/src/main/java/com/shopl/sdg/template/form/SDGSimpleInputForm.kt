@@ -22,8 +22,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.text_input.InputState
-import com.shopl.sdg.component.text_input.SDGSimpleTextInput
-import com.shopl.sdg.component.text_input.SDGSimpleInputType
+import com.shopl.sdg.component.text_input.simple.SDGSimpleInputType
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInput
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ext.withColor
 import com.shopl.sdg_common.foundation.SDGColor
@@ -47,7 +47,7 @@ fun SDGSimpleInputForm(
     title: String,
     value: String?,
     onValueChange: (String) -> Unit,
-    essential:Boolean = false,
+    essential: Boolean = false,
     hint: String? = null,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
@@ -56,7 +56,7 @@ fun SDGSimpleInputForm(
     inputState: InputState = InputState.Enable,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
-    val titleAnnotatedString = if(essential) {
+    val titleAnnotatedString = if (essential) {
         title.plus("*").withColor(SDGColor.Red300, "*")
     } else {
         AnnotatedString(title)
@@ -76,7 +76,7 @@ fun SDGSimpleInputForm(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                when(type) {
+                when (type) {
                     SDGFormType.EMPHA -> {
                         SDGText(
                             text = titleAnnotatedString,
@@ -84,6 +84,7 @@ fun SDGSimpleInputForm(
                             typography = SDGTypography.Body1SB
                         )
                     }
+
                     SDGFormType.NORMAL -> {
                         SDGText(
                             text = titleAnnotatedString,
@@ -138,8 +139,7 @@ fun PreviewSDGSimpleInputForm() {
             )
             .padding(
                 vertical = 20.dp
-            )
-        ,
+            ),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         SDGSimpleInputForm(
