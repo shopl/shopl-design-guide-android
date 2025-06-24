@@ -67,15 +67,10 @@ import com.shopl.sdg_common.ui.components.TypefaceConfig
 import com.shopl.sdg_resource.R
 import java.text.DecimalFormat
 
-@Stable
-sealed class InputState {
-    object Enable : InputState()
-    object Disable : InputState()
-    data class Error(val message: String) : InputState()
-}
+
 
 @Composable
-fun SDGFixedInput(
+fun SDGFixedTextInput(
     outlineType: OutlineType,
     height: Dp = 104.dp,
     input: String?,
@@ -352,7 +347,7 @@ enum class SDGSimpleInputType {
 }
 
 @Composable
-fun SDGSimpleInput(
+fun SDGSimpleTextInput(
     type: SDGSimpleInputType,
     input: String,
     hint: String,
@@ -451,7 +446,7 @@ fun SDGSimpleInput(
 }
 
 @Composable
-fun SDGSimpleInput(
+fun SDGSimpleTextInput(
     type: SDGSimpleInputType,
     input: TextFieldValue,
     hint: String,
@@ -547,7 +542,7 @@ fun SDGSimpleInput(
 }
 
 @Composable
-fun SDGSimpleInput(
+fun SDGSimpleTextInput(
     type: SDGSimpleInputType,
     input: TextFieldValue,
     hint: String,
@@ -764,7 +759,7 @@ private fun PrevInput(
                 .fillMaxSize()
                 .background(color = SDGColor.Neutral0)
         ) {
-            SDGFixedInput(
+            SDGFixedTextInput(
                 marginValues = PaddingValues(20.dp),
                 outlineType = OutlineType.OUTLINE,
                 input = "12341234",
@@ -782,7 +777,7 @@ private fun PrevInput(
                 onInputChange = {}
             )
 
-            SDGSimpleInput(
+            SDGSimpleTextInput(
                 type = SDGSimpleInputType.BASIC,
                 input = "start",
                 backgroundColor = SDGColor.Transparent,

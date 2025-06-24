@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.shopl.sdg.component.dropdown.SDGBasicDropdown
 import com.shopl.sdg.component.dropdown.SDGBasicDropdownState
 import com.shopl.sdg.component.text_input.InputState
-import com.shopl.sdg.component.text_input.SDGFixedInput
+import com.shopl.sdg.component.text_input.SDGFixedTextInput
 import com.shopl.sdg.template.selected_input.SDGSelectedInputSingle
 import com.shopl.sdg.template.selected_input.SDGSelectedInputState
 import com.shopl.sdg.template.selected_input.SDGSelectedInputTime
@@ -381,7 +381,7 @@ fun SDGFixedInputForm(
                 }
             }
         }
-        SDGFixedInput(
+        SDGFixedTextInput(
             outlineType = OutlineType.BASIC,
             input = value,
             hint = hint ?: stringResource(id = R.string.text_hint_study_place),
@@ -436,7 +436,7 @@ fun SDGFixedInputForm(
                 }
             }
         }
-        SDGFixedInput(
+        SDGFixedTextInput(
             outlineType = OutlineType.BASIC,
             input = value,
             hint = hint ?: stringResource(id = R.string.text_hint_study_place),
