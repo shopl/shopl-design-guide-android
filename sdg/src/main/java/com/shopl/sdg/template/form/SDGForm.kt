@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.shopl.sdg.component.dropdown.SDGBasicDropdown
 import com.shopl.sdg.component.dropdown.SDGBasicDropdownState
 import com.shopl.sdg.component.text_input.InputState
-import com.shopl.sdg.component.text_input.SDGFixedTextInput
+import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInput
 import com.shopl.sdg.template.selected_input.SDGSelectedInputSingle
 import com.shopl.sdg.template.selected_input.SDGSelectedInputState
 import com.shopl.sdg.template.selected_input.SDGSelectedInputTime
