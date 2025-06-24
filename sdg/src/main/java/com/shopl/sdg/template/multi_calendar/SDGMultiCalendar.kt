@@ -140,7 +140,7 @@ fun SDGMultiCalendarModal(
                     top = 8.dp
                 ),
         ) {
-            when(types.size) {
+            when (types.size) {
                 1 -> {
                     TypeCalendar(
                         modifier = Modifier
@@ -202,6 +202,7 @@ fun SDGMultiCalendarModal(
 
                     )
                 }
+
                 else -> {
                     SDGLineFixedTab(
                         tabTitles = tabs,
@@ -299,10 +300,9 @@ fun SDGMultiCalendarModal(
                     weight = 1F,
                     size = SDGGhostButtonSize.Large,
                     label = stringResource(id = R.string.dialog_common_btn_cancel),
-                    labelColor = SDGColor.Neutral700
-                ) {
-                    onClickCancel()
-                }
+                    onClick = { onClickCancel() },
+                    labelColor = SDGColor.Neutral700,
+                )
 
                 Spacer(
                     modifier = Modifier
@@ -317,26 +317,27 @@ fun SDGMultiCalendarModal(
                     size = SDGGhostButtonSize.Large,
                     label = stringResource(id = R.string.dialog_common_btn_ok),
                     labelColor = SDGColor.Neutral700,
-                    labelTypeface = IOTypeface.SEMI_BOLD
-                ) {
-                    when (val type = types[selectedTabIndex]) {
-                        is SDGMultiCalendarModalType.Day -> {
-                            val start = startDay ?: return@SDGGhostButton
-                            onClickConfirm(type, start, endDay ?: start)
-                        }
+                    labelTypeface = IOTypeface.SEMI_BOLD,
+                    onClick = {
+                        when (val type = types[selectedTabIndex]) {
+                            is SDGMultiCalendarModalType.Day -> {
+                                val start = startDay ?: return@SDGGhostButton
+                                onClickConfirm(type, start, endDay ?: start)
+                            }
 
-                        is SDGMultiCalendarModalType.Week -> {
-                            val start = startWeek ?: return@SDGGhostButton
-                            onClickConfirmWeek?.invoke(type, start, endWeek ?: start)
-                        }
+                            is SDGMultiCalendarModalType.Week -> {
+                                val start = startWeek ?: return@SDGGhostButton
+                                onClickConfirmWeek?.invoke(type, start, endWeek ?: start)
+                            }
 
-                        is SDGMultiCalendarModalType.Month -> {
-                            val start = startMonth ?: return@SDGGhostButton
-                            val end = endMonth?.dayOfMonth()?.withMaximumValue() ?: start.dayOfMonth().withMaximumValue()
-                            onClickConfirm(type, start, end)
+                            is SDGMultiCalendarModalType.Month -> {
+                                val start = startMonth ?: return@SDGGhostButton
+                                val end = endMonth?.dayOfMonth()?.withMaximumValue() ?: start.dayOfMonth().withMaximumValue()
+                                onClickConfirm(type, start, end)
+                            }
                         }
                     }
-                }
+                )
             }
         }
 
@@ -369,7 +370,7 @@ private fun TypeCalendar(
     ) {
         when (type) {
             is SDGMultiCalendarModalType.Day -> {
-                if(type.maxCount == 1) {
+                if (type.maxCount == 1) {
                     DaySingleCalendar(
                         modifier = Modifier
                             .height(320.dp),
@@ -398,7 +399,7 @@ private fun TypeCalendar(
             }
 
             is SDGMultiCalendarModalType.Week -> {
-                if(type.maxCount == 1) {
+                if (type.maxCount == 1) {
                     WeekSingleCalendar(
                         modifier = Modifier
                             .height(320.dp),
@@ -423,7 +424,7 @@ private fun TypeCalendar(
             }
 
             is SDGMultiCalendarModalType.Month -> {
-                if(type.maxCount == 1) {
+                if (type.maxCount == 1) {
                     MonthSingleCalendar(
                         modifier = Modifier
                             .height(320.dp),

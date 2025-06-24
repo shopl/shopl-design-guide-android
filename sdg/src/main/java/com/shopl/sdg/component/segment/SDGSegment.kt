@@ -208,20 +208,34 @@ private fun SDGSegmentIndicator(
 }
 
 enum class SDGSegmentType(val requiredLabelCount: Int) {
-    THREE_OPTSDGN(requiredLabelCount = 3),
-    TWO_OPTSDGN(requiredLabelCount = 2)
+    TWO_OPTION(requiredLabelCount = 2),
+    THREE_OPTION(requiredLabelCount = 3),
+    FOUR_OPTION(requiredLabelCount = 4),
 }
 
 enum class SDGSegmentTextLine {
-    TWO_LINE,
-    ONE_LINE
+    ONE_LINE,
+    TWO_LINE
+}
+
+@Preview(name = "4option + 2line")
+@Composable
+private fun PrevSDGSegment_FourOption_TwoLine() {
+    SDGSegment(
+        type = SDGSegmentType.FOUR_OPTION,
+        labels = persistentListOf("긴라벨은 말줄임 긴라벨은 말줄임", "짧은라벨2", "짧은라벨3", "짧은 라벨4"),
+        line = SDGSegmentTextLine.TWO_LINE,
+        selectedIndex = 1,
+        backgroundColor = SDGColor.Neutral300,
+        onLabelClick = {}
+    )
 }
 
 @Preview(name = "3option + 2line")
 @Composable
 private fun PrevSDGSegment_ThreeOption_TwoLine() {
     SDGSegment(
-        type = SDGSegmentType.THREE_OPTSDGN,
+        type = SDGSegmentType.THREE_OPTION,
         labels = persistentListOf("긴라벨은 말줄임 긴라벨은 말줄임", "짧은라벨2", "짧은라벨3"),
         line = SDGSegmentTextLine.TWO_LINE,
         selectedIndex = 1,
@@ -234,7 +248,7 @@ private fun PrevSDGSegment_ThreeOption_TwoLine() {
 @Composable
 private fun PrevSDGSegment_ThreeOption_OneLine() {
     SDGSegment(
-        type = SDGSegmentType.THREE_OPTSDGN,
+        type = SDGSegmentType.THREE_OPTION,
         labels = persistentListOf("긴라벨은 말줄임 긴라벨은 말줄임", "짧은라벨2", "짧은라벨3"),
         line = SDGSegmentTextLine.ONE_LINE,
         selectedIndex = 0,
@@ -247,7 +261,7 @@ private fun PrevSDGSegment_ThreeOption_OneLine() {
 @Composable
 private fun PrevSDGSegment_TwoOption_TwoLine() {
     SDGSegment(
-        type = SDGSegmentType.TWO_OPTSDGN,
+        type = SDGSegmentType.TWO_OPTION,
         labels = persistentListOf("1", "라벨2"),
         line = SDGSegmentTextLine.TWO_LINE,
         selectedIndex = 0,
@@ -260,7 +274,7 @@ private fun PrevSDGSegment_TwoOption_TwoLine() {
 @Composable
 private fun PrevSDGSegment_TwoOption_OneLine() {
     SDGSegment(
-        type = SDGSegmentType.TWO_OPTSDGN,
+        type = SDGSegmentType.TWO_OPTION,
         labels = persistentListOf("라벨1", "라벨2"),
         line = SDGSegmentTextLine.ONE_LINE,
         selectedIndex = 1,
