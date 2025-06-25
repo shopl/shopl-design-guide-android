@@ -1,6 +1,5 @@
 package com.shopl.sdg.component.text_input.underline
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Box
@@ -16,22 +15,18 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,8 +34,9 @@ import com.shopl.sdg.component.text_input.InputState
 import com.shopl.sdg_common.enums.Keyboard
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.ui.components.IOText
-import com.shopl.sdg_common.ui.components.TypefaceConfig
+import com.shopl.sdg_common.foundation.typography.SDGTypography
+import com.shopl.sdg_common.ui.components.SDGImage
+import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_common.util.keyboardAsState
 import com.shopl.sdg_resource.R
 
@@ -63,7 +59,6 @@ fun SDGUnderlineInput(
     backgroundColor: Color = SDGColor.Neutral200,
     marginValues: PaddingValues = PaddingValues(),
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
     val focusManager = LocalFocusManager.current
@@ -85,19 +80,12 @@ fun SDGUnderlineInput(
         .padding(marginValues)
         .fillMaxWidth()
         .focusRequester(focusRequester = focusRequester)
-        .onFocusChanged {
-            //Log.e("SDGInput", "Focus : ${it.isFocused}")
-        }
 
-    val textStyle = TextStyle(
+    val textStyle = SDGTypography.Title2R.style.copy(
         color = textColor,
-        fontSize = 18.sp,
-        fontFamily = FontFamily(typeface = TypefaceConfig.normal),
-        letterSpacing = 0.sp,
-        lineHeight = 22.sp,
     )
 
-    var maxHeight by remember { mutableStateOf(-1) }
+    var maxHeight by remember { mutableIntStateOf(-1) }
     val lineHeight = with(LocalDensity.current) { 22.sp.toPx() }
 
     LaunchedEffect(key1 = input) {
@@ -108,7 +96,6 @@ fun SDGUnderlineInput(
     }
 
     LaunchedEffect(key1 = isKeyboardOpen) {
-        //Log.e("SDGInput", "SideEffect isKeyboardOpen : $isKeyboardOpen")
         if (isKeyboardOpen == Keyboard.Closed) {
             focusManager.clearFocus()
         }
@@ -139,26 +126,23 @@ fun SDGUnderlineInput(
                     Box(Modifier.weight(1F)) {
                         textField()
                         if (input.isNullOrEmpty()) {
-                            IOText(
+                            SDGText(
                                 text = hint,
                                 textColor = SDGColor.Neutral300,
-                                fontSize = 18.sp,
-                                lineHeight = 22.sp,
+                                typography = SDGTypography.Title2R
                             )
                         }
                     }
 
                     if (!input.isNullOrEmpty() && isKeyboardOpen == Keyboard.Opened) {
-                        Image(
+                        SDGImage(
                             modifier = Modifier
                                 .padding(start = 10.dp)
                                 .clickable {
                                     onInputChange.invoke("")
                                 },
-                            painter = painterResource(
-                                id = R.drawable.ic_input_delete
-                            ),
-                            contentDescription = null
+                            resId = R.drawable.ic_input_delete,
+                            color = null
                         )
                     }
                 }
