@@ -24,19 +24,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.shopl.sdg.component.text_input.InputState
 import com.shopl.sdg_common.enums.Keyboard
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
-import com.shopl.sdg_common.ui.components.TypefaceConfig
 import com.shopl.sdg_common.util.keyboardAsState
 import java.text.DecimalFormat
 
@@ -57,12 +54,12 @@ fun SDGSimpleTextInput(
     input: String,
     hint: String,
     inputState: InputState,
+    onInputChange: (String) -> Unit,
     focusRequester: FocusRequester? = null,
     maxLines: Int = 1,
     backgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    onInputChange: (String) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val isKeyboardOpen by keyboardAsState()
@@ -106,11 +103,8 @@ fun SDGSimpleTextInput(
         onValueChange = onInputChange,
         keyboardOptions = keyboardOptions,
         enabled = inputState != InputState.Disable,
-        textStyle = TextStyle(
+        textStyle = SDGTypography.Body1R.style.copy(
             color = if (inputState == InputState.Disable) SDGColor.Neutral300 else SDGColor.Neutral700,
-            fontSize = 16.sp,
-            fontFamily = FontFamily(typeface = TypefaceConfig.normal),
-            letterSpacing = 0.sp,
         ),
         singleLine = maxLines == 1,
         maxLines = maxLines,
@@ -141,7 +135,11 @@ fun SDGSimpleTextInput(
             ) {
                 Box {
                     if (input.isEmpty()) {
-                        SDGText(text = hint, textColor = SDGColor.Neutral300, fontSize = 14.sp)
+                        SDGText(
+                            text = hint,
+                            textColor = SDGColor.Neutral300,
+                            typography = SDGTypography.Body1R
+                        )
                     }
                     innerTextField()
                 }
@@ -155,7 +153,7 @@ fun SDGSimpleTextInput(
     type: SDGSimpleTextInputType,
     input: TextFieldValue,
     hint: String,
-    state: InputState,
+    inputState: InputState,
     focusRequester: FocusRequester? = null,
     maxLines: Int = 1,
     backgroundColor: Color = SDGColor.Neutral0,
@@ -164,7 +162,7 @@ fun SDGSimpleTextInput(
     onInputChange: (TextFieldValue) -> Unit,
     onFocusChanged: ((FocusState) -> Unit)? = null
 ) {
-    val inputBgColor = when (state) {
+    val inputBgColor = when (inputState) {
         InputState.Disable,
         InputState.Enable -> backgroundColor
 
@@ -177,7 +175,7 @@ fun SDGSimpleTextInput(
         }
     }
 
-    val lineColor = when (state) {
+    val lineColor = when (inputState) {
         InputState.Disable,
         InputState.Enable -> SDGColor.Neutral200
 
@@ -201,12 +199,9 @@ fun SDGSimpleTextInput(
         value = input,
         onValueChange = onInputChange,
         keyboardOptions = keyboardOptions,
-        enabled = state != InputState.Disable,
-        textStyle = TextStyle(
-            color = if (state == InputState.Disable) SDGColor.Neutral300 else SDGColor.Neutral700,
-            fontSize = 16.sp,
-            fontFamily = FontFamily(typeface = TypefaceConfig.normal),
-            letterSpacing = 0.sp,
+        enabled = inputState != InputState.Disable,
+        textStyle = SDGTypography.Body1R.style.copy(
+            color = if (inputState == InputState.Disable) SDGColor.Neutral300 else SDGColor.Neutral700,
         ),
         singleLine = maxLines == 1,
         maxLines = maxLines,
@@ -237,7 +232,11 @@ fun SDGSimpleTextInput(
             ) {
                 Box {
                     if (input.text.isEmpty()) {
-                        SDGText(text = hint, textColor = SDGColor.Neutral300, fontSize = 14.sp)
+                        SDGText(
+                            text = hint,
+                            textColor = SDGColor.Neutral300,
+                            typography = SDGTypography.Body1R
+                        )
                     }
                     innerTextField()
                 }
@@ -251,7 +250,7 @@ fun SDGSimpleTextInput(
     type: SDGSimpleTextInputType,
     input: TextFieldValue,
     hint: String,
-    state: InputState,
+    inputState: InputState,
     focusRequester: FocusRequester? = null,
     maxLines: Int = 1,
     backgroundColor: Color = SDGColor.Neutral0,
@@ -264,7 +263,7 @@ fun SDGSimpleTextInput(
     minValue: Double? = null,
     maxValue: Double? = null,
 ) {
-    val inputBgColor = when (state) {
+    val inputBgColor = when (inputState) {
         InputState.Disable,
         InputState.Enable -> backgroundColor
 
@@ -277,7 +276,7 @@ fun SDGSimpleTextInput(
         }
     }
 
-    val lineColor = when (state) {
+    val lineColor = when (inputState) {
         InputState.Disable,
         InputState.Enable -> SDGColor.Neutral200
 
@@ -385,12 +384,9 @@ fun SDGSimpleTextInput(
             } ?: onInputChange(value)
         },
         keyboardOptions = keyboardOptions,
-        enabled = state != InputState.Disable,
-        textStyle = TextStyle(
-            color = if (state == InputState.Disable) SDGColor.Neutral300 else SDGColor.Neutral700,
-            fontSize = 16.sp,
-            fontFamily = FontFamily(typeface = TypefaceConfig.normal),
-            letterSpacing = 0.sp,
+        enabled = inputState != InputState.Disable,
+        textStyle = SDGTypography.Body1R.style.copy(
+            color = if (inputState == InputState.Disable) SDGColor.Neutral300 else SDGColor.Neutral700,
             textAlign = if (alignCenter) {
                 TextAlign.Center
             } else TextAlign.Start
@@ -436,7 +432,7 @@ fun SDGSimpleTextInput(
                             ),
                             text = hint,
                             textColor = SDGColor.Neutral300,
-                            fontSize = 14.sp,
+                            typography = SDGTypography.Body1R,
                             textAlign = if (alignCenter) {
                                 TextAlign.Center
                             } else TextAlign.Start
@@ -449,7 +445,7 @@ fun SDGSimpleTextInput(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewSDGSimpleTextInput() {
     SDGSimpleTextInput(
