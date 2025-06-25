@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
  * 기존 디자인 시스템 내부에서 사용하기 위한 컴포저블 [IOText]
  * 작업 분배 후 제거 예정
  */
-@Deprecated("레거시")
+@Deprecated("제거 예정", ReplaceWith("SDGText와 SDGTypography를 사용하세요."))
 enum class IOTypeface {
     REGULAR, SEMI_BOLD;
 
@@ -45,7 +45,7 @@ object TypefaceConfig {
 /**
  * String(text), ColorResourceId(textColor)를 사용하는 IOText
  */
-@Deprecated("ColorResourceId는 사용하지 않음", ReplaceWith("IOColor를 사용하세요"))
+@Deprecated("제거 예정", ReplaceWith("SDGText를 사용하세요"))
 @Composable
 fun IOText(
     text: String,
@@ -92,7 +92,7 @@ fun IOText(
 /**
  * AnnotatedString(text), ColorResourceId(textColor)를 사용하는 IOText
  */
-@Deprecated("ColorResourceId는 사용하지 않음", ReplaceWith("IOColor를 사용하세요"))
+@Deprecated("제거 예정", ReplaceWith("SDGText를 사용하세요"))
 @Composable
 fun IOText(
     text: AnnotatedString,
@@ -139,6 +139,7 @@ fun IOText(
 /**
  * String(text)을 사용하는 IOText
  */
+@Deprecated("제거 예정", ReplaceWith("SDGText를 사용하세요"))
 @Composable
 fun IOText(
     text: String,
@@ -184,6 +185,7 @@ fun IOText(
 /**
  * AnnotatedString(text)을 사용하는 IOText
  */
+@Deprecated("제거 예정", ReplaceWith("SDGText를 사용하세요"))
 @Composable
 fun IOText(
     text: AnnotatedString,
