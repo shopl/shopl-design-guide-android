@@ -30,23 +30,35 @@ import com.shopl.sdg.component.text_input.InputState
 import com.shopl.sdg_common.enums.Keyboard
 import com.shopl.sdg_common.enums.OutlineType
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
 import com.shopl.sdg_common.util.keyboardAsState
 
+/**
+ * SDG - Text Input - Fixed Text Input
+ *
+ * 50자 이상의 텍스트 필드값을 입력할 수 있는 인풋 컴포넌트
+ *
+ * @param inputState [InputState] 활성화/비활성화/에러 여부
+ * @param onInputChange 인풋 값 변경 콜백
+ * @param enableOnError 에러 활성화 여부
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=18232-12815&m=dev">Figma</a>
+ */
 @Composable
 fun SDGFixedTextInput(
     outlineType: OutlineType,
-    height: Dp = 104.dp,
     input: String?,
     hint: String,
     inputState: InputState,
+    onInputChange: (String) -> Unit,
+    height: Dp = 104.dp,
     focusRequester: FocusRequester? = null,
     backgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
     maxLength: Int = Int.MAX_VALUE,
     enableOnError: Boolean = false,
-    onInputChange: (String) -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current
@@ -74,11 +86,14 @@ fun SDGFixedTextInput(
         )
 
     val textStyle = TextStyle(
-        color = SDGColor.Neutral700,
+        color = ,
         fontSize = 16.sp,
         fontFamily = IOTypeface.REGULAR.fontFamily,
         letterSpacing = 0.sp,
         lineHeight = 20.sp,
+    )
+    val textStyle = SDGTypography.Body1R.style.copy(
+        color = SDGColor.Neutral700,
     )
 
     val lineHeight = with(LocalDensity.current) { 20.sp.toPx() }
