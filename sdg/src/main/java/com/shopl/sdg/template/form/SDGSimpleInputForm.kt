@@ -22,7 +22,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.text_input.InputState
-import com.shopl.sdg.component.text_input.simple.SDGSimpleInputType
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputType
 import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInput
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ext.withColor
@@ -117,10 +117,10 @@ fun SDGSimpleInputForm(
             }
         }
         SDGSimpleTextInput(
-            type = SDGSimpleInputType.BASIC,
+            type = SDGSimpleTextInputType.BASIC,
             input = value.orEmpty(),
             hint = hint ?: stringResource(id = R.string.text_hint_study_place),
-            state = inputState,
+            inputState = inputState,
             backgroundColor = SDGColor.Neutral50,
             onInputChange = onValueChange,
             keyboardOptions = keyboardOptions

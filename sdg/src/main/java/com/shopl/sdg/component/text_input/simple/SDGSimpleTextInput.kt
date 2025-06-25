@@ -35,17 +35,28 @@ import androidx.compose.ui.unit.sp
 import com.shopl.sdg.component.text_input.InputState
 import com.shopl.sdg_common.enums.Keyboard
 import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.ui.components.IOText
+import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_common.ui.components.TypefaceConfig
 import com.shopl.sdg_common.util.keyboardAsState
 import java.text.DecimalFormat
 
+/**
+ * SDG - Text Input - Simple Text Input
+ *
+ * 50자 이내의 텍스트 필드값을 입력할 수 있는 인풋 컴포넌트
+ *
+ * @param inputState [InputState] 활성화/비활성화/에러 여부
+ * @param keyboardOptions [KeyboardOptions]
+ * @param onInputChange 인풋 값 변경 콜백
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6897-15134&m=dev">Figma</a>
+ */
 @Composable
 fun SDGSimpleTextInput(
-    type: SDGSimpleInputType,
+    type: SDGSimpleTextInputType,
     input: String,
     hint: String,
-    state: InputState,
+    inputState: InputState,
     focusRequester: FocusRequester? = null,
     maxLines: Int = 1,
     backgroundColor: Color = SDGColor.Neutral0,
@@ -62,12 +73,12 @@ fun SDGSimpleTextInput(
         }
     }
 
-    val inputBgColor = when (state) {
+    val inputBgColor = when (inputState) {
         InputState.Disable,
         InputState.Enable -> backgroundColor
 
         is InputState.Error -> {
-            if (type == SDGSimpleInputType.LINE) {
+            if (type == SDGSimpleTextInputType.LINE) {
                 backgroundColor
             } else {
                 SDGColor.Red300_a10
@@ -75,7 +86,7 @@ fun SDGSimpleTextInput(
         }
     }
 
-    val lineColor = when (state) {
+    val lineColor = when (inputState) {
         InputState.Disable,
         InputState.Enable -> SDGColor.Neutral200
 
@@ -94,9 +105,9 @@ fun SDGSimpleTextInput(
         value = input,
         onValueChange = onInputChange,
         keyboardOptions = keyboardOptions,
-        enabled = state != InputState.Disable,
+        enabled = inputState != InputState.Disable,
         textStyle = TextStyle(
-            color = if (state == InputState.Disable) SDGColor.Neutral300 else SDGColor.Neutral700,
+            color = if (inputState == InputState.Disable) SDGColor.Neutral300 else SDGColor.Neutral700,
             fontSize = 16.sp,
             fontFamily = FontFamily(typeface = TypefaceConfig.normal),
             letterSpacing = 0.sp,
@@ -115,7 +126,7 @@ fun SDGSimpleTextInput(
                         shape = RoundedCornerShape(10.dp)
                     )
                     .then(
-                        if (type == SDGSimpleInputType.LINE) {
+                        if (type == SDGSimpleTextInputType.LINE) {
                             Modifier.border(
                                 width = 1.dp,
                                 brush = SolidColor(lineColor),
@@ -130,7 +141,7 @@ fun SDGSimpleTextInput(
             ) {
                 Box {
                     if (input.isEmpty()) {
-                        IOText(text = hint, textColor = SDGColor.Neutral300, fontSize = 14.sp)
+                        SDGText(text = hint, textColor = SDGColor.Neutral300, fontSize = 14.sp)
                     }
                     innerTextField()
                 }
@@ -141,7 +152,7 @@ fun SDGSimpleTextInput(
 
 @Composable
 fun SDGSimpleTextInput(
-    type: SDGSimpleInputType,
+    type: SDGSimpleTextInputType,
     input: TextFieldValue,
     hint: String,
     state: InputState,
@@ -158,7 +169,7 @@ fun SDGSimpleTextInput(
         InputState.Enable -> backgroundColor
 
         is InputState.Error -> {
-            if (type == SDGSimpleInputType.LINE) {
+            if (type == SDGSimpleTextInputType.LINE) {
                 backgroundColor
             } else {
                 SDGColor.Red300_a10
@@ -211,7 +222,7 @@ fun SDGSimpleTextInput(
                         shape = RoundedCornerShape(10.dp)
                     )
                     .then(
-                        if (type == SDGSimpleInputType.LINE) {
+                        if (type == SDGSimpleTextInputType.LINE) {
                             Modifier.border(
                                 width = 1.dp,
                                 brush = SolidColor(lineColor),
@@ -226,7 +237,7 @@ fun SDGSimpleTextInput(
             ) {
                 Box {
                     if (input.text.isEmpty()) {
-                        IOText(text = hint, textColor = SDGColor.Neutral300, fontSize = 14.sp)
+                        SDGText(text = hint, textColor = SDGColor.Neutral300, fontSize = 14.sp)
                     }
                     innerTextField()
                 }
@@ -237,7 +248,7 @@ fun SDGSimpleTextInput(
 
 @Composable
 fun SDGSimpleTextInput(
-    type: SDGSimpleInputType,
+    type: SDGSimpleTextInputType,
     input: TextFieldValue,
     hint: String,
     state: InputState,
@@ -258,7 +269,7 @@ fun SDGSimpleTextInput(
         InputState.Enable -> backgroundColor
 
         is InputState.Error -> {
-            if (type == SDGSimpleInputType.LINE) {
+            if (type == SDGSimpleTextInputType.LINE) {
                 backgroundColor
             } else {
                 SDGColor.Red300_a10
@@ -397,7 +408,7 @@ fun SDGSimpleTextInput(
                         shape = RoundedCornerShape(10.dp)
                     )
                     .then(
-                        if (type == SDGSimpleInputType.LINE) {
+                        if (type == SDGSimpleTextInputType.LINE) {
                             Modifier.border(
                                 width = 1.dp,
                                 brush = SolidColor(lineColor),
@@ -417,7 +428,7 @@ fun SDGSimpleTextInput(
                     ),
                 ) {
                     if (input.text.isEmpty()) {
-                        IOText(
+                        SDGText(
                             modifier = Modifier.then(
                                 if (alignCenter) {
                                     Modifier.align(Alignment.Center)
@@ -442,11 +453,11 @@ fun SDGSimpleTextInput(
 @Composable
 private fun PreviewSDGSimpleTextInput() {
     SDGSimpleTextInput(
-        type = SDGSimpleInputType.BASIC,
+        type = SDGSimpleTextInputType.BASIC,
         input = "start",
         backgroundColor = SDGColor.Transparent,
         hint = "hint",
-        state = InputState.Enable,
+        inputState = InputState.Enable,
         maxLines = 1,
         onInputChange = { }
     )
