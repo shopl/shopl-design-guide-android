@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -31,8 +30,7 @@ import com.shopl.sdg_common.enums.Keyboard
 import com.shopl.sdg_common.enums.OutlineType
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
-import com.shopl.sdg_common.ui.components.IOText
-import com.shopl.sdg_common.ui.components.IOTypeface
+import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_common.util.keyboardAsState
 
 /**
@@ -85,13 +83,6 @@ fun SDGFixedTextInput(
             shape = RoundedCornerShape(12.dp)
         )
 
-    val textStyle = TextStyle(
-        color = ,
-        fontSize = 16.sp,
-        fontFamily = IOTypeface.REGULAR.fontFamily,
-        letterSpacing = 0.sp,
-        lineHeight = 20.sp,
-    )
     val textStyle = SDGTypography.Body1R.style.copy(
         color = SDGColor.Neutral700,
     )
@@ -124,7 +115,7 @@ fun SDGFixedTextInput(
             )
             .padding(12.dp)
             .verticalScroll(scrollState),
-        value = input ?: "",
+        value = input.orEmpty(),
         onValueChange = {
             if (it.length <= maxLength) {
                 onInputChange(it)
@@ -140,10 +131,10 @@ fun SDGFixedTextInput(
         decorationBox = { textField ->
             textField()
             if (input.isNullOrEmpty()) {
-                IOText(
+                SDGText(
                     text = hint,
                     textColor = SDGColor.Neutral300,
-                    fontSize = 16.sp
+                    typography = SDGTypography.Body1R
                 )
             }
         },
@@ -157,7 +148,7 @@ private fun PreviewSDGFixedTextInput() {
         marginValues = PaddingValues(20.dp),
         outlineType = OutlineType.OUTLINE,
         input = "12341234",
-        hint = "asdfasdf",
+        hint = "hint",
         inputState = InputState.Enable,
         onInputChange = {}
     )
