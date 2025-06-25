@@ -44,14 +44,24 @@ import com.shopl.sdg_common.ui.components.TypefaceConfig
 import com.shopl.sdg_common.util.keyboardAsState
 import com.shopl.sdg_resource.R
 
+/**
+ * SDG - Text Input - Underline Input
+ *
+ * 고유한 정보의 값을 입력하고 확인하는 인풋 컴포넌트
+ *
+ * @param inputState [InputState] 활성화/비활성화/에러 여부
+ * @param onInputChange 인풋 값 변경 콜백
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=18232-14747&m=dev">Figma</a>
+ */
 @Composable
 fun SDGUnderlineInput(
     input: String?,
     hint: String,
     inputState: InputState,
+    onInputChange: (String) -> Unit,
     backgroundColor: Color = SDGColor.Neutral200,
     marginValues: PaddingValues = PaddingValues(),
-    onInputChange: (String) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
