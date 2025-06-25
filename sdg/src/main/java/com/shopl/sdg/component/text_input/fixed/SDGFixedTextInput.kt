@@ -27,12 +27,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shopl.sdg.component.text_input.InputState
-import com.shopl.sdg.component.text_input.keyboardAsState
 import com.shopl.sdg_common.enums.Keyboard
 import com.shopl.sdg_common.enums.OutlineType
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
+import com.shopl.sdg_common.util.keyboardAsState
 
 @Composable
 fun SDGFixedTextInput(
