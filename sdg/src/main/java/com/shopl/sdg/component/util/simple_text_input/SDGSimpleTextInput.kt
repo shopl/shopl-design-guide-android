@@ -62,12 +62,12 @@ fun SDGSimpleTextInput(
     input: TextFieldValue,
     hint: String,
     inputState: InputState,
+    onInputChange: (TextFieldValue) -> Unit,
     focusRequester: FocusRequester? = null,
     maxLines: Int = 1,
     backgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    onInputChange: (TextFieldValue) -> Unit,
     onFocusChanged: ((FocusState) -> Unit)? = null
 ) {
     val inputBgColor = when (inputState) {
@@ -184,12 +184,12 @@ fun SDGSimpleTextInput(
     input: TextFieldValue,
     hint: String,
     inputState: InputState,
+    decimalFormat: DecimalFormat? = null,
     focusRequester: FocusRequester? = null,
     maxLines: Int = 1,
     backgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
     alignCenter: Boolean = false,
-    decimalFormat: DecimalFormat? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onInputChange: (TextFieldValue) -> Unit,
     onFocusChanged: ((FocusState) -> Unit)? = null,
