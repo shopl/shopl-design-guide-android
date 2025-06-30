@@ -124,14 +124,16 @@ private fun SDGTwoLineSegmentUnit(
     Box(
         modifier = modifier
             .zIndex(1f)
-            .sizeIn(minWidth = 50.dp, minHeight = 50.dp)
+            .sizeIn(minWidth = 50.dp, minHeight = 58.dp)
             .clip(RoundedCornerShape(8.dp))
             .clickable(hasRipple = false) { onLabelClick() }
             .background(Color.Transparent),
         contentAlignment = Alignment.Center
     ) {
         SDGText(
-            modifier = Modifier.padding(vertical = 11.dp, horizontal = 12.dp),
+            modifier = Modifier.padding(
+                horizontal = 4.dp
+            ),
             text = label,
             typography = SDGTypography.Body2R,
             maxLines = 2,
@@ -151,14 +153,16 @@ private fun SDGOneLineSegmentUnit(
     Box(
         modifier = modifier
             .zIndex(1f)
-            .sizeIn(minWidth = 32.dp, minHeight = 32.dp)
+            .sizeIn(minWidth = 32.dp, minHeight = 40.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(Color.Transparent)
             .clickable(hasRipple = false) { onLabelClick() },
         contentAlignment = Alignment.Center
     ) {
         SDGText(
-            modifier = Modifier.padding(vertical = 11.dp, horizontal = 12.dp),
+            modifier = Modifier.padding(
+                horizontal = 4.dp
+            ),
             text = label,
             typography = SDGTypography.Body2R,
             maxLines = 1,
@@ -281,4 +285,22 @@ private fun PrevSDGSegment_TwoOption_OneLine() {
         backgroundColor = SDGColor.Neutral300,
         onLabelClick = {}
     )
+}
+
+@Preview(name = "min width")
+@Composable
+private fun PrevSDGSegment_TwoOption_OneLine_MinWidth() {
+    Box(
+        modifier = Modifier
+            .width(76.dp)
+    ) {
+        SDGSegment(
+            type = SDGSegmentType.TWO_OPTION,
+            labels = persistentListOf("Sim", "Nao"),
+            line = SDGSegmentTextLine.ONE_LINE,
+            selectedIndex = 1,
+            backgroundColor = SDGColor.Neutral300,
+            onLabelClick = {}
+        )
+    }
 }
