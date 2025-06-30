@@ -224,7 +224,7 @@ enum class SDGSegmentTextLine {
 
 @Preview(name = "4option + 2line")
 @Composable
-private fun PrevSDGSegment_FourOption_TwoLine() {
+private fun PreviewSDGSegment_FourOption_TwoLine() {
     SDGSegment(
         type = SDGSegmentType.FOUR_OPTION,
         labels = persistentListOf("긴라벨은 말줄임 긴라벨은 말줄임", "짧은라벨2", "짧은라벨3", "짧은 라벨4"),
@@ -237,7 +237,7 @@ private fun PrevSDGSegment_FourOption_TwoLine() {
 
 @Preview(name = "3option + 2line")
 @Composable
-private fun PrevSDGSegment_ThreeOption_TwoLine() {
+private fun PreviewSDGSegment_ThreeOption_TwoLine() {
     SDGSegment(
         type = SDGSegmentType.THREE_OPTION,
         labels = persistentListOf("긴라벨은 말줄임 긴라벨은 말줄임", "짧은라벨2", "짧은라벨3"),
@@ -250,7 +250,7 @@ private fun PrevSDGSegment_ThreeOption_TwoLine() {
 
 @Preview(name = "3option + 1line")
 @Composable
-private fun PrevSDGSegment_ThreeOption_OneLine() {
+private fun PreviewSDGSegment_ThreeOption_OneLine() {
     SDGSegment(
         type = SDGSegmentType.THREE_OPTION,
         labels = persistentListOf("긴라벨은 말줄임 긴라벨은 말줄임", "짧은라벨2", "짧은라벨3"),
@@ -263,7 +263,7 @@ private fun PrevSDGSegment_ThreeOption_OneLine() {
 
 @Preview(name = "2option + 2line")
 @Composable
-private fun PrevSDGSegment_TwoOption_TwoLine() {
+private fun PreviewSDGSegment_TwoOption_TwoLine() {
     SDGSegment(
         type = SDGSegmentType.TWO_OPTION,
         labels = persistentListOf("1", "라벨2"),
@@ -276,7 +276,7 @@ private fun PrevSDGSegment_TwoOption_TwoLine() {
 
 @Preview(name = "2option + 1line")
 @Composable
-private fun PrevSDGSegment_TwoOption_OneLine() {
+private fun PreviewSDGSegment_TwoOption_OneLine() {
     SDGSegment(
         type = SDGSegmentType.TWO_OPTION,
         labels = persistentListOf("라벨1", "라벨2"),
@@ -289,7 +289,7 @@ private fun PrevSDGSegment_TwoOption_OneLine() {
 
 @Preview(name = "min width")
 @Composable
-private fun PrevSDGSegment_TwoOption_OneLine_MinWidth() {
+private fun PreviewSDGSegment_TwoOption_OneLine_MinWidth() {
     Box(
         modifier = Modifier
             .width(76.dp)
