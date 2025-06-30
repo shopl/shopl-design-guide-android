@@ -124,14 +124,16 @@ private fun SDGTwoLineSegmentUnit(
     Box(
         modifier = modifier
             .zIndex(1f)
-            .sizeIn(minWidth = 50.dp, minHeight = 50.dp)
+            .sizeIn(minWidth = 50.dp, minHeight = 58.dp)
             .clip(RoundedCornerShape(8.dp))
             .clickable(hasRipple = false) { onLabelClick() }
             .background(Color.Transparent),
         contentAlignment = Alignment.Center
     ) {
         SDGText(
-            modifier = Modifier.padding(vertical = 11.dp, horizontal = 12.dp),
+            modifier = Modifier.padding(
+                horizontal = 4.dp
+            ),
             text = label,
             typography = SDGTypography.Body2R,
             maxLines = 2,
@@ -151,14 +153,16 @@ private fun SDGOneLineSegmentUnit(
     Box(
         modifier = modifier
             .zIndex(1f)
-            .sizeIn(minWidth = 32.dp, minHeight = 32.dp)
+            .sizeIn(minWidth = 32.dp, minHeight = 40.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(Color.Transparent)
             .clickable(hasRipple = false) { onLabelClick() },
         contentAlignment = Alignment.Center
     ) {
         SDGText(
-            modifier = Modifier.padding(vertical = 11.dp, horizontal = 12.dp),
+            modifier = Modifier.padding(
+                horizontal = 4.dp
+            ),
             text = label,
             typography = SDGTypography.Body2R,
             maxLines = 1,
@@ -220,7 +224,7 @@ enum class SDGSegmentTextLine {
 
 @Preview(name = "4option + 2line")
 @Composable
-private fun PrevSDGSegment_FourOption_TwoLine() {
+private fun PreviewSDGSegment_FourOption_TwoLine() {
     SDGSegment(
         type = SDGSegmentType.FOUR_OPTION,
         labels = persistentListOf("긴라벨은 말줄임 긴라벨은 말줄임", "짧은라벨2", "짧은라벨3", "짧은 라벨4"),
@@ -233,7 +237,7 @@ private fun PrevSDGSegment_FourOption_TwoLine() {
 
 @Preview(name = "3option + 2line")
 @Composable
-private fun PrevSDGSegment_ThreeOption_TwoLine() {
+private fun PreviewSDGSegment_ThreeOption_TwoLine() {
     SDGSegment(
         type = SDGSegmentType.THREE_OPTION,
         labels = persistentListOf("긴라벨은 말줄임 긴라벨은 말줄임", "짧은라벨2", "짧은라벨3"),
@@ -246,7 +250,7 @@ private fun PrevSDGSegment_ThreeOption_TwoLine() {
 
 @Preview(name = "3option + 1line")
 @Composable
-private fun PrevSDGSegment_ThreeOption_OneLine() {
+private fun PreviewSDGSegment_ThreeOption_OneLine() {
     SDGSegment(
         type = SDGSegmentType.THREE_OPTION,
         labels = persistentListOf("긴라벨은 말줄임 긴라벨은 말줄임", "짧은라벨2", "짧은라벨3"),
@@ -259,7 +263,7 @@ private fun PrevSDGSegment_ThreeOption_OneLine() {
 
 @Preview(name = "2option + 2line")
 @Composable
-private fun PrevSDGSegment_TwoOption_TwoLine() {
+private fun PreviewSDGSegment_TwoOption_TwoLine() {
     SDGSegment(
         type = SDGSegmentType.TWO_OPTION,
         labels = persistentListOf("1", "라벨2"),
@@ -272,7 +276,7 @@ private fun PrevSDGSegment_TwoOption_TwoLine() {
 
 @Preview(name = "2option + 1line")
 @Composable
-private fun PrevSDGSegment_TwoOption_OneLine() {
+private fun PreviewSDGSegment_TwoOption_OneLine() {
     SDGSegment(
         type = SDGSegmentType.TWO_OPTION,
         labels = persistentListOf("라벨1", "라벨2"),
@@ -281,4 +285,22 @@ private fun PrevSDGSegment_TwoOption_OneLine() {
         backgroundColor = SDGColor.Neutral300,
         onLabelClick = {}
     )
+}
+
+@Preview(name = "min width")
+@Composable
+private fun PreviewSDGSegment_TwoOption_OneLine_MinWidth() {
+    Box(
+        modifier = Modifier
+            .width(76.dp)
+    ) {
+        SDGSegment(
+            type = SDGSegmentType.TWO_OPTION,
+            labels = persistentListOf("Sim", "Nao"),
+            line = SDGSegmentTextLine.ONE_LINE,
+            selectedIndex = 1,
+            backgroundColor = SDGColor.Neutral300,
+            onLabelClick = {}
+        )
+    }
 }
