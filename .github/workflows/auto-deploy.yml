@@ -1,0 +1,50 @@
+name: Maven Central 배포
+
+#on:
+#  pull_request:
+#    types: [closed]
+#    branches:
+#      - main
+on:
+  push:
+    branches:
+      - document/scott/SH-11796-deploy-automation
+
+jobs:
+  publish:
+#    if: |
+#      github.event.pull_request.merged == true &&
+#      (
+#        contains(join(github.event.pull_request.labels.*.name, ','), 'major') ||
+#        contains(join(github.event.pull_request.labels.*.name, ','), 'minor') ||
+#        contains(join(github.event.pull_request.labels.*.name, ','), 'patch')
+#      )
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Import GPG secret key
+        run: |
+          echo "${{ secrets.SIGNING_SECRET_KEY }}" | gpg --batch --import
+
+      - name: Create local gradle.properties with secrets
+        run: |
+          echo "mavenCentralUsername=${{ secrets.MAVEN_CENTRAL_USER_NAME }}" >> ./gradle.properties
+          echo "mavenCentralPassword=${{ secrets.MAVEN_CENTRAL_PASSWORD }}" >> ./gradle.properties
+          echo "signing.keyId=${{ secrets.SIGNING_KEY_ID }}" >> ./gradle.properties
+          echo "signing.password=${{ secrets.SIGNING_PASSWORD }}" >> ./gradle.properties
+          echo "signing.secretKeyRingFile=${{ secrets.SIGNING_SECRET_KEY_RING_FILE }}" >> ./gradle.properties
+
+      - name: Publish to Maven Central
+        run: ./gradlew publishToMavenLocal --no-configuration-cache
+
+      - name: Clean up secring.gpg
+        run: rm -f ./secring.gpg
