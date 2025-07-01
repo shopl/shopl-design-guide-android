@@ -44,6 +44,7 @@ jobs:
           echo "signing.secretKeyRingFile=$(pwd)/secring.gpg" >> gradle.properties
 
       - name: Publish to Maven Central
+        working-directory: .
         run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
 
       - name: Clean up secring.gpg
