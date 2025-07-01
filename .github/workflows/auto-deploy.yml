@@ -33,7 +33,7 @@ jobs:
 
       - name: Import GPG secret key
         run: |
-          echo "${{ secrets.SIGNING_SECRET_KEY }}" | gpg --batch --import
+          echo "${{ secrets.SIGNING_SECRET_KEY_RING_FILE }}" | base64 --decode > ./secring.gpg
 
       - name: Create local gradle.properties with secrets
         run: |
@@ -41,7 +41,7 @@ jobs:
           echo "mavenCentralPassword=${{ secrets.MAVEN_CENTRAL_PASSWORD }}" >> ./gradle.properties
           echo "signing.keyId=${{ secrets.SIGNING_KEY_ID }}" >> ./gradle.properties
           echo "signing.password=${{ secrets.SIGNING_PASSWORD }}" >> ./gradle.properties
-          echo "signing.secretKeyRingFile=${{ secrets.SIGNING_SECRET_KEY_RING_FILE }}" >> ./gradle.properties
+          echo "signing.secretKeyRingFile=$(pwd)/secring.gpg" >> gradle.properties
 
       - name: Publish to Maven Central
         run: ./gradlew publishToMavenLocal --no-configuration-cache
