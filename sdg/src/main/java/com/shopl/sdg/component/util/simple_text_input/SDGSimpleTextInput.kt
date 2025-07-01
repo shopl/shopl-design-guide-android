@@ -331,6 +331,7 @@ fun SDGSimpleTextInput(
             Box(
                 Modifier
                     .padding(marginValues)
+                    .fillMaxWidth()
                     .heightIn(min = 40.dp)
                     .background(
                         color = inputBgColor,
