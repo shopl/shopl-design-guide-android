@@ -12,16 +12,28 @@ on:
 
 jobs:
   publish:
-#    if: |
-#      github.event.pull_request.merged == true &&
-#      (
-#        contains(join(github.event.pull_request.labels.*.name, ','), 'major') ||
-#        contains(join(github.event.pull_request.labels.*.name, ','), 'minor') ||
-#        contains(join(github.event.pull_request.labels.*.name, ','), 'patch')
-#      )
+    #    if: |
+    #      github.event.pull_request.merged == true &&
+    #      (
+    #        contains(join(github.event.pull_request.labels.*.name, ','), 'major') ||
+    #        contains(join(github.event.pull_request.labels.*.name, ','), 'minor') ||
+    #        contains(join(github.event.pull_request.labels.*.name, ','), 'patch')
+    #      )
     runs-on: ubuntu-latest
 
     steps:
+      - name: Slack Notify Build Start
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_TITLE: "SDG 빌드"
+          SLACK_MESSAGE: |
+            :rocket: *[빌드 시작]*  
+            브랜치: ${{ github.ref }}
+            커밋: ${{ github.sha }}
+            실행자: ${{ github.actor }}
+          SLACK_COLOR: '#CCCCFF'
+
       - name: Checkout source
         uses: actions/checkout@v4
 
@@ -49,3 +61,29 @@ jobs:
 
       - name: Clean up secring.gpg
         run: rm -f ./secring.gpg
+
+      - name: Slack Notify Build Success
+        if: success()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_TITLE: "SDG 빌드"
+          SLACK_MESSAGE: |
+            :white_check_mark: *[빌드 성공]*  
+            브랜치: ${{ github.ref }}
+            커밋: ${{ github.sha }}
+            실행자: ${{ github.actor }}
+          SLACK_COLOR: '#00C851'
+
+      - name: Slack Notify Build Failure
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_TITLE: "SDG 빌드"
+          SLACK_MESSAGE: |
+            :x: *[빌드 실패]*  
+            브랜치: ${{ github.ref }}
+            커밋: ${{ github.sha }}
+            실행자: ${{ github.actor }}
+          SLACK_COLOR: '#ff4444'
