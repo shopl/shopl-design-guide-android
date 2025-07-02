@@ -48,7 +48,7 @@ private const val MAX_VISIBLE_IMAGES = 4
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6870-15446&t=MczCJoG28XDGLRPP-4">Figma</a>
  */
 @Composable
-fun Thumbnails(
+fun SDGThumbnails(
     imageModels: PersistentList<Any>,
     singleLine: Boolean,
     onClickImage: (index: Int) -> Unit,
@@ -280,7 +280,7 @@ private fun PreviewThumbnails() {
             textColor = SDGColor.Neutral700,
             typography = SDGTypography.Body1SB
         )
-        Thumbnails(
+        SDGThumbnails(
             imageModels = images,
             singleLine = true,
             onClickImage = {},
@@ -290,7 +290,7 @@ private fun PreviewThumbnails() {
             textColor = SDGColor.Neutral700,
             typography = SDGTypography.Body1SB
         )
-        Thumbnails(
+        SDGThumbnails(
             imageModels = images,
             singleLine = false,
             onClickImage = {},
