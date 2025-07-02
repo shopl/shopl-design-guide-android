@@ -31,7 +31,12 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - name: Import GPG secret key
+      - name: List workspace
+        run: |
+          pwd
+          ls -la
+
+      - name: Restore secring.gpg
         run: |
           echo "${{ secrets.SIGNING_SECRET_KEY_RING_FILE }}" | base64 --decode > ./secring.gpg
 
