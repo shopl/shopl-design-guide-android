@@ -115,8 +115,9 @@ jobs:
         if: ${{ steps.central_polling.conclusion == 'success' }}
         uses: rtCamp/action-slack-notify@v2
         env:
+          ARTIFACT: "com.shoplworks:SDG-Android:${{ steps.extract_version.outputs.artifact_version }}"
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_TITLE: "SDG Maven 등재"
+          SLACK_TITLE: "SDG Maven 등록"
           SLACK_MESSAGE: |
             :star: *[Maven Central 등재 완료]*  
             `${{ env.ARTIFACT }}` 이(가) 중앙 저장소에 등록되었습니다!
@@ -126,8 +127,9 @@ jobs:
         if: ${{ steps.central_polling.conclusion == 'failure' }}
         uses: rtCamp/action-slack-notify@v2
         env:
+          ARTIFACT: "com.shoplworks:SDG-Android:${{ steps.extract_version.outputs.artifact_version }}"
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_TITLE: "SDG Maven 등재"
+          SLACK_TITLE: "SDG Maven 등록"
           SLACK_MESSAGE: |
             :warning: *[Maven Central 동기화 실패/지연]*  
             `${{ env.ARTIFACT }}` 등재가 10분 내 확인되지 않습니다.
