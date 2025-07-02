@@ -59,9 +59,6 @@ jobs:
         working-directory: .
         run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
 
-      - name: Clean up secring.gpg
-        run: rm -f ./secring.gpg
-
       - name: Slack Notify Build Success
         if: success()
         uses: rtCamp/action-slack-notify@v2
@@ -87,3 +84,53 @@ jobs:
             커밋: ${{ github.sha }}
             실행자: ${{ github.actor }}
           SLACK_COLOR: '#ff4444'
+
+      - name: Extract version from PublishingConfig.kt
+        id: extract_version
+        if: success()
+        run: |
+          VERSION=$(grep -m1 'VERSION' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt \
+                    | sed 's/.*VERSION *= *"\([0-9]\+\.[0-9]\+\.[0-9]\+\)".*/\1/')
+          echo "artifact_version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Wait for Maven Central sync (polling)
+        if: success()
+        env:
+          ARTIFACT: "me.planetory.sdg:sdg:${{ steps.extract_version.outputs.artifact_version }}"
+        run: |
+          for i in {1..20}; do
+            sleep 30
+            if curl -s "https://central.sonatype.com/api/v1/search?q=$ARTIFACT" | grep -q "$ARTIFACT"; then
+              echo "$ARTIFACT is now available on Maven Central!"
+              exit 0
+            else
+              echo "Not yet available. Retrying..."
+            fi
+          done
+          echo "Timeout: $ARTIFACT not found on Maven Central after 10 minutes."
+          exit 1
+
+      - name: Slack Notify Central 등록 완료
+        if: ${{ success() && steps['Wait for Maven Central sync (polling)'].conclusion == 'success' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_TITLE: "SDG Maven 등재"
+          SLACK_MESSAGE: |
+            :star: *[Maven Central 등재 완료]*  
+            `${{ env.ARTIFACT }}` 이(가) 중앙 저장소에 등록되었습니다!
+          SLACK_COLOR: '#00c6ad'
+
+      - name: Slack Notify Central 등록 실패/지연
+        if: ${{ failure() && steps['Wait for Maven Central sync (polling)'].conclusion == 'failure' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_TITLE: "SDG Maven 등재"
+          SLACK_MESSAGE: |
+            :warning: *[Maven Central 동기화 실패/지연]*  
+            `${{ env.ARTIFACT }}` 등재가 10분 내 확인되지 않습니다.
+          SLACK_COLOR: '#ffa726'
+
+      - name: Cleanup
+        run: rm -f ./secring.gpg
