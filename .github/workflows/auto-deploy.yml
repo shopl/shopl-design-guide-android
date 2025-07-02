@@ -94,6 +94,7 @@ jobs:
           echo "artifact_version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Wait for Maven Central sync (polling)
+        id: central_polling
         if: success()
         env:
           ARTIFACT: "com.shoplworks:SDG-Android:${{ steps.extract_version.outputs.artifact_version }}"
@@ -111,7 +112,7 @@ jobs:
           exit 1
 
       - name: Slack Notify Central 등록 완료
-        if: ${{ success() && steps['Wait for Maven Central sync (polling)'].conclusion == 'success' }}
+        if: ${{ steps.central_polling.conclusion == 'success' }}
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -122,7 +123,7 @@ jobs:
           SLACK_COLOR: '#00c6ad'
 
       - name: Slack Notify Central 등록 실패/지연
-        if: ${{ failure() && steps['Wait for Maven Central sync (polling)'].conclusion == 'failure' }}
+        if: ${{ steps.central_polling.conclusion == 'failure' }}
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
