@@ -59,7 +59,20 @@ jobs:
           ARTIFACT_ID="${{ steps.extract_info.outputs.artifactId }}"
           ARTIFACT_DIR="bundle/${GROUP}/${ARTIFACT_ID}/${VERSION}"
           ZIP_NAME="${GROUP}-${ARTIFACT_ID}-${VERSION}.zip"
+          
+          echo "==[변수 체크]=="
+          echo "GROUP: $GROUP"
+          echo "GROUP_PATH: $GROUP_PATH"
+          echo "ARTIFACT_ID: $ARTIFACT_ID"
+          echo "VERSION: $VERSION"
+          echo "ARTIFACT_DIR: $ARTIFACT_DIR"
+          echo "ZIP_NAME: $ZIP_NAME"
+      
           mkdir -p "$ARTIFACT_DIR"
+          
+          echo "==[출력: 원본 산출물 목록]=="
+          ls -lh sdg/build/publications/maven/ || true
+          ls -lh sdg/build/outputs/aar/ || true
           
           # 이름도 반드시 artifactId-version.확장자로 바꿔서 복사!
           cp sdg/build/publications/maven/pom-default.xml "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom"
@@ -67,9 +80,19 @@ jobs:
           cp sdg/build/outputs/aar/sdg-release.aar "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar"
           cp sdg/build/outputs/aar/sdg-release.aar.asc "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar.asc"
           
+          echo "==[zip 만들기 전 내부 구조]=="
+          find bundle
+      
           cd bundle
           zip -r "../$ZIP_NAME" .
           cd ..
+      
+          echo "==[zip 파일 정보]=="
+          ls -lh "$ZIP_NAME"
+      
+          echo "==[zip 내부 구조]=="
+          unzip -l "$ZIP_NAME"
+    
           echo "zip_name=$ZIP_NAME" >> $GITHUB_OUTPUT
 
       # 5. REST API로 업로드(실패 시 즉시 중단)
