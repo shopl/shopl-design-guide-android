@@ -1,4 +1,4 @@
-name: Maven Central REST 배포
+name: Maven Central REST 배포 (멀티모듈 ZIP 한 번에 업로드)
 
 on:
   push:
@@ -10,23 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install jq
+      - name:  빌드 시작 알림
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_TITLE: "SDG 빌드"
+          SLACK_MESSAGE: |
+            :rocket: *[빌드 시작]*  
+            커밋: ${{ github.event.head_commit.message }}
+          SLACK_COLOR: '#CCCCFF'
+
+      - name: jq 설치
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Checkout source
+      - name: 소스 체크아웃
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: JDK 17 셋업
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      # 1. secrets에서 secring.gpg 복원 & gradle.properties 세팅
-      - name: Restore secring.gpg
+      - name: secring.gpg 복원
         run: echo "${{ secrets.SIGNING_SECRET_KEY_RING_FILE }}" | base64 --decode > ./secring.gpg
 
-      - name: Create gradle.properties with secrets
+      - name: gradle.properties 생성
         run: |
           echo "mavenCentralUsername=${{ secrets.MAVEN_CENTRAL_USER_NAME }}" >> ./gradle.properties
           echo "mavenCentralPassword=${{ secrets.MAVEN_CENTRAL_PASSWORD }}" >> ./gradle.properties
@@ -34,75 +43,107 @@ jobs:
           echo "signing.password=${{ secrets.SIGNING_PASSWORD }}" >> ./gradle.properties
           echo "signing.secretKeyRingFile=$(pwd)/secring.gpg" >> ./gradle.properties
 
-      # 2. 버전 & group 추출 (PublishingConfig와 build.gradle에서 추출)
-      - name: Extract group and version
+      - name: 버전 & 그룹 추출
         id: extract_info
         run: |
           GROUP=$(grep -m1 'GROUP' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
           VERSION=$(grep -m1 'VERSION' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
-          ARTIFACT_ID=$(grep -m1 'SDG_ARTIFACT_ID' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
+          SDG_ARTIFACT_ID=$(grep -m1 'SDG_ARTIFACT_ID' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
+          RESOURCE_ARTIFACT_ID=$(grep -m1 'SDG_RESOURCE_ARTIFACT_ID' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
+          COMMON_ARTIFACT_ID=$(grep -m1 'SDG_COMMON_ARTIFACT_ID' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
           
           echo "group=$GROUP" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "artifactId=$ARTIFACT_ID" >> $GITHUB_OUTPUT
+          echo "sdg_artifactId=$SDG_ARTIFACT_ID" >> $GITHUB_OUTPUT
+          echo "resource_artifactId=$RESOURCE_ARTIFACT_ID" >> $GITHUB_OUTPUT
+          echo "common_artifactId=$COMMON_ARTIFACT_ID" >> $GITHUB_OUTPUT
 
-      # 3. 산출물 생성 (sources/javadoc/서명 포함)
-      - name: Build project and publish to maven local
-        run: ./gradlew clean build publishToMavenLocal
+      - name: 전체 모듈 빌드 및 maven local 배포
+        id: build_all_modules
+        run: ./gradlew clean build :sdg:publishToMavenLocal :sdg-resource:publishToMavenLocal :sdg-common:publishToMavenLocal
 
-      # 4. zip 파일 생성 (pom 확장자, 모든 파일 zip 루트에)
-      - name: Package artifacts for Maven Central REST API
+      - name:  빌드 성공 알림
+        if: ${{ success() && steps.build_all_modules.conclusion == 'success' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_TITLE: "SDG 빌드"
+          SLACK_MESSAGE: |
+            :white_check_mark: *[빌드 성공]*  
+            커밋: ${{ github.event.head_commit.message }}
+          SLACK_COLOR: '#00C851'
+
+      - name:  빌드 실패 알림
+        if: ${{ failure() && steps.build_all_modules.conclusion == 'failure' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_TITLE: "SDG 빌드 실패"
+          SLACK_MESSAGE: |
+            :x: *[빌드 실패]*  
+            커밋: ${{ github.event.head_commit.message }}
+          SLACK_COLOR: '#ff4444'
+
+      - name: 멀티모듈 산출물 ZIP 패키징
         id: make_zip
         run: |
+          set -e
           GROUP="${{ steps.extract_info.outputs.group }}"
           VERSION="${{ steps.extract_info.outputs.version }}"
-          ARTIFACT_ID="${{ steps.extract_info.outputs.artifactId }}"
-          ARTIFACT_DIR="bundle/${GROUP}/${ARTIFACT_ID}/${VERSION}"
-          ZIP_NAME="${GROUP}-${ARTIFACT_ID}-${VERSION}.zip"
+          declare -A ARTIFACT_IDS
+          ARTIFACT_IDS[sdg]="${{ steps.extract_info.outputs.sdg_artifactId }}"
+          ARTIFACT_IDS[sdg-resource]="${{ steps.extract_info.outputs.resource_artifactId }}"
+          ARTIFACT_IDS[sdg-common]="${{ steps.extract_info.outputs.common_artifactId }}"
+
+          GROUP_PATH="${GROUP//.//}" # 예시: com.shopworks → com/shopworks
+
+          for MOD in sdg sdg-resource sdg-common; do
+            ARTIFACT_ID="${ARTIFACT_IDS[$MOD]}"
+            ARTIFACT_DIR="${GROUP_PATH}/${ARTIFACT_ID}/${VERSION}"
+            mkdir -p "$ARTIFACT_DIR"
           
-          echo "==[변수 체크]=="
-          echo "GROUP: $GROUP"
-          echo "GROUP_PATH: $GROUP_PATH"
-          echo "ARTIFACT_ID: $ARTIFACT_ID"
-          echo "VERSION: $VERSION"
-          echo "ARTIFACT_DIR: $ARTIFACT_DIR"
-          echo "ZIP_NAME: $ZIP_NAME"
-      
-          mkdir -p "$ARTIFACT_DIR"
-          
-          echo "==[출력: 원본 산출물 목록]=="
-          ls -lh sdg/build/publications/maven/ || true
-          ls -lh sdg/build/outputs/aar/ || true
-          
-          # 이름도 반드시 artifactId-version.확장자로 바꿔서 복사!
-          cp sdg/build/publications/maven/pom-default.xml "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom"
-          cp sdg/build/publications/maven/pom-default.xml.asc "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom.asc"
-          cp sdg/build/outputs/aar/sdg-release.aar "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar"
-          cp sdg/build/outputs/aar/sdg-release.aar.asc "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar.asc"
-          
-          echo "==[zip 만들기 전 내부 구조]=="
-          find bundle
-      
-          cd bundle
-          zip -r "../$ZIP_NAME" .
-          cd ..
-      
-          echo "==[zip 파일 정보]=="
-          ls -lh "$ZIP_NAME"
-      
-          echo "==[zip 내부 구조]=="
-          unzip -l "$ZIP_NAME"
-    
+            # 산출물 경로
+            if [[ "$MOD" == "sdg" ]]; then
+              POM=sdg/build/publications/maven/pom-default.xml
+              POM_ASC=sdg/build/publications/maven/pom-default.xml.asc
+              AAR=sdg/build/outputs/aar/sdg-release.aar
+              AAR_ASC=sdg/build/outputs/aar/sdg-release.aar.asc
+            elif [[ "$MOD" == "sdg-resource" ]]; then
+              POM=sdg-resource/build/publications/maven/pom-default.xml
+              POM_ASC=sdg-resource/build/publications/maven/pom-default.xml.asc
+              AAR=sdg-resource/build/outputs/aar/sdg-resource-release.aar
+              AAR_ASC=sdg-resource/build/outputs/aar/sdg-resource-release.aar.asc
+            else
+              POM=sdg-common/build/publications/maven/pom-default.xml
+              POM_ASC=sdg-common/build/publications/maven/pom-default.xml.asc
+              AAR=sdg-common/build/outputs/aar/sdg-common-release.aar
+              AAR_ASC=sdg-common/build/outputs/aar/sdg-common-release.aar.asc
+            fi
+
+            cp "$POM" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom"
+            cp "$POM_ASC" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom.asc"
+            cp "$AAR" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar"
+            cp "$AAR_ASC" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar.asc"
+
+            cd "$ARTIFACT_DIR"
+            md5sum "${ARTIFACT_ID}-${VERSION}.pom" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.pom.md5"
+            sha1sum "${ARTIFACT_ID}-${VERSION}.pom" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.pom.sha1"
+            md5sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.aar.md5"
+            sha1sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.aar.sha1"
+            cd -
+          done
+
+          ZIP_NAME="all-artifacts-${VERSION}.zip"
+          zip -r "$ZIP_NAME" "$GROUP_PATH"
           echo "zip_name=$ZIP_NAME" >> $GITHUB_OUTPUT
 
-      # 5. REST API로 업로드(실패 시 즉시 중단)
-      - name: Upload artifact to Sonatype Central
+      - name: Sonatype Central 업로드 (REST API)
         id: publish_upload
         run: |
           ZIP_NAME="${{ steps.make_zip.outputs.zip_name }}"
           RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "https://central.sonatype.com/api/v1/publisher/upload?publishingType=AUTOMATIC" \
             -H "Authorization: Bearer ${{ secrets.SONATYPE_PUBLISH_TOKEN }}" \
-            -F bundle=@$ZIP_NAME)
+            -F bundle=@"$ZIP_NAME")
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
           DEPLOYMENT_ID=$(echo "$RESPONSE" | head -n-1 | tr -d '\r\n')
           echo "HTTP_CODE: $HTTP_CODE"
@@ -117,8 +158,7 @@ jobs:
           fi
           echo "publish_id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
 
-      # 6. 업로드 성공 시 Polling (업로드 실패면 실행X)
-      - name: Poll publish status
+      - name: 배포 상태 Polling (REST API)
         id: poll_status
         if: success()
         run: |
@@ -129,65 +169,67 @@ jobs:
               -H "Authorization: Bearer ${{ secrets.SONATYPE_PUBLISH_TOKEN }}")
             HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
             BODY=$(echo "$RESPONSE" | head -n-1)
-          
             echo "==== Raw BODY ===="
             echo "$BODY"
             echo "==== HTTP_CODE ===="
             echo "$HTTP_CODE"
-          
-          if [[ "$HTTP_CODE" != 2* ]]; then
-            echo "::error::Status API returned non-2xx HTTP status: $HTTP_CODE"
-            exit 1
-          fi
-          
-          if [[ "$BODY" != \{* ]]; then
-            echo "::error::Status API did not return JSON. Response: $BODY"
-            exit 1
-          fi
-          
-          DEPLOYMENT_STATE=$(echo "$BODY" | jq -r .deploymentState)
-          ERRORS=$(echo "$BODY" | jq -c .errors)
-          echo "Current deploymentState: $DEPLOYMENT_STATE"
-          
-            if [[ "$DEPLOYMENT_STATE" == "SUCCESS" ]]; then
-              echo "Successfully published!"
-              exit 0
-            elif [[ "$DEPLOYMENT_STATE" == "FAILED" ]]; then
-              echo "Publish failed!"
-              echo "details=$ERRORS" >> $GITHUB_OUTPUT
+            if [[ "$HTTP_CODE" != 2* ]]; then
+              echo "::error::Status API returned non-2xx HTTP status: $HTTP_CODE"
               exit 1
             fi
-            echo "Still processing. Retrying..."
+            if [[ "$BODY" != \{* ]]; then
+              echo "::error::Status API did not return JSON. Response: $BODY"
+              exit 1
+            fi
+            DEPLOYMENT_STATE=$(echo "$BODY" | jq -r .deploymentState)
+            ERRORS=$(echo "$BODY" | jq -c .errors)
+            echo "Current deploymentState: $DEPLOYMENT_STATE"
+            if [[ "$DEPLOYMENT_STATE" == "PUBLISHING" ]]; then
+              echo "배포 시작"
+              echo "result=start" >> $GITHUB_OUTPUT
+              break
+            elif [[ "$DEPLOYMENT_STATE" == "PUBLISHED" ]]; then
+              echo "배포 성공"
+              echo "result=success" >> $GITHUB_OUTPUT
+              break
+            elif [[ "$DEPLOYMENT_STATE" == "FAILED" ]]; then
+              echo "배포 실패"
+              echo "details=$ERRORS" >> $GITHUB_OUTPUT
+              echo "result=fail" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+            echo "Still publishing, wait..."
           done
-          echo "Timeout: Not published after 10 minutes."
-          exit 1
-      
 
-      # 7. Slack 알림 (성공)
-      - name: Slack Notify Publish Success
-        if: ${{ steps.poll_status.conclusion == 'success' }}
+      - name:  배포 시작 알림
+        if: ${{ steps.poll_status.outputs.result == 'start' }}
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_TITLE: "SDG Maven 등재"
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_TITLE: "SDG Maven 배포 시작"
           SLACK_MESSAGE: |
-            :star: *[Maven Central 등재 완료]*  
-            `${{ github.ref }}`  
-            커밋: `${{ github.sha }}`  
-            실행자: `${{ github.actor }}`
+            :rocket: *[Maven Central 배포 시작]*  
+            커밋: ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#00c6ad'
 
-      # 8. Slack 알림 (실패)
-      - name: Slack Notify Publish Failure
-        if: ${{ steps.poll_status.conclusion == 'failure' }}
+      - name:  배포 성공 알림
+        if: ${{ steps.poll_status.outputs.result == 'success' }}
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_TITLE: "SDG Maven 등재 실패"
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_TITLE: "SDG Maven 배포 성공"
           SLACK_MESSAGE: |
-            :warning: *[Maven Central 등재 실패]*  
-            `${{ github.ref }}`  
-            커밋: `${{ github.sha }}`  
-            실행자: `${{ github.actor }}`  
-            상세: `${{ steps.poll_status.outputs.details }}`
+            :star: *[모든 모듈 Maven Central 배포 완료]*  
+            커밋: ${{ github.event.head_commit.message }}
+          SLACK_COLOR: '#00c6ad'
+
+      - name:  배포 실패 알림
+        if: ${{ steps.poll_status.outputs.result == 'fail' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_TITLE: "SDG Maven 배포 실패"
+          SLACK_MESSAGE: |
+            :warning: *[배포 실패]*  
+            커밋: ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#ffa726'
