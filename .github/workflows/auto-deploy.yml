@@ -1,12 +1,20 @@
 name: Maven Central REST 배포
 
 on:
-  push:
+  pull_request:
+    types: [ closed ]
     branches:
-      - document/scott/SH-11796-deploy-automation
+      - main
 
 jobs:
   publish:
+    if: |
+      github.event.pull_request.merged == true &&
+      (
+        contains(join(github.event.pull_request.labels.*.name, ','), 'major') ||
+        contains(join(github.event.pull_request.labels.*.name, ','), 'minor') ||
+        contains(join(github.event.pull_request.labels.*.name, ','), 'patch')
+      )
     runs-on: ubuntu-latest
 
     steps:
