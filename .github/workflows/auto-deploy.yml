@@ -133,7 +133,7 @@ jobs:
             cd -
           done
 
-          ZIP_NAME="all-artifacts-${VERSION}.zip"
+          ZIP_NAME="com-shoplworks-SDG-Android-${VERSION}"
           zip -r "$ZIP_NAME" "$GROUP_PATH"
           echo "zip_name=$ZIP_NAME" >> $GITHUB_OUTPUT
 
@@ -196,17 +196,6 @@ jobs:
             fi
             echo "Still publishing, wait..."
           done
-
-      - name: 배포 시작 Slack Notification
-        if: ${{ steps.poll_status.outputs.result == 'start' }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-          SLACK_TITLE: "SDG Maven 배포 시작"
-          SLACK_MESSAGE: |
-            :rocket: *[Maven Central 배포 시작]*  
-            ${{ github.event.head_commit.message }}
-          SLACK_COLOR: '#00c6ad'
 
       - name: 배포 성공 Slack Notification
         if: ${{ steps.poll_status.outputs.result == 'success' }}
