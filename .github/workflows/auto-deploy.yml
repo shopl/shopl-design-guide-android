@@ -1,4 +1,4 @@
-name: Maven Central REST 배포 (멀티모듈 ZIP 한 번에 업로드)
+name: Maven Central REST 배포
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
           SLACK_TITLE: "SDG 빌드"
           SLACK_MESSAGE: |
             :rocket: *[빌드 시작]*  
-            커밋: ${{ github.event.head_commit.message }}
+            ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#CCCCFF'
 
       - name: jq 설치
@@ -70,7 +70,7 @@ jobs:
           SLACK_TITLE: "SDG 빌드"
           SLACK_MESSAGE: |
             :white_check_mark: *[빌드 성공]*  
-            커밋: ${{ github.event.head_commit.message }}
+            ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#00C851'
 
       - name: 빌드 실패 Slack Notification
@@ -81,7 +81,7 @@ jobs:
           SLACK_TITLE: "SDG 빌드 실패"
           SLACK_MESSAGE: |
             :x: *[빌드 실패]*  
-            커밋: ${{ github.event.head_commit.message }}
+            ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#ff4444'
 
       - name: 멀티모듈 패키징
@@ -191,12 +191,12 @@ jobs:
             elif [[ "$DEPLOYMENT_STATE" == "PUBLISHED" ]]; then
               echo "배포 성공"
               echo "result=success" >> $GITHUB_OUTPUT
-              exit 0
+              break
             elif [[ "$DEPLOYMENT_STATE" == "FAILED" ]]; then
               echo "배포 실패"
               echo "details=$ERRORS" >> $GITHUB_OUTPUT
               echo "result=fail" >> $GITHUB_OUTPUT
-              exit 0
+              break
             fi
             echo "Still publishing, wait..."
           done
@@ -209,7 +209,7 @@ jobs:
           SLACK_TITLE: "SDG Maven 배포 시작"
           SLACK_MESSAGE: |
             :rocket: *[Maven Central 배포 시작]*  
-            커밋: ${{ github.event.head_commit.message }}
+            ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#00c6ad'
 
       - name: 배포 성공 Slack Notification
@@ -220,7 +220,7 @@ jobs:
           SLACK_TITLE: "SDG Maven 배포 성공"
           SLACK_MESSAGE: |
             :star: *[모든 모듈 Maven Central 배포 완료]*  
-            커밋: ${{ github.event.head_commit.message }}
+            ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#00c6ad'
 
       - name: 배포 실패 Slack Notification
@@ -231,5 +231,5 @@ jobs:
           SLACK_TITLE: "SDG Maven 배포 실패"
           SLACK_MESSAGE: |
             :warning: *[배포 실패]*  
-            커밋: ${{ github.event.head_commit.message }}
+            ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#ffa726'
