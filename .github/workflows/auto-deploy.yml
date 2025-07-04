@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name:  빌드 시작 알림
+      - name: 빌드 시작 Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
@@ -43,7 +43,7 @@ jobs:
           echo "signing.password=${{ secrets.SIGNING_PASSWORD }}" >> ./gradle.properties
           echo "signing.secretKeyRingFile=$(pwd)/secring.gpg" >> ./gradle.properties
 
-      - name: 버전 & 그룹 추출
+      - name: Version, Group, Artifact Id 추출
         id: extract_info
         run: |
           GROUP=$(grep -m1 'GROUP' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
@@ -62,7 +62,7 @@ jobs:
         id: build_all_modules
         run: ./gradlew clean build :sdg:publishToMavenLocal :sdg-resource:publishToMavenLocal :sdg-common:publishToMavenLocal
 
-      - name:  빌드 성공 알림
+      - name: 빌드 성공 Slack Notification
         if: ${{ success() && steps.build_all_modules.conclusion == 'success' }}
         uses: rtCamp/action-slack-notify@v2
         env:
@@ -73,7 +73,7 @@ jobs:
             커밋: ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#00C851'
 
-      - name:  빌드 실패 알림
+      - name: 빌드 실패 Slack Notification
         if: ${{ failure() && steps.build_all_modules.conclusion == 'failure' }}
         uses: rtCamp/action-slack-notify@v2
         env:
@@ -84,7 +84,7 @@ jobs:
             커밋: ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#ff4444'
 
-      - name: 멀티모듈 산출물 ZIP 패키징
+      - name: 멀티모듈 패키징
         id: make_zip
         run: |
           set -e
@@ -137,7 +137,7 @@ jobs:
           zip -r "$ZIP_NAME" "$GROUP_PATH"
           echo "zip_name=$ZIP_NAME" >> $GITHUB_OUTPUT
 
-      - name: Sonatype Central 업로드 (REST API)
+      - name: Maven Central 업로드
         id: publish_upload
         run: |
           ZIP_NAME="${{ steps.make_zip.outputs.zip_name }}"
@@ -158,7 +158,7 @@ jobs:
           fi
           echo "publish_id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
 
-      - name: 배포 상태 Polling (REST API)
+      - name: 배포 상태 체크 Polling
         id: poll_status
         if: success()
         run: |
@@ -191,17 +191,17 @@ jobs:
             elif [[ "$DEPLOYMENT_STATE" == "PUBLISHED" ]]; then
               echo "배포 성공"
               echo "result=success" >> $GITHUB_OUTPUT
-              break
+              exit 0
             elif [[ "$DEPLOYMENT_STATE" == "FAILED" ]]; then
               echo "배포 실패"
               echo "details=$ERRORS" >> $GITHUB_OUTPUT
               echo "result=fail" >> $GITHUB_OUTPUT
-              exit 1
+              exit 0
             fi
             echo "Still publishing, wait..."
           done
 
-      - name:  배포 시작 알림
+      - name: 배포 시작 Slack Notification
         if: ${{ steps.poll_status.outputs.result == 'start' }}
         uses: rtCamp/action-slack-notify@v2
         env:
@@ -212,7 +212,7 @@ jobs:
             커밋: ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#00c6ad'
 
-      - name:  배포 성공 알림
+      - name: 배포 성공 Slack Notification
         if: ${{ steps.poll_status.outputs.result == 'success' }}
         uses: rtCamp/action-slack-notify@v2
         env:
@@ -223,7 +223,7 @@ jobs:
             커밋: ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#00c6ad'
 
-      - name:  배포 실패 알림
+      - name: 배포 실패 Slack Notification
         if: ${{ steps.poll_status.outputs.result == 'fail' }}
         uses: rtCamp/action-slack-notify@v2
         env:
