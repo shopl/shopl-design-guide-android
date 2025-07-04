@@ -184,11 +184,7 @@ jobs:
             DEPLOYMENT_STATE=$(echo "$BODY" | jq -r .deploymentState)
             ERRORS=$(echo "$BODY" | jq -c .errors)
             echo "Current deploymentState: $DEPLOYMENT_STATE"
-            if [[ "$DEPLOYMENT_STATE" == "PUBLISHING" ]]; then
-              echo "배포 시작"
-              echo "result=start" >> $GITHUB_OUTPUT
-              break
-            elif [[ "$DEPLOYMENT_STATE" == "PUBLISHED" ]]; then
+            if [[ "$DEPLOYMENT_STATE" == "PUBLISHED" ]]; then
               echo "배포 성공"
               echo "result=success" >> $GITHUB_OUTPUT
               break
