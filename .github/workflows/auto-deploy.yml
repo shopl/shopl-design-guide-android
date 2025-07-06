@@ -22,10 +22,9 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-          SLACK_TITLE: "SDG 빌드"
           SLACK_MESSAGE: |
             :rocket: *[빌드 시작]*  
-            ${{ github.event.head_commit.message }}
+            *변경사항*: ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#CCCCFF'
 
       - name: jq 설치
@@ -75,10 +74,9 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-          SLACK_TITLE: "SDG 빌드"
           SLACK_MESSAGE: |
             :white_check_mark: *[빌드 성공]*  
-            ${{ github.event.head_commit.message }}
+            *변경사항*: ${{ github.event.head_commit.message }}
           SLACK_COLOR: '#00C851'
 
       - name: 빌드 실패 Slack Notification
@@ -86,11 +84,10 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-          SLACK_TITLE: "SDG 빌드 실패"
           SLACK_MESSAGE: |
             :x: *[빌드 실패]*  
-            ${{ github.event.head_commit.message }}
-          SLACK_COLOR: '#ff4444'
+            *변경사항*: ${{ github.event.head_commit.message }}
+          SLACK_COLOR: '#FF4444'
 
       - name: 멀티모듈 패키징
         id: make_zip
@@ -210,19 +207,17 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-          SLACK_TITLE: "SDG Maven 배포 성공"
           SLACK_MESSAGE: |
-            :star: *[모든 모듈 Maven Central 배포 완료]*  
-            ${{ github.event.head_commit.message }}
-          SLACK_COLOR: '#00c6ad'
+            :star: *[배포 완료]*  
+            *변경사항*: ${{ github.event.head_commit.message }}
+          SLACK_COLOR: '#00C6AD'
 
       - name: 배포 실패 Slack Notification
         if: ${{ steps.poll_status.outputs.result == 'fail' }}
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-          SLACK_TITLE: "SDG Maven 배포 실패"
           SLACK_MESSAGE: |
             :warning: *[배포 실패]*  
-            ${{ github.event.head_commit.message }}
-          SLACK_COLOR: '#ffa726'
+            *변경사항*: ${{ github.event.head_commit.message }}
+          SLACK_COLOR: '#FFA726'

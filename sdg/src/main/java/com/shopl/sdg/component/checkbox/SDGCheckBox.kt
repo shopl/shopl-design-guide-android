@@ -39,8 +39,6 @@ fun SDGCheckBox(
     clickPadding: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
 ) {
-
-    R.drawable.ic_common_check_s
     val backgroundColor by animateColorAsState(
         targetValue = if (isChecked)
             SDGColor.Primary300
