@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -35,6 +37,7 @@ import com.shopl.sdg.template.selected_input.SDGSelectedInputState
 import com.shopl.sdg.template.selected_input.SDGSelectedInputTime
 import com.shopl.sdg_common.enums.OutlineType
 import com.shopl.sdg_common.ext.bounceClickable
+import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.IOText
@@ -59,6 +62,7 @@ fun SDGDropdownForm(
     dropdownState: SDGBasicDropdownState = SDGBasicDropdownState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
 ) {
@@ -87,10 +91,25 @@ fun SDGDropdownForm(
                     },
                 )
                 iconResId?.let {
-                    SDGImage(
-                        resId = it,
-                        color = iconTint,
-                    )
+                    Box(
+                        modifier = Modifier
+                            .clickable(hasRipple = false) {
+                                onClickIcon?.invoke()
+                            }
+                            .width(26.dp)
+                            .height(20.dp)
+                            .padding(
+                                start = 4.dp,
+                                top = 3.dp,
+                                end = 8.dp,
+                                bottom = 3.dp
+                            )
+                    ) {
+                        SDGImage(
+                            resId = it,
+                            color = iconTint,
+                        )
+                    }
                 }
             }
             if (value != null && onResetClick != null) {
@@ -130,6 +149,7 @@ fun SDGDropdownForm(
     dropdownState: SDGBasicDropdownState = SDGBasicDropdownState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
 ) {
@@ -157,10 +177,25 @@ fun SDGDropdownForm(
                     },
                 )
                 iconResId?.let {
-                    SDGImage(
-                        resId = it,
-                        color = iconTint,
-                    )
+                    Box(
+                        modifier = Modifier
+                            .clickable(hasRipple = false) {
+                                onClickIcon?.invoke()
+                            }
+                            .width(26.dp)
+                            .height(20.dp)
+                            .padding(
+                                start = 4.dp,
+                                top = 3.dp,
+                                end = 8.dp,
+                                bottom = 3.dp
+                            )
+                    ) {
+                        SDGImage(
+                            resId = it,
+                            color = iconTint,
+                        )
+                    }
                 }
             }
             if (value != null && onResetClick != null) {
@@ -200,6 +235,7 @@ fun SDGSelectedInputForm(
     selectedInputState: SDGSelectedInputState = SDGSelectedInputState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
     inputStartIcon: @Composable (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
@@ -229,10 +265,25 @@ fun SDGSelectedInputForm(
                     },
                 )
                 iconResId?.let {
-                    SDGImage(
-                        resId = it,
-                        color = iconTint,
-                    )
+                    Box(
+                        modifier = Modifier
+                            .clickable(hasRipple = false) {
+                                onClickIcon?.invoke()
+                            }
+                            .width(26.dp)
+                            .height(20.dp)
+                            .padding(
+                                start = 4.dp,
+                                top = 3.dp,
+                                end = 8.dp,
+                                bottom = 3.dp
+                            )
+                    ) {
+                        SDGImage(
+                            resId = it,
+                            color = iconTint,
+                        )
+                    }
                 }
             }
 
@@ -274,6 +325,7 @@ fun SDGSelectedInputForm(
     selectedInputState: SDGSelectedInputState = SDGSelectedInputState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
     inputStartIcon: @Composable (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
@@ -303,10 +355,25 @@ fun SDGSelectedInputForm(
                     },
                 )
                 iconResId?.let {
-                    SDGImage(
-                        resId = it,
-                        color = iconTint,
-                    )
+                    Box(
+                        modifier = Modifier
+                            .clickable(hasRipple = false) {
+                                onClickIcon?.invoke()
+                            }
+                            .width(26.dp)
+                            .height(20.dp)
+                            .padding(
+                                start = 4.dp,
+                                top = 3.dp,
+                                end = 8.dp,
+                                bottom = 3.dp
+                            )
+                    ) {
+                        SDGImage(
+                            resId = it,
+                            color = iconTint,
+                        )
+                    }
                 }
             }
 
@@ -347,6 +414,7 @@ fun SDGFixedInputForm(
     hint: String? = null,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
 ) {
     Column(
@@ -374,10 +442,25 @@ fun SDGFixedInputForm(
                     },
                 )
                 iconResId?.let {
-                    SDGImage(
-                        resId = it,
-                        color = iconTint,
-                    )
+                    Box(
+                        modifier = Modifier
+                            .clickable(hasRipple = false) {
+                                onClickIcon?.invoke()
+                            }
+                            .width(26.dp)
+                            .height(20.dp)
+                            .padding(
+                                start = 4.dp,
+                                top = 3.dp,
+                                end = 8.dp,
+                                bottom = 3.dp
+                            )
+                    ) {
+                        SDGImage(
+                            resId = it,
+                            color = iconTint,
+                        )
+                    }
                 }
             }
         }
@@ -401,6 +484,7 @@ fun SDGFixedInputForm(
     hint: String? = null,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
     inputBackgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
 ) {
@@ -429,10 +513,25 @@ fun SDGFixedInputForm(
                     },
                 )
                 iconResId?.let {
-                    SDGImage(
-                        resId = it,
-                        color = iconTint,
-                    )
+                    Box(
+                        modifier = Modifier
+                            .clickable(hasRipple = false) {
+                                onClickIcon?.invoke()
+                            }
+                            .width(26.dp)
+                            .height(20.dp)
+                            .padding(
+                                start = 4.dp,
+                                top = 3.dp,
+                                end = 8.dp,
+                                bottom = 3.dp
+                            )
+                    ) {
+                        SDGImage(
+                            resId = it,
+                            color = iconTint,
+                        )
+                    }
                 }
             }
         }
@@ -481,6 +580,7 @@ fun SDGTimeSelectedForm(
     onTimeSelectClick: (isClickStart: Boolean) -> Unit,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
 ) {
@@ -509,10 +609,25 @@ fun SDGTimeSelectedForm(
                     },
                 )
                 iconResId?.let {
-                    SDGImage(
-                        resId = it,
-                        color = iconTint,
-                    )
+                    Box(
+                        modifier = Modifier
+                            .clickable(hasRipple = false) {
+                                onClickIcon?.invoke()
+                            }
+                            .width(26.dp)
+                            .height(20.dp)
+                            .padding(
+                                start = 4.dp,
+                                top = 3.dp,
+                                end = 8.dp,
+                                bottom = 3.dp
+                            )
+                    ) {
+                        SDGImage(
+                            resId = it,
+                            color = iconTint,
+                        )
+                    }
                 }
             }
             if ((startTime != null || endTime != null) && onResetClick != null) {
@@ -555,7 +670,7 @@ private fun PrevForm(
                 title = "SDGDropdownForm",
                 hint = null,
                 value = null,
-                iconResId = null,
+                iconResId = R.drawable.ic_clip,
                 iconTint = null,
                 onDropdownClick = {},
                 onResetClick = {},
@@ -575,7 +690,7 @@ private fun PrevForm(
                 title = "SDGSelectedInputForm 2",
                 hint = null,
                 value = null,
-                iconResId = null,
+                iconResId = R.drawable.ic_clip,
                 iconTint = null,
                 onInputClick = {},
                 onResetClick = {},
@@ -591,6 +706,7 @@ private fun PrevForm(
                 type = SDGFormType.NORMAL,
                 title = "SDGFixedInputForm",
                 value = "",
+                iconResId = R.drawable.ic_clip,
                 onValueChange = {}
             )
             SDGTimeSelectedForm(
@@ -598,6 +714,7 @@ private fun PrevForm(
                 title = AnnotatedString("SDGTimeSelectedForm"),
                 startTime = null,
                 endTime = null,
+                iconResId = R.drawable.ic_clip,
                 onTimeSelectClick = {},
             )
         }
