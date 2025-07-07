@@ -44,6 +44,3 @@ render.experimental.xml
 
 # Android Studio 프로젝트 파일
 /app.iml
-
-# Gradle wrapper
-/gradlew

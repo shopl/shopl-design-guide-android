@@ -1,0 +1,223 @@
+name: Maven Central REST 배포
+
+on:
+  pull_request:
+    types: [ closed ]
+    branches:
+      - main
+
+jobs:
+  publish:
+    if: |
+      github.event.pull_request.merged == true &&
+      (
+        contains(join(github.event.pull_request.labels.*.name, ','), 'major') ||
+        contains(join(github.event.pull_request.labels.*.name, ','), 'minor') ||
+        contains(join(github.event.pull_request.labels.*.name, ','), 'patch')
+      )
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 빌드 시작 Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_MESSAGE: |
+            :rocket: *[빌드 시작]*  
+            *변경사항*: ${{ github.event.head_commit.message }}
+          SLACK_COLOR: '#CCCCFF'
+
+      - name: jq 설치
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: 소스 체크아웃
+        uses: actions/checkout@v4
+
+      - name: JDK 17 셋업
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: secring.gpg 복원
+        run: echo "${{ secrets.SIGNING_SECRET_KEY_RING_FILE }}" | base64 --decode > ./secring.gpg
+
+      - name: gradle.properties 생성
+        run: |
+          echo "mavenCentralUsername=${{ secrets.MAVEN_CENTRAL_USER_NAME }}" >> ./gradle.properties
+          echo "mavenCentralPassword=${{ secrets.MAVEN_CENTRAL_PASSWORD }}" >> ./gradle.properties
+          echo "signing.keyId=${{ secrets.SIGNING_KEY_ID }}" >> ./gradle.properties
+          echo "signing.password=${{ secrets.SIGNING_PASSWORD }}" >> ./gradle.properties
+          echo "signing.secretKeyRingFile=$(pwd)/secring.gpg" >> ./gradle.properties
+
+      - name: Version, Group, Artifact Id 추출
+        id: extract_info
+        run: |
+          GROUP=$(grep -m1 'GROUP' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
+          VERSION=$(grep -m1 'VERSION' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
+          SDG_ARTIFACT_ID=$(grep -m1 'SDG_ARTIFACT_ID' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
+          RESOURCE_ARTIFACT_ID=$(grep -m1 'SDG_RESOURCE_ARTIFACT_ID' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
+          COMMON_ARTIFACT_ID=$(grep -m1 'SDG_COMMON_ARTIFACT_ID' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
+          
+          echo "group=$GROUP" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "sdg_artifactId=$SDG_ARTIFACT_ID" >> $GITHUB_OUTPUT
+          echo "resource_artifactId=$RESOURCE_ARTIFACT_ID" >> $GITHUB_OUTPUT
+          echo "common_artifactId=$COMMON_ARTIFACT_ID" >> $GITHUB_OUTPUT
+
+      - name: 전체 모듈 빌드 및 maven local 배포
+        id: build_all_modules
+        run: ./gradlew clean build :sdg:publishToMavenLocal :sdg-resource:publishToMavenLocal :sdg-common:publishToMavenLocal
+
+      - name: 빌드 성공 Slack Notification
+        if: ${{ success() && steps.build_all_modules.conclusion == 'success' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_MESSAGE: |
+            :white_check_mark: *[빌드 성공]*  
+            *변경사항*: ${{ github.event.head_commit.message }}
+          SLACK_COLOR: '#00C851'
+
+      - name: 빌드 실패 Slack Notification
+        if: ${{ failure() && steps.build_all_modules.conclusion == 'failure' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_MESSAGE: |
+            :x: *[빌드 실패]*  
+            *변경사항*: ${{ github.event.head_commit.message }}
+          SLACK_COLOR: '#FF4444'
+
+      - name: 멀티모듈 패키징
+        id: make_zip
+        run: |
+          set -e
+          GROUP="${{ steps.extract_info.outputs.group }}"
+          VERSION="${{ steps.extract_info.outputs.version }}"
+          declare -A ARTIFACT_IDS
+          ARTIFACT_IDS[sdg]="${{ steps.extract_info.outputs.sdg_artifactId }}"
+          ARTIFACT_IDS[sdg-resource]="${{ steps.extract_info.outputs.resource_artifactId }}"
+          ARTIFACT_IDS[sdg-common]="${{ steps.extract_info.outputs.common_artifactId }}"
+
+          GROUP_PATH="${GROUP//.//}" # 예시: com.shopworks → com/shopworks
+
+          for MOD in sdg sdg-resource sdg-common; do
+            ARTIFACT_ID="${ARTIFACT_IDS[$MOD]}"
+            ARTIFACT_DIR="${GROUP_PATH}/${ARTIFACT_ID}/${VERSION}"
+            mkdir -p "$ARTIFACT_DIR"
+          
+            # ouput 경로
+            if [[ "$MOD" == "sdg" ]]; then
+              POM=sdg/build/publications/maven/pom-default.xml
+              POM_ASC=sdg/build/publications/maven/pom-default.xml.asc
+              AAR=sdg/build/outputs/aar/sdg-release.aar
+              AAR_ASC=sdg/build/outputs/aar/sdg-release.aar.asc
+            elif [[ "$MOD" == "sdg-resource" ]]; then
+              POM=sdg-resource/build/publications/maven/pom-default.xml
+              POM_ASC=sdg-resource/build/publications/maven/pom-default.xml.asc
+              AAR=sdg-resource/build/outputs/aar/sdg-resource-release.aar
+              AAR_ASC=sdg-resource/build/outputs/aar/sdg-resource-release.aar.asc
+            else
+              POM=sdg-common/build/publications/maven/pom-default.xml
+              POM_ASC=sdg-common/build/publications/maven/pom-default.xml.asc
+              AAR=sdg-common/build/outputs/aar/sdg-common-release.aar
+              AAR_ASC=sdg-common/build/outputs/aar/sdg-common-release.aar.asc
+            fi
+
+            cp "$POM" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom"
+            cp "$POM_ASC" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom.asc"
+            cp "$AAR" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar"
+            cp "$AAR_ASC" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar.asc"
+
+            cd "$ARTIFACT_DIR"
+            md5sum "${ARTIFACT_ID}-${VERSION}.pom" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.pom.md5"
+            sha1sum "${ARTIFACT_ID}-${VERSION}.pom" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.pom.sha1"
+            md5sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.aar.md5"
+            sha1sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.aar.sha1"
+            cd -
+          done
+
+          ZIP_NAME="com-shoplworks-SDG-Android-${VERSION}"
+          zip -r "$ZIP_NAME" "$GROUP_PATH"
+          echo "zip_name=$ZIP_NAME" >> $GITHUB_OUTPUT
+
+      - name: Maven Central 업로드
+        id: publish_upload
+        run: |
+          ZIP_NAME="${{ steps.make_zip.outputs.zip_name }}"
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "https://central.sonatype.com/api/v1/publisher/upload?publishingType=AUTOMATIC" \
+            -H "Authorization: Bearer ${{ secrets.SONATYPE_PUBLISH_TOKEN }}" \
+            -F bundle=@"$ZIP_NAME")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          DEPLOYMENT_ID=$(echo "$RESPONSE" | head -n-1 | tr -d '\r\n')
+          echo "HTTP_CODE: $HTTP_CODE"
+          echo "DEPLOYMENT_ID: $DEPLOYMENT_ID"
+          if [[ "$HTTP_CODE" != 2* ]]; then
+            echo "::error::Upload failed with HTTP status $HTTP_CODE"
+            exit 1
+          fi
+          if [[ ! "$DEPLOYMENT_ID" =~ ^[a-f0-9-]{36}$ ]]; then
+            echo "::error::No valid deployment id returned"
+            exit 1
+          fi
+          echo "publish_id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
+
+      - name: 배포 상태 체크 Polling
+        id: poll_status
+        if: success()
+        run: |
+          PUBLISH_ID="${{ steps.publish_upload.outputs.publish_id }}"
+          for i in {1..20}; do
+            sleep 30
+            RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "https://central.sonatype.com/api/v1/publisher/status?id=$PUBLISH_ID" \
+              -H "Authorization: Bearer ${{ secrets.SONATYPE_PUBLISH_TOKEN }}")
+            HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+            BODY=$(echo "$RESPONSE" | head -n-1)
+            echo "==== Raw BODY ===="
+            echo "$BODY"
+            echo "==== HTTP_CODE ===="
+            echo "$HTTP_CODE"
+            if [[ "$HTTP_CODE" != 2* ]]; then
+              echo "::error::Status API returned non-2xx HTTP status: $HTTP_CODE"
+              exit 1
+            fi
+            if [[ "$BODY" != \{* ]]; then
+              echo "::error::Status API did not return JSON. Response: $BODY"
+              exit 1
+            fi
+            DEPLOYMENT_STATE=$(echo "$BODY" | jq -r .deploymentState)
+            ERRORS=$(echo "$BODY" | jq -c .errors)
+            echo "Current deploymentState: $DEPLOYMENT_STATE"
+            if [[ "$DEPLOYMENT_STATE" == "PUBLISHED" ]]; then
+              echo "배포 성공"
+              echo "result=success" >> $GITHUB_OUTPUT
+              break
+            elif [[ "$DEPLOYMENT_STATE" == "FAILED" ]]; then
+              echo "배포 실패"
+              echo "details=$ERRORS" >> $GITHUB_OUTPUT
+              echo "result=fail" >> $GITHUB_OUTPUT
+              break
+            fi
+            echo "Still publishing, wait..."
+          done
+
+      - name: 배포 성공 Slack Notification
+        if: ${{ steps.poll_status.outputs.result == 'success' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_MESSAGE: |
+            :star: *[배포 완료]*  
+            *변경사항*: ${{ github.event.head_commit.message }}
+          SLACK_COLOR: '#00C6AD'
+
+      - name: 배포 실패 Slack Notification
+        if: ${{ steps.poll_status.outputs.result == 'fail' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_MESSAGE: |
+            :warning: *[배포 실패]*  
+            *변경사항*: ${{ github.event.head_commit.message }}
+          SLACK_COLOR: '#FFA726'
