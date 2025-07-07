@@ -107,7 +107,7 @@ jobs:
             ARTIFACT_DIR="${GROUP_PATH}/${ARTIFACT_ID}/${VERSION}"
             mkdir -p "$ARTIFACT_DIR"
           
-            # 산출물 경로
+            # ouput 경로
             if [[ "$MOD" == "sdg" ]]; then
               POM=sdg/build/publications/maven/pom-default.xml
               POM_ASC=sdg/build/publications/maven/pom-default.xml.asc
