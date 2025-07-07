@@ -24,7 +24,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
           SLACK_MESSAGE: |
             :rocket: *[빌드 시작]*  
-            *변경사항*: ${{ github.event.head_commit.message }}
+            *변경사항*: ${{ github.event.pull_request.title }}
           SLACK_COLOR: '#CCCCFF'
 
       - name: jq 설치
@@ -76,7 +76,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
           SLACK_MESSAGE: |
             :white_check_mark: *[빌드 성공]*  
-            *변경사항*: ${{ github.event.head_commit.message }}
+            *변경사항*: ${{ github.event.pull_request.title }}
           SLACK_COLOR: '#00C851'
 
       - name: 빌드 실패 Slack Notification
@@ -86,7 +86,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
           SLACK_MESSAGE: |
             :x: *[빌드 실패]*  
-            *변경사항*: ${{ github.event.head_commit.message }}
+            *변경사항*: ${{ github.event.pull_request.title }}
           SLACK_COLOR: '#FF4444'
 
       - name: 멀티모듈 패키징
@@ -209,7 +209,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
           SLACK_MESSAGE: |
             :star: *[배포 완료]*  
-            *변경사항*: ${{ github.event.head_commit.message }}
+            *변경사항*: ${{ github.event.pull_request.title }}
           SLACK_COLOR: '#00C6AD'
 
       - name: 배포 실패 Slack Notification
@@ -219,5 +219,5 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
           SLACK_MESSAGE: |
             :warning: *[배포 실패]*  
-            *변경사항*: ${{ github.event.head_commit.message }}
+            *변경사항*: ${{ github.event.pull_request.title }}
           SLACK_COLOR: '#FFA726'
