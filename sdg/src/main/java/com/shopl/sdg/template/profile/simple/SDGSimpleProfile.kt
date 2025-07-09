@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.avatar.SDGAvatar
@@ -86,4 +87,16 @@ fun SDGSimpleProfile(
             overflow = TextOverflow.Ellipsis,
         )
     }
+}
+
+@Preview
+@Composable
+fun SDGSimpleProfilePreview() {
+    SDGSimpleProfile(
+        userRegImg = "https://picsum.photos/200",
+        userName = "김샤플",
+        backgroundColor = Color.White,
+        avatarBadge = SDGAvatarBadge.Admin,
+        type = SDGSimpleProfileType.NORMAL,
+    )
 }
