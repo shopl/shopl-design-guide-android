@@ -91,7 +91,7 @@ fun SDGSimpleProfile(
 
 @Preview
 @Composable
-fun SDGSimpleProfilePreview() {
+fun PreviewSDGSimpleProfile() {
     SDGSimpleProfile(
         userRegImg = "https://picsum.photos/200",
         userName = "김샤플",
