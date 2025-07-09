@@ -253,63 +253,6 @@ fun SDGProfileMini(
     }
 }
 
-@Composable
-fun SDGProfileSimple(
-    roleType: String,
-    userRegImg: String?,
-    userName: String,
-    isMaternity: Boolean = false,
-    backgroundColor: Color,
-    radius: Dp? = null,
-    paddingValues: PaddingValues = PaddingValues(),
-    profileType: DisplayType = DisplayType.NORMAL,
-    activate: Boolean = true,
-    onClickAvatar: (() -> Unit)? = null,
-    onClickProfile: (() -> Unit)? = null
-) {
-
-    val profileModifier = Modifier
-        .fillMaxWidth()
-        .then(
-            if (!activate) Modifier.alpha(0.6F) else Modifier
-        )
-        .then(
-            if (onClickProfile != null) {
-                Modifier.clickable(hasRipple = false) { onClickProfile() }
-            } else {
-                Modifier
-            }
-        )
-        .background(
-            color = backgroundColor,
-            shape = RoundedCornerShape(radius ?: 0.dp)
-        )
-        .clip(RoundedCornerShape(radius ?: 0.dp))
-        .padding(paddingValues)
-
-    Row(
-        modifier = profileModifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IOAvatar(
-            avatarSize = SDGAvatarSize.S,
-            roleType = roleType,
-            userRegImg = userRegImg,
-            onClickAvatar = onClickAvatar,
-            isMaternity = isMaternity,
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        IOText(
-            text = userName,
-            typeface = profileType.typeface,
-            textColor = SDGColor.Neutral700,
-            fontSize = 14.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-    }
-}
-
 @Preview
 @Composable
 fun PrevProfile() {
