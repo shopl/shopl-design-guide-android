@@ -1,7 +1,6 @@
 package com.shopl.sdg.component.icon_text
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,35 +16,34 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
+import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_common.util.textCenterAlignment
 import com.shopl.sdg_resource.R
 
 /**
- * DesignSystem - Icon List Item
+ * SDG - Icon Text
  *
- * @param size [SDGIconListItemSize] 내부 텍스트 Size, LineHeight 조절
- * @param type [SDGIconListItemType] 내부 텍스트 Weight 조절
- * @param spacing [SDGIconListItemSpacing] 아이콘과 텍스트 사이 간격
+ * @param size [SDGIconTextSize] 내부 텍스트 Size, LineHeight 조절
+ * @param type [SDGIconTextType] 내부 텍스트 Weight 조절
+ * @param spacing [SDGIconTextSpacing] 아이콘과 텍스트 사이 간격
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=10507-19136&m=dev">Figma</a>
  */
-//TODO: SDGIconText로 이름 수정 필요
 @Composable
-fun SDGIconListItem(
+fun SDGIconText(
     text: String,
     textColor: Color,
-    size: SDGIconListItemSize,
-    type: SDGIconListItemType,
-    spacing: SDGIconListItemSpacing,
+    size: SDGIconTextSize,
+    type: SDGIconTextType,
+    spacing: SDGIconTextSpacing,
     modifier: Modifier = Modifier,
     @DrawableRes leftIconResId: Int? = null,
     leftIconTint: Color? = null,
@@ -75,7 +72,7 @@ fun SDGIconListItem(
         horizontalArrangement = Arrangement.spacedBy(spacing.value)
     ) {
         if (leftIconResId != null && leftIconTint != null) {
-            Image(
+            SDGImage(
                 modifier = Modifier
                     .align(alignment)
                     .size(14.dp)
@@ -86,9 +83,8 @@ fun SDGIconListItem(
                             Modifier
                         }
                     ),
-                painter = painterResource(id = leftIconResId),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(leftIconTint)
+                resId = leftIconResId,
+                color = leftIconTint
             )
         }
         SDGText(
@@ -103,7 +99,7 @@ fun SDGIconListItem(
             onTextLayout = { textLayoutResult = it }
         )
         if (rightIconResId != null && rightIconTint != null) {
-            Image(
+            SDGImage(
                 modifier = Modifier
                     .align(alignment)
                     .size(14.dp)
@@ -114,90 +110,70 @@ fun SDGIconListItem(
                             Modifier
                         }
                     ),
-                painter = painterResource(id = rightIconResId),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(rightIconTint)
+                resId = rightIconResId,
+                color = rightIconTint
             )
         }
     }
 }
 
+/**
+ * [SDGIconTextType]과 [SDGIconTextSize]에 맞는 Typography 반환
+ */
 private fun getIconListItemTypography(
-    type: SDGIconListItemType,
-    size: SDGIconListItemSize
+    type: SDGIconTextType,
+    size: SDGIconTextSize
 ): SDGTypography {
     return when (type) {
-        SDGIconListItemType.Basic -> when (size) {
-            SDGIconListItemSize.Size12 -> SDGTypography.Body3R
-            SDGIconListItemSize.Size14 -> SDGTypography.Body2R
-            SDGIconListItemSize.Size16 -> SDGTypography.Body1R
+        SDGIconTextType.Basic -> when (size) {
+            SDGIconTextSize.Size12 -> SDGTypography.Body3R
+            SDGIconTextSize.Size14 -> SDGTypography.Body2R
+            SDGIconTextSize.Size16 -> SDGTypography.Body1R
         }
 
-        SDGIconListItemType.Empha -> when (size) {
-            SDGIconListItemSize.Size12 -> SDGTypography.Body3SB
-            SDGIconListItemSize.Size14 -> SDGTypography.Body2SB
-            SDGIconListItemSize.Size16 -> SDGTypography.Body1SB
+        SDGIconTextType.Empha -> when (size) {
+            SDGIconTextSize.Size12 -> SDGTypography.Body3SB
+            SDGIconTextSize.Size14 -> SDGTypography.Body2SB
+            SDGIconTextSize.Size16 -> SDGTypography.Body1SB
         }
     }
 }
 
-enum class SDGIconListItemType {
-    Basic,
-    Empha
-}
-
-enum class SDGIconListItemSize {
-    Size12,
-    Size14,
-    Size16
-}
-
-enum class SDGIconListItemSpacing(val value: Dp) {
-    Spacing2(value = 2.dp),
-    Spacing4(value = 4.dp),
-}
 
 @Preview
 @Composable
-private fun PrevIOIconListItem(
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier
-            .background(color = SDGColor.Neutral0)
-            .padding(10.dp)
+private fun PreviewSDGIconText() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(SDGColor.Neutral0)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            SDGIconListItem(
-                text = "IOIconText",
-                textColor = SDGColor.Neutral700,
-                size = SDGIconListItemSize.Size16,
-                type = SDGIconListItemType.Empha,
-                spacing = SDGIconListItemSpacing.Spacing4,
-                leftIconResId = R.drawable.ic_common_warning,
-                leftIconTint = SDGColor.Neutral700,
-            )
-            SDGIconListItem(
-                isFillMaxWidth = false,
-                text = "IOIconText",
-                textColor = SDGColor.Neutral700,
-                size = SDGIconListItemSize.Size14,
-                type = SDGIconListItemType.Empha,
-                spacing = SDGIconListItemSpacing.Spacing2,
-                rightIconResId = R.drawable.ic_common_warning,
-                rightIconTint = SDGColor.Neutral700,
-            )
-            SDGIconListItem(
-                text = "IOIconText IOIconText IOIconText IOIconText IOIconText IOIconText IOIconText IOIconText",
-                textColor = SDGColor.Neutral700,
-                size = SDGIconListItemSize.Size12,
-                type = SDGIconListItemType.Basic,
-                spacing = SDGIconListItemSpacing.Spacing4,
-                leftIconResId = R.drawable.ic_common_warning,
-                leftIconTint = SDGColor.Neutral700,
-                rightIconResId = R.drawable.ic_common_warning,
-                rightIconTint = SDGColor.Neutral700,
-            )
-        }
+        SDGIconText(
+            text = "왼쪽 아이콘",
+            textColor = SDGColor.Neutral500,
+            size = SDGIconTextSize.Size14,
+            type = SDGIconTextType.Basic,
+            spacing = SDGIconTextSpacing.Spacing4,
+            leftIconResId = R.drawable.ic_common_warning,
+            leftIconTint = SDGColor.Red300
+        )
+        SDGIconText(
+            text = "오른쪽 아이콘",
+            textColor = SDGColor.Neutral500,
+            size = SDGIconTextSize.Size16,
+            type = SDGIconTextType.Empha,
+            spacing = SDGIconTextSpacing.Spacing2,
+            rightIconResId = R.drawable.ic_common_warning,
+            rightIconTint = SDGColor.Red300
+        )
+        SDGIconText(
+            text = "아이콘 없음",
+            textColor = SDGColor.Neutral500,
+            size = SDGIconTextSize.Size12,
+            type = SDGIconTextType.Basic,
+            spacing = SDGIconTextSpacing.Spacing4
+        )
     }
 }
