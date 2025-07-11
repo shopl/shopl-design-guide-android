@@ -142,7 +142,7 @@ private fun getIconListItemTypography(
 
 @Preview
 @Composable
-private fun SDGIconTextPreview() {
+private fun PreviewSDGIconText() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
