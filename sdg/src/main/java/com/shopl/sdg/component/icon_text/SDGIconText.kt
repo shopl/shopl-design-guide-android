@@ -31,9 +31,9 @@ import com.shopl.sdg_resource.R
 /**
  * SDG - Icon Text
  *
- * @param size [SDGIconListItemSize] 내부 텍스트 Size, LineHeight 조절
- * @param type [SDGIconListItemType] 내부 텍스트 Weight 조절
- * @param spacing [SDGIconListItemSpacing] 아이콘과 텍스트 사이 간격
+ * @param size [SDGIconTextSize] 내부 텍스트 Size, LineHeight 조절
+ * @param type [SDGIconTextType] 내부 텍스트 Weight 조절
+ * @param spacing [SDGIconTextSpacing] 아이콘과 텍스트 사이 간격
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=10507-19136&m=dev">Figma</a>
  */
@@ -41,9 +41,9 @@ import com.shopl.sdg_resource.R
 fun SDGIconText(
     text: String,
     textColor: Color,
-    size: SDGIconListItemSize,
-    type: SDGIconListItemType,
-    spacing: SDGIconListItemSpacing,
+    size: SDGIconTextSize,
+    type: SDGIconTextType,
+    spacing: SDGIconTextSpacing,
     modifier: Modifier = Modifier,
     @DrawableRes leftIconResId: Int? = null,
     leftIconTint: Color? = null,
@@ -118,23 +118,23 @@ fun SDGIconText(
 }
 
 /**
- * [SDGIconListItemType]과 [SDGIconListItemSize]에 맞는 Typography 반환
+ * [SDGIconTextType]과 [SDGIconTextSize]에 맞는 Typography 반환
  */
 private fun getIconListItemTypography(
-    type: SDGIconListItemType,
-    size: SDGIconListItemSize
+    type: SDGIconTextType,
+    size: SDGIconTextSize
 ): SDGTypography {
     return when (type) {
-        SDGIconListItemType.Basic -> when (size) {
-            SDGIconListItemSize.Size12 -> SDGTypography.Body3R
-            SDGIconListItemSize.Size14 -> SDGTypography.Body2R
-            SDGIconListItemSize.Size16 -> SDGTypography.Body1R
+        SDGIconTextType.Basic -> when (size) {
+            SDGIconTextSize.Size12 -> SDGTypography.Body3R
+            SDGIconTextSize.Size14 -> SDGTypography.Body2R
+            SDGIconTextSize.Size16 -> SDGTypography.Body1R
         }
 
-        SDGIconListItemType.Empha -> when (size) {
-            SDGIconListItemSize.Size12 -> SDGTypography.Body3SB
-            SDGIconListItemSize.Size14 -> SDGTypography.Body2SB
-            SDGIconListItemSize.Size16 -> SDGTypography.Body1SB
+        SDGIconTextType.Empha -> when (size) {
+            SDGIconTextSize.Size12 -> SDGTypography.Body3SB
+            SDGIconTextSize.Size14 -> SDGTypography.Body2SB
+            SDGIconTextSize.Size16 -> SDGTypography.Body1SB
         }
     }
 }
@@ -153,27 +153,27 @@ private fun SDGIconTextPreview() {
         SDGIconText(
             text = "왼쪽 아이콘",
             textColor = SDGColor.Neutral500,
-            size = SDGIconListItemSize.Size14,
-            type = SDGIconListItemType.Basic,
-            spacing = SDGIconListItemSpacing.Spacing4,
+            size = SDGIconTextSize.Size14,
+            type = SDGIconTextType.Basic,
+            spacing = SDGIconTextSpacing.Spacing4,
             leftIconResId = R.drawable.ic_common_warning,
             leftIconTint = SDGColor.Red300
         )
         SDGIconText(
             text = "오른쪽 아이콘",
             textColor = SDGColor.Neutral500,
-            size = SDGIconListItemSize.Size16,
-            type = SDGIconListItemType.Empha,
-            spacing = SDGIconListItemSpacing.Spacing2,
+            size = SDGIconTextSize.Size16,
+            type = SDGIconTextType.Empha,
+            spacing = SDGIconTextSpacing.Spacing2,
             rightIconResId = R.drawable.ic_common_warning,
             rightIconTint = SDGColor.Red300
         )
         SDGIconText(
             text = "아이콘 없음",
             textColor = SDGColor.Neutral500,
-            size = SDGIconListItemSize.Size12,
-            type = SDGIconListItemType.Basic,
-            spacing = SDGIconListItemSpacing.Spacing4
+            size = SDGIconTextSize.Size12,
+            type = SDGIconTextType.Basic,
+            spacing = SDGIconTextSpacing.Spacing4
         )
     }
 }
