@@ -1,7 +1,6 @@
 package com.shopl.sdg.component.icon_text
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,8 +16,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -77,9 +73,6 @@ fun SDGIconText(
     ) {
         if (leftIconResId != null && leftIconTint != null) {
             SDGImage(
-                resId =
-            )
-            Image(
                 modifier = Modifier
                     .align(alignment)
                     .size(14.dp)
@@ -90,9 +83,8 @@ fun SDGIconText(
                             Modifier
                         }
                     ),
-                painter = painterResource(id = leftIconResId),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(leftIconTint)
+                resId = leftIconResId,
+                color = leftIconTint
             )
         }
         SDGText(
@@ -107,7 +99,7 @@ fun SDGIconText(
             onTextLayout = { textLayoutResult = it }
         )
         if (rightIconResId != null && rightIconTint != null) {
-            Image(
+            SDGImage(
                 modifier = Modifier
                     .align(alignment)
                     .size(14.dp)
@@ -118,14 +110,16 @@ fun SDGIconText(
                             Modifier
                         }
                     ),
-                painter = painterResource(id = rightIconResId),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(rightIconTint)
+                resId = rightIconResId,
+                color = rightIconTint
             )
         }
     }
 }
 
+/**
+ * [SDGIconListItemType]과 [SDGIconListItemSize]에 맞는 Typography 반환
+ */
 private fun getIconListItemTypography(
     type: SDGIconListItemType,
     size: SDGIconListItemSize
@@ -145,47 +139,41 @@ private fun getIconListItemTypography(
     }
 }
 
+
 @Preview
 @Composable
-private fun PrevSDGIconText(
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier
-            .background(color = SDGColor.Neutral0)
-            .padding(10.dp)
+private fun SDGIconTextPreview() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(SDGColor.Neutral0)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            SDGIconText(
-                text = "SDGIconText",
-                textColor = SDGColor.Neutral700,
-                size = SDGIconListItemSize.Size16,
-                type = SDGIconListItemType.Empha,
-                spacing = SDGIconListItemSpacing.Spacing4,
-                leftIconResId = R.drawable.ic_common_warning,
-                leftIconTint = SDGColor.Neutral700,
-            )
-            SDGIconText(
-                isFillMaxWidth = false,
-                text = "SDGIconText",
-                textColor = SDGColor.Neutral700,
-                size = SDGIconListItemSize.Size14,
-                type = SDGIconListItemType.Empha,
-                spacing = SDGIconListItemSpacing.Spacing2,
-                rightIconResId = R.drawable.ic_common_warning,
-                rightIconTint = SDGColor.Neutral700,
-            )
-            SDGIconText(
-                text = "SDGIconText SDGIconText SDGIconText SDGIconText SDGIconText SDGIconText SDGIconText SDGIconText",
-                textColor = SDGColor.Neutral700,
-                size = SDGIconListItemSize.Size12,
-                type = SDGIconListItemType.Basic,
-                spacing = SDGIconListItemSpacing.Spacing4,
-                leftIconResId = R.drawable.ic_common_warning,
-                leftIconTint = SDGColor.Neutral700,
-                rightIconResId = R.drawable.ic_common_warning,
-                rightIconTint = SDGColor.Neutral700,
-            )
-        }
+        SDGIconText(
+            text = "왼쪽 아이콘",
+            textColor = SDGColor.Neutral500,
+            size = SDGIconListItemSize.Size14,
+            type = SDGIconListItemType.Basic,
+            spacing = SDGIconListItemSpacing.Spacing4,
+            leftIconResId = R.drawable.ic_common_warning,
+            leftIconTint = SDGColor.Red300
+        )
+        SDGIconText(
+            text = "오른쪽 아이콘",
+            textColor = SDGColor.Neutral500,
+            size = SDGIconListItemSize.Size16,
+            type = SDGIconListItemType.Empha,
+            spacing = SDGIconListItemSpacing.Spacing2,
+            rightIconResId = R.drawable.ic_common_warning,
+            rightIconTint = SDGColor.Red300
+        )
+        SDGIconText(
+            text = "아이콘 없음",
+            textColor = SDGColor.Neutral500,
+            size = SDGIconListItemSize.Size12,
+            type = SDGIconListItemType.Basic,
+            spacing = SDGIconListItemSpacing.Spacing4
+        )
     }
 }
