@@ -1,4 +1,4 @@
-package com.shopl.sdg_common.ui.components
+package com.shopl.sdg.component.number_picker
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationResult
@@ -45,9 +45,7 @@ import kotlin.math.roundToInt
 @Composable
 fun NumberPicker(
     modifier: Modifier = Modifier,
-    label: (Int) -> String = {
-        it.toString()
-    },
+    label: (Int) -> String = { it.toString() },
     value: Int,
     onValueChange: (Int) -> Unit,
     dividersColor: Color = SDGColor.Transparent,

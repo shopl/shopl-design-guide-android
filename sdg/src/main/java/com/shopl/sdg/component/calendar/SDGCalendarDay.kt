@@ -54,7 +54,7 @@ import com.shopl.sdg_common.ext.distanceDays
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
-import com.shopl.sdg_common.ui.components.NumberPicker
+import com.shopl.sdg.component.number_picker.NumberPicker
 import com.shopl.sdg_resource.R
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
