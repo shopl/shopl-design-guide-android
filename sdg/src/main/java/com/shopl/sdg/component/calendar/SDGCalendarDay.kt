@@ -49,12 +49,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shopl.sdg.component.number_picker.SDGNumberPicker
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ext.distanceDays
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
-import com.shopl.sdg.component.number_picker.NumberPicker
 import com.shopl.sdg_resource.R
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
@@ -724,8 +724,7 @@ private fun MonthSelector(
             Row(
                 modifier = Modifier.background(color = SDGColor.Transparent)
             ) {
-                NumberPicker(
-                    modifier = Modifier.weight(1F),
+                SDGNumberPicker(
                     value = currentDate.year,
                     range = 1970..1970 + 1000,
                     onValueChange = {
@@ -734,8 +733,7 @@ private fun MonthSelector(
                     }
                 )
 
-                NumberPicker(
-                    modifier = Modifier.weight(1F),
+                SDGNumberPicker(
                     value = currentDate.monthOfYear,
                     range = 1..12,
                     onValueChange = {

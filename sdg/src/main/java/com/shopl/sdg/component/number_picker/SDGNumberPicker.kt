@@ -1,164 +1,141 @@
 package com.shopl.sdg.component.number_picker
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.launch
+import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.SDGCornerRadius
+import com.shopl.sdg_common.foundation.typography.SDGTypography
+import com.shopl.sdg_common.ui.components.SDGText
 
-// Color definitions (replace with your actual color definitions if they are different)
-val Neutral700 = Color(0xFF424242) // Example: Neutral/700
-val Neutral400 = Color(0xFFAFAFAF) // Example: Neutral/400
-val Neutral150 = Color(0xFFEEEEEE) // Example: Neutral/150
-
-// Typography (replace with your actual typography if different)
-object AppTypography {
-    val Body1R: TextStyle = TextStyle(
-        fontSize = 16.sp,
-        // Add other relevant TextStyle properties like fontWeight, fontFamily, etc.
-    )
-}
+/**
+ * SDG - Component - Number Picker
+ *
+ * 어떤 특정한 값의 숫자를 스피너로 선택하는 컴포넌트
+ *
+ * @param range 피커에 표시할 정수 범위
+ * @param onValueChange 선택된 값이 변경될 때 호출되는 콜백
+ * @param width 피커의 너비. 지정하지 않으면 사용 가능한 전체 너비를 채움
+ *
+ * @see <a href="">Figma</a>
+ */
+private const val NOT_STOPPED_SCROLL_INDEX = -1
 
 @Composable
 fun SDGNumberPicker(
-    modifier: Modifier = Modifier,
-    range: IntRange,
-    currentValue: Int,
+    value: Int,
+    range: Iterable<Int>,
     onValueChange: (Int) -> Unit,
-    height: Dp = 150.dp, // Default height, adjust as needed
-    textStyle: TextStyle = AppTypography.Body1R,
-    enabledColor: Color = Neutral700,
-    disabledColor: Color = Neutral400,
-    selectedBoxColor: Color = Neutral150,
-    cornerRadius: Dp = 8.dp,
-    enabled: Boolean = true
+    width: Dp = 0.dp,
+    textColor: Color = SDGColor.Neutral700
 ) {
-    val listState = rememberLazyListState(initialFirstVisibleItemIndex = currentValue - range.first)
-    val coroutineScope = rememberCoroutineScope()
-    val itemHeight = height / 3 // Assuming 3 items visible (selected, one above, one below)
+    require(range.count() >= 3) { "범위는 최소 3이상이 필요합니다." }
+    require(range.contains(value)) { "value($value)는 반드시 범위 안에 존재하는 값이어야 합니다." }
 
-    // Scroll to the current value when it changes externally
-    LaunchedEffect(currentValue) {
-        val targetIndex = (currentValue - range.first).coerceIn(0, range.last - range.first)
-        if (listState.firstVisibleItemIndex != targetIndex) {
-            coroutineScope.launch {
-                listState.animateScrollToItem(targetIndex)
-            }
-        }
-    }
+    val rangeList = remember(range) { range.toList() }
+    val rangeStringList = remember(rangeList) { rangeList.map { it.toString() } }
 
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(height)
+        modifier = Modifier.background(SDGColor.Neutral0),
+        contentAlignment = Alignment.Center
     ) {
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            items(range.count()) { index ->
-                val itemValue = range.first + index
-                val isSelected = itemValue == currentValue
-                val textColor = if (enabled) enabledColor else disabledColor
+        val lazyListState = rememberLazyListState()
+        val snapBehavior = rememberSnapFlingBehavior(lazyListState)
 
+        LaunchedEffect(value) {
+            val targetIndex = rangeList.indexOf(value).coerceAtLeast(0)
+
+            if (lazyListState.firstVisibleItemIndex != targetIndex) {
+                lazyListState.animateScrollToItem(targetIndex)
+            }
+        }
+
+        val scrollStoppedIndex by remember {
+            derivedStateOf {
+                if (lazyListState.isScrollInProgress) NOT_STOPPED_SCROLL_INDEX else lazyListState.firstVisibleItemIndex
+            }
+        }
+
+        LaunchedEffect(scrollStoppedIndex) {
+            if (scrollStoppedIndex != NOT_STOPPED_SCROLL_INDEX) {
+                val newValue = rangeList.getOrNull(scrollStoppedIndex)
+                if (newValue != null && newValue != value) {
+                    onValueChange(newValue)
+                }
+            }
+        }
+
+        HighlightingBox()
+
+        LazyColumn(
+            state = lazyListState,
+            flingBehavior = snapBehavior,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .then(
+                    if (width == 0.dp) {
+                        Modifier.fillMaxWidth()
+                    } else {
+                        Modifier.width(width)
+                    }
+                )
+                .height(150.dp)
+        ) {
+            item { CenteringSpacer() }
+
+            items(rangeStringList.size) { index ->
                 Box(
+                    contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .height(itemHeight)
                         .fillMaxWidth()
-                        .then(
-                            if (isSelected) Modifier
-                                .padding(horizontal = 16.dp) // Adjust padding as needed
-                                .clip(RoundedCornerShape(cornerRadius))
-                                .background(selectedBoxColor)
-                            else Modifier
-                        ),
-                    contentAlignment = Alignment.Center
+                        .height(50.dp)
                 ) {
-                    Text(
-                        text = itemValue.toString(),
-                        style = textStyle.copy(color = textColor),
-                        textAlign = TextAlign.Center
+                    SDGText(
+                        text = rangeStringList[index],
+                        typography = SDGTypography.Title2R,
+                        textColor = textColor
                     )
                 }
             }
-        }
 
-        // This is to simulate the snapping behavior and centered selection.
-        // A more robust solution might involve custom LazyList behavior or
-        // calculations based on scroll offset.
-        LaunchedEffect(listState.isScrollInProgress) {
-            if (!listState.isScrollInProgress) {
-                val visibleItems = listState.layoutInfo.visibleItemsInfo
-                if (visibleItems.isNotEmpty()) {
-                    // Calculate the middle item based on its position relative to the viewport center
-                    val viewportCenter = listState.layoutInfo.viewportSize.height / 2
-                    val middleItem = visibleItems.minByOrNull {
-                        kotlin.math.abs((it.offset + it.size / 2) - viewportCenter)
-                    }
-
-                    middleItem?.let {
-                        val selectedIndex = it.index
-                        val newValue = range.first + selectedIndex
-                        if (currentValue != newValue) {
-                            onValueChange(newValue)
-                            // Snap to the selected item
-                            coroutineScope.launch {
-                                listState.animateScrollToItem(selectedIndex)
-                            }
-                        }
-                    }
-                }
-            }
+            item { CenteringSpacer() }
         }
     }
 }
 
-@Preview(showBackground = true, widthDp = 200)
 @Composable
-fun SDGNumberPickerPreview() {
-    var selectedValue by remember { mutableStateOf(9) }
-    MaterialTheme { // It's good practice to wrap previews in MaterialTheme
-        SDGNumberPicker(
-            range = 1..20,
-            currentValue = selectedValue,
-            onValueChange = { selectedValue = it },
-            height = 120.dp // Example height for preview
-        )
-    }
+private fun HighlightingBox() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .clip(RoundedCornerShape(SDGCornerRadius.Radius8))
+            .background(SDGColor.Neutral150)
+    )
 }
 
-@Preview(showBackground = true, widthDp = 200)
+/**
+ * 리스트의 시작과 끝에 빈 공간을 추가하여 첫 항목과 마지막 항목이 중앙에 올 수 있도록 함
+ */
 @Composable
-fun SDGNumberPickerDisabledPreview() {
-    var selectedValue by remember { mutableStateOf(5) }
-    MaterialTheme {
-        SDGNumberPicker(
-            range = 1..10,
-            currentValue = selectedValue,
-            onValueChange = { selectedValue = it },
-            height = 120.dp,
-            enabled = false
-        )
-    }
+private fun CenteringSpacer() {
+    Spacer(modifier = Modifier.height(50.dp))
 }
