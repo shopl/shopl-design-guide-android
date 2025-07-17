@@ -3,7 +3,6 @@ package com.shopl.sdg.component.number_picker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -14,12 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGColor
@@ -28,6 +30,9 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlin.math.abs
 import kotlin.math.min
+
+private const val NOT_STOPPED_SCROLL_INDEX = -1
+private const val ITEM_HEIGHT = 40
 
 /**
  * SDG - Component - Number Picker
@@ -40,9 +45,6 @@ import kotlin.math.min
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=18805-226&m=dev">Figma</a>
  */
-private const val NOT_STOPPED_SCROLL_INDEX = -1
-private const val ITEM_HEIGHT = 40
-
 @Composable
 fun SDGNumberPicker(
     value: Int,
@@ -62,7 +64,7 @@ fun SDGNumberPicker(
     val itemHeightPx = with(LocalDensity.current) { ITEM_HEIGHT.dp.roundToPx() }
     val highlightingIndex by remember {
         derivedStateOf {
-            val scrollIndex = lazyListState.firstVisibleItemIndex + 1
+            val scrollIndex = lazyListState.firstVisibleItemIndex
             val scrollOffset = lazyListState.firstVisibleItemScrollOffset
             if (scrollOffset > itemHeightPx / 2) scrollIndex + 1 else scrollIndex
         }
@@ -110,8 +112,6 @@ fun SDGNumberPicker(
                 )
                 .height(200.dp)
         ) {
-            item { CenteringSpacer() }
-
             items(rangeStringList.size) { index ->
                 val distanceFromCenter = abs(index - highlightingIndex)
                 val maxDistance = 1f
@@ -136,8 +136,6 @@ fun SDGNumberPicker(
                     )
                 }
             }
-
-            item { CenteringSpacer() }
         }
     }
 }
@@ -153,10 +151,14 @@ private fun HighlightingBox() {
     )
 }
 
-/**
- * 리스트의 시작과 끝에 빈 공간을 추가하여 첫 항목과 마지막 항목이 중앙에 올 수 있도록 함
- */
+@Preview
 @Composable
-private fun CenteringSpacer() {
-    Spacer(modifier = Modifier.height(ITEM_HEIGHT.dp))
+private fun PreviewSDGNumberPicker() {
+    var value by remember { mutableIntStateOf(5) }
+    SDGNumberPicker(
+        value = value,
+        range = 1..10,
+        onValueChange = { value = it }
+    )
 }
+
