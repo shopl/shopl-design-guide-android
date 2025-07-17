@@ -23,6 +23,7 @@ kotlinxImmutable = "0.3.7"
 # Coil
 ## https://github.com/coil-kt/coil
 coilCompose = "3.2.0"
+coilNetworkOkhttp = "3.2.0"
 
 # Hilt
 ## https://github.com/google/dagger/releases
@@ -70,6 +71,7 @@ compose-runtime = { module = "androidx.compose.runtime:runtime" }
 compose-compiler-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 
 kotlinx-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxImmutable" }
 
