@@ -41,7 +41,7 @@ import kotlin.math.min
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=18805-226&m=dev">Figma</a>
  */
 private const val NOT_STOPPED_SCROLL_INDEX = -1
-private const val ITEM_HEIGHT = 50
+private const val ITEM_HEIGHT = 40
 
 @Composable
 fun SDGNumberPicker(
@@ -50,7 +50,7 @@ fun SDGNumberPicker(
     onValueChange: (Int) -> Unit,
     width: Dp = 0.dp,
 ) {
-    require(range.count() >= 3) { "범위는 최소 3이상이 필요합니다." }
+    require(range.count() >= 5) { "범위는 최소 3이상이 필요합니다." }
     require(range.contains(value)) { "value($value)는 반드시 범위 안에 존재하는 값이어야 합니다." }
 
     val lazyListState = rememberLazyListState()
@@ -62,7 +62,7 @@ fun SDGNumberPicker(
     val itemHeightPx = with(LocalDensity.current) { ITEM_HEIGHT.dp.roundToPx() }
     val highlightingIndex by remember {
         derivedStateOf {
-            val scrollIndex = lazyListState.firstVisibleItemIndex
+            val scrollIndex = lazyListState.firstVisibleItemIndex + 1
             val scrollOffset = lazyListState.firstVisibleItemScrollOffset
             if (scrollOffset > itemHeightPx / 2) scrollIndex + 1 else scrollIndex
         }
@@ -108,7 +108,7 @@ fun SDGNumberPicker(
                         Modifier.width(width)
                     }
                 )
-                .height(150.dp)
+                .height(200.dp)
         ) {
             item { CenteringSpacer() }
 
