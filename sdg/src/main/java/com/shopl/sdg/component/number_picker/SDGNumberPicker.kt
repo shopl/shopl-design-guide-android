@@ -18,13 +18,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+import kotlin.math.abs
+import kotlin.math.min
 
 /**
  * SDG - Component - Number Picker
@@ -35,9 +38,10 @@ import com.shopl.sdg_common.ui.components.SDGText
  * @param onValueChange 선택된 값이 변경될 때 호출되는 콜백
  * @param width 피커의 너비. 지정하지 않으면 사용 가능한 전체 너비를 채움
  *
- * @see <a href="">Figma</a>
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=18805-226&m=dev">Figma</a>
  */
 private const val NOT_STOPPED_SCROLL_INDEX = -1
+private const val ITEM_HEIGHT = 50
 
 @Composable
 fun SDGNumberPicker(
@@ -45,24 +49,31 @@ fun SDGNumberPicker(
     range: Iterable<Int>,
     onValueChange: (Int) -> Unit,
     width: Dp = 0.dp,
-    textColor: Color = SDGColor.Neutral700
 ) {
     require(range.count() >= 3) { "범위는 최소 3이상이 필요합니다." }
     require(range.contains(value)) { "value($value)는 반드시 범위 안에 존재하는 값이어야 합니다." }
 
+    val lazyListState = rememberLazyListState()
+    val snapBehavior = rememberSnapFlingBehavior(lazyListState)
+
     val rangeList = remember(range) { range.toList() }
     val rangeStringList = remember(rangeList) { rangeList.map { it.toString() } }
+
+    val itemHeightPx = with(LocalDensity.current) { ITEM_HEIGHT.dp.roundToPx() }
+    val highlightingIndex by remember {
+        derivedStateOf {
+            val scrollIndex = lazyListState.firstVisibleItemIndex
+            val scrollOffset = lazyListState.firstVisibleItemScrollOffset
+            if (scrollOffset > itemHeightPx / 2) scrollIndex + 1 else scrollIndex
+        }
+    }
 
     Box(
         modifier = Modifier.background(SDGColor.Neutral0),
         contentAlignment = Alignment.Center
     ) {
-        val lazyListState = rememberLazyListState()
-        val snapBehavior = rememberSnapFlingBehavior(lazyListState)
-
         LaunchedEffect(value) {
             val targetIndex = rangeList.indexOf(value).coerceAtLeast(0)
-
             if (lazyListState.firstVisibleItemIndex != targetIndex) {
                 lazyListState.animateScrollToItem(targetIndex)
             }
@@ -102,16 +113,26 @@ fun SDGNumberPicker(
             item { CenteringSpacer() }
 
             items(rangeStringList.size) { index ->
+                val distanceFromCenter = abs(index - highlightingIndex)
+                val maxDistance = 1f
+                val norm = min(distanceFromCenter / maxDistance, 1f)
+
+                val color = lerp(
+                    SDGColor.Neutral700,
+                    SDGColor.Neutral400,
+                    norm
+                )
+
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(50.dp)
+                        .height(ITEM_HEIGHT.dp)
                 ) {
                     SDGText(
                         text = rangeStringList[index],
                         typography = SDGTypography.Title2R,
-                        textColor = textColor
+                        textColor = color
                     )
                 }
             }
@@ -126,7 +147,7 @@ private fun HighlightingBox() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
+            .height(ITEM_HEIGHT.dp)
             .clip(RoundedCornerShape(SDGCornerRadius.Radius8))
             .background(SDGColor.Neutral150)
     )
@@ -137,5 +158,5 @@ private fun HighlightingBox() {
  */
 @Composable
 private fun CenteringSpacer() {
-    Spacer(modifier = Modifier.height(50.dp))
+    Spacer(modifier = Modifier.height(ITEM_HEIGHT.dp))
 }
