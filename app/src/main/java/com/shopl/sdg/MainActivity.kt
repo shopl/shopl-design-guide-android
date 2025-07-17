@@ -1,7 +1,6 @@
 package com.shopl.sdg
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -40,7 +39,6 @@ class MainActivity : ComponentActivity() {
                             value = currentValue,
                             range = 0..10,
                             onValueChange = {
-                                Log.d("TAG", "it - : $it")
                                 currentValue = it
                             },
                         )
