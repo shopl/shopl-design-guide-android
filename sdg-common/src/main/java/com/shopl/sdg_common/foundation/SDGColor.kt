@@ -196,6 +196,9 @@ object SDGColor {
     @Stable
     val SpecialOR_a10 = Color(0x1AFFB200)
 
+    @Stable
+    val SpecialCG = Color(0xFFF1F4F6)
+
     /** ETC **/
     @Stable
     val ShimmerColorShades = listOf(
