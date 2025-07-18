@@ -37,6 +37,7 @@ import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
 @Stable
@@ -62,7 +63,7 @@ sealed class SDGListPopupItemUiState(
 
 @Composable
 fun SDGListPopup(
-    items: List<SDGListPopupItemUiState>,
+    items: PersistentList<SDGListPopupItemUiState>,
     onSelected: (SDGListPopupItemUiState) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
@@ -103,7 +104,7 @@ fun SDGListBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     ),
-    items: List<SDGListPopupItemUiState>,
+    items: PersistentList<SDGListPopupItemUiState>,
     onSelected: (SDGListPopupItemUiState) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
@@ -140,7 +141,7 @@ fun SDGListBottomSheet(
 private fun SDGSelectableTextList(
     modifier: Modifier = Modifier,
     listContentPadding: PaddingValues = PaddingValues(bottom = 10.dp),
-    items: List<SDGListPopupItemUiState>,
+    items: PersistentList<SDGListPopupItemUiState>,
     onSelected: (SDGListPopupItemUiState) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
