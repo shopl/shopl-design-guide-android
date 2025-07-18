@@ -103,11 +103,13 @@ fun SDGListBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     ),
+    items: List<SDGListPopupItemUiState>,
+    onSelected: (SDGListPopupItemUiState) -> Unit,
     onDismissRequest: () -> Unit,
-    body: @Composable () -> Unit,
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
+
         sheetState = sheetState,
         shape = RoundedCornerShape(
             topStart = 20.dp,
@@ -124,14 +126,18 @@ fun SDGListBottomSheet(
                 .fillMaxWidth()
                 .navigationBarsPadding()
         ) {
-            body()
+            SDGSelectableTextList(
+                items = items,
+                onSelected = onSelected,
+                onDismissRequest = onDismissRequest
+            )
         }
     }
 }
 
 
 @Composable
-fun SDGSelectableTextList(
+private fun SDGSelectableTextList(
     modifier: Modifier = Modifier,
     listContentPadding: PaddingValues = PaddingValues(bottom = 10.dp),
     items: List<SDGListPopupItemUiState>,
@@ -164,7 +170,7 @@ fun SDGSelectableTextList(
 
 
 @Composable
-fun SDGListPopupItem(
+private fun SDGListPopupItem(
     uiState: SDGListPopupItemUiState,
     onClick: (SDGListPopupItemUiState) -> Unit,
 ) {
@@ -182,7 +188,7 @@ fun SDGListPopupItem(
 
 @Preview
 @Composable
-fun PreviewSDGListPopup() {
+private fun PreviewSDGListPopup() {
     val popupItems = persistentListOf(
         SDGListPopupItemUiState.Default("Default"),
         SDGListPopupItemUiState.Selected("Selected"),
@@ -210,12 +216,8 @@ private fun PreviewSDGListBottomSheet() {
     LaunchedEffect(Unit) { sheetState.expand() }
     SDGListBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = {},
-    ) {
-        SDGSelectableTextList(
-            items = popupItems,
-            onSelected = {},
-            onDismissRequest = {}
-        )
-    }
+        items = popupItems,
+        onSelected = {},
+        onDismissRequest = {}
+    )
 }
