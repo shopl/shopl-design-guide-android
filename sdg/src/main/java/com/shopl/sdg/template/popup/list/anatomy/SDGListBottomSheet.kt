@@ -18,9 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.shopl.sdg.template.util.list_popup_item.SDGListPopupItem
+import com.shopl.sdg.template.util.list_popup_item_ui_state.SDGListPopupItemUiState
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.SDGCornerRadius
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -33,7 +35,6 @@ import kotlinx.collections.immutable.persistentListOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SDGListBottomSheet(
-    modifier: Modifier = Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     ),
@@ -46,14 +47,14 @@ fun SDGListBottomSheet(
 
         sheetState = sheetState,
         shape = RoundedCornerShape(
-            topStart = 20.dp,
-            topEnd = 20.dp
+            topStart = SDGCornerRadius.Radius20,
+            topEnd = SDGCornerRadius.Radius20
         ),
         containerColor = SDGColor.Neutral0,
         dragHandle = null,
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 60.dp)
+            .padding(top = SDGSpacing.Spacing60)
     ) {
         Column(
             modifier = Modifier
@@ -73,7 +74,7 @@ fun SDGListBottomSheet(
 @Composable
 private fun SDGSelectableTextList(
     modifier: Modifier = Modifier,
-    listContentPadding: PaddingValues = PaddingValues(bottom = 10.dp),
+    listContentPadding: PaddingValues = PaddingValues(bottom = SDGSpacing.Spacing10),
     items: PersistentList<SDGListPopupItemUiState>,
     onSelected: (SDGListPopupItemUiState) -> Unit,
     onDismissRequest: () -> Unit,
@@ -94,7 +95,7 @@ private fun SDGSelectableTextList(
                 HorizontalDivider(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 12.dp),
+                        .padding(horizontal = SDGSpacing.Spacing12),
                     color = SDGColor.Neutral200
                 )
             }

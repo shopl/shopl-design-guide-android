@@ -9,42 +9,22 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import com.shopl.sdg.template.util.list_popup_item.SDGListPopupItem
+import com.shopl.sdg.template.util.list_popup_item_ui_state.SDGListPopupItemUiState
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.SDGCornerRadius
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-
-@Stable
-sealed class SDGListPopupItemUiState(
-    open val title: String,
-    val textColor: Color,
-) {
-    companion object {
-        fun create(title: String, shouldSelect: Boolean): SDGListPopupItemUiState {
-            return if (shouldSelect) {
-                Selected(title)
-            } else {
-                Default(title)
-            }
-        }
-    }
-
-    data class Default(override val title: String) : SDGListPopupItemUiState(title, SDGColor.Neutral700)
-    data class Selected(override val title: String) : SDGListPopupItemUiState(title, SDGColor.Primary300)
-    data class Delete(override val title: String) : SDGListPopupItemUiState(title, SDGColor.Red300)
-
-}
 
 @Composable
 fun SDGListPopup(
@@ -61,11 +41,17 @@ fun SDGListPopup(
         )
     ) {
         (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0.4f)
+
+        val windowSizePx = LocalWindowInfo.current.containerSize
+        val density = LocalDensity.current
+        val maxHeightDp = with(density) { windowSizePx.height.toDp() } - 120.dp
+        val maxWidthDp = with(density) { windowSizePx.width.toDp() } - 40.dp
+
         Column(
             modifier = Modifier
-                .heightIn(max = (LocalConfiguration.current.screenHeightDp - 120).dp)
-                .widthIn(max = (LocalConfiguration.current.screenWidthDp - 40).dp)
-                .clip(RoundedCornerShape(20.dp))
+                .heightIn(max = maxHeightDp)
+                .widthIn(max = maxWidthDp)
+                .clip(RoundedCornerShape(SDGCornerRadius.Radius20))
                 .background(SDGColor.Neutral0)
                 .verticalScroll(rememberScrollState())
         ) {
