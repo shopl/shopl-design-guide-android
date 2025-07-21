@@ -34,12 +34,12 @@ import kotlinx.collections.immutable.persistentListOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SDGListBottomSheet(
-    sheetState: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    ),
     items: PersistentList<SDGListPopupItemUiState>,
     onSelected: (SDGListPopupItemUiState) -> Unit,
     onDismissRequest: () -> Unit,
+    sheetState: SheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,

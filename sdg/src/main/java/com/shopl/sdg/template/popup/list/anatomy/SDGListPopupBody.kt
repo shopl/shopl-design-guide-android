@@ -16,12 +16,6 @@ import com.shopl.sdg_common.ui.components.SDGText
 /**
  * SDG - Popup - Anatomy - Body
  *
- * Height는 콘텐츠에 따라 가변사이즈입니다.
- * Text와 Divider로 구성됩니다.
- * Scroll 영역은 전체입니다.
- * *마지막 리스트의 Diver는 생략합니다.
- * *마지막 리스트 하단에는 10px 패딩이 추가됩니다.
- *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?m=auto&node-id=11228-13323&t=LlVpB7SDwYTIxUWn-1">Figma</a>
  */
 
