@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.button.ghost.SDGGhostButton
 import com.shopl.sdg.component.button.ghost.SDGGhostButtonSize
-import com.shopl.sdg_common.ui.components.IOTypeface
 
 /**
  * [RowScope] [SDGGhostButton]
@@ -26,7 +25,6 @@ fun RowScope.SDGGhostButton(
     labelColor: Color,
     onClick: () -> Unit,
     enable: Boolean = true,
-    labelTypeface: IOTypeface = IOTypeface.REGULAR,
     @DrawableRes leftIcon: Int? = null,
     leftIconTint: Color? = null,
     @DrawableRes rightIcon: Int? = null,
@@ -40,7 +38,6 @@ fun RowScope.SDGGhostButton(
             size = size,
             label = label,
             labelColor = labelColor,
-            labelTypeface = labelTypeface,
             leftIcon = leftIcon,
             leftIconTint = leftIconTint,
             rightIcon = rightIcon,
@@ -63,7 +60,6 @@ fun BoxScope.SDGGhostButton(
     labelColor: Color,
     onClick: () -> Unit,
     enable: Boolean = true,
-    labelTypeface: IOTypeface = IOTypeface.REGULAR,
     @DrawableRes leftIcon: Int? = null,
     leftIconTint: Color? = null,
     @DrawableRes rightIcon: Int? = null,
@@ -77,7 +73,6 @@ fun BoxScope.SDGGhostButton(
             size = size,
             label = label,
             labelColor = labelColor,
-            labelTypeface = labelTypeface,
             leftIcon = leftIcon,
             leftIconTint = leftIconTint,
             rightIcon = rightIcon,

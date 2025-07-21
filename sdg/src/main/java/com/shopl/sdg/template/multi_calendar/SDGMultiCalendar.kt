@@ -33,7 +33,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shopl.sdg.component.button.ghost.SDGGhostButton
 import com.shopl.sdg.component.button.ghost.SDGGhostButtonSize
 import com.shopl.sdg.component.calendar.SDGCalendarDay
 import com.shopl.sdg.component.calendar.SDGCalendarDayMode
@@ -46,6 +45,7 @@ import com.shopl.sdg.component.calendar.WeekDateTime
 import com.shopl.sdg.component.calendar.equalY
 import com.shopl.sdg.component.calendar.equalYM
 import com.shopl.sdg.component.tab.SDGLineFixedTab
+import com.shopl.sdg.component.util.button.ghost.SDGGhostButton
 import com.shopl.sdg_common.ext.distanceDays
 import com.shopl.sdg_common.ext.withColor
 import com.shopl.sdg_common.foundation.SDGColor
@@ -317,7 +317,6 @@ fun SDGMultiCalendarModal(
                     size = SDGGhostButtonSize.Large,
                     label = stringResource(id = R.string.dialog_common_btn_ok),
                     labelColor = SDGColor.Neutral700,
-                    labelTypeface = IOTypeface.SEMI_BOLD,
                     onClick = {
                         when (val type = types[selectedTabIndex]) {
                             is SDGMultiCalendarModalType.Day -> {
