@@ -4,12 +4,10 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -125,75 +123,8 @@ fun SDGGhostButton(
 }
 
 @Composable
-fun RowScope.SDGGhostButton(
-    weight: Float,
-    size: SDGGhostButtonSize,
-    label: String,
-    labelColor: Color,
-    onClick: () -> Unit,
-    enable: Boolean = true,
-    labelTypeface: IOTypeface = IOTypeface.REGULAR,
-    @DrawableRes leftIcon: Int? = null,
-    leftIconTint: Color? = null,
-    @DrawableRes rightIcon: Int? = null,
-    rightIconTint: Color? = null,
-    marginValues: PaddingValues = PaddingValues(),
-) {
-    Box(Modifier.weight(weight)) {
-        SDGGhostButton(
-            isFillMaxWidth = true,
-            enable = enable,
-            size = size,
-            label = label,
-            labelColor = labelColor,
-            labelTypeface = labelTypeface,
-            leftIcon = leftIcon,
-            leftIconTint = leftIconTint,
-            rightIcon = rightIcon,
-            rightIconTint = rightIconTint,
-            marginValues = marginValues,
-            onClick = onClick,
-        )
-    }
-}
-
-@Composable
-fun BoxScope.SDGGhostButton(
-    alignment: Alignment,
-    isFillMaxWidth: Boolean,
-    size: SDGGhostButtonSize,
-    label: String,
-    labelColor: Color,
-    onClick: () -> Unit,
-    enable: Boolean = true,
-    labelTypeface: IOTypeface = IOTypeface.REGULAR,
-    @DrawableRes leftIcon: Int? = null,
-    leftIconTint: Color? = null,
-    @DrawableRes rightIcon: Int? = null,
-    rightIconTint: Color? = null,
-    marginValues: PaddingValues = PaddingValues(),
-) {
-    Box(Modifier.align(alignment)) {
-        SDGGhostButton(
-            isFillMaxWidth = isFillMaxWidth,
-            enable = enable,
-            size = size,
-            label = label,
-            labelColor = labelColor,
-            labelTypeface = labelTypeface,
-            leftIcon = leftIcon,
-            leftIconTint = leftIconTint,
-            rightIcon = rightIcon,
-            rightIconTint = rightIconTint,
-            marginValues = marginValues,
-            onClick = onClick,
-        )
-    }
-}
-
-@Composable
 @Preview
-private fun PrevSDGGhostButton() {
+private fun PreviewSDGGhostButton() {
     Surface(Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -218,37 +149,6 @@ private fun PrevSDGGhostButton() {
                 labelColor = SDGColor.Neutral700,
                 onClick = {}
             )
-
-
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-
-                SDGGhostButton(
-                    enable = false,
-                    weight = 1f,
-                    size = SDGGhostButtonSize.Medium,
-                    label = "작성하기",
-                    labelColor = SDGColor.Neutral700,
-                    onClick = {}
-                )
-
-                SDGGhostButton(
-                    enable = false,
-                    weight = 1f,
-                    size = SDGGhostButtonSize.Medium,
-                    label = "작성하기",
-                    labelColor = SDGColor.Neutral700,
-                    onClick = {}
-                )
-
-                SDGGhostButton(
-                    enable = false,
-                    weight = 1f,
-                    size = SDGGhostButtonSize.Medium,
-                    label = "작성하기",
-                    labelColor = SDGColor.Neutral700,
-                    onClick = {}
-                )
-            }
         }
     }
 }
