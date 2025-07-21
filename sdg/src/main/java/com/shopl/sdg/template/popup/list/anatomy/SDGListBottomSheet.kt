@@ -18,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.shopl.sdg.template.util.list_popup_item.SDGListPopupItem
+import com.shopl.sdg.template.util.list_popup_item.SDGListPopupBody
 import com.shopl.sdg.template.util.list_popup_item_ui_state.SDGListPopupItemUiState
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
@@ -86,7 +86,7 @@ private fun SDGSelectableTextList(
         contentPadding = listContentPadding
     ) {
         itemsIndexed(items) { index, item ->
-            SDGListPopupItem(uiState = item) {
+            SDGListPopupBody(uiState = item) {
                 onSelected(item)
                 onDismissRequest()
             }

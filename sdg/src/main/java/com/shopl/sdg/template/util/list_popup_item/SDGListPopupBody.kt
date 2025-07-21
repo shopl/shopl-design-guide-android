@@ -14,7 +14,7 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
 @Composable
-fun SDGListPopupItem(
+fun SDGListPopupBody(
     uiState: SDGListPopupItemUiState,
     onClick: (SDGListPopupItemUiState) -> Unit,
 ) {
@@ -37,7 +37,7 @@ fun PreviewSDGListPopupItem() {
     val item = SDGListPopupItemUiState.Default(
         "Default Text가 길어지면 상하 padding 유지한 상태로 줄바꿈하여 전체 노출"
     )
-    SDGListPopupItem(
+    SDGListPopupBody(
         uiState = item,
         onClick = {}
     )
