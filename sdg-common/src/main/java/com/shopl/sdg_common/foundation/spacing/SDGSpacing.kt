@@ -22,6 +22,7 @@ object SDGSpacing {
     val Spacing40 = 40.dp
 
     /** Special **/
+    val Spacing1 = 1.dp
     val Spacing6 = 6.dp
     val Spacing28 = 28.dp
     val Spacing32 = 32.dp
