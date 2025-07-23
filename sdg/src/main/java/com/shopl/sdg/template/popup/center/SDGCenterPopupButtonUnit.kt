@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,13 +23,18 @@ import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 
+private const val SDGCenterPopupButtonHeight = 51
+
+/**
+ * SDG Popup에서 사용되는 Button
+ */
 @Composable
-fun SDGCenterPopupButtonUnit(
+fun SDGCenterPopupButton(
     option: SDGCenterPopupButtonOption
 ) {
     when (option) {
         is SDGCenterPopupButtonOption.OneOption -> {
-            SDGOneOptionCenterPopupButtonUnit(
+            SDGOneOptionCenterPopupButton(
                 label = option.label,
                 labelColor = option.labelColor,
                 enabled = option.enabled,
@@ -37,7 +43,7 @@ fun SDGCenterPopupButtonUnit(
         }
 
         is SDGCenterPopupButtonOption.TwoOption -> {
-            SDGTwoOptionCenterPopupButtonUnit(
+            SDGTwoOptionCenterPopupButton(
                 cancelLabel = option.cancelLabel,
                 confirmLabel = option.confirmLabel,
                 isConfirmEnable = option.confirmEnabled,
@@ -48,7 +54,7 @@ fun SDGCenterPopupButtonUnit(
         }
 
         is SDGCenterPopupButtonOption.DeleteOption -> {
-            SDGDeleteOptionCenterPopupButtonUnit(
+            SDGDeleteOptionCenterPopupButton(
                 cancelLabel = option.cancelLabel,
                 deleteLabel = option.deleteLabel,
                 onClickCancel = option.onClickCancel,
@@ -61,7 +67,7 @@ fun SDGCenterPopupButtonUnit(
 }
 
 @Composable
-private fun SDGOneOptionCenterPopupButtonUnit(
+private fun SDGOneOptionCenterPopupButton(
     label: String,
     onClick: () -> Unit,
     labelColor: Color = SDGColor.Neutral700,
@@ -70,7 +76,7 @@ private fun SDGOneOptionCenterPopupButtonUnit(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(51.dp)
+            .height(SDGCenterPopupButtonHeight.dp)
             .clip(RoundedCornerShape(bottomStart = SDGCornerRadius.Radius20, bottomEnd = SDGCornerRadius.Radius20))
             .background(SDGColor.Neutral0)
     ) {
@@ -89,7 +95,7 @@ private fun SDGOneOptionCenterPopupButtonUnit(
 }
 
 @Composable
-private fun SDGTwoOptionCenterPopupButtonUnit(
+private fun SDGTwoOptionCenterPopupButton(
     cancelLabel: String,
     confirmLabel: String,
     onClickCancel: () -> Unit,
@@ -100,7 +106,7 @@ private fun SDGTwoOptionCenterPopupButtonUnit(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(51.dp)
+            .height(SDGCenterPopupButtonHeight.dp)
             .clip(RoundedCornerShape(bottomStart = SDGCornerRadius.Radius20, bottomEnd = SDGCornerRadius.Radius20))
             .background(SDGColor.Neutral0)
     ) {
@@ -120,7 +126,10 @@ private fun SDGTwoOptionCenterPopupButtonUnit(
                 marginValues = PaddingValues(vertical = Spacing4)
             )
 
-            VerticalDivider(modifier = Modifier.height(51.dp), color = SDGColor.Neutral200)
+            VerticalDivider(
+                modifier = Modifier.fillMaxHeight(),
+                color = SDGColor.Neutral200
+            )
 
             SDGGhostButton(
                 weight = 1f,
@@ -137,7 +146,7 @@ private fun SDGTwoOptionCenterPopupButtonUnit(
 
 
 @Composable
-private fun SDGDeleteOptionCenterPopupButtonUnit(
+private fun SDGDeleteOptionCenterPopupButton(
     cancelLabel: String,
     deleteLabel: String,
     onClickCancel: () -> Unit,
@@ -148,7 +157,7 @@ private fun SDGDeleteOptionCenterPopupButtonUnit(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(51.dp)
+            .height(SDGCenterPopupButtonHeight.dp)
             .clip(RoundedCornerShape(bottomStart = SDGCornerRadius.Radius20, bottomEnd = SDGCornerRadius.Radius20))
             .background(SDGColor.Neutral0)
     ) {
@@ -168,7 +177,7 @@ private fun SDGDeleteOptionCenterPopupButtonUnit(
             )
 
             VerticalDivider(
-                modifier = Modifier.height(56.dp),
+                modifier = Modifier.fillMaxHeight(),
                 color = SDGColor.Neutral200
             )
 
@@ -187,8 +196,8 @@ private fun SDGDeleteOptionCenterPopupButtonUnit(
 
 @Preview
 @Composable
-private fun SDGOneOptionCenterPopupButtonUnitPreview() {
-    SDGOneOptionCenterPopupButtonUnit(
+private fun PreviewSDGOneOptionCenterPopupButton() {
+    SDGOneOptionCenterPopupButton(
         label = "확인",
         onClick = {},
         enabled = true
@@ -197,8 +206,8 @@ private fun SDGOneOptionCenterPopupButtonUnitPreview() {
 
 @Preview
 @Composable
-private fun SDGTwoOptionCenterPopupButtonUnitPreview() {
-    SDGTwoOptionCenterPopupButtonUnit(
+private fun PreviewSDGTwoOptionCenterPopupButton() {
+    SDGTwoOptionCenterPopupButton(
         cancelLabel = "취소",
         confirmLabel = "확인",
         onClickCancel = {},
@@ -209,8 +218,8 @@ private fun SDGTwoOptionCenterPopupButtonUnitPreview() {
 
 @Preview
 @Composable
-private fun SDGDeleteOptionCenterPopupButtonUnitPreview() {
-    SDGDeleteOptionCenterPopupButtonUnit(
+private fun PreviewSDGDeleteOptionCenterPopupButton() {
+    SDGDeleteOptionCenterPopupButton(
         cancelLabel = "취소",
         deleteLabel = "삭제",
         onClickCancel = {},
