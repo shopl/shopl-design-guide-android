@@ -3,6 +3,7 @@ package com.shopl.sdg.template.popup.center
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,22 +33,21 @@ import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
 /**
- *
- *
+ * Center Popup의 틀이 되는 Base Popup
  */
 @Composable
-fun SDGCenterPopup(
+private fun BaseCenterPopup(
     singleButton: Boolean,
     onClickConfirm: () -> Unit,
     isConfirmEnable: Boolean = true,
-    title: String = "",
+    title: String? = null,
     titleAlignment: TextAlign = TextAlign.Left,
     confirmLabelColor: Color = SDGColor.Neutral700,
     cancelLabel: String = stringResource(id = R.string.dialog_common_btn_cancel),
     confirmLabel: String = stringResource(id = R.string.dialog_common_btn_ok),
     onDismissRequest: (() -> Unit)? = null,
     onClickCancel: (() -> Unit)? = null,
-    body: @Composable () -> Unit,
+    body: @Composable ColumnScope.() -> Unit,
 ) {
     Dialog(
         onDismissRequest = {
@@ -77,7 +77,7 @@ fun SDGCenterPopup(
                 .padding(top = SDGSpacing.Spacing32)
         ) {
 
-            if (title.isNotBlank()) {
+            if (!title.isNullOrBlank()) {
                 SDGCenterPopupTitle(
                     modifier = Modifier.padding(horizontal = SDGSpacing.Spacing20),
                     title = title,
@@ -94,7 +94,7 @@ fun SDGCenterPopup(
                     .verticalScroll(rememberScrollState())
                     .padding(top = SDGSpacing.Spacing4, bottom = SDGSpacing.Spacing32)
             ) {
-                body.invoke()
+                body()
             }
 
             SDGPopupBottomButton(
@@ -130,7 +130,7 @@ private fun SDGCenterPopupTitle(
 private fun PreviewSDGCenterPopup() {
     Scaffold {
         Box(modifier = Modifier.padding(it)) {
-            SDGCenterPopup(
+            BaseCenterPopup(
                 title = "타이틀",
                 singleButton = false,
                 onClickConfirm = {},
@@ -160,7 +160,7 @@ private fun PreviewSDGCenterPopup() {
 private fun PreviewSDGCenterPopup_Scrollable() {
     Scaffold {
         Box(modifier = Modifier.padding(it)) {
-            SDGCenterPopup(
+            BaseCenterPopup(
                 title = "타이틀",
                 singleButton = false,
                 onClickConfirm = {},
