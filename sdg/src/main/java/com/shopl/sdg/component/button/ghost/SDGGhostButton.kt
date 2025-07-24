@@ -93,13 +93,13 @@ fun SDGGhostButton(
                     modifier = Modifier.size(14.dp),
                     resId = leftIcon,
                     contentDescription = null,
-                    color = leftIconTint
+                    color = if (enable) leftIconTint else leftIconTint.copy(alpha = 0.3f)
                 )
                 Spacer(modifier = Modifier.width(size.gap))
             }
             SDGText(
                 text = label,
-                textColor = labelColor,
+                textColor = if (enable) labelColor else labelColor.copy(alpha = 0.3f),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 typography = typography
@@ -110,7 +110,7 @@ fun SDGGhostButton(
                 SDGImage(
                     resId = rightIcon,
                     contentDescription = null,
-                    color = rightIconTint
+                    color = if (enable) rightIconTint else rightIconTint.copy(alpha = 0.3f)
                 )
             }
         }
@@ -143,7 +143,7 @@ private fun getTypography(size: SDGGhostButtonSize, weight: SDGButtonFontWeight)
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewSDGGhostButton() {
     SDGGhostButton(
@@ -162,7 +162,7 @@ private fun PreviewSDGGhostButton() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewSDGGhostButtonWithIcon() {
     SDGGhostButton(
@@ -172,7 +172,7 @@ private fun PreviewSDGGhostButtonWithIcon() {
         onClick = {},
         weight = SDGButtonFontWeight.SB,
         isFillMaxWidth = false,
-        enable = true,
+        enable = false,
         leftIcon = R.drawable.ic_common_edit,
         leftIconTint = SDGColor.Neutral600,
         rightIcon = null,
