@@ -7,7 +7,7 @@ sealed interface SDGCenterPopupButtonOption {
     data class OneOption(
         val label: String,
         val onClick: () -> Unit,
-        val labelColor: Color = SDGColor.Neutral700,
+        val labelColor: Color,
         val enabled: Boolean = true,
     ) : SDGCenterPopupButtonOption
 

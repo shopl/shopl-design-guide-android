@@ -37,7 +37,6 @@ fun SDGCenterPopup(
     buttonOption: SDGCenterPopupButtonOption,
     title: String? = null,
     titleAlignment: TextAlign = TextAlign.Left,
-    onDismissRequest: (() -> Unit)? = null,
     body: @Composable ColumnScope.() -> Unit,
 ) {
     Dialog(
@@ -47,7 +46,6 @@ fun SDGCenterPopup(
                 is SDGCenterPopupButtonOption.TwoOption -> buttonOption.onClickCancel()
                 is SDGCenterPopupButtonOption.DeleteOption -> buttonOption.onClickCancel()
             }
-            onDismissRequest?.invoke()
         },
         DialogProperties(
             dismissOnBackPress = true,
@@ -107,11 +105,12 @@ private fun SDGCenterPopupTitle(
 
 @Preview
 @Composable
-fun SDGCenterPopupPreviewOneOption() {
+private fun PreviewSDGCenterPopupPreviewOneOption() {
     SDGCenterPopup(
         buttonOption = SDGCenterPopupButtonOption.OneOption(
             label = "확인",
-            onClick = {}
+            onClick = {},
+            labelColor = SDGColor.Neutral700
         ),
         title = "팝업 타이틀",
         body = {
@@ -126,7 +125,7 @@ fun SDGCenterPopupPreviewOneOption() {
 
 @Preview
 @Composable
-fun SDGCenterPopupPreviewTwoOption() {
+private fun PreviewSDGCenterPopupPreviewTwoOption() {
     SDGCenterPopup(
         buttonOption = SDGCenterPopupButtonOption.TwoOption(
             cancelLabel = "취소",
@@ -148,7 +147,7 @@ fun SDGCenterPopupPreviewTwoOption() {
 
 @Preview
 @Composable
-fun SDGCenterPopupPreviewDeleteOption() {
+private fun PreviewSDGCenterPopupDeleteOption() {
     SDGCenterPopup(
         buttonOption = SDGCenterPopupButtonOption.DeleteOption(
             deleteLabel = "삭제",
@@ -159,11 +158,13 @@ fun SDGCenterPopupPreviewDeleteOption() {
         ),
         title = "팝업 타이틀",
         body = {
-            SDGText(
-                text = "팝업 내용입니다. ".repeat(20),
-                typography = SDGTypography.Body1R,
-                textColor = SDGColor.Neutral700
-            )
+            repeat(40){
+                SDGText(
+                    text = "팝업 내용입니다. ",
+                    typography = SDGTypography.Body1R,
+                    textColor = SDGColor.Neutral700
+                )
+            }
         }
     )
 }
