@@ -22,7 +22,7 @@ fun SDGInfoCenterPopup(
     title: String,
     description: String,
     confirmLabel: String,
-    confirmOnClick: () -> Unit,
+    onClickConfirm: () -> Unit,
     confirmLabelColor: Color = SDGColor.Neutral700,
     titleAlignment: TextAlign = TextAlign.Left,
     enabled: Boolean = true,
@@ -30,7 +30,7 @@ fun SDGInfoCenterPopup(
     SDGCenterPopup(
         buttonOption = SDGCenterPopupButtonOption.OneOption(
             label = confirmLabel,
-            onClick = confirmOnClick,
+            onClick = onClickConfirm,
             labelColor = confirmLabelColor,
             enabled = enabled
         ),
@@ -52,7 +52,7 @@ fun PreviewSDGInfoCenterPopup() {
         title = "Title",
         description = "Description",
         confirmLabel = "확인",
-        confirmOnClick = {},
+        onClickConfirm = {},
         confirmLabelColor = SDGColor.Neutral700,
         titleAlignment = TextAlign.Left,
         enabled = true,
