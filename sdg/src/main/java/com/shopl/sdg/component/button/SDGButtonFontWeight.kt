@@ -1,6 +1,6 @@
 package com.shopl.sdg.component.button
 
-enum class SDGButtonWeight {
+enum class SDGButtonFontWeight {
     R,
     SB
 }

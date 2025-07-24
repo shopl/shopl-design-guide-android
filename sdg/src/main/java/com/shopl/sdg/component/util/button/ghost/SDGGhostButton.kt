@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.shopl.sdg.component.button.SDGButtonFontWeight
 import com.shopl.sdg.component.button.ghost.SDGGhostButton
 import com.shopl.sdg.component.button.ghost.SDGGhostButtonSize
 
@@ -22,6 +23,7 @@ fun RowScope.SDGGhostButton(
     weight: Float,
     size: SDGGhostButtonSize,
     label: String,
+    fontWeight: SDGButtonFontWeight,
     labelColor: Color,
     onClick: () -> Unit,
     enable: Boolean = true,
@@ -44,6 +46,7 @@ fun RowScope.SDGGhostButton(
             rightIconTint = rightIconTint,
             marginValues = marginValues,
             onClick = onClick,
+            weight = fontWeight
         )
     }
 }
@@ -57,6 +60,7 @@ fun BoxScope.SDGGhostButton(
     isFillMaxWidth: Boolean,
     size: SDGGhostButtonSize,
     label: String,
+    fontWeight: SDGButtonFontWeight,
     labelColor: Color,
     onClick: () -> Unit,
     enable: Boolean = true,
@@ -79,6 +83,7 @@ fun BoxScope.SDGGhostButton(
             rightIconTint = rightIconTint,
             marginValues = marginValues,
             onClick = onClick,
+            weight = fontWeight
         )
     }
 }
@@ -90,6 +95,7 @@ private fun PreviewRowScopeSDGGhostButton() {
     Row {
         SDGGhostButton(
             weight = 1f,
+            fontWeight = SDGButtonFontWeight.R,
             size = SDGGhostButtonSize.Medium,
             label = "Ghost Button",
             labelColor = Color.Black,
@@ -104,6 +110,7 @@ private fun PreviewRowScopeSDGGhostButtonWithIcon() {
     Row {
         SDGGhostButton(
             weight = 1f,
+            fontWeight = SDGButtonFontWeight.R,
             size = SDGGhostButtonSize.Medium,
             label = "Ghost Button",
             labelColor = Color.Black,
@@ -123,6 +130,7 @@ private fun PreviewBoxScopeSDGGhostButton() {
             size = SDGGhostButtonSize.Medium,
             label = "Ghost Button",
             labelColor = Color.Black,
+            fontWeight = SDGButtonFontWeight.R,
             onClick = {}
         )
     }
@@ -139,6 +147,7 @@ private fun PreviewBoxScopeSDGGhostButtonWithIcon() {
             label = "Ghost Button",
             labelColor = Color.Black,
             onClick = {},
+            fontWeight = SDGButtonFontWeight.SB,
             leftIcon = android.R.drawable.ic_dialog_email
         )
     }

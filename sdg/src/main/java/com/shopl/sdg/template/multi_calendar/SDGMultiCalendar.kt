@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shopl.sdg.component.button.SDGButtonFontWeight
 import com.shopl.sdg.component.button.ghost.SDGGhostButtonSize
 import com.shopl.sdg.component.calendar.SDGCalendarDay
 import com.shopl.sdg.component.calendar.SDGCalendarDayMode
@@ -301,6 +302,7 @@ fun SDGMultiCalendarModal(
                     size = SDGGhostButtonSize.Large,
                     label = stringResource(id = R.string.dialog_common_btn_cancel),
                     onClick = { onClickCancel() },
+                    fontWeight = SDGButtonFontWeight.R,
                     labelColor = SDGColor.Neutral700,
                 )
 
@@ -316,6 +318,7 @@ fun SDGMultiCalendarModal(
                     weight = 1F,
                     size = SDGGhostButtonSize.Large,
                     label = stringResource(id = R.string.dialog_common_btn_ok),
+                    fontWeight = SDGButtonFontWeight.R,
                     labelColor = SDGColor.Neutral700,
                     onClick = {
                         when (val type = types[selectedTabIndex]) {
