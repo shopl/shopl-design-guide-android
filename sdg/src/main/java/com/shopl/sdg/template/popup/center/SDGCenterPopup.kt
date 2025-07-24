@@ -62,11 +62,11 @@ fun SDGCenterPopup(
                     color = SDGColor.Neutral0,
                     shape = RoundedCornerShape(SDGCornerRadius.Radius20)
                 )
-                .padding(top = SDGSpacing.Spacing32)
+                .padding(top = SDGSpacing.Spacing24)
         ) {
             if (!title.isNullOrBlank()) {
                 SDGCenterPopupTitle(
-                    modifier = Modifier.padding(horizontal = SDGSpacing.Spacing20),
+                    modifier = Modifier.padding(horizontal = SDGSpacing.Spacing24),
                     title = title,
                     titleAlignment = titleAlignment
                 )
@@ -75,10 +75,10 @@ fun SDGCenterPopup(
 
             Column(
                 modifier = Modifier
-                    .padding(horizontal = SDGSpacing.Spacing20)
+                    .padding(horizontal = SDGSpacing.Spacing24)
                     .weight(1f, false)
                     .verticalScroll(rememberScrollState())
-                    .padding(top = SDGSpacing.Spacing4, bottom = SDGSpacing.Spacing32)
+                    .padding(top = SDGSpacing.Spacing4, bottom = SDGSpacing.Spacing28)
             ) {
                 body()
             }
@@ -105,7 +105,7 @@ private fun SDGCenterPopupTitle(
 
 @Preview
 @Composable
-private fun PreviewSDGCenterPopupPreviewOneOption() {
+private fun PreviewSDGCenterPopupOneOption() {
     SDGCenterPopup(
         buttonOption = SDGCenterPopupButtonOption.OneOption(
             label = "확인",
@@ -125,13 +125,15 @@ private fun PreviewSDGCenterPopupPreviewOneOption() {
 
 @Preview
 @Composable
-private fun PreviewSDGCenterPopupPreviewTwoOption() {
+private fun PreviewSDGCenterPopupTwoOption() {
     SDGCenterPopup(
         buttonOption = SDGCenterPopupButtonOption.TwoOption(
             cancelLabel = "취소",
             confirmLabel = "확인",
             onClickCancel = {},
-            onClickConfirm = {}
+            onClickConfirm = {},
+            cancelLabelColor = SDGColor.Neutral700,
+            confirmLabelColor = SDGColor.Neutral700
         ),
         title = "팝업 타이틀",
         titleAlignment = TextAlign.Center,
@@ -154,7 +156,8 @@ private fun PreviewSDGCenterPopupDeleteOption() {
             cancelLabel = "취소",
             onClickCancel = {},
             onClickDelete = {},
-            deleteLabelColor = SDGColor.Red300
+            deleteLabelColor = SDGColor.Red300,
+            cancelLabelColor = SDGColor.Neutral700
         ),
         title = "팝업 타이틀",
         body = {
