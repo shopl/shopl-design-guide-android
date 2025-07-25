@@ -42,7 +42,7 @@ fun SDGGhostButton(
     label: String,
     labelColor: Color,
     onClick: () -> Unit,
-    weight: SDGButtonFontWeight,
+    weight: SDGButtonFontWeight = SDGButtonFontWeight.R,
     isFillMaxWidth: Boolean = false,
     enable: Boolean = true,
     @DrawableRes leftIcon: Int? = null,

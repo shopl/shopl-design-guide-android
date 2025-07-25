@@ -302,7 +302,6 @@ fun SDGMultiCalendarModal(
                     size = SDGGhostButtonSize.Large,
                     label = stringResource(id = R.string.dialog_common_btn_cancel),
                     onClick = { onClickCancel() },
-                    fontWeight = SDGButtonFontWeight.R,
                     labelColor = SDGColor.Neutral700,
                 )
 
@@ -318,7 +317,6 @@ fun SDGMultiCalendarModal(
                     weight = 1F,
                     size = SDGGhostButtonSize.Large,
                     label = stringResource(id = R.string.dialog_common_btn_ok),
-                    fontWeight = SDGButtonFontWeight.R,
                     labelColor = SDGColor.Neutral700,
                     onClick = {
                         when (val type = types[selectedTabIndex]) {
