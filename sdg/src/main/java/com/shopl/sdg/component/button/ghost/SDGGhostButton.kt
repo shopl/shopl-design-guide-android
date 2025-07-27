@@ -42,7 +42,7 @@ fun SDGGhostButton(
     label: String,
     labelColor: Color,
     onClick: () -> Unit,
-    weight: SDGButtonFontWeight = SDGButtonFontWeight.R,
+    labelWeight: SDGButtonFontWeight = SDGButtonFontWeight.R,
     isFillMaxWidth: Boolean = false,
     enable: Boolean = true,
     @DrawableRes leftIcon: Int? = null,
@@ -51,7 +51,7 @@ fun SDGGhostButton(
     rightIconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
 ) {
-    val typography = getTypography(size, weight)
+    val typography = getTypography(size, labelWeight)
 
     Box(
         modifier = if (isFillMaxWidth) {
@@ -151,7 +151,7 @@ private fun PreviewSDGGhostButton() {
         label = "Ghost Button",
         labelColor = SDGColor.Neutral600,
         onClick = {},
-        weight = SDGButtonFontWeight.R,
+        labelWeight = SDGButtonFontWeight.R,
         isFillMaxWidth = false,
         enable = true,
         leftIcon = null,
@@ -170,7 +170,7 @@ private fun PreviewSDGGhostButtonWithIcon() {
         label = "Ghost Button",
         labelColor = SDGColor.Neutral600,
         onClick = {},
-        weight = SDGButtonFontWeight.SB,
+        labelWeight = SDGButtonFontWeight.SB,
         isFillMaxWidth = false,
         enable = false,
         leftIcon = R.drawable.ic_common_edit,
