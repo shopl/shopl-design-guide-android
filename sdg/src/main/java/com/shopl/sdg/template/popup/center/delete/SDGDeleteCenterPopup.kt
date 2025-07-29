@@ -53,7 +53,7 @@ fun SDGDeleteCenterPopup(
 
 @Preview
 @Composable
-fun PreviewSDGDeleteCenterPopup() {
+private fun PreviewSDGDeleteCenterPopup() {
     SDGDeleteCenterPopup(
         title = "Title",
         description = "Description",

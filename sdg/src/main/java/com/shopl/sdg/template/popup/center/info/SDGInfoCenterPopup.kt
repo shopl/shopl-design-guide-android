@@ -47,7 +47,7 @@ fun SDGInfoCenterPopup(
 
 @Preview
 @Composable
-fun PreviewSDGInfoCenterPopup() {
+private fun PreviewSDGInfoCenterPopup() {
     SDGInfoCenterPopup(
         title = "Title",
         description = "Description",
@@ -58,7 +58,3 @@ fun PreviewSDGInfoCenterPopup() {
         enabled = true,
     )
 }
-
-
-
-
