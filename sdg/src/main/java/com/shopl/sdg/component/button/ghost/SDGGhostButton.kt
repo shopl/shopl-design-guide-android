@@ -3,28 +3,28 @@ package com.shopl.sdg.component.button.ghost
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.button.SDGButtonFontWeight
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
@@ -42,6 +42,8 @@ fun SDGGhostButton(
     label: String,
     labelColor: Color,
     onClick: () -> Unit,
+    iconSize: SDGGhostButtonIconSize = SDGGhostButtonIconSize.Icon14,
+    labelWeight: SDGButtonFontWeight = SDGButtonFontWeight.R,
     isFillMaxWidth: Boolean = false,
     enable: Boolean = true,
     @DrawableRes leftIcon: Int? = null,
@@ -50,6 +52,17 @@ fun SDGGhostButton(
     rightIconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
 ) {
+    require(
+        when (size) {
+            SDGGhostButtonSize.Large -> SDGGhostButtonIconSize.Icon16 == iconSize || SDGGhostButtonIconSize.Icon14 == iconSize
+            SDGGhostButtonSize.Medium,
+            SDGGhostButtonSize.Small -> SDGGhostButtonIconSize.Icon14 == iconSize || SDGGhostButtonIconSize.Icon12 == iconSize
+        }
+    ) {
+        "SDGGhostButtonSize에 맞는 SDGGhostButtonIconSize를 설정해주세요"
+    }
+    val typography = getTypography(size, labelWeight)
+
     Box(
         modifier = if (isFillMaxWidth) {
             Modifier.fillMaxWidth()
@@ -87,58 +100,95 @@ fun SDGGhostButton(
         ) {
             if (leftIcon != null && leftIconTint != null) {
                 SDGImage(
-                    modifier = Modifier.size(14.dp),
+                    modifier = Modifier.size(iconSize.size),
                     resId = leftIcon,
                     contentDescription = null,
-                    color = leftIconTint
+                    color = if (enable) leftIconTint else leftIconTint.copy(alpha = 0.3f)
                 )
                 Spacer(modifier = Modifier.width(size.gap))
             }
             SDGText(
                 text = label,
-                textColor = labelColor,
-                typography = size.typography
+                textColor = if (enable) labelColor else labelColor.copy(alpha = 0.3f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                typography = typography
             )
             if (rightIcon != null && rightIconTint != null) {
                 Spacer(modifier = Modifier.width(size.gap))
 
                 SDGImage(
+                    modifier = Modifier.size(iconSize.size),
                     resId = rightIcon,
                     contentDescription = null,
-                    color = rightIconTint
+                    color = if (enable) rightIconTint else rightIconTint.copy(alpha = 0.3f)
                 )
             }
         }
     }
 }
 
-@Composable
-@Preview
-private fun PreviewSDGGhostButton() {
-    Surface(Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
+private fun getTypography(size: SDGGhostButtonSize, weight: SDGButtonFontWeight): SDGTypography {
+    return when (size) {
+        SDGGhostButtonSize.Large -> {
+            when (weight) {
+                SDGButtonFontWeight.R -> SDGTypography.Body1R
+                SDGButtonFontWeight.SB -> SDGTypography.Body1SB
+            }
+        }
 
-            SDGGhostButton(
-                size = SDGGhostButtonSize.Medium,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral700,
-                onClick = {}
-            )
+        SDGGhostButtonSize.Medium -> {
+            when (weight) {
+                SDGButtonFontWeight.R -> SDGTypography.Body2R
+                SDGButtonFontWeight.SB -> SDGTypography.Body2SB
+            }
+        }
 
-            SDGGhostButton(
-                isFillMaxWidth = true,
-                size = SDGGhostButtonSize.Medium,
-                leftIcon = R.drawable.ic_common_edit,
-                leftIconTint = SDGColor.Neutral700,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral700,
-                onClick = {}
-            )
+        SDGGhostButtonSize.Small -> {
+            when (weight) {
+                SDGButtonFontWeight.R -> SDGTypography.Body3R
+                SDGButtonFontWeight.SB -> SDGTypography.Body3SB
+            }
         }
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewSDGGhostButton() {
+    SDGGhostButton(
+        size = SDGGhostButtonSize.Large,
+        label = "Ghost Button",
+        labelColor = SDGColor.Neutral600,
+        onClick = {},
+        labelWeight = SDGButtonFontWeight.R,
+        isFillMaxWidth = false,
+        enable = true,
+        leftIcon = null,
+        leftIconTint = null,
+        rightIcon = null,
+        rightIconTint = null,
+        marginValues = PaddingValues(0.dp)
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewSDGGhostButtonWithIcon() {
+    SDGGhostButton(
+        size = SDGGhostButtonSize.Large,
+        iconSize = SDGGhostButtonIconSize.Icon16,
+        label = "Ghost Button",
+        labelColor = SDGColor.Neutral600,
+        onClick = {},
+        labelWeight = SDGButtonFontWeight.SB,
+        isFillMaxWidth = false,
+        enable = false,
+        leftIcon = R.drawable.ic_common_edit,
+        leftIconTint = SDGColor.Neutral600,
+        rightIcon = null,
+        rightIconTint = null,
+        marginValues = PaddingValues(0.dp)
+    )
 }
