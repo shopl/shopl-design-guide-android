@@ -41,6 +41,7 @@ fun SDGGhostButton(
     size: SDGGhostButtonSize,
     label: String,
     labelColor: Color,
+    iconSize: SDGGhostButtonIconSize,
     onClick: () -> Unit,
     labelWeight: SDGButtonFontWeight = SDGButtonFontWeight.R,
     isFillMaxWidth: Boolean = false,
@@ -51,6 +52,15 @@ fun SDGGhostButton(
     rightIconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
 ) {
+    require(
+        when (size) {
+            SDGGhostButtonSize.Large -> SDGGhostButtonIconSize.Icon16 == iconSize || SDGGhostButtonIconSize.Icon14 == iconSize
+            SDGGhostButtonSize.Medium,
+            SDGGhostButtonSize.Small -> SDGGhostButtonIconSize.Icon14 == iconSize || SDGGhostButtonIconSize.Icon12 == iconSize
+        }
+    ) {
+        "SDGGhostButtonSize에 맞는 SDGGhostButtonIconSize를 설정해주세요"
+    }
     val typography = getTypography(size, labelWeight)
 
     Box(
