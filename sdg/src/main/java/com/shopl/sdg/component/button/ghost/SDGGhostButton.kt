@@ -41,8 +41,8 @@ fun SDGGhostButton(
     size: SDGGhostButtonSize,
     label: String,
     labelColor: Color,
-    iconSize: SDGGhostButtonIconSize,
     onClick: () -> Unit,
+    iconSize: SDGGhostButtonIconSize = SDGGhostButtonIconSize.Icon14,
     labelWeight: SDGButtonFontWeight = SDGButtonFontWeight.R,
     isFillMaxWidth: Boolean = false,
     enable: Boolean = true,
@@ -100,7 +100,7 @@ fun SDGGhostButton(
         ) {
             if (leftIcon != null && leftIconTint != null) {
                 SDGImage(
-                    modifier = Modifier.size(14.dp),
+                    modifier = Modifier.size(iconSize.size),
                     resId = leftIcon,
                     contentDescription = null,
                     color = if (enable) leftIconTint else leftIconTint.copy(alpha = 0.3f)
@@ -118,6 +118,7 @@ fun SDGGhostButton(
                 Spacer(modifier = Modifier.width(size.gap))
 
                 SDGImage(
+                    modifier = Modifier.size(iconSize.size),
                     resId = rightIcon,
                     contentDescription = null,
                     color = if (enable) rightIconTint else rightIconTint.copy(alpha = 0.3f)
@@ -177,6 +178,7 @@ private fun PreviewSDGGhostButton() {
 private fun PreviewSDGGhostButtonWithIcon() {
     SDGGhostButton(
         size = SDGGhostButtonSize.Large,
+        iconSize = SDGGhostButtonIconSize.Icon16,
         label = "Ghost Button",
         labelColor = SDGColor.Neutral600,
         onClick = {},
