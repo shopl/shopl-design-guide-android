@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.workplace
+package com.shopl.sdg.feature_component.workplace
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Canvas
