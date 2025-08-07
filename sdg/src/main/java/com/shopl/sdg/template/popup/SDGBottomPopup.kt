@@ -9,14 +9,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.foundation.typography.SDGTypography
+import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
 /**
@@ -24,25 +30,27 @@ import com.shopl.sdg_resource.R
  *
  * 태스크 수행을 위한 콘텐츠를 포함하는 화면 하단에 노출되는 팝업
  *
- * @param inputState SimpeInput 에서 사용되는 state, Error인 경우 현재 message 별도 출력하지 않음
+ * @param sheetState BottomSheetState
+ *                   만약 중간 펼침(PartiallyExpanded) 상태가 필요하다면
+ *                   rememberModalBottomSheetState(skipPartiallyExpanded = true)으로 설정
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19210-2895&m=dev">Figma</a>
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SDGBottomPopup(
+    singleButton: Boolean,
+    onClickConfirm: () -> Unit,
     modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
     sheetState: SheetState = rememberModalBottomSheetState(),
     containerColor: Color = SDGColor.Neutral0,
     contentColor: Color = SDGColor.Neutral0,
-    singleButton: Boolean,
     cancelLabel: String = stringResource(id = R.string.dialog_common_btn_cancel),
     confirmLabel: String = stringResource(id = R.string.dialog_common_btn_ok),
     onClickCancel: (() -> Unit)? = null,
-    onClickConfirm: () -> Unit,
     isConfirmEnable: Boolean = true,
     confirmLabelColor: Color = SDGColor.Neutral700,
-    content: @Composable() () -> Unit,
 ) {
     ModalBottomSheet(
         onDismissRequest = onClickCancel ?: onClickConfirm,
@@ -86,4 +94,32 @@ fun SDGBottomPopup(
             )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun PreviewSDGBottomPopup() {
+    val density = LocalDensity.current
+    val sheetState = remember {
+        SheetState(
+            skipPartiallyExpanded = true,
+            confirmValueChange = { true },
+            initialValue = SheetValue.Expanded,
+            density = density,
+            skipHiddenState = false
+        )
+    }
+    SDGBottomPopup(
+        sheetState = sheetState,
+        singleButton = false,
+        onClickConfirm = {},
+        content = {
+            SDGText(
+                text = "SDGBottomPopup Content",
+                textColor = SDGColor.Neutral700,
+                typography = SDGTypography.Body1R
+            )
+        }
+    )
 }
