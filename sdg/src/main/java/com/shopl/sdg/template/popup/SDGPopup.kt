@@ -344,11 +344,11 @@ fun ColumnScope.SDGPopupBottomButton(
                         onClickCancel?.invoke()
                     },
             ) {
-                IOText(
+                SDGText(
                     modifier = Modifier.align(Alignment.Center),
                     text = cancelLabel,
                     textColor = SDGColor.Neutral700,
-                    fontSize = 16.sp,
+                    typography = SDGTypography.Body1R,
                     textAlign = TextAlign.Center
                 )
             }
@@ -388,13 +388,12 @@ fun ColumnScope.SDGPopupBottomButton(
                     }
                 ),
         ) {
-            IOText(
+            SDGText(
                 modifier = Modifier.align(Alignment.Center),
                 text = confirmLabel,
                 textColor = if (isConfirmEnable) confirmLabelColor else confirmLabelColor.copy(0.3F),
-                fontSize = 16.sp,
+                typography = SDGTypography.Body1SB,
                 textAlign = TextAlign.Center,
-                typeface = IOTypeface.SEMI_BOLD
             )
         }
     }
