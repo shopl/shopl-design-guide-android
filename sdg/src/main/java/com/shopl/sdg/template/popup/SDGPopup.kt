@@ -363,7 +363,7 @@ fun ColumnScope.SDGPopupBottomButton(
                     )
                     .width(1.dp)
                     .background(
-                        color = SDGColor.Neutral200
+                        color = SDGColor.Neutral150
                     )
             )
         }
