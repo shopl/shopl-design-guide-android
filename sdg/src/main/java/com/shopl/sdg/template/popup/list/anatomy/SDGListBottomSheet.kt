@@ -13,10 +13,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.template.util.list_popup_item_ui_state.SDGListPopupItemUiState
 import com.shopl.sdg_common.foundation.SDGColor
@@ -43,13 +46,14 @@ fun SDGListBottomSheet(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
-
         sheetState = sheetState,
         shape = RoundedCornerShape(
             topStart = SDGCornerRadius.Radius20,
             topEnd = SDGCornerRadius.Radius20
         ),
         containerColor = SDGColor.Neutral0,
+        contentColor = SDGColor.Neutral0,
+        scrimColor = SDGColor.Neutral900_a40,
         dragHandle = null,
         modifier = Modifier
             .fillMaxWidth()
@@ -106,9 +110,16 @@ private fun SDGSelectableTextList(
 @Preview
 @Composable
 private fun PreviewSDGListBottomSheet() {
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
+    val density = LocalDensity.current
+    val sheetState = remember {
+        SheetState(
+            skipPartiallyExpanded = true,
+            confirmValueChange = { true },
+            initialValue = SheetValue.Expanded,
+            density = density,
+            skipHiddenState = false
+        )
+    }
     val popupItems = persistentListOf(
         SDGListPopupItemUiState.Default("Default Text가 길어지면 상하 padding 유지한 상태로 줄바꿈하여 전체 노출 "),
         SDGListPopupItemUiState.Selected("Selected"),
