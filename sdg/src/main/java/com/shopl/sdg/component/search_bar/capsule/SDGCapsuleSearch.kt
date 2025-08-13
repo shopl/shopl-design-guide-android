@@ -36,6 +36,7 @@ import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing10
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
@@ -119,7 +120,7 @@ fun SDGCapsuleSearch(
                     color = SDGColor.Neutral300,
                 )
 
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(Spacing4))
 
                 Box(Modifier.weight(1f)) {
                     if (input.isEmpty()) {
@@ -132,7 +133,7 @@ fun SDGCapsuleSearch(
                     innerTextField()
                 }
 
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(Spacing12))
 
                 if (input.isNotEmpty()) {
                     SDGImage(
