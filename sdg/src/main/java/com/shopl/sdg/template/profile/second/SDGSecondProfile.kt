@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.avatar.SDGAvatar
 import com.shopl.sdg.component.avatar.SDGAvatarBadge
 import com.shopl.sdg.component.avatar.SDGAvatarSize
@@ -63,11 +62,16 @@ fun SDGSecondProfile(
                 Modifier
             }
         )
+        .then(
+            if (radius != null) {
+                Modifier.clip(RoundedCornerShape(radius))
+            } else {
+                Modifier
+            }
+        )
         .background(
             color = backgroundColor,
-            shape = RoundedCornerShape(radius ?: 0.dp)
         )
-        .clip(RoundedCornerShape(radius ?: 0.dp))
         .padding(paddingValues)
 
     Row(
