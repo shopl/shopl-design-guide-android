@@ -121,6 +121,3 @@ private fun PreviewSDGSecondProfile() {
         avatarBadge = SDGAvatarBadge.Admin,
     )
 }
-
-
-
