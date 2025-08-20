@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.button.SDGButtonFontWeight
 import com.shopl.sdg.component.button.ghost.SDGGhostButton
 import com.shopl.sdg.component.button.ghost.SDGGhostButtonSize
 import com.shopl.sdg.component.util.button.ghost.SDGGhostButton
@@ -87,6 +88,7 @@ private fun SDGOneOptionCenterPopupButton(
             label = label,
             labelColor = labelColor,
             onClick = onClick,
+            labelWeight = SDGButtonFontWeight.SB,
             enable = enabled,
             isFillMaxWidth = true,
             marginValues = PaddingValues(vertical = Spacing4)
@@ -137,6 +139,7 @@ private fun SDGTwoOptionCenterPopupButton(
                 label = confirmLabel,
                 labelColor = confirmLabelColor,
                 onClick = onClickConfirm,
+                labelWeight = SDGButtonFontWeight.SB,
                 enable = isConfirmEnable,
                 marginValues = PaddingValues(vertical = Spacing4)
             )
@@ -185,6 +188,7 @@ private fun SDGDeleteOptionCenterPopupButton(
                 weight = 1f,
                 size = SDGGhostButtonSize.Large,
                 label = deleteLabel,
+                labelWeight = SDGButtonFontWeight.SB,
                 labelColor = deleteLabelColor,
                 onClick = onClickDelete,
                 enable = isDeleteEnable,
