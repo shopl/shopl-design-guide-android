@@ -19,7 +19,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  */
 @Composable
 fun SDGConfirmCenterPopup(
-    title: String,
+    title: String?,
     description: String,
     confirmLabel: String,
     onClickConfirm: () -> Unit,

@@ -6,13 +6,16 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +35,8 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19174-17196&t=dilCeVYD7pIRNnAx-4">Figma</a>
  */
+private const val DIALOG_DIM_AMOUNT = 0.4f
+
 @Composable
 fun SDGCenterPopup(
     buttonOption: SDGCenterPopupButtonOption,
@@ -53,11 +58,16 @@ fun SDGCenterPopup(
             usePlatformDefaultWidth = false
         )
     ) {
-        (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0.4f)
+        (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(DIALOG_DIM_AMOUNT)
+
+        val containerSize = LocalWindowInfo.current.containerSize
+        val density = LocalDensity.current.density
+        val screenHeight = containerSize.height.dp / density
 
         Column(
             modifier = Modifier
                 .padding(horizontal = SDGSpacing.Spacing20)
+                .heightIn(max = screenHeight - 160.dp)
                 .background(
                     color = SDGColor.Neutral0,
                     shape = RoundedCornerShape(SDGCornerRadius.Radius20)
@@ -161,7 +171,7 @@ private fun PreviewSDGCenterPopupDeleteOption() {
         ),
         title = "팝업 타이틀",
         body = {
-            repeat(40){
+            repeat(40) {
                 SDGText(
                     text = "팝업 내용입니다. ",
                     typography = SDGTypography.Body1R,
