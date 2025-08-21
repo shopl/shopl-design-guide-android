@@ -35,6 +35,8 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19174-17196&t=dilCeVYD7pIRNnAx-4">Figma</a>
  */
+private const val DIALOG_DIM_AMOUNT = 0.4f
+
 @Composable
 fun SDGCenterPopup(
     buttonOption: SDGCenterPopupButtonOption,
@@ -56,7 +58,7 @@ fun SDGCenterPopup(
             usePlatformDefaultWidth = false
         )
     ) {
-        (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0.4f)
+        (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(DIALOG_DIM_AMOUNT)
 
         val containerSize = LocalWindowInfo.current.containerSize
         val density = LocalDensity.current.density
