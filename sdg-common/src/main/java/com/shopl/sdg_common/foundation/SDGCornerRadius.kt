@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.dp
  * SDG - Foundation - Corner Radius
  * 화면 및 카드의 Radius 값 정의
  */
+@Deprecated("RoundedCornerShape 사용 시 SDGCornerShape를 사용해야 합니다.")
 object SDGCornerRadius {
     val Radius4 = 4.dp
     val Radius8 = 8.dp
