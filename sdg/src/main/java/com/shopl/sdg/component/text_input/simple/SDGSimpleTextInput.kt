@@ -21,6 +21,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.text_input.InputState
@@ -38,6 +39,7 @@ import com.shopl.sdg_common.util.keyboardAsState
  * @param inputState [InputState] 활성화/비활성화/에러 여부
  * @param keyboardOptions [KeyboardOptions]
  * @param onInputChange 인풋 값 변경 콜백
+ * @param visualTransformation 숫자 GroupSeparator, 마스킹 처리 등이 필요한 경우
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6897-15134&m=dev">Figma</a>
  */
@@ -52,6 +54,7 @@ fun SDGSimpleTextInput(
     maxLines: Int = 1,
     backgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     val focusManager = LocalFocusManager.current
@@ -95,6 +98,7 @@ fun SDGSimpleTextInput(
         value = input,
         onValueChange = onInputChange,
         keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
         enabled = inputState != InputState.Disable,
         textStyle = SDGTypography.Body1R.style.copy(
             color = if (inputState == InputState.Disable) SDGColor.Neutral300 else SDGColor.Neutral700,

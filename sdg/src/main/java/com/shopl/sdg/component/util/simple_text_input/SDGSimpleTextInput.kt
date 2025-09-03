@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -67,6 +68,7 @@ fun SDGSimpleTextInput(
     maxLines: Int = 1,
     backgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onFocusChanged: ((FocusState) -> Unit)? = null
 ) {
@@ -107,6 +109,7 @@ fun SDGSimpleTextInput(
         value = input,
         onValueChange = onInputChange,
         keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
         enabled = inputState != InputState.Disable,
         textStyle = SDGTypography.Body1R.style.copy(
             color = if (inputState == InputState.Disable) SDGColor.Neutral300 else SDGColor.Neutral700,
