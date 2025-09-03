@@ -39,6 +39,7 @@ import com.shopl.sdg_common.util.keyboardAsState
  * @param inputState [InputState] 활성화/비활성화/에러 여부
  * @param keyboardOptions [KeyboardOptions]
  * @param onInputChange 인풋 값 변경 콜백
+ * @param visualTransformation 숫자 GroupSeparator, 마스킹 처리 등이 필요한 경우
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6897-15134&m=dev">Figma</a>
  */
