@@ -9,7 +9,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.template.util.list_popup_item_ui_state.SDGListPopupItemUiState
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
@@ -28,7 +29,7 @@ fun SDGListPopupBody(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(true, rippleColor = SDGColor.Neutral350) { onClick(uiState) }
-            .padding(vertical = SDGSpacing.Spacing14, horizontal = SDGSpacing.Spacing20),
+            .padding(vertical = Spacing16, horizontal = Spacing8),
         text = uiState.title,
         textColor = uiState.textColor,
         typography = SDGTypography.Body1R,
@@ -37,7 +38,7 @@ fun SDGListPopupBody(
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PreviewSDGListPopupItem() {
     val item = SDGListPopupItemUiState.Default(
