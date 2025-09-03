@@ -14,12 +14,6 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
-/**
- * SDG - Popup - Anatomy - Body
- *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?m=auto&node-id=11228-13323&t=LlVpB7SDwYTIxUWn-1">Figma</a>
- */
-
 @Composable
 fun SDGListPopupBody(
     uiState: SDGListPopupItemUiState,
