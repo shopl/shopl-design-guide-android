@@ -21,6 +21,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.text_input.InputState
@@ -52,6 +53,7 @@ fun SDGSimpleTextInput(
     maxLines: Int = 1,
     backgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     val focusManager = LocalFocusManager.current
@@ -95,6 +97,7 @@ fun SDGSimpleTextInput(
         value = input,
         onValueChange = onInputChange,
         keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
         enabled = inputState != InputState.Disable,
         textStyle = SDGTypography.Body1R.style.copy(
             color = if (inputState == InputState.Disable) SDGColor.Neutral300 else SDGColor.Neutral700,
