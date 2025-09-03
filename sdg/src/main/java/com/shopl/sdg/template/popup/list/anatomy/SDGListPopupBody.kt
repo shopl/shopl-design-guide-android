@@ -15,7 +15,7 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
 @Composable
-fun SDGListPopupBody(
+internal fun SDGListPopupBody(
     uiState: SDGListPopupItemUiState,
     onClick: (SDGListPopupItemUiState) -> Unit,
 ) {
