@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.icon_text
+package com.shopl.sdg.component.icon_label
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -59,7 +59,7 @@ fun SDGIconLabel(
         textCenterAlignment(textLayoutResult)
     }
 
-    val typography = getIconListItemTypography(type = type, size = size)
+    val typography = getIconLabelTypography(type = type, size = size)
 
     Row(
         modifier = modifier.then(
@@ -120,7 +120,7 @@ fun SDGIconLabel(
 /**
  * [SDGIconLabelType]과 [SDGIconLabelSize]에 맞는 Typography 반환
  */
-private fun getIconListItemTypography(
+private fun getIconLabelTypography(
     type: SDGIconLabelType,
     size: SDGIconLabelSize
 ): SDGTypography {

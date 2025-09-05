@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.icon_text
+package com.shopl.sdg.component.icon_label
 
 import androidx.compose.ui.unit.Dp
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing

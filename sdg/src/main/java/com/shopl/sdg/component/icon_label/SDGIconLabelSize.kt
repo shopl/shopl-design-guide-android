@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.icon_text
+package com.shopl.sdg.component.icon_label
 
 enum class SDGIconLabelSize {
     Size12,
