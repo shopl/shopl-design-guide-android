@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.icon_text
+package com.shopl.sdg.component.icon_label
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -29,21 +29,21 @@ import com.shopl.sdg_common.util.textCenterAlignment
 import com.shopl.sdg_resource.R
 
 /**
- * SDG - Icon Text
+ * SDG - Icon Label
  *
- * @param size [SDGIconTextSize] 내부 텍스트 Size, LineHeight 조절
- * @param type [SDGIconTextType] 내부 텍스트 Weight 조절
- * @param spacing [SDGIconTextSpacing] 아이콘과 텍스트 사이 간격
+ * @param size [SDGIconLabelSize] 내부 텍스트 Size, LineHeight 조절
+ * @param type [SDGIconLabelType] 내부 텍스트 Weight 조절
+ * @param spacing [SDGIconLabelSpacing] 아이콘과 텍스트 사이 간격
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=10507-19136&m=dev">Figma</a>
  */
 @Composable
-fun SDGIconText(
+fun SDGIconLabel(
     text: String,
     textColor: Color,
-    size: SDGIconTextSize,
-    type: SDGIconTextType,
-    spacing: SDGIconTextSpacing,
+    size: SDGIconLabelSize,
+    type: SDGIconLabelType,
+    spacing: SDGIconLabelSpacing,
     modifier: Modifier = Modifier,
     @DrawableRes leftIconResId: Int? = null,
     leftIconTint: Color? = null,
@@ -59,7 +59,7 @@ fun SDGIconText(
         textCenterAlignment(textLayoutResult)
     }
 
-    val typography = getIconListItemTypography(type = type, size = size)
+    val typography = getIconLabelTypography(type = type, size = size)
 
     Row(
         modifier = modifier.then(
@@ -71,7 +71,7 @@ fun SDGIconText(
         ),
         horizontalArrangement = Arrangement.spacedBy(spacing.value)
     ) {
-        if (leftIconResId != null && leftIconTint != null) {
+        if (leftIconResId != null) {
             SDGImage(
                 modifier = Modifier
                     .align(alignment)
@@ -98,7 +98,7 @@ fun SDGIconText(
             overflow = TextOverflow.Ellipsis,
             onTextLayout = { textLayoutResult = it }
         )
-        if (rightIconResId != null && rightIconTint != null) {
+        if (rightIconResId != null) {
             SDGImage(
                 modifier = Modifier
                     .align(alignment)
@@ -118,23 +118,23 @@ fun SDGIconText(
 }
 
 /**
- * [SDGIconTextType]과 [SDGIconTextSize]에 맞는 Typography 반환
+ * [SDGIconLabelType]과 [SDGIconLabelSize]에 맞는 Typography 반환
  */
-private fun getIconListItemTypography(
-    type: SDGIconTextType,
-    size: SDGIconTextSize
+private fun getIconLabelTypography(
+    type: SDGIconLabelType,
+    size: SDGIconLabelSize
 ): SDGTypography {
     return when (type) {
-        SDGIconTextType.Basic -> when (size) {
-            SDGIconTextSize.Size12 -> SDGTypography.Body3R
-            SDGIconTextSize.Size14 -> SDGTypography.Body2R
-            SDGIconTextSize.Size16 -> SDGTypography.Body1R
+        SDGIconLabelType.Basic -> when (size) {
+            SDGIconLabelSize.Size12 -> SDGTypography.Body3R
+            SDGIconLabelSize.Size14 -> SDGTypography.Body2R
+            SDGIconLabelSize.Size16 -> SDGTypography.Body1R
         }
 
-        SDGIconTextType.Empha -> when (size) {
-            SDGIconTextSize.Size12 -> SDGTypography.Body3SB
-            SDGIconTextSize.Size14 -> SDGTypography.Body2SB
-            SDGIconTextSize.Size16 -> SDGTypography.Body1SB
+        SDGIconLabelType.Empha -> when (size) {
+            SDGIconLabelSize.Size12 -> SDGTypography.Body3SB
+            SDGIconLabelSize.Size14 -> SDGTypography.Body2SB
+            SDGIconLabelSize.Size16 -> SDGTypography.Body1SB
         }
     }
 }
@@ -142,7 +142,7 @@ private fun getIconListItemTypography(
 
 @Preview
 @Composable
-private fun PreviewSDGIconText() {
+private fun PreviewSDGIconLabel() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -150,30 +150,30 @@ private fun PreviewSDGIconText() {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        SDGIconText(
+        SDGIconLabel(
             text = "왼쪽 아이콘",
             textColor = SDGColor.Neutral500,
-            size = SDGIconTextSize.Size14,
-            type = SDGIconTextType.Basic,
-            spacing = SDGIconTextSpacing.Spacing4,
+            size = SDGIconLabelSize.Size14,
+            type = SDGIconLabelType.Basic,
+            spacing = SDGIconLabelSpacing.Spacing4,
             leftIconResId = R.drawable.ic_common_warning,
             leftIconTint = SDGColor.Red300
         )
-        SDGIconText(
+        SDGIconLabel(
             text = "오른쪽 아이콘",
             textColor = SDGColor.Neutral500,
-            size = SDGIconTextSize.Size16,
-            type = SDGIconTextType.Empha,
-            spacing = SDGIconTextSpacing.Spacing2,
+            size = SDGIconLabelSize.Size16,
+            type = SDGIconLabelType.Empha,
+            spacing = SDGIconLabelSpacing.Spacing2,
             rightIconResId = R.drawable.ic_common_warning,
-            rightIconTint = SDGColor.Red300
+            rightIconTint = null
         )
-        SDGIconText(
+        SDGIconLabel(
             text = "아이콘 없음",
             textColor = SDGColor.Neutral500,
-            size = SDGIconTextSize.Size12,
-            type = SDGIconTextType.Basic,
-            spacing = SDGIconTextSpacing.Spacing4
+            size = SDGIconLabelSize.Size12,
+            type = SDGIconLabelType.Basic,
+            spacing = SDGIconLabelSpacing.Spacing4
         )
     }
 }
