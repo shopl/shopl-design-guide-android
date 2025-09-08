@@ -10,10 +10,43 @@ import androidx.compose.ui.unit.sp
  */
 @Immutable
 sealed class SDGTypography(val style: TextStyle) {
+
     data object NaviTitle : SDGTypography(
         TextStyle(
             fontSize = 19.sp,
             lineHeight = 24.sp,
+            fontFamily = SDGTypeface.REGULAR.fontFamily
+        )
+    )
+
+    data object Point1SB : SDGTypography(
+        TextStyle(
+            fontSize = 28.sp,
+            lineHeight = 32.sp,
+            fontFamily = SDGTypeface.SEMI_BOLD.fontFamily
+        )
+    )
+
+    data object Point1R : SDGTypography(
+        TextStyle(
+            fontSize = 28.sp,
+            lineHeight = 32.sp,
+            fontFamily = SDGTypeface.REGULAR.fontFamily
+        )
+    )
+
+    data object Point2SB : SDGTypography(
+        TextStyle(
+            fontSize = 24.sp,
+            lineHeight = 28.sp,
+            fontFamily = SDGTypeface.SEMI_BOLD.fontFamily
+        )
+    )
+
+    data object Point2R : SDGTypography(
+        TextStyle(
+            fontSize = 24.sp,
+            lineHeight = 28.sp,
             fontFamily = SDGTypeface.REGULAR.fontFamily
         )
     )
@@ -94,6 +127,22 @@ sealed class SDGTypography(val style: TextStyle) {
         TextStyle(
             fontSize = 12.sp,
             lineHeight = 16.sp,
+            fontFamily = SDGTypeface.REGULAR.fontFamily
+        )
+    )
+
+    data object Body4SB : SDGTypography(
+        TextStyle(
+            fontSize = 10.sp,
+            lineHeight = 14.sp,
+            fontFamily = SDGTypeface.SEMI_BOLD.fontFamily
+        )
+    )
+
+    data object Body4R : SDGTypography(
+        TextStyle(
+            fontSize = 10.sp,
+            lineHeight = 14.sp,
             fontFamily = SDGTypeface.REGULAR.fontFamily
         )
     )
