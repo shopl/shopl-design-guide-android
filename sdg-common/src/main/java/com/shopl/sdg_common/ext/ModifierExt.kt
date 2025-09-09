@@ -46,7 +46,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 fun Modifier.clickable(
-    hasRipple: Boolean = true,
+    hasRipple: Boolean = false,
     rippleColor: Color = SDGColor.Neutral900_a10,
     enabled: Boolean = true,
     onClickLabel: String? = null,
