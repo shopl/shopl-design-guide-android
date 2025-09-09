@@ -78,7 +78,7 @@ fun SDGIconLabel(
                     .size(14.dp)
                     .then(
                         if (onClickLeftIcon != null) {
-                            Modifier.clickable { onClickLeftIcon() }
+                            Modifier.clickable(hasRipple = false) { onClickLeftIcon() }
                         } else {
                             Modifier
                         }
@@ -105,7 +105,7 @@ fun SDGIconLabel(
                     .size(14.dp)
                     .then(
                         if (onClickRightIcon != null) {
-                            Modifier.clickable { onClickRightIcon() }
+                            Modifier.clickable(hasRipple = false) { onClickRightIcon() }
                         } else {
                             Modifier
                         }
