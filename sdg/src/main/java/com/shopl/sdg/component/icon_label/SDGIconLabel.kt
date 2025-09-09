@@ -1,12 +1,9 @@
 package com.shopl.sdg.component.icon_label
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,14 +16,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
-import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_common.util.textCenterAlignment
-import com.shopl.sdg_resource.R
 
 /**
  * SDG - Icon Label
@@ -78,7 +74,7 @@ fun SDGIconLabel(
                     .size(14.dp)
                     .then(
                         if (onClickLeftIcon != null) {
-                            Modifier.clickable { onClickLeftIcon() }
+                            Modifier.clickable(hasRipple = false) { onClickLeftIcon() }
                         } else {
                             Modifier
                         }
@@ -105,7 +101,7 @@ fun SDGIconLabel(
                     .size(14.dp)
                     .then(
                         if (onClickRightIcon != null) {
-                            Modifier.clickable { onClickRightIcon() }
+                            Modifier.clickable(hasRipple = false) { onClickRightIcon() }
                         } else {
                             Modifier
                         }
@@ -139,41 +135,27 @@ private fun getIconLabelTypography(
     }
 }
 
-
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun PreviewSDGIconLabel() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(SDGColor.Neutral0)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
+private fun PreviewSDGIconLabel(
+    @PreviewParameter(SDGIconLabelPreviewParameterProvider::class)
+    param: SDGIconLabelPreviewParam
+) {
+    with(param) {
         SDGIconLabel(
-            text = "왼쪽 아이콘",
-            textColor = SDGColor.Neutral500,
-            size = SDGIconLabelSize.Size14,
-            type = SDGIconLabelType.Basic,
-            spacing = SDGIconLabelSpacing.Spacing4,
-            leftIconResId = R.drawable.ic_common_warning,
-            leftIconTint = SDGColor.Red300
-        )
-        SDGIconLabel(
-            text = "오른쪽 아이콘",
-            textColor = SDGColor.Neutral500,
-            size = SDGIconLabelSize.Size16,
-            type = SDGIconLabelType.Empha,
-            spacing = SDGIconLabelSpacing.Spacing2,
-            rightIconResId = R.drawable.ic_common_warning,
-            rightIconTint = null
-        )
-        SDGIconLabel(
-            text = "아이콘 없음",
-            textColor = SDGColor.Neutral500,
-            size = SDGIconLabelSize.Size12,
-            type = SDGIconLabelType.Basic,
-            spacing = SDGIconLabelSpacing.Spacing4
+            text = text,
+            textColor = textColor,
+            size = size,
+            type = type,
+            spacing = spacing,
+            leftIconResId = leftIconResId,
+            leftIconTint = leftIconTint,
+            onClickLeftIcon = null,
+            rightIconResId = rightIconResId,
+            rightIconTint = rightIconTint,
+            onClickRightIcon = null,
+            maxLines = maxLines,
+            isFillMaxWidth = isFillMaxWidth
         )
     }
 }
