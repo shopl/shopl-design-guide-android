@@ -110,31 +110,65 @@ jobs:
             # ouput 경로
             if [[ "$MOD" == "sdg" ]]; then
               POM=sdg/build/publications/maven/pom-default.xml
-              POM_ASC=sdg/build/publications/maven/pom-default.xml.asc
               AAR=sdg/build/outputs/aar/sdg-release.aar
-              AAR_ASC=sdg/build/outputs/aar/sdg-release.aar.asc
+              SRC_JAR=sdg/build/libs/sdg-release-sources.jar
+              JAVADOC_JAR=sdg/build/libs/sdg-release-javadoc.jar
             elif [[ "$MOD" == "sdg-resource" ]]; then
               POM=sdg-resource/build/publications/maven/pom-default.xml
-              POM_ASC=sdg-resource/build/publications/maven/pom-default.xml.asc
               AAR=sdg-resource/build/outputs/aar/sdg-resource-release.aar
-              AAR_ASC=sdg-resource/build/outputs/aar/sdg-resource-release.aar.asc
+              SRC_JAR=sdg-resource/build/libs/sdg-resource-release-sources.jar
+              JAVADOC_JAR=sdg-resource/build/libs/sdg-resource-release-javadoc.jar
             else
               POM=sdg-common/build/publications/maven/pom-default.xml
-              POM_ASC=sdg-common/build/publications/maven/pom-default.xml.asc
               AAR=sdg-common/build/outputs/aar/sdg-common-release.aar
-              AAR_ASC=sdg-common/build/outputs/aar/sdg-common-release.aar.asc
+              SRC_JAR=sdg-common/build/libs/sdg-common-release-sources.jar
+              JAVADOC_JAR=sdg-common/build/libs/sdg-common-release-javadoc.jar
             fi
 
             cp "$POM" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom"
-            cp "$POM_ASC" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom.asc"
             cp "$AAR" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar"
-            cp "$AAR_ASC" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar.asc"
+
+            # 모든 아티팩트 서명(.asc) 생성
+            gpg --batch --yes --pinentry-mode loopback --passphrase "${{ secrets.SIGNING_PASSWORD }}" \
+              --local-user "${{ secrets.SIGNING_KEY_ID }}" --armor --detach-sign \
+              -o "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom.asc" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom"
+            gpg --batch --yes --pinentry-mode loopback --passphrase "${{ secrets.SIGNING_PASSWORD }}" \
+              --local-user "${{ secrets.SIGNING_KEY_ID }}" --armor --detach-sign \
+              -o "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar.asc" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar"
+
+            # sources/javadoc jar 포함
+            if [[ -f "$SRC_JAR" ]]; then
+              cp "$SRC_JAR" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}-sources.jar"
+            else
+              echo "::error::Missing sources jar: $SRC_JAR"
+              exit 1
+            fi
+            if [[ -f "$JAVADOC_JAR" ]]; then
+              cp "$JAVADOC_JAR" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}-javadoc.jar"
+            else
+              echo "::error::Missing javadoc jar: $JAVADOC_JAR"
+              exit 1
+            fi
 
             cd "$ARTIFACT_DIR"
             md5sum "${ARTIFACT_ID}-${VERSION}.pom" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.pom.md5"
             sha1sum "${ARTIFACT_ID}-${VERSION}.pom" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.pom.sha1"
             md5sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.aar.md5"
             sha1sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.aar.sha1"
+
+            # sources/javadoc checksum 생성
+            md5sum "${ARTIFACT_ID}-${VERSION}-sources.jar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}-sources.jar.md5"
+            sha1sum "${ARTIFACT_ID}-${VERSION}-sources.jar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}-sources.jar.sha1"
+            md5sum "${ARTIFACT_ID}-${VERSION}-javadoc.jar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}-javadoc.jar.md5"
+            sha1sum "${ARTIFACT_ID}-${VERSION}-javadoc.jar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}-javadoc.jar.sha1"
+
+            # sources/javadoc 서명(.asc) 생성
+            gpg --batch --yes --pinentry-mode loopback --passphrase "${{ secrets.SIGNING_PASSWORD }}" \
+              --local-user "${{ secrets.SIGNING_KEY_ID }}" --armor --detach-sign \
+              -o "${ARTIFACT_ID}-${VERSION}-sources.jar.asc" "${ARTIFACT_ID}-${VERSION}-sources.jar"
+            gpg --batch --yes --pinentry-mode loopback --passphrase "${{ secrets.SIGNING_PASSWORD }}" \
+              --local-user "${{ secrets.SIGNING_KEY_ID }}" --armor --detach-sign \
+              -o "${ARTIFACT_ID}-${VERSION}-javadoc.jar.asc" "${ARTIFACT_ID}-${VERSION}-javadoc.jar"
             cd -
           done
 
