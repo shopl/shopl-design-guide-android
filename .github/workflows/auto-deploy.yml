@@ -1,31 +1,37 @@
 name: Maven Central REST 배포
 
+# on:
+#   pull_request:
+#     types: [ closed ]
+#     branches:
+#       - main
+#   workflow_dispatch:
+#     inputs:
+#       enable_slack:
+#         description: "Send Slack notifications"
+#         required: false
+#         default: "false"
+
 on:
-  pull_request:
-    types: [ closed ]
+  push:
     branches:
-      - main
+      - deploy-test
 
 jobs:
   publish:
-    if: |
-      github.event.pull_request.merged == true &&
-      (
-        contains(join(github.event.pull_request.labels.*.name, ','), 'major') ||
-        contains(join(github.event.pull_request.labels.*.name, ','), 'minor') ||
-        contains(join(github.event.pull_request.labels.*.name, ','), 'patch')
-      )
+    # if 조건은 push 트리거용으로 단순화
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
-      - name: 빌드 시작 Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-          SLACK_MESSAGE: |
-            :rocket: *[빌드 시작]*  
-            *변경사항*: ${{ github.event.pull_request.title }}
-          SLACK_COLOR: '#CCCCFF'
+      # - name: 빌드 시작 Slack Notification
+      #   uses: rtCamp/action-slack-notify@v2
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+      #     SLACK_MESSAGE: |
+      #       :rocket: *[빌드 시작]*  
+      #       *변경사항*: ${{ github.event.pull_request.title }}
+      #     SLACK_COLOR: '#CCCCFF'
 
       - name: jq 설치
         run: sudo apt-get update && sudo apt-get install -y jq
@@ -69,28 +75,31 @@ jobs:
         id: build_all_modules
         run: ./gradlew clean build :sdg:publishToMavenLocal :sdg-resource:publishToMavenLocal :sdg-common:publishToMavenLocal
 
-      - name: 빌드 성공 Slack Notification
-        if: ${{ success() && steps.build_all_modules.conclusion == 'success' }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-          SLACK_MESSAGE: |
-            :white_check_mark: *[빌드 성공]*  
-            *변경사항*: ${{ github.event.pull_request.title }}
-          SLACK_COLOR: '#00C851'
+      # - name: 빌드 성공 Slack Notification
+      #   if: ${{ success() && steps.build_all_modules.conclusion == 'success' }}
+      #   uses: rtCamp/action-slack-notify@v2
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+      #     SLACK_MESSAGE: |
+      #       :white_check_mark: *[빌드 성공]*  
+      #       *변경사항*: ${{ github.event.pull_request.title }}
+      #     SLACK_COLOR: '#00C851'
 
-      - name: 빌드 실패 Slack Notification
-        if: ${{ failure() && steps.build_all_modules.conclusion == 'failure' }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-          SLACK_MESSAGE: |
-            :x: *[빌드 실패]*  
-            *변경사항*: ${{ github.event.pull_request.title }}
-          SLACK_COLOR: '#FF4444'
+      # - name: 빌드 실패 Slack Notification
+      #   if: ${{ failure() && steps.build_all_modules.conclusion == 'failure' }}
+      #   uses: rtCamp/action-slack-notify@v2
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+      #     SLACK_MESSAGE: |
+      #       :x: *[빌드 실패]*  
+      #       *변경사항*: ${{ github.event.pull_request.title }}
+      #     SLACK_COLOR: '#FF4444'
 
       - name: 멀티모듈 패키징
         id: make_zip
+        env:
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
         run: |
           set -e
           GROUP="${{ steps.extract_info.outputs.group }}"
@@ -102,73 +111,90 @@ jobs:
 
           GROUP_PATH="${GROUP//.//}" # 예시: com.shopworks → com/shopworks
 
+          if [[ -z "$SIGNING_PASSWORD" || -z "$SIGNING_KEY_ID" ]]; then
+            echo "::error::Signing secrets are not available"
+            exit 1
+          fi
+
+          GNUPGHOME=$(mktemp -d)
+          export GNUPGHOME
+          trap 'rm -rf "$GNUPGHOME"' EXIT
+          gpg --batch --yes --pinentry-mode loopback --passphrase "$SIGNING_PASSWORD" --import ./secring.gpg
+
+          sign_or_copy() {
+            local src="$1"
+            local dest="$2"
+            local src_asc="${src}.asc"
+            local dest_asc="${dest}.asc"
+
+            if [[ -f "$src_asc" ]]; then
+              cp "$src_asc" "$dest_asc"
+            else
+              gpg --batch --yes --pinentry-mode loopback --passphrase "$SIGNING_PASSWORD" --default-key "$SIGNING_KEY_ID" --armor --detach-sign --output "$dest_asc" "$dest"
+            fi
+          }
+
           for MOD in sdg sdg-resource sdg-common; do
             ARTIFACT_ID="${ARTIFACT_IDS[$MOD]}"
             ARTIFACT_DIR="${GROUP_PATH}/${ARTIFACT_ID}/${VERSION}"
             mkdir -p "$ARTIFACT_DIR"
-          
-            # ouput 경로
-            if [[ "$MOD" == "sdg" ]]; then
-              POM=sdg/build/publications/maven/pom-default.xml
-              AAR=sdg/build/outputs/aar/sdg-release.aar
-              SRC_JAR=sdg/build/libs/sdg-release-sources.jar
-              JAVADOC_JAR=sdg/build/libs/sdg-release-javadoc.jar
-            elif [[ "$MOD" == "sdg-resource" ]]; then
-              POM=sdg-resource/build/publications/maven/pom-default.xml
-              AAR=sdg-resource/build/outputs/aar/sdg-resource-release.aar
-              SRC_JAR=sdg-resource/build/libs/sdg-resource-release-sources.jar
-              JAVADOC_JAR=sdg-resource/build/libs/sdg-resource-release-javadoc.jar
-            else
-              POM=sdg-common/build/publications/maven/pom-default.xml
-              AAR=sdg-common/build/outputs/aar/sdg-common-release.aar
-              SRC_JAR=sdg-common/build/libs/sdg-common-release-sources.jar
-              JAVADOC_JAR=sdg-common/build/libs/sdg-common-release-javadoc.jar
+
+            POM="$MOD/build/publications/maven/pom-default.xml"
+            AAR=""
+            if [[ -d "$MOD/build/outputs/aar" ]]; then
+              AAR=$(find "$MOD/build/outputs/aar" -maxdepth 1 -type f -name "*-release.aar" | head -n1)
             fi
 
-            cp "$POM" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom"
-            cp "$AAR" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar"
+            SRC_JAR=$(find "$MOD/build" -maxdepth 6 -type f -name "*-release-sources.jar" | head -n1)
+            if [[ -z "$SRC_JAR" ]]; then
+              SRC_JAR=$(find "$MOD/build" -maxdepth 6 -type f -name "release-sources.jar" | head -n1)
+            fi
 
-            # 모든 아티팩트 서명(.asc) 생성
-            gpg --batch --yes --pinentry-mode loopback --passphrase "${{ secrets.SIGNING_PASSWORD }}" \
-              --local-user "${{ secrets.SIGNING_KEY_ID }}" --armor --detach-sign \
-              -o "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom.asc" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom"
-            gpg --batch --yes --pinentry-mode loopback --passphrase "${{ secrets.SIGNING_PASSWORD }}" \
-              --local-user "${{ secrets.SIGNING_KEY_ID }}" --armor --detach-sign \
-              -o "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar.asc" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar"
+            JAVADOC_JAR=$(find "$MOD/build" -maxdepth 6 -type f -name "*-release-javadoc.jar" | head -n1)
+            if [[ -z "$JAVADOC_JAR" ]]; then
+              JAVADOC_JAR=$(find "$MOD/build" -maxdepth 6 -type f -name "release-javadoc.jar" | head -n1)
+            fi
 
-            # sources/javadoc jar 포함
-            if [[ -f "$SRC_JAR" ]]; then
-              cp "$SRC_JAR" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}-sources.jar"
-            else
-              echo "::error::Missing sources jar: $SRC_JAR"
+            if [[ ! -f "$POM" ]]; then
+              echo "::error::POM not found for module $MOD" >&2
               exit 1
             fi
-            if [[ -f "$JAVADOC_JAR" ]]; then
-              cp "$JAVADOC_JAR" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}-javadoc.jar"
-            else
-              echo "::error::Missing javadoc jar: $JAVADOC_JAR"
+
+            if [[ -z "$AAR" || ! -f "$AAR" ]]; then
+              echo "::error::AAR not found for module $MOD" >&2
               exit 1
             fi
+
+            if [[ -z "$SRC_JAR" || ! -f "$SRC_JAR" ]]; then
+              echo "::error::Sources JAR not found for module $MOD" >&2
+              exit 1
+            fi
+
+            if [[ -z "$JAVADOC_JAR" || ! -f "$JAVADOC_JAR" ]]; then
+              echo "::error::Javadoc JAR not found for module $MOD" >&2
+              exit 1
+            fi
+
+            DEST_POM="${ARTIFACT_ID}-${VERSION}.pom"
+            DEST_AAR="${ARTIFACT_ID}-${VERSION}.aar"
+            DEST_SOURCES_JAR="${ARTIFACT_ID}-${VERSION}-sources.jar"
+            DEST_JAVADOC_JAR="${ARTIFACT_ID}-${VERSION}-javadoc.jar"
+
+            cp "$POM" "$ARTIFACT_DIR/$DEST_POM"
+            cp "$AAR" "$ARTIFACT_DIR/$DEST_AAR"
+            cp "$SRC_JAR" "$ARTIFACT_DIR/$DEST_SOURCES_JAR"
+            cp "$JAVADOC_JAR" "$ARTIFACT_DIR/$DEST_JAVADOC_JAR"
+
+            sign_or_copy "$POM" "$ARTIFACT_DIR/$DEST_POM"
+            sign_or_copy "$AAR" "$ARTIFACT_DIR/$DEST_AAR"
+            sign_or_copy "$SRC_JAR" "$ARTIFACT_DIR/$DEST_SOURCES_JAR"
+            sign_or_copy "$JAVADOC_JAR" "$ARTIFACT_DIR/$DEST_JAVADOC_JAR"
 
             cd "$ARTIFACT_DIR"
-            md5sum "${ARTIFACT_ID}-${VERSION}.pom" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.pom.md5"
-            sha1sum "${ARTIFACT_ID}-${VERSION}.pom" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.pom.sha1"
-            md5sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.aar.md5"
-            sha1sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.aar.sha1"
-
-            # sources/javadoc checksum 생성
-            md5sum "${ARTIFACT_ID}-${VERSION}-sources.jar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}-sources.jar.md5"
-            sha1sum "${ARTIFACT_ID}-${VERSION}-sources.jar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}-sources.jar.sha1"
-            md5sum "${ARTIFACT_ID}-${VERSION}-javadoc.jar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}-javadoc.jar.md5"
-            sha1sum "${ARTIFACT_ID}-${VERSION}-javadoc.jar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}-javadoc.jar.sha1"
-
-            # sources/javadoc 서명(.asc) 생성
-            gpg --batch --yes --pinentry-mode loopback --passphrase "${{ secrets.SIGNING_PASSWORD }}" \
-              --local-user "${{ secrets.SIGNING_KEY_ID }}" --armor --detach-sign \
-              -o "${ARTIFACT_ID}-${VERSION}-sources.jar.asc" "${ARTIFACT_ID}-${VERSION}-sources.jar"
-            gpg --batch --yes --pinentry-mode loopback --passphrase "${{ secrets.SIGNING_PASSWORD }}" \
-              --local-user "${{ secrets.SIGNING_KEY_ID }}" --armor --detach-sign \
-              -o "${ARTIFACT_ID}-${VERSION}-javadoc.jar.asc" "${ARTIFACT_ID}-${VERSION}-javadoc.jar"
+            for FILE in "$DEST_POM" "$DEST_AAR" "$DEST_SOURCES_JAR" "$DEST_JAVADOC_JAR"; do
+              md5sum "$FILE" | cut -d ' ' -f1 > "${FILE}.md5"
+              sha1sum "$FILE" | cut -d ' ' -f1 > "${FILE}.sha1"
+            done
             cd -
           done
 
@@ -236,22 +262,22 @@ jobs:
             echo "Still publishing, wait..."
           done
 
-      - name: 배포 성공 Slack Notification
-        if: ${{ steps.poll_status.outputs.result == 'success' }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-          SLACK_MESSAGE: |
-            :star: *[배포 완료]*  
-            *변경사항*: ${{ github.event.pull_request.title }}
-          SLACK_COLOR: '#00C6AD'
+      # - name: 배포 성공 Slack Notification
+      #   if: ${{ steps.poll_status.outputs.result == 'success' }}
+      #   uses: rtCamp/action-slack-notify@v2
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+      #     SLACK_MESSAGE: |
+      #       :star: *[배포 완료]*  
+      #       *변경사항*: ${{ github.event.pull_request.title }}
+      #     SLACK_COLOR: '#00C6AD'
 
-      - name: 배포 실패 Slack Notification
-        if: ${{ steps.poll_status.outputs.result == 'fail' }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-          SLACK_MESSAGE: |
-            :warning: *[배포 실패]*  
-            *변경사항*: ${{ github.event.pull_request.title }}
-          SLACK_COLOR: '#FFA726'
+      # - name: 배포 실패 Slack Notification
+      #   if: ${{ steps.poll_status.outputs.result == 'fail' }}
+      #   uses: rtCamp/action-slack-notify@v2
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+      #     SLACK_MESSAGE: |
+      #       :warning: *[배포 실패]*  
+      #       *변경사항*: ${{ github.event.pull_request.title }}
+      #     SLACK_COLOR: '#FFA726'

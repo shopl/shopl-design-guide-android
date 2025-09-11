@@ -22,13 +22,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 configureAndroid(this)
 
                 defaultConfig.targetSdk = 34
-
-                publishing {
-                    singleVariant("release") {
-                        withSourcesJar()
-                        withJavadocJar()
-                    }
-                }
             }
         }
     }
