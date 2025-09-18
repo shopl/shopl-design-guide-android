@@ -39,7 +39,7 @@ ksp = "2.1.21-2.0.1"
 
 # Maven
 ## https://vanniktech.github.io/gradle-maven-publish-plugin/central/
-vanniktech-maven = "0.32.0"
+vanniktech-maven = "0.34.0"
 
 # Test
 ## https://github.com/junit-team/junit4
