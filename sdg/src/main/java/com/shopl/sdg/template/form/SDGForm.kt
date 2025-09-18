@@ -27,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.shopl.sdg.component.dropdown.SDGBasicDropdown
 import com.shopl.sdg.component.dropdown.SDGBasicDropdownState
 import com.shopl.sdg.component.text_input.InputState
@@ -40,8 +39,6 @@ import com.shopl.sdg_common.ext.bounceClickable
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
-import com.shopl.sdg_common.ui.components.IOText
-import com.shopl.sdg_common.ui.components.IOTypeface
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
@@ -81,13 +78,12 @@ fun SDGDropdownForm(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                IOText(
+                SDGText(
                     text = title,
                     textColor = SDGColor.Neutral700,
-                    fontSize = 16.sp,
-                    typeface = when (type) {
-                        SDGFormType.EMPHA -> IOTypeface.SEMI_BOLD
-                        SDGFormType.NORMAL -> IOTypeface.REGULAR
+                    typography = when(type) {
+                        SDGFormType.EMPHA -> SDGTypography.Body1SB
+                        SDGFormType.NORMAL -> SDGTypography.Body1R
                     },
                 )
                 iconResId?.let {
@@ -255,13 +251,12 @@ fun SDGSelectedInputForm(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                IOText(
+                SDGText(
                     text = title,
                     textColor = SDGColor.Neutral700,
-                    fontSize = 16.sp,
-                    typeface = when (type) {
-                        SDGFormType.EMPHA -> IOTypeface.SEMI_BOLD
-                        SDGFormType.NORMAL -> IOTypeface.REGULAR
+                    typography = when(type) {
+                        SDGFormType.EMPHA -> SDGTypography.Body1SB
+                        SDGFormType.NORMAL -> SDGTypography.Body1R
                     },
                 )
                 iconResId?.let {
@@ -345,13 +340,12 @@ fun SDGSelectedInputForm(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                IOText(
+                SDGText(
                     text = title,
                     textColor = SDGColor.Neutral700,
-                    fontSize = 16.sp,
-                    typeface = when (type) {
-                        SDGFormType.EMPHA -> IOTypeface.SEMI_BOLD
-                        SDGFormType.NORMAL -> IOTypeface.REGULAR
+                    typography = when(type) {
+                        SDGFormType.EMPHA -> SDGTypography.Body1SB
+                        SDGFormType.NORMAL -> SDGTypography.Body1R
                     },
                 )
                 iconResId?.let {
@@ -432,13 +426,12 @@ fun SDGFixedInputForm(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                IOText(
+                SDGText(
                     text = title,
                     textColor = SDGColor.Neutral700,
-                    fontSize = 16.sp,
-                    typeface = when (type) {
-                        SDGFormType.EMPHA -> IOTypeface.SEMI_BOLD
-                        SDGFormType.NORMAL -> IOTypeface.REGULAR
+                    typography = when(type) {
+                        SDGFormType.EMPHA -> SDGTypography.Body1SB
+                        SDGFormType.NORMAL -> SDGTypography.Body1R
                     },
                 )
                 iconResId?.let {
@@ -503,13 +496,12 @@ fun SDGFixedInputForm(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                IOText(
+                SDGText(
                     text = title,
                     textColor = SDGColor.Neutral700,
-                    fontSize = 16.sp,
-                    typeface = when (type) {
-                        SDGFormType.EMPHA -> IOTypeface.SEMI_BOLD
-                        SDGFormType.NORMAL -> IOTypeface.REGULAR
+                    typography = when(type) {
+                        SDGFormType.EMPHA -> SDGTypography.Body1SB
+                        SDGFormType.NORMAL -> SDGTypography.Body1R
                     },
                 )
                 iconResId?.let {
@@ -599,13 +591,12 @@ fun SDGTimeSelectedForm(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                IOText(
+                SDGText(
                     text = title,
                     textColor = SDGColor.Neutral700,
-                    fontSize = 16.sp,
-                    typeface = when (type) {
-                        SDGFormType.EMPHA -> IOTypeface.SEMI_BOLD
-                        SDGFormType.NORMAL -> IOTypeface.REGULAR
+                    typography = when(type) {
+                        SDGFormType.EMPHA -> SDGTypography.Body1SB
+                        SDGFormType.NORMAL -> SDGTypography.Body1R
                     },
                 )
                 iconResId?.let {
