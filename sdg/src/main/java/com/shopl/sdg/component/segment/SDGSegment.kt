@@ -39,7 +39,7 @@ import kotlinx.collections.immutable.persistentListOf
  * @param type [SDGSegmentType] – 타입에 따라 라벨의 개수가 결정
  * @param line [SDGSegmentTextLine] – 라벨의 텍스트 레이아웃 스타일을 지정
  * @param labels 표시할 라벨 문자열 리스트
- * @param selectedIndex – 현재 선택된 라벨의 인덱스
+ * @param selectedIndex – 현재 선택된 라벨의 인덱스 (선택 없음은 null)
  * @param backgroundColor – 세그먼트 컨트롤의 배경 색상
  * @param onLabelClick 라벨 클릭 시 호출되는 콜백
  */
@@ -48,15 +48,17 @@ fun SDGSegment(
     type: SDGSegmentType,
     line: SDGSegmentTextLine,
     labels: PersistentList<String>,
-    selectedIndex: Int,
+    selectedIndex: Int?,
     backgroundColor: Color,
     onLabelClick: (Int) -> Unit,
 ) {
     require(labels.size == type.requiredLabelCount) {
         "라벨 개수를 Type과 맞춰주세요. (라벨 필요 개수: ${type.requiredLabelCount})"
     }
-    require(selectedIndex in 0..labels.lastIndex) {
-        "라벨 개수에 맞는 인덱스를 입력하세요. (라벨 개수: ${labels.size} / 선택한 인덱스: $selectedIndex) "
+    if (selectedIndex != null) {
+        require(selectedIndex in 0..labels.lastIndex) {
+            "라벨 개수에 맞는 인덱스를 입력하세요. (라벨 개수: ${labels.size} / 선택한 인덱스: $selectedIndex) "
+        }
     }
 
     Box(
@@ -64,13 +66,15 @@ fun SDGSegment(
     ) {
         TabRow(
             modifier = Modifier.clip(RoundedCornerShape(8.dp)),
-            selectedTabIndex = selectedIndex,
+            selectedTabIndex = selectedIndex ?: 0,
             containerColor = backgroundColor,
             indicator = {
-                SDGSegmentIndicator(
-                    tabPositions = it,
-                    selectedIndex = selectedIndex
-                )
+                if (selectedIndex != null) {
+                    SDGSegmentIndicator(
+                        tabPositions = it,
+                        selectedIndex = selectedIndex
+                    )
+                }
             },
             divider = {}
         ) {
