@@ -117,8 +117,36 @@ jobs:
 
             POM="$MOD/build/publications/maven/pom-default.xml"
             AAR="$MOD/build/outputs/aar/${MODULE_PREFIX}-release.aar"
-            SRC_JAR="$MOD/build/libs/${MODULE_PREFIX}-release-sources.jar"
-            JAVADOC_JAR="$MOD/build/libs/${MODULE_PREFIX}-release-javadoc.jar"
+
+            SRC_JAR=$(find "$MOD/build" -maxdepth 4 -type f -name "${MODULE_PREFIX}-release-sources.jar" | head -n1)
+            if [[ -z "$SRC_JAR" ]]; then
+              SRC_JAR=$(find "$MOD/build" -maxdepth 4 -type f -name "*-release-sources.jar" | head -n1)
+            fi
+
+            JAVADOC_JAR=$(find "$MOD/build" -maxdepth 4 -type f -name "${MODULE_PREFIX}-release-javadoc.jar" | head -n1)
+            if [[ -z "$JAVADOC_JAR" ]]; then
+              JAVADOC_JAR=$(find "$MOD/build" -maxdepth 4 -type f -name "*-release-javadoc.jar" | head -n1)
+            fi
+
+            if [[ ! -f "$POM" ]]; then
+              echo "::error::POM not found for module $MOD" >&2
+              exit 1
+            fi
+
+            if [[ ! -f "$AAR" ]]; then
+              echo "::error::AAR not found for module $MOD" >&2
+              exit 1
+            fi
+
+            if [[ -z "$SRC_JAR" || ! -f "$SRC_JAR" ]]; then
+              echo "::error::Sources JAR not found for module $MOD" >&2
+              exit 1
+            fi
+
+            if [[ -z "$JAVADOC_JAR" || ! -f "$JAVADOC_JAR" ]]; then
+              echo "::error::Javadoc JAR not found for module $MOD" >&2
+              exit 1
+            fi
 
             POM_ASC="$POM.asc"
             AAR_ASC="$AAR.asc"
