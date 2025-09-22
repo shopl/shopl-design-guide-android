@@ -137,22 +137,3 @@ private fun SDGAsyncImagePreview() {
         imageModel = "imageUrl",
     )
 }
-
-@Preview(
-    name = "SDGAsyncImage Failure Composable Preview",
-    showBackground = true,
-    backgroundColor = 0xFFF0F0F0
-)
-@Composable
-private fun SDGAsyncImageFailurePreview() {
-    SDGAsyncImage(
-        modifier = Modifier.size(64.dp),
-        imageModel = null,
-        failureImage = {
-            SDGImage(
-                resId = R.drawable.avatar_empty,
-                color = SDGColor.Primary300
-            )
-        },
-    )
-}
