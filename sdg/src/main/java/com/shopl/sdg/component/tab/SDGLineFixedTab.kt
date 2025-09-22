@@ -22,6 +22,16 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
+/**
+ * SDG - Component - Tab - Line Fixed Tab
+ *
+ * 페이지 내 유사한 콘텐츠를 그룹화하여 섹션 간 이동 시 사용하는 컴포넌트 - Line Fixed Tab
+ *
+ * @param tabTitles Tab Title 리스트
+ * @param selectedTabIndex 현재 선택된 Tab의 index
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7460-24521&m=dev">Figma</a>
+ */
 @Composable
 fun SDGLineFixedTab(
     modifier: Modifier = Modifier,
