@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
@@ -16,12 +16,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.ui.components.IOText
-import com.shopl.sdg_common.ui.components.IOTypeface
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.foundation.typography.SDGTypography
+import com.shopl.sdg_common.ui.components.SDGText
 
+/**
+ * SDG - Component - Tab - Line Fixed Tab
+ *
+ * 페이지 내 유사한 콘텐츠를 그룹화하여 섹션 간 이동 시 사용하는 컴포넌트 - Line Fixed Tab
+ *
+ * @param tabTitles Tab Title 리스트
+ * @param selectedTabIndex 현재 선택된 Tab의 index
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7460-24521&m=dev">Figma</a>
+ */
 @Composable
 fun SDGLineFixedTab(
     modifier: Modifier = Modifier,
@@ -39,15 +49,12 @@ fun SDGLineFixedTab(
         )
     }
     TabRow(
-        modifier = modifier
-            .padding(
-                vertical = 4.dp,
-            ),
+        modifier = modifier,
         containerColor = backgroundColor,
         selectedTabIndex = selectedTabIndex,
         indicator = indicator,
         divider = {
-            Divider(
+            HorizontalDivider(
                 thickness = 1.5.dp,
                 color = dividerColor
             )
@@ -75,19 +82,18 @@ private fun Tab(
 ) {
     Box(
         modifier = Modifier
-            .padding(vertical = 4.dp)
+            .padding(vertical = SDGSpacing.Spacing4)
             .height(32.dp)
             .background(color = backgroundColor)
             .clickable(hasRipple = false) {
                 onClick()
             }
     ) {
-        IOText(
+        SDGText(
             modifier = Modifier.align(Alignment.TopCenter),
             text = text,
             textColor = if (selected) SDGColor.Neutral700 else SDGColor.Neutral350,
-            fontSize = 16.sp,
-            typeface = IOTypeface.SEMI_BOLD
+            typography = SDGTypography.Body1SB
         )
     }
 }
