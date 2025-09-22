@@ -41,12 +41,15 @@ fun SDGAsyncImage(
     filterQuality: FilterQuality = DefaultFilterQuality,
     colorFilter: ColorFilter? = null,
     contentDescription: String? = null,
-) {
-    if (LocalInspectionMode.current) {
+    previewContent: (@Composable (() -> Unit)) = {
         SDGImage(
-            resId = R.drawable.avatar_empty,
+            resId = R.drawable.ic_common_photo,
             color = SDGColor.Neutral0,
         )
+    },
+) {
+    if (LocalInspectionMode.current) {
+        previewContent()
 
         return
     }
@@ -95,12 +98,15 @@ fun SDGAsyncImage(
     filterQuality: FilterQuality = DefaultFilterQuality,
     colorFilter: ColorFilter? = null,
     contentDescription: String? = null,
-) {
-    if (LocalInspectionMode.current) {
+    previewContent: (@Composable (() -> Unit)) = {
         SDGImage(
-            resId = R.drawable.avatar_empty,
+            resId = R.drawable.ic_common_photo,
             color = SDGColor.Neutral0,
         )
+    },
+) {
+    if (LocalInspectionMode.current) {
+        previewContent()
 
         return
     }
