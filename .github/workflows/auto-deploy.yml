@@ -112,57 +112,39 @@ jobs:
             ARTIFACT_ID="${ARTIFACT_IDS[$MOD]}"
             ARTIFACT_DIR="${GROUP_PATH}/${ARTIFACT_ID}/${VERSION}"
             mkdir -p "$ARTIFACT_DIR"
-          
-            # ouput 경로
-            if [[ "$MOD" == "sdg" ]]; then
-              POM=sdg/build/publications/maven/pom-default.xml
-              AAR=sdg/build/outputs/aar/sdg-release.aar
-              SRC_JAR=sdg/build/libs/sdg-release-sources.jar
-              JAVADOC_JAR=sdg/build/libs/sdg-release-javadoc.jar
-          
-              POM_ASC=sdg/build/publications/maven/pom-default.xml.asc
-              AAR_ASC=sdg/build/outputs/aar/sdg-release.aar.asc
-              SRC_JAR_ASC=sdg/build/libs/sdg-release-sources.jar.asc
-              JAVADOC_JAR_ASC=sdg/build/libs/sdg-release-javadoc.jar.asc
-            elif [[ "$MOD" == "sdg-resource" ]]; then
-              POM=sdg-resource/build/publications/maven/pom-default.xml
-              AAR=sdg-resource/build/outputs/aar/sdg-resource-release.aar
-              SRC_JAR=sdg/build/libs/sdg-release-sources.jar
-              JAVADOC_JAR=sdg/build/libs/sdg-release-javadoc.jar
-          
-              POM_ASC=sdg-resource/build/publications/maven/pom-default.xml.asc
-              AAR_ASC=sdg-resource/build/outputs/aar/sdg-resource-release.aar.asc
-              SRC_JAR_ASC=sdg/build/libs/sdg-release-sources.jar.asc
-              JAVADOC_JAR_ASC=sdg/build/libs/sdg-release-javadoc.jar.asc
-            else
-              POM=sdg-common/build/publications/maven/pom-default.xml
-              AAR=sdg-common/build/outputs/aar/sdg-common-release.aar
-              SRC_JAR=sdg/build/libs/sdg-release-sources.jar
-              JAVADOC_JAR=sdg/build/libs/sdg-release-javadoc.jar
-          
-              POM_ASC=sdg-common/build/publications/maven/pom-default.xml.asc
-              AAR_ASC=sdg-common/build/outputs/aar/sdg-common-release.aar.asc
-              SRC_JAR_ASC=sdg/build/libs/sdg-release-sources.jar.asc
-              JAVADOC_JAR_ASC=sdg/build/libs/sdg-release-javadoc.jar.asc
-            fi
 
-            cp "$POM" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom"
-            cp "$AAR" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar"
-            cp "SRC_JAR" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.jar"
-            cp "$JAVADOC_JAR" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.jar"
-          
-            cp "$POM_ASC" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom.asc"
-            cp "$AAR_ASC" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar.asc"
-            cp "$SRC_JAR_ASC" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.jar.asc"
-            cp "$JAVADOC_JAR_ASC" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.jar.asc"
+            MODULE_PREFIX="$MOD"
+
+            POM="$MOD/build/publications/maven/pom-default.xml"
+            AAR="$MOD/build/outputs/aar/${MODULE_PREFIX}-release.aar"
+            SRC_JAR="$MOD/build/libs/${MODULE_PREFIX}-release-sources.jar"
+            JAVADOC_JAR="$MOD/build/libs/${MODULE_PREFIX}-release-javadoc.jar"
+
+            POM_ASC="$POM.asc"
+            AAR_ASC="$AAR.asc"
+            SRC_JAR_ASC="$SRC_JAR.asc"
+            JAVADOC_JAR_ASC="$JAVADOC_JAR.asc"
+
+            DEST_POM="${ARTIFACT_ID}-${VERSION}.pom"
+            DEST_AAR="${ARTIFACT_ID}-${VERSION}.aar"
+            DEST_SOURCES_JAR="${ARTIFACT_ID}-${VERSION}-sources.jar"
+            DEST_JAVADOC_JAR="${ARTIFACT_ID}-${VERSION}-javadoc.jar"
+
+            cp "$POM" "$ARTIFACT_DIR/$DEST_POM"
+            cp "$AAR" "$ARTIFACT_DIR/$DEST_AAR"
+            cp "$SRC_JAR" "$ARTIFACT_DIR/$DEST_SOURCES_JAR"
+            cp "$JAVADOC_JAR" "$ARTIFACT_DIR/$DEST_JAVADOC_JAR"
+
+            cp "$POM_ASC" "$ARTIFACT_DIR/${DEST_POM}.asc"
+            cp "$AAR_ASC" "$ARTIFACT_DIR/${DEST_AAR}.asc"
+            cp "$SRC_JAR_ASC" "$ARTIFACT_DIR/${DEST_SOURCES_JAR}.asc"
+            cp "$JAVADOC_JAR_ASC" "$ARTIFACT_DIR/${DEST_JAVADOC_JAR}.asc"
 
             cd "$ARTIFACT_DIR"
-            md5sum "${ARTIFACT_ID}-${VERSION}.pom" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.pom.md5"
-            sha1sum "${ARTIFACT_ID}-${VERSION}.pom" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.pom.sha1"
-            md5sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.aar.md5"
-            sha1sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.aar.sha1"
-            md5sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.jar.md5"
-            sha1sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.jar.sha1"
+            for FILE in "$DEST_POM" "$DEST_AAR" "$DEST_SOURCES_JAR" "$DEST_JAVADOC_JAR"; do
+              md5sum "$FILE" | cut -d ' ' -f1 > "${FILE}.md5"
+              sha1sum "$FILE" | cut -d ' ' -f1 > "${FILE}.sha1"
+            done
             cd -
           done
 
