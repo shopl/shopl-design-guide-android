@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultFilterQuality
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
@@ -41,6 +42,15 @@ fun SDGAsyncImage(
     colorFilter: ColorFilter? = null,
     contentDescription: String? = null,
 ) {
+    if (LocalInspectionMode.current) {
+        SDGImage(
+            resId = R.drawable.avatar_empty,
+            color = SDGColor.Neutral0,
+        )
+
+        return
+    }
+
     SubcomposeAsyncImage(
         model = imageModel,
         contentDescription = contentDescription,
@@ -86,6 +96,15 @@ fun SDGAsyncImage(
     colorFilter: ColorFilter? = null,
     contentDescription: String? = null,
 ) {
+    if (LocalInspectionMode.current) {
+        SDGImage(
+            resId = R.drawable.avatar_empty,
+            color = SDGColor.Neutral0,
+        )
+
+        return
+    }
+
     SubcomposeAsyncImage(
         model = imageModel,
         contentDescription = contentDescription,
@@ -116,7 +135,6 @@ private fun SDGAsyncImagePreview() {
     SDGAsyncImage(
         modifier = Modifier.size(64.dp),
         imageModel = "imageUrl",
-        failureImageResourceId = R.drawable.avatar_empty,
     )
 }
 
