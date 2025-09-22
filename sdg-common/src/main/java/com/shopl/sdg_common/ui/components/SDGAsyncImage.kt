@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultFilterQuality
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
@@ -40,7 +41,19 @@ fun SDGAsyncImage(
     filterQuality: FilterQuality = DefaultFilterQuality,
     colorFilter: ColorFilter? = null,
     contentDescription: String? = null,
+    previewContent: (@Composable (() -> Unit)) = {
+        SDGImage(
+            resId = R.drawable.ic_common_photo,
+            color = SDGColor.Neutral0,
+        )
+    },
 ) {
+    if (LocalInspectionMode.current) {
+        previewContent()
+
+        return
+    }
+
     SubcomposeAsyncImage(
         model = imageModel,
         contentDescription = contentDescription,
@@ -85,7 +98,19 @@ fun SDGAsyncImage(
     filterQuality: FilterQuality = DefaultFilterQuality,
     colorFilter: ColorFilter? = null,
     contentDescription: String? = null,
+    previewContent: (@Composable (() -> Unit)) = {
+        SDGImage(
+            resId = R.drawable.ic_common_photo,
+            color = SDGColor.Neutral0,
+        )
+    },
 ) {
+    if (LocalInspectionMode.current) {
+        previewContent()
+
+        return
+    }
+
     SubcomposeAsyncImage(
         model = imageModel,
         contentDescription = contentDescription,
@@ -116,25 +141,5 @@ private fun SDGAsyncImagePreview() {
     SDGAsyncImage(
         modifier = Modifier.size(64.dp),
         imageModel = "imageUrl",
-        failureImageResourceId = R.drawable.avatar_empty,
-    )
-}
-
-@Preview(
-    name = "SDGAsyncImage Failure Composable Preview",
-    showBackground = true,
-    backgroundColor = 0xFFF0F0F0
-)
-@Composable
-private fun SDGAsyncImageFailurePreview() {
-    SDGAsyncImage(
-        modifier = Modifier.size(64.dp),
-        imageModel = null,
-        failureImage = {
-            SDGImage(
-                resId = R.drawable.avatar_empty,
-                color = SDGColor.Primary300
-            )
-        },
     )
 }
