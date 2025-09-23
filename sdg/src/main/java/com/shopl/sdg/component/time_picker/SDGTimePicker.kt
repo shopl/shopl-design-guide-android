@@ -57,6 +57,7 @@ private const val ITEM_HEIGHT = 40
 private const val PICKER_HEIGHT = 200
 private const val VISIBLE_COUNT = PICKER_HEIGHT / ITEM_HEIGHT
 private const val CENTER_INDEX = VISIBLE_COUNT / 2
+private const val VIRTUAL_ITEM_COUNT = Int.MAX_VALUE
 
 /**
  * SDG - Time Picker
@@ -64,6 +65,10 @@ private const val CENTER_INDEX = VISIBLE_COUNT / 2
  * 스피너 형식의 숫자 선택기를 활용해 시간 값을 선택하는 컴포넌트
  *
  * @param option 타임 피커 타입 [SDGTimePickerOption]
+ *
+ * 무한 스크롤 되는 피커
+ * 원본 리스트: [0,1,2,3,4]
+ * -> 4, 0, 1, 2, 3, 4, 0, 1, 2 . . .
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=8610-20836&m=dev">Figma</a>
  */
@@ -129,13 +134,18 @@ private fun SDGTwoOptionTimePicker(option: TwoOption) {
     }
 }
 
+/**
+ * @param onValueChange 선택된 값이 변경될 때 호출되는 콜백
+ * @param width 피커의 너비. 지정하지 않으면 사용 가능한 전체 너비를 채움
+ * @param isEditMode 직접 입력 가능 여부 (기본값: true)
+ */
 @Composable
 private fun SDGTimePickerBody(
     value: Int,
     range: IntRange,
     onValueChange: (Int) -> Unit,
     width: Dp = 0.dp,
-    isEditMode: Boolean = false,
+    isEditMode: Boolean = true,
 ) {
     require(range.count() >= VISIBLE_COUNT) { "범위는 최소 $VISIBLE_COUNT 이상이 필요합니다." }
     require(range.contains(value)) { "value($value)는 반드시 범위 안에 존재하는 값이어야 합니다." }
@@ -149,21 +159,23 @@ private fun SDGTimePickerBody(
     val rangeList = remember(range) { range.toList() }
     val rangeSize = rangeList.size
 
-    val VIRTUAL_LIST_COUNT = Int.MAX_VALUE
-
-    val baseIndex = remember(rangeSize) {
-        (VIRTUAL_LIST_COUNT / 2 / rangeSize) * rangeSize
+    val baseCenterIndex = remember(rangeSize) {
+        (VIRTUAL_ITEM_COUNT / 2 / rangeSize) * rangeSize
     }
 
     val lazyListState = rememberLazyListState()
     val snapBehavior = rememberSnapFlingBehavior(lazyListState)
     val itemHeightPx = with(LocalDensity.current) { ITEM_HEIGHT.dp.roundToPx() }
 
-    val highlightingIndex by remember {
+    val highlightingTopIndex by remember {
         derivedStateOf {
-            val i = lazyListState.firstVisibleItemIndex
-            val o = lazyListState.firstVisibleItemScrollOffset
-            if (o > itemHeightPx / 2) i + 1 else i
+            val firstVisibleItemIndex = lazyListState.firstVisibleItemIndex
+            val firstVisibleItemScrollOffsetPx = lazyListState.firstVisibleItemScrollOffset
+            if (firstVisibleItemScrollOffsetPx > itemHeightPx / 2) {
+                firstVisibleItemIndex + 1
+            } else {
+                firstVisibleItemIndex
+            }
         }
     }
 
@@ -185,42 +197,45 @@ private fun SDGTimePickerBody(
                 return@LaunchedEffect
             }
 
-            val actualIndex = rangeList.indexOf(value)
-            val desiredCenterBase = baseIndex + actualIndex
+            val actualRangeIndex = rangeList.indexOf(value)
+            val desiredCenterBaseIndex = baseCenterIndex + actualRangeIndex
 
-            val currentCenter = (highlightingIndex + CENTER_INDEX).coerceIn(0, VIRTUAL_LIST_COUNT - 1)
+            val currentCenterIndex = (highlightingTopIndex + CENTER_INDEX)
+                .coerceIn(0, VIRTUAL_ITEM_COUNT - 1)
 
-            val delta = currentCenter.toLong() - desiredCenterBase.toLong()
-            val k = round(delta.toDouble() / rangeSize.toDouble()).toLong()
-            val desiredCenter = (desiredCenterBase.toLong() + k * rangeSize)
-                .coerceIn(0L, (VIRTUAL_LIST_COUNT - 1).toLong())
+            val centerIndexDelta = currentCenterIndex.toLong() - desiredCenterBaseIndex.toLong()
+            val wrapCyclesOffset = round(
+                centerIndexDelta.toDouble() / rangeSize.toDouble()
+            ).toLong()
+            val desiredCenterIndex = (desiredCenterBaseIndex.toLong() + wrapCyclesOffset * rangeSize)
+                .coerceIn(0L, (VIRTUAL_ITEM_COUNT - 1).toLong())
 
-            val scrollToTop = (desiredCenter - CENTER_INDEX).toInt().coerceIn(0, VIRTUAL_LIST_COUNT - 1)
+            val targetTopIndex = (desiredCenterIndex - CENTER_INDEX)
+                .toInt()
+                .coerceIn(0, VIRTUAL_ITEM_COUNT - 1)
 
             if (!isFirstScrollDone) {
-                lazyListState.scrollToItem(scrollToTop)
+                lazyListState.scrollToItem(targetTopIndex)
                 isFirstScrollDone = true
-            } else {
-                if (scrollToTop != lazyListState.firstVisibleItemIndex) {
-                    lazyListState.animateScrollToItem(scrollToTop)
-                }
+            } else if (targetTopIndex != lazyListState.firstVisibleItemIndex) {
+                lazyListState.animateScrollToItem(targetTopIndex)
             }
         }
 
-        val scrollStoppedIndex by remember {
+        val settledTopIndex by remember {
             derivedStateOf {
-                if (lazyListState.isScrollInProgress) NOT_STOPPED_SCROLL_INDEX else highlightingIndex
+                if (lazyListState.isScrollInProgress) NOT_STOPPED_SCROLL_INDEX else highlightingTopIndex
             }
         }
 
-        LaunchedEffect(scrollStoppedIndex) {
-            if (scrollStoppedIndex != NOT_STOPPED_SCROLL_INDEX) {
-                val centerGlobalIndex = scrollStoppedIndex + CENTER_INDEX
-                val mappedIndex = ((centerGlobalIndex.toLong() % rangeSize) + rangeSize) % rangeSize
-                val mapped = rangeList[mappedIndex.toInt()]
-                if (mapped != value) {
+        LaunchedEffect(settledTopIndex) {
+            if (settledTopIndex != NOT_STOPPED_SCROLL_INDEX) {
+                val centerGlobalIndex = settledTopIndex + CENTER_INDEX
+                val mappedRangeIndex = ((centerGlobalIndex.toLong() % rangeSize) + rangeSize) % rangeSize
+                val mappedValue = rangeList[mappedRangeIndex.toInt()]
+                if (mappedValue != value) {
                     suppressNextValueScroll = true
-                    onValueChange(mapped)
+                    onValueChange(mappedValue)
                 }
             }
         }
@@ -232,15 +247,15 @@ private fun SDGTimePickerBody(
             flingBehavior = snapBehavior,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            items(VIRTUAL_LIST_COUNT) { index ->
+            items(VIRTUAL_ITEM_COUNT) { virtualIndex ->
                 SDGTimePickerBodyItem(
-                    index = index,
-                    highlightingIndex = highlightingIndex,
+                    index = virtualIndex,
+                    highlightingIndex = highlightingTopIndex,
                     rangeList = rangeList.toPersistentList(),
                     isEditing = isEditing,
-                    setEditing = { editing ->
-                        isEditing = editing
-                        if (!editing) editingValue = TextFieldValue("")
+                    setEditing = { isEditingNow ->
+                        isEditing = isEditingNow
+                        if (!isEditingNow) editingValue = TextFieldValue("")
                     },
                     editingValue = editingValue,
                     setEditingValue = { editingValue = it },
