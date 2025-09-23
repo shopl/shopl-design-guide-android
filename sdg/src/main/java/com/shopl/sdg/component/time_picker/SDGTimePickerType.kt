@@ -12,7 +12,6 @@ sealed interface SDGTimePickerOption {
         val range: IntRange,
         val onValueChange: (Int) -> Unit,
         val width: Dp = 0.dp,
-        val isEditMode: Boolean = false,
     ) : SDGTimePickerOption
 
     data class TwoOption(

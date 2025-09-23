@@ -34,7 +34,7 @@ private val DEFAULT_PICKER_ITEM_HEIGHT = 40.dp
  *
  * 스피너 형식의 숫자 선택기를 활용해 시간 값을 선택하는 컴포넌트
  *
- * @param option 렌더링할 타임 피커 구성 값
+ * @param option 타임 피커 타입 [SDGTimePickerOption]
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=8610-20836&m=dev">Figma</a>
  */
@@ -46,6 +46,9 @@ fun SDGTimePicker(option: SDGTimePickerOption) {
     }
 }
 
+/**
+ * 1개의 값만 선택
+ */
 @Composable
 private fun SDGOneOptionTimePicker(option: OneOption) {
     SDGNumberPicker(
@@ -53,10 +56,13 @@ private fun SDGOneOptionTimePicker(option: OneOption) {
         range = option.range,
         onValueChange = option.onValueChange,
         width = option.width,
-        isEditMode = option.isEditMode
+        isEditMode = true
     )
 }
 
+/**
+ * 2개의 조합된 값 선택
+ */
 @Composable
 private fun SDGTwoOptionTimePicker(option: TwoOption) {
     val firstWidth = if (option.first.width == 0.dp) DEFAULT_TWO_OPTION_PICKER_WIDTH else option.first.width
@@ -111,7 +117,6 @@ private fun PreviewSDGTimePickerOneOption() {
             value = value,
             range = 0..23,
             onValueChange = { value = it },
-            isEditMode = true
         )
     )
 }
