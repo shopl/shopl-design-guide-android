@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -61,40 +62,42 @@ private fun SDGTwoOptionTimePicker(option: TwoOption) {
     val firstWidth = if (option.first.width == 0.dp) DEFAULT_TWO_OPTION_PICKER_WIDTH else option.first.width
     val secondWidth = if (option.second.width == 0.dp) DEFAULT_TWO_OPTION_PICKER_WIDTH else option.second.width
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(option.spacing)
-    ) {
-        SDGNumberPicker(
-            value = option.first.value,
-            range = option.first.range,
-            onValueChange = option.first.onValueChange,
-            width = firstWidth,
-            isEditMode = option.first.isEditMode
-        )
-
+    Box(contentAlignment = Alignment.Center) {
         Box(
-            contentAlignment = Alignment.Center,
             modifier = Modifier
+                .fillMaxWidth()
                 .height(DEFAULT_PICKER_ITEM_HEIGHT)
                 .clip(RoundedCornerShape(SDGCornerRadius.Radius8))
                 .background(SDGColor.Neutral150)
+        )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(option.spacing)
         ) {
+            SDGNumberPicker(
+                value = option.first.value,
+                range = option.first.range,
+                onValueChange = option.first.onValueChange,
+                width = firstWidth,
+                isEditMode = option.first.isEditMode
+            )
+
             SDGText(
                 text = option.dividerText,
                 typography = SDGTypography.Title2R,
                 textColor = SDGColor.Neutral700,
                 modifier = Modifier.padding(horizontal = option.dividerHorizontalPadding)
             )
-        }
 
-        SDGNumberPicker(
-            value = option.second.value,
-            range = option.second.range,
-            onValueChange = option.second.onValueChange,
-            width = secondWidth,
-            isEditMode = option.second.isEditMode
-        )
+            SDGNumberPicker(
+                value = option.second.value,
+                range = option.second.range,
+                onValueChange = option.second.onValueChange,
+                width = secondWidth,
+                isEditMode = option.second.isEditMode
+            )
+        }
     }
 }
 
