@@ -50,6 +50,7 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlin.math.abs
 import kotlin.math.min
+import kotlin.math.round
 
 private const val NOT_STOPPED_SCROLL_INDEX = -1
 private const val ITEM_HEIGHT = 40
@@ -143,13 +144,13 @@ private fun SDGTimePickerBody(
     var isEditing by remember { mutableStateOf(false) }
     var editingValue by remember { mutableStateOf(TextFieldValue("")) }
 
+    var suppressNextValueScroll by remember { mutableStateOf(false) }
+
     val rangeList = remember(range) { range.toList() }
     val rangeSize = rangeList.size
 
-    // 사실상 "무한"으로 쓰는 매우 큰 가상 리스트
     val VIRTUAL_LIST_COUNT = Int.MAX_VALUE
 
-    // 시작 지점을 가상 리스트의 중앙(범위 배수 정렬)으로 맞춰서 끝에 닿지 않게 함
     val baseIndex = remember(rangeSize) {
         (VIRTUAL_LIST_COUNT / 2 / rangeSize) * rangeSize
     }
@@ -158,12 +159,11 @@ private fun SDGTimePickerBody(
     val snapBehavior = rememberSnapFlingBehavior(lazyListState)
     val itemHeightPx = with(LocalDensity.current) { ITEM_HEIGHT.dp.roundToPx() }
 
-    // 현재 스크롤 기준 중앙에 보이는(스냅될) top 인덱스
     val highlightingIndex by remember {
         derivedStateOf {
-            val scrollIndex = lazyListState.firstVisibleItemIndex
-            val scrollOffset = lazyListState.firstVisibleItemScrollOffset
-            if (scrollOffset > itemHeightPx / 2) scrollIndex + 1 else scrollIndex
+            val i = lazyListState.firstVisibleItemIndex
+            val o = lazyListState.firstVisibleItemScrollOffset
+            if (o > itemHeightPx / 2) i + 1 else i
         }
     }
 
@@ -179,17 +179,31 @@ private fun SDGTimePickerBody(
             .height(PICKER_HEIGHT.dp),
         contentAlignment = Alignment.Center
     ) {
-        // 외부 value 변경 시 중앙으로 스크롤
         LaunchedEffect(value, rangeList) {
-            val actualIndex = rangeList.indexOf(value) // 0..rangeSize-1
-            val desiredCenter = baseIndex + actualIndex
-            val scrollToTop = (desiredCenter - CENTER_INDEX).coerceIn(0, VIRTUAL_LIST_COUNT - 1)
+            if (suppressNextValueScroll) {
+                suppressNextValueScroll = false
+                return@LaunchedEffect
+            }
+
+            val actualIndex = rangeList.indexOf(value)
+            val desiredCenterBase = baseIndex + actualIndex
+
+            val currentCenter = (highlightingIndex + CENTER_INDEX).coerceIn(0, VIRTUAL_LIST_COUNT - 1)
+
+            val delta = currentCenter.toLong() - desiredCenterBase.toLong()
+            val k = round(delta.toDouble() / rangeSize.toDouble()).toLong()
+            val desiredCenter = (desiredCenterBase.toLong() + k * rangeSize)
+                .coerceIn(0L, (VIRTUAL_LIST_COUNT - 1).toLong())
+
+            val scrollToTop = (desiredCenter - CENTER_INDEX).toInt().coerceIn(0, VIRTUAL_LIST_COUNT - 1)
 
             if (!isFirstScrollDone) {
                 lazyListState.scrollToItem(scrollToTop)
                 isFirstScrollDone = true
             } else {
-                lazyListState.animateScrollToItem(scrollToTop)
+                if (scrollToTop != lazyListState.firstVisibleItemIndex) {
+                    lazyListState.animateScrollToItem(scrollToTop)
+                }
             }
         }
 
@@ -199,14 +213,15 @@ private fun SDGTimePickerBody(
             }
         }
 
-        // 스크롤 멈췄을 때 중앙 아이템을 값으로 매핑하여 onValueChange 호출
         LaunchedEffect(scrollStoppedIndex) {
             if (scrollStoppedIndex != NOT_STOPPED_SCROLL_INDEX) {
                 val centerGlobalIndex = scrollStoppedIndex + CENTER_INDEX
-                // overflow 방지 위해 Long으로 모듈러 연산
                 val mappedIndex = ((centerGlobalIndex.toLong() % rangeSize) + rangeSize) % rangeSize
                 val mapped = rangeList[mappedIndex.toInt()]
-                if (mapped != value) onValueChange(mapped)
+                if (mapped != value) {
+                    suppressNextValueScroll = true
+                    onValueChange(mapped)
+                }
             }
         }
 
@@ -221,7 +236,6 @@ private fun SDGTimePickerBody(
                 SDGTimePickerBodyItem(
                     index = index,
                     highlightingIndex = highlightingIndex,
-                    centerIndex = CENTER_INDEX,
                     rangeList = rangeList.toPersistentList(),
                     isEditing = isEditing,
                     setEditing = { editing ->
@@ -243,7 +257,6 @@ private fun SDGTimePickerBody(
 private fun SDGTimePickerBodyItem(
     index: Int,
     highlightingIndex: Int,
-    centerIndex: Int,
     rangeList: PersistentList<Int>,
     isEditing: Boolean,
     setEditing: (Boolean) -> Unit,
@@ -254,14 +267,14 @@ private fun SDGTimePickerBodyItem(
     isEditMode: Boolean
 ) {
     val rangeSize = rangeList.size
-    val isCenterItem = (index == highlightingIndex + centerIndex)
-    // 가상 인덱스 → 실제 값 인덱스
-    val realIndex = ((index % rangeSize) + rangeSize) % rangeSize
+    val isCenterItem = (index == highlightingIndex + CENTER_INDEX)
+
+    val realIndex = (((index % rangeSize) + rangeSize) % rangeSize)
     val currentValue = rangeList[realIndex]
 
     val selectedColor = SDGColor.Neutral700
     val unSelectedColor = SDGColor.Neutral400
-    val distanceFromCenter = abs(index - (highlightingIndex + centerIndex))
+    val distanceFromCenter = abs(index - (highlightingIndex + CENTER_INDEX))
     val maxDistance = 1f
     val colorLerpFraction = min(distanceFromCenter / maxDistance, 1f)
     val color = lerp(selectedColor, unSelectedColor, colorLerpFraction)
