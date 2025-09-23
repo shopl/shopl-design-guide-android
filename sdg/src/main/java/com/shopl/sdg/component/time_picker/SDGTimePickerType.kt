@@ -12,14 +12,14 @@ sealed interface SDGTimePickerOption {
     ) : SDGTimePickerOption
 
     data class TwoOption(
-        val left: SDGTimePickerColumnOption,
-        val right: SDGTimePickerColumnOption,
-    ) : SDGTimePickerOption
+        val left: OptionModel,
+        val right: OptionModel,
+    ) : SDGTimePickerOption {
+        data class OptionModel(
+            val value: Int,
+            val range: IntRange,
+            val onValueChange: (Int) -> Unit,
+            val width: Dp = 0.dp,
+        )
+    }
 }
-
-data class SDGTimePickerColumnOption(
-    val value: Int,
-    val range: IntRange,
-    val onValueChange: (Int) -> Unit,
-    val width: Dp = 0.dp,
-)

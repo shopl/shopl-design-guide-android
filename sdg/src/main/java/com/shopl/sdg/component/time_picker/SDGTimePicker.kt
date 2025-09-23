@@ -132,12 +132,12 @@ private fun PreviewSDGTimePickerTwoOption() {
 
     SDGTimePicker(
         option = TwoOption(
-            left = SDGTimePickerColumnOption(
+            left = TwoOption.OptionModel(
                 value = hour,
                 range = 0..23,
                 onValueChange = { hour = it },
             ),
-            right = SDGTimePickerColumnOption(
+            right = TwoOption.OptionModel(
                 value = minute,
                 range = 0..59,
                 onValueChange = { minute = it },
