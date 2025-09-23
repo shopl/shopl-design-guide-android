@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,10 +22,10 @@ import com.shopl.sdg.component.time_picker.SDGTimePickerOption.OneOption
 import com.shopl.sdg.component.time_picker.SDGTimePickerOption.TwoOption
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
-private val DEFAULT_TWO_OPTION_PICKER_WIDTH = 104.dp
 private val DEFAULT_PICKER_ITEM_HEIGHT = 40.dp
 
 /**
@@ -65,46 +64,50 @@ private fun SDGOneOptionTimePicker(option: OneOption) {
  */
 @Composable
 private fun SDGTwoOptionTimePicker(option: TwoOption) {
-    val firstWidth = if (option.first.width == 0.dp) DEFAULT_TWO_OPTION_PICKER_WIDTH else option.first.width
-    val secondWidth = if (option.second.width == 0.dp) DEFAULT_TWO_OPTION_PICKER_WIDTH else option.second.width
-
     Box(contentAlignment = Alignment.Center) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(DEFAULT_PICKER_ITEM_HEIGHT)
-                .clip(RoundedCornerShape(SDGCornerRadius.Radius8))
-                .background(SDGColor.Neutral150)
-        )
+
+        HighlightingBox()
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(option.spacing)
+            horizontalArrangement = Arrangement.spacedBy(Spacing4)
         ) {
-            SDGNumberPicker(
-                value = option.first.value,
-                range = option.first.range,
-                onValueChange = option.first.onValueChange,
-                width = firstWidth,
-                isEditMode = option.first.isEditMode
-            )
+            Box(modifier = Modifier.weight(1f)) {
+                SDGNumberPicker(
+                    value = option.left.value,
+                    range = option.left.range,
+                    onValueChange = option.left.onValueChange,
+                    isEditMode = true,
+                )
+            }
 
             SDGText(
-                text = option.dividerText,
-                typography = SDGTypography.Title2R,
+                text = ":",
+                typography = SDGTypography.Body1R,
                 textColor = SDGColor.Neutral700,
-                modifier = Modifier.padding(horizontal = option.dividerHorizontalPadding)
             )
 
-            SDGNumberPicker(
-                value = option.second.value,
-                range = option.second.range,
-                onValueChange = option.second.onValueChange,
-                width = secondWidth,
-                isEditMode = option.second.isEditMode
-            )
+            Box(modifier = Modifier.weight(1f)) {
+                SDGNumberPicker(
+                    value = option.right.value,
+                    range = option.right.range,
+                    onValueChange = option.right.onValueChange,
+                    isEditMode = true
+                )
+            }
         }
     }
+}
+
+@Composable
+private fun HighlightingBox() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(DEFAULT_PICKER_ITEM_HEIGHT)
+            .clip(RoundedCornerShape(SDGCornerRadius.Radius8))
+            .background(SDGColor.Neutral150)
+    )
 }
 
 @Preview(showBackground = true)
@@ -129,17 +132,15 @@ private fun PreviewSDGTimePickerTwoOption() {
 
     SDGTimePicker(
         option = TwoOption(
-            first = SDGTimePickerColumnOption(
+            left = SDGTimePickerColumnOption(
                 value = hour,
                 range = 0..23,
                 onValueChange = { hour = it },
-                isEditMode = true
             ),
-            second = SDGTimePickerColumnOption(
+            right = SDGTimePickerColumnOption(
                 value = minute,
                 range = 0..59,
                 onValueChange = { minute = it },
-                isEditMode = true
             )
         )
     )
