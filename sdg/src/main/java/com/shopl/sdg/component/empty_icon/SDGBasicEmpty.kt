@@ -78,7 +78,7 @@ fun SDGBasicEmpty(
 
 @Preview
 @Composable
-fun PreviewSDGBasicEmpty() {
+private fun PreviewSDGBasicEmpty() {
     Surface(
         modifier = Modifier
             .fillMaxSize()
