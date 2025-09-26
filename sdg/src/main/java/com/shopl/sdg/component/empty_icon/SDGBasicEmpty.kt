@@ -16,12 +16,50 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
+
+/**
+ * Component - Empty Icon - Basic Empty Icon
+ *
+ * 일반적인 빈 화면 이미지로 Body 영역에 여러가지 요소가 있거나 강조되지 않는 경우 사용하는 Empty 컴포넌트
+ *
+ * @param iconResId [Int] 이미지 리소스 ID
+ * @param description [String] 이미지 설명 (Drawable ResourceId 전달 가능)
+ * @param marginTop [Dp] 상단 마진 (기본 값 : 60.dp)
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=8638-35877&m=dev">Figma</a>
+ */
+@Composable
+fun SDGBasicEmpty(
+    @DrawableRes
+    iconResId: Int,
+    description: String,
+    marginTop: Dp = SDGSpacing.Spacing60
+) {
+    Column(
+        modifier = Modifier
+            .padding(top = marginTop)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = spacedBy(SDGSpacing.Spacing12)
+    ) {
+        SDGImage(
+            resId = iconResId,
+            color = null
+        )
+        SDGText(
+            text = description,
+            textColor = SDGColor.Neutral300,
+            typography = SDGTypography.Body1R,
+            textAlign = TextAlign.Center
+        )
+    }
+}
 
 @Composable
 fun SDGBasicEmpty(
@@ -29,53 +67,26 @@ fun SDGBasicEmpty(
     iconResId: Int,
     @StringRes
     descResId: Int,
-    marginTop: Dp = 60.dp
+    marginTop: Dp = SDGSpacing.Spacing60
 ) {
     SDGBasicEmpty(
         iconResId = iconResId,
-        descriptSDGn = stringResource(descResId),
+        description = stringResource(descResId),
         marginTop = marginTop
     )
 }
 
-@Composable
-fun SDGBasicEmpty(
-    @DrawableRes
-    iconResId: Int,
-    descriptSDGn: String,
-    marginTop: Dp = 60.dp
-) {
-    Column(
-        modifier = Modifier
-            .padding(top = marginTop)
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = spacedBy(12.dp)
-    ) {
-        SDGImage(
-            resId = iconResId,
-            color = null
-        )
-
-        SDGText(
-            text = descriptSDGn,
-            textColor = SDGColor.Neutral300,
-            typography = SDGTypography.Body2R,
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
 @Preview
 @Composable
-fun PrevEmpty() {
+private fun PreviewSDGBasicEmpty() {
     Surface(
-        Modifier
+        modifier = Modifier
             .fillMaxSize()
-            .background(SDGColor.Neutral350)
+            .background(SDGColor.Neutral0)
     ) {
-        Column() {
-            SDGBasicEmpty(iconResId = R.drawable.empty_member, descResId = R.string.no_registered_members)
-        }
+        SDGBasicEmpty(
+            iconResId = R.drawable.empty_member,
+            descResId = R.string.no_registered_members
+        )
     }
 }
