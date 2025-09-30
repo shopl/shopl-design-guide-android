@@ -53,8 +53,10 @@ import com.shopl.sdg.component.number_picker.SDGNumberPicker
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ext.distanceDays
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
+import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
@@ -320,15 +322,14 @@ private fun SDGCalendarHeader(
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(color = SDGColor.Neutral700)
             )
-            IOText(
+            SDGText(
                 modifier = Modifier
                     .clickable(hasRipple = false) {
                         //onClickDate()
                     },
                 text = String.format("%04d.%02d", year, month),
                 textColor = SDGColor.Neutral700,
-                fontSize = 18.sp,
-                typeface = IOTypeface.SEMI_BOLD
+                typography = SDGTypography.Title2SB
             )
             /*
             Image(
@@ -359,7 +360,7 @@ private fun SDGCalendarHeader(
         }
 
         if (!showMonthSelector) {
-            IOText(
+            SDGText(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .clickable(hasRipple = false) {
@@ -367,8 +368,7 @@ private fun SDGCalendarHeader(
                     },
                 text = stringResource(id = R.string.today),
                 textColor = SDGColor.Neutral700,
-                fontSize = 12.sp,
-                typeface = IOTypeface.SEMI_BOLD,
+                typography = SDGTypography.Body3SB,
                 textDecoration = TextDecoration.Underline
             )
         }

@@ -32,7 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.shopl.sdg.component.button.SDGButtonFontWeight
 import com.shopl.sdg.component.button.ghost.SDGGhostButtonSize
 import com.shopl.sdg.component.calendar.SDGCalendarDay
 import com.shopl.sdg.component.calendar.SDGCalendarDayMode
@@ -50,8 +50,6 @@ import com.shopl.sdg_common.ext.distanceDays
 import com.shopl.sdg_common.ext.withColor
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
-import com.shopl.sdg_common.ui.components.IOText
-import com.shopl.sdg_common.ui.components.IOTypeface
 import com.shopl.sdg_common.ui.components.SDGModalBottomSheet
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
@@ -317,6 +315,7 @@ fun SDGMultiCalendarModal(
                     size = SDGGhostButtonSize.Large,
                     label = stringResource(id = R.string.dialog_common_btn_ok),
                     labelColor = SDGColor.Neutral700,
+                    labelWeight = SDGButtonFontWeight.SB,
                     onClick = {
                         when (val type = types[selectedTabIndex]) {
                             is SDGMultiCalendarModalType.Day -> {
@@ -495,14 +494,13 @@ private fun DayPeriodCalendar(
             label += "~${stringResource(id = R.string.select)}"
         }
     }
-    IOText(
+    SDGText(
         modifier = Modifier
             .padding(top = 20.dp)
             .fillMaxWidth(),
         text = label.withColor(SDGColor.Neutral300, stringResource(id = R.string.select)),
         textColor = SDGColor.Primary300,
-        fontSize = 16.sp,
-        typeface = IOTypeface.SEMI_BOLD,
+        typography = SDGTypography.Body1SB,
         textAlign = TextAlign.Center
     )
 }
@@ -529,14 +527,13 @@ private fun DaySingleCalendar(
         onSelectDate = onSelectDate
     )
     val label = startDay?.let { dayFormatter03.print(it) } ?: ""
-    IOText(
+    SDGText(
         modifier = Modifier
             .padding(top = 20.dp)
             .fillMaxWidth(),
         text = label.withColor(SDGColor.Neutral300, stringResource(id = R.string.select)),
         textColor = SDGColor.Primary300,
-        fontSize = 16.sp,
-        typeface = IOTypeface.SEMI_BOLD,
+        typography = SDGTypography.Body1SB,
         textAlign = TextAlign.Center
     )
 }
@@ -581,14 +578,13 @@ private fun WeekPeriodCalendar(
             label += "~${stringResource(id = R.string.select)}"
         }
     }
-    IOText(
+    SDGText(
         modifier = Modifier
             .padding(top = 20.dp)
             .fillMaxWidth(),
         text = label.withColor(SDGColor.Neutral300, stringResource(id = R.string.select)),
         textColor = SDGColor.Primary300,
-        fontSize = 16.sp,
-        typeface = IOTypeface.SEMI_BOLD,
+        typography = SDGTypography.Body1SB,
         textAlign = TextAlign.Center
     )
 }
@@ -613,14 +609,13 @@ private fun WeekSingleCalendar(
     val label = startWeek?.let {
         String.format("W%02d", it.weekOfWeekYear)
     } ?: ""
-    IOText(
+    SDGText(
         modifier = Modifier
             .padding(top = 20.dp)
             .fillMaxWidth(),
         text = label.withColor(SDGColor.Neutral300, stringResource(id = R.string.select)),
         textColor = SDGColor.Primary300,
-        fontSize = 16.sp,
-        typeface = IOTypeface.SEMI_BOLD,
+        typography = SDGTypography.Body1SB,
         textAlign = TextAlign.Center
     )
 }
@@ -646,14 +641,13 @@ private fun MonthSingleCalendar(
     startMonth?.let { start ->
         label += monthFormatter01.print(start)
     }
-    IOText(
+    SDGText(
         modifier = Modifier
             .padding(top = 20.dp)
             .fillMaxWidth(),
         text = label,
         textColor = SDGColor.Primary300,
-        fontSize = 16.sp,
-        typeface = IOTypeface.SEMI_BOLD,
+        typography = SDGTypography.Body1SB,
         textAlign = TextAlign.Center
     )
 }
@@ -697,14 +691,13 @@ private fun MonthPeriodCalendar(
             }
         }
     }
-    IOText(
+    SDGText(
         modifier = Modifier
             .padding(top = 20.dp)
             .fillMaxWidth(),
         text = label,
         textColor = SDGColor.Primary300,
-        fontSize = 16.sp,
-        typeface = IOTypeface.SEMI_BOLD,
+        typography = SDGTypography.Body1SB,
         textAlign = TextAlign.Center
     )
 }
