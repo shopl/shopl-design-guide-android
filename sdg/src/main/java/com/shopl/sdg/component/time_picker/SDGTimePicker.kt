@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -87,7 +87,7 @@ fun SDGTimePicker(option: SDGTimePickerOption) {
 private fun SDGOneOptionTimePicker(option: OneOption) {
     SDGTimePickerBody(
         value = option.value,
-        range = option.range,
+        rangeList = option.rangeList,
         onValueChange = option.onValueChange,
         width = option.width,
         isEditMode = true
@@ -110,7 +110,7 @@ private fun SDGTwoOptionTimePicker(option: TwoOption) {
             Box(modifier = Modifier.weight(1f)) {
                 SDGTimePickerBody(
                     value = option.left.value,
-                    range = option.left.range,
+                    rangeList = option.left.rangeList,
                     onValueChange = option.left.onValueChange,
                     isEditMode = true,
                 )
@@ -125,7 +125,7 @@ private fun SDGTwoOptionTimePicker(option: TwoOption) {
             Box(modifier = Modifier.weight(1f)) {
                 SDGTimePickerBody(
                     value = option.right.value,
-                    range = option.right.range,
+                    rangeList = option.right.rangeList,
                     onValueChange = option.right.onValueChange,
                     isEditMode = true
                 )
@@ -142,28 +142,257 @@ private fun SDGTwoOptionTimePicker(option: TwoOption) {
 @Composable
 private fun SDGTimePickerBody(
     value: Int,
-    range: IntRange,
+    rangeList: PersistentList<Int>,
     onValueChange: (Int) -> Unit,
     width: Dp = 0.dp,
     isEditMode: Boolean = true,
 ) {
-    require(range.count() >= VISIBLE_COUNT) { "범위는 최소 $VISIBLE_COUNT 이상이 필요합니다." }
-    require(range.contains(value)) { "value($value)는 반드시 범위 안에 존재하는 값이어야 합니다." }
+    if (rangeList.size < VISIBLE_COUNT && rangeList.isNotEmpty()) {
+        FinitePickerBody(
+            value = value,
+            rangeList = rangeList,
+            onValueChange = onValueChange,
+            width = width,
+            isEditMode = isEditMode
+        )
+    } else {
+        InfinitePickerBody(
+            value = value,
+            rangeList = rangeList,
+            onValueChange = onValueChange,
+            width = width,
+            isEditMode = isEditMode
+        )
+    }
+}
 
-    var isFirstScrollDone by remember { mutableStateOf(false) }
+/**
+ * 제한된 항목 수를 사용하는 스크롤 피커 Body
+ * 5개 이하일 경우 더미뷰 처리로 인해 무한 스크롤을 방지하기 위함
+ *
+ * lazy 리스트에서 중심 항목을 감지해 값 변화를 전달하고, 필요시 선택된 값으로 스크롤을 이동
+ */
+@Composable
+private fun FinitePickerBody(
+    value: Int,
+    rangeList: PersistentList<Int>,
+    onValueChange: (Int) -> Unit,
+    width: Dp = 0.dp,
+    isEditMode: Boolean = true,
+) {
+    val lazyListState = rememberLazyListState()
+    val snapBehavior = rememberSnapFlingBehavior(lazyListState)
+
+    val itemHeightDp = ITEM_HEIGHT.dp
+    val pickerHeightDp = PICKER_HEIGHT.dp
+    val verticalPadding = (pickerHeightDp - itemHeightDp) / 2
+
+    var isEditing by remember { mutableStateOf(false) }
+    var editingValue by remember { mutableStateOf(TextFieldValue("")) }
+
+    LaunchedEffect(Unit) {
+        val index = rangeList.indexOf(value)
+        if (index != -1) {
+            lazyListState.scrollToItem(index)
+        }
+    }
+
+    val centerInfo by remember {
+        derivedStateOf {
+            val layoutInfo = lazyListState.layoutInfo
+            if (layoutInfo.visibleItemsInfo.isEmpty()) {
+                null
+            } else {
+                val viewportCenter = layoutInfo.viewportStartOffset + layoutInfo.viewportSize.height / 2
+                layoutInfo.visibleItemsInfo.minByOrNull { abs((it.offset + it.size / 2) - viewportCenter) }
+            }
+        }
+    }
+
+    LaunchedEffect(lazyListState.isScrollInProgress) {
+        if (!lazyListState.isScrollInProgress) {
+            val index = centerInfo?.index
+            if (index != null) {
+                val selectedValue = rangeList.getOrNull(index)
+                if (selectedValue != null && selectedValue != value) {
+                    onValueChange(selectedValue)
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(value) {
+        val index = rangeList.indexOf(value)
+        if (index != -1 && index != centerInfo?.index) {
+            lazyListState.animateScrollToItem(index)
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .then(if (width == 0.dp) Modifier.fillMaxWidth() else Modifier.width(width))
+            .height(pickerHeightDp),
+        contentAlignment = Alignment.Center
+    ) {
+        HighlightingBox()
+
+        LazyColumn(
+            state = lazyListState,
+            flingBehavior = snapBehavior,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(vertical = verticalPadding)
+        ) {
+            items(rangeList.size, key = { rangeList[it] }) { index ->
+                val isCenter = centerInfo?.index == index
+
+                FinitePickerItem(
+                    value = rangeList[index],
+                    isCenter = isCenter,
+                    isEditing = isEditing,
+                    editingValue = editingValue,
+                    setEditing = { isEditing = it },
+                    setEditingValue = { editingValue = it },
+                    onValueChange = onValueChange,
+                    isEditMode = isEditMode,
+                    rangeList = rangeList
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun FinitePickerItem(
+    value: Int,
+    isCenter: Boolean,
+    isEditing: Boolean,
+    editingValue: TextFieldValue,
+    setEditing: (Boolean) -> Unit,
+    setEditingValue: (TextFieldValue) -> Unit,
+    onValueChange: (Int) -> Unit,
+    isEditMode: Boolean,
+    rangeList: PersistentList<Int>
+) {
+    val selectedColor = SDGColor.Neutral700
+    val unSelectedColor = SDGColor.Neutral400
+    val color = if (isCenter) selectedColor else unSelectedColor
+
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(isEditing) {
+        if (isEditing && isCenter) {
+            focusRequester.requestFocus()
+        }
+    }
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(ITEM_HEIGHT.dp)
+            .then(
+                if (isEditMode && isCenter && !isEditing)
+                    Modifier.clickable {
+                        val text = value.toString()
+                        setEditingValue(TextFieldValue(text, selection = TextRange(text.length)))
+                        setEditing(true)
+                    }
+                else Modifier
+            )
+    ) {
+        if (isEditMode && isCenter && isEditing) {
+            BasicTextField(
+                value = editingValue,
+                onValueChange = { newInput ->
+                    val inputStr = newInput.text
+                    if (inputStr.all { it.isDigit() } && (inputStr.toIntOrNull() in rangeList || inputStr.isBlank())) {
+                        setEditingValue(newInput.copy(selection = TextRange(inputStr.length)))
+                    }
+                },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        val newValue = editingValue.text.toIntOrNull()
+                        if (newValue != null && newValue in rangeList) {
+                            setEditing(false)
+                            if (newValue != value) {
+                                onValueChange(newValue)
+                            }
+                        }
+                    }
+                ),
+                textStyle = SDGTypography.Title2R.style.copy(
+                    color = selectedColor,
+                    textAlign = TextAlign.Center
+                ),
+                modifier = Modifier
+                    .focusRequester(focusRequester)
+                    .fillMaxWidth()
+                    .height(ITEM_HEIGHT.dp)
+            ) { innerTextField ->
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    innerTextField()
+                }
+            }
+        } else {
+            SDGText(
+                text = value.toString(),
+                typography = SDGTypography.Title2R,
+                textColor = color
+            )
+        }
+    }
+}
+
+/**
+ * 무한 스크롤을 통해 연속적으로 값을 노출하는 피커
+ */
+@Composable
+private fun InfinitePickerBody(
+    value: Int,
+    rangeList: PersistentList<Int>,
+    onValueChange: (Int) -> Unit,
+    width: Dp = 0.dp,
+    isEditMode: Boolean = true,
+) {
+    val displayList = remember(rangeList) {
+        if (rangeList.size < VISIBLE_COUNT && rangeList.isNotEmpty()) {
+            val padding = List(VISIBLE_COUNT - rangeList.size) { null }
+            (rangeList + padding).toPersistentList()
+        } else {
+            rangeList.toPersistentList()
+        }
+    }
+
     var isEditing by remember { mutableStateOf(false) }
     var editingValue by remember { mutableStateOf(TextFieldValue("")) }
 
     var suppressNextValueScroll by remember { mutableStateOf(false) }
 
-    val rangeList = remember(range) { range.toList() }
-    val rangeSize = rangeList.size
+    val rangeSize = displayList.size
 
     val baseCenterIndex = remember(rangeSize) {
-        (VIRTUAL_ITEM_COUNT / 2 / rangeSize) * rangeSize
+        if (rangeSize == 0) 0 else (VIRTUAL_ITEM_COUNT / 2 / rangeSize) * rangeSize
     }
 
-    val lazyListState = rememberLazyListState()
+    val initialTopIndex = remember {
+        val actualRangeIndex = displayList.indexOf(value)
+        if (actualRangeIndex == -1) {
+            0
+        } else {
+            val desiredCenterBaseIndex = baseCenterIndex + actualRangeIndex
+            (desiredCenterBaseIndex - CENTER_INDEX).coerceIn(0, VIRTUAL_ITEM_COUNT - 1)
+        }
+    }
+
+    val lazyListState = rememberLazyListState(initialFirstVisibleItemIndex = initialTopIndex)
     val snapBehavior = rememberSnapFlingBehavior(lazyListState)
     val itemHeightPx = with(LocalDensity.current) { ITEM_HEIGHT.dp.roundToPx() }
 
@@ -191,13 +420,15 @@ private fun SDGTimePickerBody(
             .height(PICKER_HEIGHT.dp),
         contentAlignment = Alignment.Center
     ) {
-        LaunchedEffect(value, rangeList) {
+        LaunchedEffect(value, displayList) {
             if (suppressNextValueScroll) {
                 suppressNextValueScroll = false
                 return@LaunchedEffect
             }
 
-            val actualRangeIndex = rangeList.indexOf(value)
+            val actualRangeIndex = displayList.indexOf(value)
+            if (actualRangeIndex < 0) return@LaunchedEffect
+
             val desiredCenterBaseIndex = baseCenterIndex + actualRangeIndex
 
             val currentCenterIndex = (highlightingTopIndex + CENTER_INDEX)
@@ -214,10 +445,7 @@ private fun SDGTimePickerBody(
                 .toInt()
                 .coerceIn(0, VIRTUAL_ITEM_COUNT - 1)
 
-            if (!isFirstScrollDone) {
-                lazyListState.scrollToItem(targetTopIndex)
-                isFirstScrollDone = true
-            } else if (targetTopIndex != lazyListState.firstVisibleItemIndex) {
+            if (targetTopIndex != lazyListState.firstVisibleItemIndex) {
                 lazyListState.animateScrollToItem(targetTopIndex)
             }
         }
@@ -229,11 +457,25 @@ private fun SDGTimePickerBody(
         }
 
         LaunchedEffect(settledTopIndex) {
-            if (settledTopIndex != NOT_STOPPED_SCROLL_INDEX) {
+            if (settledTopIndex != NOT_STOPPED_SCROLL_INDEX && rangeSize > 0) {
                 val centerGlobalIndex = settledTopIndex + CENTER_INDEX
                 val mappedRangeIndex = ((centerGlobalIndex.toLong() % rangeSize) + rangeSize) % rangeSize
-                val mappedValue = rangeList[mappedRangeIndex.toInt()]
-                if (mappedValue != value) {
+                val mappedValue = displayList[mappedRangeIndex.toInt()]
+
+                if (mappedValue == null) {
+                    val targetIndex = (0 until rangeList.size).minByOrNull {
+                        val dist1 = abs(it - mappedRangeIndex.toInt())
+                        val dist2 = rangeSize - dist1
+                        min(dist1, dist2)
+                    }
+
+                    if (targetIndex != null) {
+                        val targetValue = displayList[targetIndex]
+                        if (targetValue != null && targetValue != value) {
+                            onValueChange(targetValue)
+                        }
+                    }
+                } else if (mappedValue != value) {
                     suppressNextValueScroll = true
                     onValueChange(mappedValue)
                 }
@@ -248,10 +490,10 @@ private fun SDGTimePickerBody(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             items(VIRTUAL_ITEM_COUNT) { virtualIndex ->
-                SDGTimePickerBodyItem(
+                InfinitePickerItem(
                     index = virtualIndex,
                     highlightingIndex = highlightingTopIndex,
-                    rangeList = rangeList.toPersistentList(),
+                    rangeList = displayList,
                     isEditing = isEditing,
                     setEditing = { isEditingNow ->
                         isEditing = isEditingNow
@@ -268,11 +510,14 @@ private fun SDGTimePickerBody(
     }
 }
 
+/**
+ * 무한 스크롤 피커에서 반복적으로 렌더링되는 항목
+ */
 @Composable
-private fun SDGTimePickerBodyItem(
+private fun InfinitePickerItem(
     index: Int,
     highlightingIndex: Int,
-    rangeList: PersistentList<Int>,
+    rangeList: PersistentList<Int?>,
     isEditing: Boolean,
     setEditing: (Boolean) -> Unit,
     editingValue: TextFieldValue,
@@ -282,6 +527,10 @@ private fun SDGTimePickerBodyItem(
     isEditMode: Boolean
 ) {
     val rangeSize = rangeList.size
+    if (rangeSize == 0) {
+        Box(modifier = Modifier.height(ITEM_HEIGHT.dp))
+        return
+    }
     val isCenterItem = (index == highlightingIndex + CENTER_INDEX)
 
     val realIndex = (((index % rangeSize) + rangeSize) % rangeSize)
@@ -308,7 +557,7 @@ private fun SDGTimePickerBodyItem(
             .fillMaxWidth()
             .height(ITEM_HEIGHT.dp)
             .then(
-                if (isEditMode && isCenterItem && !isEditing)
+                if (isEditMode && isCenterItem && !isEditing && currentValue != null)
                     Modifier.clickable {
                         val text = currentValue.toString()
                         setEditingValue(TextFieldValue(text, selection = TextRange(text.length)))
@@ -318,11 +567,12 @@ private fun SDGTimePickerBodyItem(
             )
     ) {
         if (isEditMode && isCenterItem && isEditing) {
+            val validRange = remember { rangeList.filterNotNull() }
             BasicTextField(
                 value = editingValue,
                 onValueChange = { newInput ->
                     val inputStr = newInput.text
-                    if (inputStr.all { it.isDigit() } && inputStr.toIntOrNull() in rangeList || inputStr.isBlank()) {
+                    if (inputStr.all { it.isDigit() } && (inputStr.toIntOrNull() in validRange || inputStr.isBlank())) {
                         setEditingValue(newInput.copy(selection = TextRange(inputStr.length)))
                     }
                 },
@@ -334,7 +584,7 @@ private fun SDGTimePickerBodyItem(
                 keyboardActions = KeyboardActions(
                     onDone = {
                         val newValue = editingValue.text.toIntOrNull()
-                        if (newValue != null && newValue in rangeList) {
+                        if (newValue != null && newValue in validRange) {
                             setEditing(false)
                             if (newValue != value) {
                                 onValueChange(newValue)
@@ -374,7 +624,7 @@ private fun HighlightingBox() {
         modifier = Modifier
             .fillMaxWidth()
             .height(ITEM_HEIGHT.dp)
-            .clip(RoundedCornerShape(SDGCornerRadius.Radius8))
+            .clip(SDGCornerRadius.BoxRadius.Radius8)
             .background(SDGColor.Neutral150)
     )
 }
@@ -387,7 +637,7 @@ private fun PreviewSDGTimePickerOneOption() {
     SDGTimePicker(
         option = OneOption(
             value = value,
-            range = 0..23,
+            rangeList = (0..23).toPersistentList(),
             onValueChange = { value = it },
         )
     )
@@ -403,12 +653,12 @@ private fun PreviewSDGTimePickerTwoOption() {
         option = TwoOption(
             left = TwoOption.OptionModel(
                 value = hour,
-                range = 0..23,
+                rangeList = (0..23).toPersistentList(),
                 onValueChange = { hour = it },
             ),
             right = TwoOption.OptionModel(
                 value = minute,
-                range = 0..59,
+                rangeList = (0..30 step 30).toPersistentList(),
                 onValueChange = { minute = it },
             )
         )
