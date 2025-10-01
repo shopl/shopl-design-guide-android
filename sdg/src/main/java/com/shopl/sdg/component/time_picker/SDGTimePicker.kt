@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -167,6 +166,12 @@ private fun SDGTimePickerBody(
     }
 }
 
+/**
+ * 제한된 항목 수를 사용하는 스크롤 피커 Body
+ * 5개 이하일 경우 더미뷰 처리로 인해 무한 스크롤을 방지하기 위함
+ *
+ * lazy 리스트에서 중심 항목을 감지해 값 변화를 전달하고, 필요시 선택된 값으로 스크롤을 이동
+ */
 @Composable
 private fun FinitePickerBody(
     value: Int,
@@ -346,11 +351,8 @@ private fun FinitePickerItem(
     }
 }
 
-
 /**
- * @param onValueChange 선택된 값이 변경될 때 호출되는 콜백
- * @param width 피커의 너비. 지정하지 않으면 사용 가능한 전체 너비를 채움
- * @param isEditMode 직접 입력 가능 여부 (기본값: true)
+ * 무한 스크롤을 통해 연속적으로 값을 노출하는 피커
  */
 @Composable
 private fun InfinitePickerBody(
@@ -363,9 +365,9 @@ private fun InfinitePickerBody(
     val displayList = remember(rangeList) {
         if (rangeList.size < VISIBLE_COUNT && rangeList.isNotEmpty()) {
             val padding = List(VISIBLE_COUNT - rangeList.size) { null }
-            (rangeList.map { it as Int? } + padding).toPersistentList()
+            (rangeList + padding).toPersistentList()
         } else {
-            rangeList.map { it as Int? }.toPersistentList()
+            rangeList.toPersistentList()
         }
     }
 
@@ -508,6 +510,9 @@ private fun InfinitePickerBody(
     }
 }
 
+/**
+ * 무한 스크롤 피커에서 반복적으로 렌더링되는 항목
+ */
 @Composable
 private fun InfinitePickerItem(
     index: Int,
@@ -561,9 +566,7 @@ private fun InfinitePickerItem(
                 else Modifier
             )
     ) {
-        if (currentValue == null) {
-            // Dummy View
-        } else if (isEditMode && isCenterItem && isEditing) {
+        if (isEditMode && isCenterItem && isEditing) {
             val validRange = remember { rangeList.filterNotNull() }
             BasicTextField(
                 value = editingValue,
@@ -621,7 +624,7 @@ private fun HighlightingBox() {
         modifier = Modifier
             .fillMaxWidth()
             .height(ITEM_HEIGHT.dp)
-            .clip(RoundedCornerShape(SDGCornerRadius.Radius8))
+            .clip(SDGCornerRadius.BoxRadius.Radius8)
             .background(SDGColor.Neutral150)
     )
 }
@@ -655,7 +658,7 @@ private fun PreviewSDGTimePickerTwoOption() {
             ),
             right = TwoOption.OptionModel(
                 value = minute,
-                rangeList = (0..59).toPersistentList(),
+                rangeList = (0..30 step 30).toPersistentList(),
                 onValueChange = { minute = it },
             )
         )
