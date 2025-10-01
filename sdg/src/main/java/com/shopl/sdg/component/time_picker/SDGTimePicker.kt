@@ -147,19 +147,28 @@ private fun SDGTimePickerBody(
     width: Dp = 0.dp,
     isEditMode: Boolean = true,
 ) {
+    val displayList = remember(rangeList) {
+        if (rangeList.size < VISIBLE_COUNT && rangeList.isNotEmpty()) {
+            val padding = List(VISIBLE_COUNT - rangeList.size) { null }
+            (rangeList.map { it } + padding).toPersistentList()
+        } else {
+            rangeList.map { it }.toPersistentList()
+        }
+    }
+
     var isEditing by remember { mutableStateOf(false) }
     var editingValue by remember { mutableStateOf(TextFieldValue("")) }
 
     var suppressNextValueScroll by remember { mutableStateOf(false) }
 
-    val rangeSize = rangeList.size
+    val rangeSize = displayList.size
 
     val baseCenterIndex = remember(rangeSize) {
-        (VIRTUAL_ITEM_COUNT / 2 / rangeSize) * rangeSize
+        if (rangeSize == 0) 0 else (VIRTUAL_ITEM_COUNT / 2 / rangeSize) * rangeSize
     }
 
     val initialTopIndex = remember {
-        val actualRangeIndex = rangeList.indexOf(value)
+        val actualRangeIndex = displayList.indexOf(value)
         if (actualRangeIndex == -1) {
             0
         } else {
@@ -196,13 +205,15 @@ private fun SDGTimePickerBody(
             .height(PICKER_HEIGHT.dp),
         contentAlignment = Alignment.Center
     ) {
-        LaunchedEffect(value, rangeList) {
+        LaunchedEffect(value, displayList) {
             if (suppressNextValueScroll) {
                 suppressNextValueScroll = false
                 return@LaunchedEffect
             }
 
-            val actualRangeIndex = rangeList.indexOf(value)
+            val actualRangeIndex = displayList.indexOf(value)
+            if (actualRangeIndex < 0) return@LaunchedEffect
+
             val desiredCenterBaseIndex = baseCenterIndex + actualRangeIndex
 
             val currentCenterIndex = (highlightingTopIndex + CENTER_INDEX)
@@ -231,11 +242,11 @@ private fun SDGTimePickerBody(
         }
 
         LaunchedEffect(settledTopIndex) {
-            if (settledTopIndex != NOT_STOPPED_SCROLL_INDEX) {
+            if (settledTopIndex != NOT_STOPPED_SCROLL_INDEX && rangeSize > 0) {
                 val centerGlobalIndex = settledTopIndex + CENTER_INDEX
                 val mappedRangeIndex = ((centerGlobalIndex.toLong() % rangeSize) + rangeSize) % rangeSize
-                val mappedValue = rangeList[mappedRangeIndex.toInt()]
-                if (mappedValue != value) {
+                val mappedValue = displayList[mappedRangeIndex.toInt()]
+                if (mappedValue != null && mappedValue != value) {
                     suppressNextValueScroll = true
                     onValueChange(mappedValue)
                 }
@@ -253,7 +264,7 @@ private fun SDGTimePickerBody(
                 SDGTimePickerBodyItem(
                     index = virtualIndex,
                     highlightingIndex = highlightingTopIndex,
-                    rangeList = rangeList.toPersistentList(),
+                    rangeList = displayList,
                     isEditing = isEditing,
                     setEditing = { isEditingNow ->
                         isEditing = isEditingNow
@@ -274,7 +285,7 @@ private fun SDGTimePickerBody(
 private fun SDGTimePickerBodyItem(
     index: Int,
     highlightingIndex: Int,
-    rangeList: PersistentList<Int>,
+    rangeList: PersistentList<Int?>,
     isEditing: Boolean,
     setEditing: (Boolean) -> Unit,
     editingValue: TextFieldValue,
@@ -284,6 +295,10 @@ private fun SDGTimePickerBodyItem(
     isEditMode: Boolean
 ) {
     val rangeSize = rangeList.size
+    if (rangeSize == 0) {
+        Box(modifier = Modifier.height(ITEM_HEIGHT.dp))
+        return
+    }
     val isCenterItem = (index == highlightingIndex + CENTER_INDEX)
 
     val realIndex = (((index % rangeSize) + rangeSize) % rangeSize)
@@ -310,7 +325,7 @@ private fun SDGTimePickerBodyItem(
             .fillMaxWidth()
             .height(ITEM_HEIGHT.dp)
             .then(
-                if (isEditMode && isCenterItem && !isEditing)
+                if (isEditMode && isCenterItem && !isEditing && currentValue != null)
                     Modifier.clickable {
                         val text = currentValue.toString()
                         setEditingValue(TextFieldValue(text, selection = TextRange(text.length)))
@@ -319,12 +334,15 @@ private fun SDGTimePickerBodyItem(
                 else Modifier
             )
     ) {
-        if (isEditMode && isCenterItem && isEditing) {
+        if (currentValue == null) {
+            // Dummy View
+        } else if (isEditMode && isCenterItem && isEditing) {
+            val validRange = remember { rangeList.filterNotNull() }
             BasicTextField(
                 value = editingValue,
                 onValueChange = { newInput ->
                     val inputStr = newInput.text
-                    if (inputStr.all { it.isDigit() } && (inputStr.toIntOrNull() in rangeList || inputStr.isBlank())) {
+                    if (inputStr.all { it.isDigit() } && (inputStr.toIntOrNull() in validRange || inputStr.isBlank())) {
                         setEditingValue(newInput.copy(selection = TextRange(inputStr.length)))
                     }
                 },
@@ -336,7 +354,7 @@ private fun SDGTimePickerBodyItem(
                 keyboardActions = KeyboardActions(
                     onDone = {
                         val newValue = editingValue.text.toIntOrNull()
-                        if (newValue != null && newValue in rangeList) {
+                        if (newValue != null && newValue in validRange) {
                             setEditing(false)
                             if (newValue != value) {
                                 onValueChange(newValue)
