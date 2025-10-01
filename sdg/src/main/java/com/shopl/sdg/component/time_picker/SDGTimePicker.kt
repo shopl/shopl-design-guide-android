@@ -150,7 +150,6 @@ private fun SDGTimePickerBody(
     require(range.count() >= VISIBLE_COUNT) { "범위는 최소 $VISIBLE_COUNT 이상이 필요합니다." }
     require(range.contains(value)) { "value($value)는 반드시 범위 안에 존재하는 값이어야 합니다." }
 
-    var isFirstScrollDone by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
     var editingValue by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -163,7 +162,17 @@ private fun SDGTimePickerBody(
         (VIRTUAL_ITEM_COUNT / 2 / rangeSize) * rangeSize
     }
 
-    val lazyListState = rememberLazyListState()
+    val initialTopIndex = remember {
+        val actualRangeIndex = rangeList.indexOf(value)
+        if (actualRangeIndex == -1) {
+            0
+        } else {
+            val desiredCenterBaseIndex = baseCenterIndex + actualRangeIndex
+            (desiredCenterBaseIndex - CENTER_INDEX).coerceIn(0, VIRTUAL_ITEM_COUNT - 1)
+        }
+    }
+
+    val lazyListState = rememberLazyListState(initialFirstVisibleItemIndex = initialTopIndex)
     val snapBehavior = rememberSnapFlingBehavior(lazyListState)
     val itemHeightPx = with(LocalDensity.current) { ITEM_HEIGHT.dp.roundToPx() }
 
@@ -214,10 +223,7 @@ private fun SDGTimePickerBody(
                 .toInt()
                 .coerceIn(0, VIRTUAL_ITEM_COUNT - 1)
 
-            if (!isFirstScrollDone) {
-                lazyListState.scrollToItem(targetTopIndex)
-                isFirstScrollDone = true
-            } else if (targetTopIndex != lazyListState.firstVisibleItemIndex) {
+            if (targetTopIndex != lazyListState.firstVisibleItemIndex) {
                 lazyListState.animateScrollToItem(targetTopIndex)
             }
         }
