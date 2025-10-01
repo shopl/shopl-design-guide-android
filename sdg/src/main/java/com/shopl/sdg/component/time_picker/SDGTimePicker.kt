@@ -87,7 +87,7 @@ fun SDGTimePicker(option: SDGTimePickerOption) {
 private fun SDGOneOptionTimePicker(option: OneOption) {
     SDGTimePickerBody(
         value = option.value,
-        range = option.range,
+        rangeList = option.rangeList,
         onValueChange = option.onValueChange,
         width = option.width,
         isEditMode = true
@@ -110,7 +110,7 @@ private fun SDGTwoOptionTimePicker(option: TwoOption) {
             Box(modifier = Modifier.weight(1f)) {
                 SDGTimePickerBody(
                     value = option.left.value,
-                    range = option.left.range,
+                    rangeList = option.left.rangeList,
                     onValueChange = option.left.onValueChange,
                     isEditMode = true,
                 )
@@ -125,7 +125,7 @@ private fun SDGTwoOptionTimePicker(option: TwoOption) {
             Box(modifier = Modifier.weight(1f)) {
                 SDGTimePickerBody(
                     value = option.right.value,
-                    range = option.right.range,
+                    rangeList = option.right.rangeList,
                     onValueChange = option.right.onValueChange,
                     isEditMode = true
                 )
@@ -142,20 +142,16 @@ private fun SDGTwoOptionTimePicker(option: TwoOption) {
 @Composable
 private fun SDGTimePickerBody(
     value: Int,
-    range: IntRange,
+    rangeList: PersistentList<Int>,
     onValueChange: (Int) -> Unit,
     width: Dp = 0.dp,
     isEditMode: Boolean = true,
 ) {
-    require(range.count() >= VISIBLE_COUNT) { "범위는 최소 $VISIBLE_COUNT 이상이 필요합니다." }
-    require(range.contains(value)) { "value($value)는 반드시 범위 안에 존재하는 값이어야 합니다." }
-
     var isEditing by remember { mutableStateOf(false) }
     var editingValue by remember { mutableStateOf(TextFieldValue("")) }
 
     var suppressNextValueScroll by remember { mutableStateOf(false) }
 
-    val rangeList = remember(range) { range.toList() }
     val rangeSize = rangeList.size
 
     val baseCenterIndex = remember(rangeSize) {
@@ -328,7 +324,7 @@ private fun SDGTimePickerBodyItem(
                 value = editingValue,
                 onValueChange = { newInput ->
                     val inputStr = newInput.text
-                    if (inputStr.all { it.isDigit() } && inputStr.toIntOrNull() in rangeList || inputStr.isBlank()) {
+                    if (inputStr.all { it.isDigit() } && (inputStr.toIntOrNull() in rangeList || inputStr.isBlank())) {
                         setEditingValue(newInput.copy(selection = TextRange(inputStr.length)))
                     }
                 },
@@ -393,7 +389,7 @@ private fun PreviewSDGTimePickerOneOption() {
     SDGTimePicker(
         option = OneOption(
             value = value,
-            range = 0..23,
+            rangeList = (0..23).toPersistentList(),
             onValueChange = { value = it },
         )
     )
@@ -409,12 +405,12 @@ private fun PreviewSDGTimePickerTwoOption() {
         option = TwoOption(
             left = TwoOption.OptionModel(
                 value = hour,
-                range = 0..23,
+                rangeList = (0..23).toPersistentList(),
                 onValueChange = { hour = it },
             ),
             right = TwoOption.OptionModel(
                 value = minute,
-                range = 0..59,
+                rangeList = (0..59).toPersistentList(),
                 onValueChange = { minute = it },
             )
         )
