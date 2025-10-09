@@ -1,37 +1,33 @@
 package com.shopl.sdg.component.dropdown
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.ui.components.IOText
+import com.shopl.sdg_common.foundation.SDGCornerRadius
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.foundation.typography.SDGTypography
+import com.shopl.sdg_common.ui.components.SDGImage
+import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
 @Stable
@@ -40,6 +36,15 @@ sealed interface SDGBasicDropdownState {
     data object Error : SDGBasicDropdownState
 }
 
+/**
+ * SDG - Component - Dropdown
+ *
+ * 여러 개의 리스트 옵션 중 하나의 옵션을 선택하기 위한 컴포넌트
+ *
+ * @param hasSelectedItem 값 선택 여부
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=18223-7263&m=dev">Figma</a>
+ */
 @Composable
 fun SDGBasicDropdown(
     text: String? = null,
@@ -63,17 +68,17 @@ fun SDGBasicDropdown(
                     Modifier
                 }
             )
-            .clip(shape = RoundedCornerShape(12.dp))
+            .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
             .then(
                 when (state) {
                     SDGBasicDropdownState.Default -> Modifier.background(
                         color = backgroundColor,
-                        shape = RoundedCornerShape(12.dp),
+                        shape = SDGCornerRadius.BoxRadius.Radius12,
                     )
 
                     SDGBasicDropdownState.Error -> Modifier.background(
                         color = SDGColor.Red300_a10,
-                        shape = RoundedCornerShape(12.dp),
+                        shape = SDGCornerRadius.BoxRadius.Radius12,
                     )
                 }
             )
@@ -89,32 +94,28 @@ fun SDGBasicDropdown(
                 }
             )
             .padding(
-                start = 12.dp,
-                end = 10.dp,
-                top = 10.dp,
-                bottom = 10.dp
+                horizontal = SDGSpacing.Spacing12,
+                vertical = SDGSpacing.Spacing10
             ),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10)
     ) {
-
-        IOText(
+        SDGText(
+            modifier = Modifier.weight(1f),
             text = text ?: "",
-            modifier = Modifier
-                .weight(1f),
-            textColor = if (hasSelectedItem) SDGColor.Neutral700 else SDGColor.Neutral300,
-            fontSize = 16.sp,
+            textColor = when {
+                !enable -> SDGColor.Neutral300
+                hasSelectedItem -> SDGColor.Neutral700
+                else -> SDGColor.Neutral300
+            },
+            typography = SDGTypography.Body1R,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1
         )
-        Image(
+        SDGImage(
             modifier = Modifier,
-            painter = painterResource(
-                id = R.drawable.ic_common_dropdown
-            ),
-            contentDescription = "",
-            colorFilter = ColorFilter.tint(
-                color = if (!enable) SDGColor.Neutral300 else SDGColor.Neutral700
-            )
+            resId = R.drawable.ic_common_dropdown,
+            color = if (enable) SDGColor.Neutral700 else SDGColor.Neutral300,
         )
     }
 
@@ -144,67 +145,47 @@ fun RowScope.SDGBasicDropdown(
 
 @Preview
 @Composable
-fun SDGDropdownPreview() {
-    Surface {
-        Box(
-            modifier = Modifier
-                .background(color = SDGColor.Neutral100)
-        ) {
-
-            var test by remember { mutableStateOf("힌트입니다. 누르면 값이 변경되면서 색상도 변경됩니다.") }
-            var isSelected by remember {
-                mutableStateOf(false)
-            }
-            Column {
-                SDGBasicDropdown(
-                    text = test,
-                    hasSelectedItem = isSelected,
-                    enable = true,
-                    backgroundColor = SDGColor.Neutral0,
-                    marginValues = PaddingValues(
-                        horizontal = 20.dp,
-                        vertical = 20.dp,
-                    ),
-                    onClick = {
-                        test = "TEST"
-                        isSelected = true
-                    },
-                )
-
-                Row {
-                    SDGBasicDropdown(
-                        weight = 1F,
-                        text = test,
-                        hasSelectedItem = isSelected,
-                        enable = true,
-                        backgroundColor = SDGColor.Neutral0,
-                        marginValues = PaddingValues(
-                            horizontal = 20.dp,
-                            vertical = 20.dp,
-                        ),
-                        onClick = {
-                            test = "TEST"
-                            isSelected = true
-                        },
-                    )
-
-                    SDGBasicDropdown(
-                        width = 112.dp,
-                        text = test,
-                        hasSelectedItem = isSelected,
-                        enable = true,
-                        backgroundColor = SDGColor.Neutral0,
-                        marginValues = PaddingValues(
-                            horizontal = 20.dp,
-                            vertical = 20.dp,
-                        ),
-                        onClick = {
-                            test = "TEST"
-                            isSelected = true
-                        },
-                    )
-                }
-            }
+private fun PreviewSDGBasicDropdown() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = SDGColor.Neutral0)
+            .padding(SDGSpacing.Spacing20),
+        verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing20)
+    ) {
+        SDGBasicDropdown(
+            text = "Item Selected",
+            hasSelectedItem = true,
+            enable = true,
+            backgroundColor = SDGColor.Neutral50,
+        )
+        SDGBasicDropdown(
+            text = "Hint",
+            hasSelectedItem = false,
+            enable = true,
+            backgroundColor = SDGColor.Neutral50,
+        )
+        SDGBasicDropdown(
+            text = "Disabled",
+            hasSelectedItem = false,
+            enable = false,
+            backgroundColor = SDGColor.Neutral50,
+        )
+        Row {
+            SDGBasicDropdown(
+                weight = 1F,
+                text = "Weight 1F",
+                hasSelectedItem = true,
+                enable = true,
+                backgroundColor = SDGColor.Neutral50,
+            )
+            SDGBasicDropdown(
+                weight = 1F,
+                text = "Weight 1F",
+                hasSelectedItem = false,
+                enable = true,
+                backgroundColor = SDGColor.Neutral50,
+            )
         }
     }
 }
