@@ -30,12 +30,6 @@ import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
-@Stable
-sealed interface SDGBasicDropdownState {
-    data object Default : SDGBasicDropdownState
-    data object Error : SDGBasicDropdownState
-}
-
 /**
  * SDG - Component - Dropdown
  *
@@ -48,7 +42,7 @@ sealed interface SDGBasicDropdownState {
 @Composable
 fun SDGBasicDropdown(
     text: String? = null,
-    state: SDGBasicDropdownState = SDGBasicDropdownState.Default,
+    state: DropdownState = DropdownState.Default,
     hasSelectedItem: Boolean = false,
     enable: Boolean = false,
     backgroundColor: Color = SDGColor.Neutral0,
@@ -71,12 +65,12 @@ fun SDGBasicDropdown(
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
             .then(
                 when (state) {
-                    SDGBasicDropdownState.Default -> Modifier.background(
+                    DropdownState.Default -> Modifier.background(
                         color = backgroundColor,
                         shape = SDGCornerRadius.BoxRadius.Radius12,
                     )
 
-                    SDGBasicDropdownState.Error -> Modifier.background(
+                    DropdownState.Error -> Modifier.background(
                         color = SDGColor.Red300_a10,
                         shape = SDGCornerRadius.BoxRadius.Radius12,
                     )
