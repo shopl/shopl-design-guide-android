@@ -28,7 +28,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.dropdown.SDGBasicDropdown
-import com.shopl.sdg.component.dropdown.SDGBasicDropdownState
+import com.shopl.sdg.component.dropdown.SDGDropdownState
 import com.shopl.sdg.component.text_input.InputState
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInput
 import com.shopl.sdg.template.selected_input.SDGSelectedInputSingle
@@ -56,7 +56,7 @@ fun SDGDropdownForm(
     value: String?,
     onDropdownClick: () -> Unit,
     hint: String? = null,
-    dropdownState: SDGBasicDropdownState = SDGBasicDropdownState.Default,
+    dropdownState: SDGDropdownState = SDGDropdownState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
@@ -142,7 +142,7 @@ fun SDGDropdownForm(
     value: String?,
     onDropdownClick: () -> Unit,
     hint: String? = null,
-    dropdownState: SDGBasicDropdownState = SDGBasicDropdownState.Default,
+    dropdownState: SDGDropdownState = SDGDropdownState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
