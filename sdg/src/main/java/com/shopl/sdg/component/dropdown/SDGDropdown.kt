@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,7 +41,7 @@ import com.shopl.sdg_resource.R
 @Composable
 fun SDGBasicDropdown(
     text: String? = null,
-    state: DropdownState = DropdownState.Default,
+    state: SDGDropdownState = SDGDropdownState.Default,
     hasSelectedItem: Boolean = false,
     enable: Boolean = false,
     backgroundColor: Color = SDGColor.Neutral0,
@@ -65,12 +64,12 @@ fun SDGBasicDropdown(
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
             .then(
                 when (state) {
-                    DropdownState.Default -> Modifier.background(
+                    SDGDropdownState.Default -> Modifier.background(
                         color = backgroundColor,
                         shape = SDGCornerRadius.BoxRadius.Radius12,
                     )
 
-                    DropdownState.Error -> Modifier.background(
+                    SDGDropdownState.Error -> Modifier.background(
                         color = SDGColor.Red300_a10,
                         shape = SDGCornerRadius.BoxRadius.Radius12,
                     )
