@@ -2,11 +2,9 @@ package com.shopl.sdg.component.dropdown
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -120,24 +118,6 @@ fun SDGDropdown(
 
 }
 
-@Composable
-fun RowScope.SDGDropdown(
-    weight: Float,
-    text: String? = null,
-    backgroundColor: Color = SDGColor.Neutral0,
-    marginValues: PaddingValues = PaddingValues(),
-    onClick: (() -> Unit)? = null,
-) {
-    Box(Modifier.weight(weight)) {
-        SDGDropdown(
-            text = text,
-            backgroundColor = backgroundColor,
-            marginValues = marginValues,
-            onClick = onClick
-        )
-    }
-}
-
 @Preview
 @Composable
 private fun PreviewSDGBasicDropdown() {
@@ -160,17 +140,5 @@ private fun PreviewSDGBasicDropdown() {
             text = "Disabled",
             backgroundColor = SDGColor.Neutral50,
         )
-        Row {
-            SDGDropdown(
-                weight = 1F,
-                text = "Weight 1F",
-                backgroundColor = SDGColor.Neutral50,
-            )
-            SDGDropdown(
-                weight = 1F,
-                text = "Weight 1F",
-                backgroundColor = SDGColor.Neutral50,
-            )
-        }
     }
 }
