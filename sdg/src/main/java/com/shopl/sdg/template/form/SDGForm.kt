@@ -299,7 +299,8 @@ fun SDGSelectedInputForm(
         SDGSelectInput(
             backgroundColor = SDGColor.Neutral50,
             state = selectedInputState,
-            text = value ?: hint ?: stringResource(id = R.string.select),
+            text = value,
+            placeholder = hint ?: stringResource(id = R.string.select),
             onClick = onInputClick,
             icon = inputStartIcon
         )
@@ -386,7 +387,8 @@ fun SDGSelectedInputForm(
         SDGSelectInput(
             backgroundColor = SDGColor.Neutral50,
             state = selectedInputState,
-            text = value ?: hint ?: stringResource(id = R.string.select),
+            text = value,
+            placeholder = hint ?: stringResource(id = R.string.select),
             onClick = onInputClick,
             icon = inputStartIcon
         )
