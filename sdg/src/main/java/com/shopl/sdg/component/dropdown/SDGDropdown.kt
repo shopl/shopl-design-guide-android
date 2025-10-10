@@ -38,7 +38,7 @@ import com.shopl.sdg_resource.R
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=18223-7263&m=dev">Figma</a>
  */
 @Composable
-fun SDGBasicDropdown(
+fun SDGDropdown(
     text: String? = null,
     placeholder: String = stringResource(id = R.string.select),
     state: SDGDropdownState = SDGDropdownState.Default,
@@ -121,7 +121,7 @@ fun SDGBasicDropdown(
 }
 
 @Composable
-fun RowScope.SDGBasicDropdown(
+fun RowScope.SDGDropdown(
     weight: Float,
     text: String? = null,
     backgroundColor: Color = SDGColor.Neutral0,
@@ -129,7 +129,7 @@ fun RowScope.SDGBasicDropdown(
     onClick: (() -> Unit)? = null,
 ) {
     Box(Modifier.weight(weight)) {
-        SDGBasicDropdown(
+        SDGDropdown(
             text = text,
             backgroundColor = backgroundColor,
             marginValues = marginValues,
@@ -148,25 +148,25 @@ private fun PreviewSDGBasicDropdown() {
             .padding(SDGSpacing.Spacing20),
         verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing20)
     ) {
-        SDGBasicDropdown(
+        SDGDropdown(
             text = "Item Selected",
             backgroundColor = SDGColor.Neutral50,
         )
-        SDGBasicDropdown(
+        SDGDropdown(
             text = null,
             backgroundColor = SDGColor.Neutral50,
         )
-        SDGBasicDropdown(
+        SDGDropdown(
             text = "Disabled",
             backgroundColor = SDGColor.Neutral50,
         )
         Row {
-            SDGBasicDropdown(
+            SDGDropdown(
                 weight = 1F,
                 text = "Weight 1F",
                 backgroundColor = SDGColor.Neutral50,
             )
-            SDGBasicDropdown(
+            SDGDropdown(
                 weight = 1F,
                 text = "Weight 1F",
                 backgroundColor = SDGColor.Neutral50,

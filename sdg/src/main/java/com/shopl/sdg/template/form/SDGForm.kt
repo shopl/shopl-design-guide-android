@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.shopl.sdg.component.dropdown.SDGBasicDropdown
+import com.shopl.sdg.component.dropdown.SDGDropdown
 import com.shopl.sdg.component.dropdown.SDGDropdownState
 import com.shopl.sdg.component.select_input.SDGSelectInput
 import com.shopl.sdg.component.select_input.SDGSelectInputState
@@ -124,7 +124,7 @@ fun SDGDropdownForm(
                 )
             }
         }
-        SDGBasicDropdown(
+        SDGDropdown(
             backgroundColor = SDGColor.Neutral50,
             state = dropdownState,
             text = value,
@@ -209,7 +209,7 @@ fun SDGDropdownForm(
                 )
             }
         }
-        SDGBasicDropdown(
+        SDGDropdown(
             backgroundColor = SDGColor.Neutral50,
             state = dropdownState,
             text = value,
