@@ -29,11 +29,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.dropdown.SDGBasicDropdown
 import com.shopl.sdg.component.dropdown.SDGDropdownState
+import com.shopl.sdg.component.select_input.SDGSelectInput
+import com.shopl.sdg.component.select_input.SDGSelectInputState
 import com.shopl.sdg.component.text_input.InputState
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInput
-import com.shopl.sdg.template.selected_input.SDGSelectedInputSingle
-import com.shopl.sdg.template.selected_input.SDGSelectedInputState
-import com.shopl.sdg.template.selected_input.SDGSelectedInputTime
+import com.shopl.sdg.component.time_select_input.SDGTimeSelectInput
 import com.shopl.sdg_common.enums.OutlineType
 import com.shopl.sdg_common.ext.bounceClickable
 import com.shopl.sdg_common.ext.clickable
@@ -127,9 +127,8 @@ fun SDGDropdownForm(
         SDGBasicDropdown(
             backgroundColor = SDGColor.Neutral50,
             state = dropdownState,
-            text = value ?: hint ?: stringResource(id = R.string.select),
-            enable = true,
-            hasSelectedItem = value != null,
+            text = value,
+            placeholder = hint ?: stringResource(id = R.string.select),
             onClick = onDropdownClick,
         )
     }
@@ -213,9 +212,8 @@ fun SDGDropdownForm(
         SDGBasicDropdown(
             backgroundColor = SDGColor.Neutral50,
             state = dropdownState,
-            text = value ?: hint ?: stringResource(id = R.string.select),
-            enable = true,
-            hasSelectedItem = value != null,
+            text = value,
+            placeholder = hint ?: stringResource(id = R.string.select),
             onClick = onDropdownClick,
         )
     }
@@ -228,7 +226,7 @@ fun SDGSelectedInputForm(
     value: String?,
     onInputClick: () -> Unit,
     hint: String? = null,
-    selectedInputState: SDGSelectedInputState = SDGSelectedInputState.Default,
+    selectedInputState: SDGSelectInputState = SDGSelectInputState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
@@ -298,12 +296,10 @@ fun SDGSelectedInputForm(
                 )
             }
         }
-        SDGSelectedInputSingle(
+        SDGSelectInput(
             backgroundColor = SDGColor.Neutral50,
             state = selectedInputState,
             text = value ?: hint ?: stringResource(id = R.string.select),
-            enable = true,
-            hasSelectedItem = value != null,
             onClick = onInputClick,
             icon = inputStartIcon
         )
@@ -317,7 +313,7 @@ fun SDGSelectedInputForm(
     value: String?,
     onInputClick: () -> Unit,
     hint: String? = null,
-    selectedInputState: SDGSelectedInputState = SDGSelectedInputState.Default,
+    selectedInputState: SDGSelectInputState = SDGSelectInputState.Default,
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
@@ -387,12 +383,10 @@ fun SDGSelectedInputForm(
                 )
             }
         }
-        SDGSelectedInputSingle(
+        SDGSelectInput(
             backgroundColor = SDGColor.Neutral50,
             state = selectedInputState,
             text = value ?: hint ?: stringResource(id = R.string.select),
-            enable = true,
-            hasSelectedItem = value != null,
             onClick = onInputClick,
             icon = inputStartIcon
         )
@@ -637,7 +631,7 @@ fun SDGTimeSelectedForm(
                 )
             }
         }
-        SDGSelectedInputTime(
+        SDGTimeSelectInput(
             startTime = startTime,
             endTime = endTime,
             backgroundColor = SDGColor.Neutral50,

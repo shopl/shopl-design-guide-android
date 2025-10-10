@@ -5,5 +5,6 @@ import androidx.compose.runtime.Stable
 @Stable
 sealed interface SDGDropdownState {
     data object Default : SDGDropdownState
+    data object Disabled : SDGDropdownState
     data object Error : SDGDropdownState
 }
