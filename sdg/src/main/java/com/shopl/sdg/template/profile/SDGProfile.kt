@@ -34,7 +34,6 @@ import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
 
-
 @Composable
 fun SDGProfileBasic(
     roleType: String,
@@ -103,6 +102,7 @@ fun SDGProfileBasic(
     }
 }
 
+@Deprecated("제거 예정", replaceWith = ReplaceWith("SDGSecondProfile을 사용하세요."))
 @Composable
 fun SDGProfileSecond(
     roleType: String,
@@ -173,6 +173,7 @@ fun SDGProfileSecond(
     }
 }
 
+@Deprecated("제거 예정", replaceWith = ReplaceWith("SDGSecondProfile을 사용하세요."))
 @Composable
 fun RowScope.SDGProfileSecond(
     weight: Float,
@@ -205,6 +206,7 @@ fun RowScope.SDGProfileSecond(
     }
 }
 
+@Deprecated("제거 예정", replaceWith = ReplaceWith("SDGMiniProfile을 사용하세요."))
 @Composable
 fun SDGProfileMini(
     roleType: String,
