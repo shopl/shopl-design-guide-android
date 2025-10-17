@@ -328,10 +328,10 @@ private fun SDGCalendarBodyRow(
                     if (selectedList.size == 2) {
                         val start = selectedList[0]
                         val end = selectedList[1]
-                        if (start != end) {
-                            if (start == day) {
+                        if (!start.equalYM(end)) {
+                            if (start.equalYM(day)) {
                                 hasAfterPeriod = true
-                            } else if (end == day) {
+                            } else if (end.equalYM(day)) {
                                 hasBeforePeriod = true
                             } else if (day.isAfter(start) && day.isBefore(end)) {
                                 hasBeforePeriod = true
