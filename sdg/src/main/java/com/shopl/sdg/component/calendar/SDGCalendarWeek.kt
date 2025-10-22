@@ -85,6 +85,10 @@ data class WeekDateTime(
         return dateTime.minusDays(offset)
     }
 
+    fun getWeekEndDateTime(weekStart: SDGDayOfWeek): DateTime {
+        return getWeekStartDateTime(weekStart).plusDays(6)
+    }
+
     private fun getDayOfWeekStartOffset(date: DateTime, weekStart: SDGDayOfWeek): Int {
         val firstDayOfWeek: Int = weekStart.ordinal + 1
         val week = date.dayOfWeek()
