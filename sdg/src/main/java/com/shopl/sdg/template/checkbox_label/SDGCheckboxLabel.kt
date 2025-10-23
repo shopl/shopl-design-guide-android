@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,6 +14,7 @@ import com.shopl.sdg.template.checkbox_label.preview.SDGCheckboxLabelPreviewPara
 import com.shopl.sdg.template.checkbox_label.preview.SDGCheckboxLabelPreviewParams
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.ui.components.SDGText
 
@@ -44,7 +44,6 @@ fun SDGCheckboxLabel(
 ) {
     Row(
         modifier = Modifier.padding(paddingValues = marginValues),
-        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(space = Spacing8),
     ) {
         SDGCheckBox(
@@ -52,6 +51,7 @@ fun SDGCheckboxLabel(
             enabled = enabled,
             checkedBackgroundColor = checkedBackgroundColor ?: SDGColor.Primary300,
             onClick = { if (enabled) onClick?.invoke() },
+            clickPadding = PaddingValues(vertical = SDGSpacing.Spacing2),
         )
 
         SDGText(
