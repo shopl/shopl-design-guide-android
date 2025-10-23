@@ -45,6 +45,7 @@ fun SDGAsyncImage(
         SDGImage(
             resId = R.drawable.ic_common_photo,
             color = SDGColor.Neutral0,
+            modifier = modifier,
         )
     },
 ) {
@@ -102,6 +103,7 @@ fun SDGAsyncImage(
         SDGImage(
             resId = R.drawable.ic_common_photo,
             color = SDGColor.Neutral0,
+            modifier = modifier,
         )
     },
 ) {
