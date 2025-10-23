@@ -10,8 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.shopl.sdg.component.checkbox.SDGCheckBox
+import com.shopl.sdg.template.checkbox_label.preview.SDGCheckboxLabelPreviewParameterProvider
+import com.shopl.sdg.template.checkbox_label.preview.SDGCheckboxLabelPreviewParams
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
@@ -77,72 +78,3 @@ private fun PreviewSDGCheckboxLabel(
         checkLabelColor = params.checkTextColor
     )
 }
-
-private class SDGCheckboxLabelPreviewParameterProvider :
-    PreviewParameterProvider<SDGCheckboxLabelPreviewParams> {
-
-    override val values = sequenceOf(
-        // Default - Normal
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.NORMAL,
-            label = "Label",
-            isChecked = false,
-        ),
-        // Default - Empha
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.EMPHA,
-            label = "Label",
-            isChecked = false,
-        ),
-
-        // Selected - Normal - Neutral700
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.NORMAL,
-            label = "Label",
-            isChecked = true,
-        ),
-        // Selected - Empha - Neutral700
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.EMPHA,
-            label = "Label",
-            isChecked = true,
-        ),
-        // Selected - Normal - Primary300
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.NORMAL,
-            label = "Label",
-            checkTextColor = SDGColor.Primary300,
-            isChecked = true,
-        ),
-        // Selected - Empha - Neutral700
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.EMPHA,
-            label = "Label",
-            checkTextColor = SDGColor.Primary300,
-            isChecked = true,
-        ),
-
-        // Disabled - Normal
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.NORMAL,
-            label = "Label",
-            isChecked = false,
-            enabled = false
-        ),
-        // Disabled - Empha
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.EMPHA,
-            label = "Label",
-            isChecked = true,
-            enabled = false
-        ),
-    )
-}
-
-private data class SDGCheckboxLabelPreviewParams(
-    val type: SDGCheckboxLabelType,
-    val label: String,
-    val isChecked: Boolean,
-    val enabled: Boolean = true,
-    val checkTextColor: Color = SDGColor.Neutral700,
-)
