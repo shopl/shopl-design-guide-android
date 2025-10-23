@@ -1,6 +1,7 @@
 package com.shopl.sdg.template.navigation.search
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,12 +38,14 @@ fun SDGSearchNavi(
     backgroundColor: Color,
     onInputChange: (String) -> Unit,
     onDeleteClick: () -> Unit,
+    marginValues: PaddingValues = PaddingValues(0.dp),
     useStartRequester: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
     Row(
         modifier = Modifier
+            .padding(marginValues)
             .background(backgroundColor)
             .height(48.dp)
             .fillMaxWidth()
