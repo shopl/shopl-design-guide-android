@@ -23,12 +23,7 @@ class SDGLibraryPublishingConventionPlugin : Plugin<Project> {
                 val publishArtifact = (target.findProperty("artifactId") as? String)
 
                 publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-                val isPublishingToLocal = gradle.startParameter.taskNames.any { taskName ->
-                    taskName.contains("publishToMavenLocal")
-                }
-                if (!isPublishingToLocal) {
-                    signAllPublications()
-                }
+                signAllPublications()
                 coordinates(
                     GROUP,
                     publishArtifact,
