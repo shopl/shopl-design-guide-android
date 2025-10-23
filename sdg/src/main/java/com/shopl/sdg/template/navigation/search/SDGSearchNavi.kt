@@ -17,7 +17,6 @@ import com.shopl.sdg.component.search_bar.capsule.SDGCapsuleSearch
 import com.shopl.sdg.component.search_bar.capsule.SDGCapsuleSearchType
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ui.components.SDGImage
-import com.shopl.sdg_resource.R
 
 /**
  * SDG - Navigation - Search Navi
@@ -48,50 +47,35 @@ fun SDGSearchNavi(
             .padding(horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        when (type) {
-            is SDGSearchNaviType.Back -> {
-                SDGImage(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable(false) { type.onClickBack() },
-                    resId = R.drawable.ic_navi_back_android,
-                    color = type.iconColor,
-                )
-                SDGCapsuleSearch(
-                    type = SDGCapsuleSearchType.Solid,
-                    input = input,
-                    hint = hint,
-                    enabled = true,
-                    onInputChange = onInputChange,
-                    onDeleteClick = onDeleteClick,
-                    useStartRequester = useStartRequester,
-                    keyboardOptions = keyboardOptions,
-                    keyboardActions = keyboardActions,
-                )
-            }
+        if (type is SDGSearchNaviType.Back) {
+            SearchNaviIconButton(type.icon)
+        }
 
-            is SDGSearchNaviType.Full -> {
-                SDGCapsuleSearch(
-                    type = SDGCapsuleSearchType.Solid,
-                    input = input,
-                    hint = hint,
-                    enabled = true,
-                    onInputChange = onInputChange,
-                    onDeleteClick = onDeleteClick,
-                    useStartRequester = useStartRequester,
-                    keyboardOptions = keyboardOptions,
-                    keyboardActions = keyboardActions,
-                )
+        SDGCapsuleSearch(
+            type = SDGCapsuleSearchType.Solid,
+            input = input,
+            hint = hint,
+            enabled = true,
+            onInputChange = onInputChange,
+            onDeleteClick = onDeleteClick,
+            useStartRequester = useStartRequester,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+        )
 
-                SDGImage(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable(false) { type.onClickClose() },
-                    resId = R.drawable.ic_navi_close,
-                    color = type.iconColor,
-                )
-            }
+        if (type is SDGSearchNaviType.Full) {
+            SearchNaviIconButton(type.icon)
         }
     }
 }
 
+@Composable
+private fun SearchNaviIconButton(icon: SDGSearchNaviIcon) {
+    SDGImage(
+        modifier = Modifier
+            .size(40.dp)
+            .clickable(false) { icon.onClick() },
+        resId = icon.iconResId,
+        color = icon.iconColor,
+    )
+}
