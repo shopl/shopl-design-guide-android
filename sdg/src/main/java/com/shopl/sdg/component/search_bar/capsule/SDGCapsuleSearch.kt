@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,7 +64,7 @@ fun SDGCapsuleSearch(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
-    val focusRequester by remember { mutableStateOf(FocusRequester()) }
+    val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
     val isKeyboardOpen by keyboardAsState()
     var skipFirstEvent by remember { mutableStateOf(useStartRequester) }
@@ -82,7 +83,7 @@ fun SDGCapsuleSearch(
     }
 
     BasicTextField(
-        modifier = Modifier,
+        modifier = Modifier.focusRequester(focusRequester),
         value = input,
         onValueChange = onInputChange,
         enabled = enabled,
@@ -165,4 +166,3 @@ private fun PreviewSDGCapsuleSearch(
             onDeleteClick = { text = "" }
         )
 }
-
