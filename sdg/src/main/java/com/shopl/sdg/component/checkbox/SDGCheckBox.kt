@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,12 +37,14 @@ import com.shopl.sdg_resource.R
 @Composable
 fun SDGCheckBox(
     isChecked: Boolean,
+    enabled: Boolean = true,
+    checkedBackgroundColor: Color = SDGColor.Primary300,
     clickPadding: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (isChecked)
-            SDGColor.Primary300
+        targetValue = if (isChecked && enabled)
+            checkedBackgroundColor
         else
             SDGColor.Neutral200,
         animationSpec = tween(
