@@ -35,8 +35,8 @@ fun SDGCheckboxLabel(
     label: String,
     isChecked: Boolean,
     enabled: Boolean = true,
-    defaultTextColor: Color = SDGColor.Neutral700,
-    checkTextColor: Color = SDGColor.Primary300,
+    defaultLabelColor: Color = SDGColor.Neutral700,
+    checkLabelColor: Color = SDGColor.Primary300,
     marginValues: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
 ) {
@@ -54,7 +54,7 @@ fun SDGCheckboxLabel(
             modifier = Modifier.then(other = if (enabled) Modifier.clickable { onClick?.invoke() } else Modifier),
             text = label,
             textColor = if (enabled) {
-                if (isChecked) checkTextColor else defaultTextColor
+                if (isChecked) checkLabelColor else defaultLabelColor
             } else {
                 SDGColor.Neutral300
             },
@@ -74,7 +74,7 @@ private fun PreviewSDGCheckboxLabel(
         label = params.label,
         isChecked = params.isChecked,
         enabled = params.enabled,
-        checkTextColor = params.checkTextColor
+        checkLabelColor = params.checkTextColor
     )
 }
 
