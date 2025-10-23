@@ -8,6 +8,13 @@ internal class SDGCheckboxLabelPreviewParameterProvider :
     PreviewParameterProvider<SDGCheckboxLabelPreviewParams> {
 
     override val values = sequenceOf(
+        // Label Top Alignment
+        SDGCheckboxLabelPreviewParams(
+            type = SDGCheckboxLabelType.NORMAL,
+            label = "Label\nLabel",
+            isChecked = false,
+        ),
+
         // Default - Normal
         SDGCheckboxLabelPreviewParams(
             type = SDGCheckboxLabelType.NORMAL,
