@@ -104,17 +104,31 @@ fun SDGMultiCalendarModal(
     val sheetState: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
-    val tabs = listOf(
-        stringResource(id = R.string.text_day),
-        stringResource(id = R.string.date_type_weekly),
-        stringResource(id = R.string.date_type_monthly),
-    )
+    val initialPage = types.indexOf(currentType).takeIf { it >= 0 } ?: 0
+    val tabTitles = types.map { type ->
+        when (type) {
+            is SDGMultiCalendarModalType.Day -> stringResource(id = R.string.text_day)
+            is SDGMultiCalendarModalType.Week -> stringResource(id = R.string.date_type_weekly)
+            is SDGMultiCalendarModalType.Month -> stringResource(id = R.string.date_type_monthly)
+        }
+    }
     val pagerState = rememberPagerState(
-        initialPage = types.indexOf(currentType),
+        initialPage = initialPage,
         initialPageOffsetFraction = 0f
-    ) { tabs.size }
+    ) { types.size }
 
-    var selectedTabIndex by remember { mutableIntStateOf(types.indexOf(currentType)) }
+    var selectedTabIndex by remember { mutableIntStateOf(initialPage) }
+
+    LaunchedEffect(initialPage, tabTitles.size) {
+        if (tabTitles.isEmpty()) return@LaunchedEffect
+        val clampedIndex = initialPage.coerceIn(0, tabTitles.lastIndex)
+        if (selectedTabIndex != clampedIndex) {
+            selectedTabIndex = clampedIndex
+        }
+        if (pagerState.currentPage != clampedIndex) {
+            pagerState.scrollToPage(clampedIndex)
+        }
+    }
 
     var startDay by remember { mutableStateOf(if (currentType is SDGMultiCalendarModalType.Day) currentStartDate else null) }
     var endDay by remember { mutableStateOf(if (currentType is SDGMultiCalendarModalType.Day) currentEndDate else null) }
@@ -203,7 +217,7 @@ fun SDGMultiCalendarModal(
 
                 else -> {
                     SDGLineFixedTab(
-                        tabTitles = tabs,
+                        tabTitles = tabTitles,
                         selectedTabIndex = selectedTabIndex,
                         onClick = { index ->
                             selectedTabIndex = index
@@ -959,4 +973,3 @@ private fun PreviewCalendarMonth() {
     }
 
 }
-
