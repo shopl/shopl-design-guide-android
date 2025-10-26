@@ -25,6 +25,7 @@ fun SDGConfirmCenterPopup(
     onClickConfirm: () -> Unit,
     cancelLabel: String,
     onClickCancel: () -> Unit,
+    onDismiss: (() -> Unit)? = null,
     confirmEnabled: Boolean = true,
     cancelLabelColor: Color = SDGColor.Neutral700,
     confirmLabelColor: Color = SDGColor.Neutral700,
@@ -38,7 +39,8 @@ fun SDGConfirmCenterPopup(
             onClickConfirm = onClickConfirm,
             confirmEnabled = confirmEnabled,
             cancelLabelColor = cancelLabelColor,
-            confirmLabelColor = confirmLabelColor
+            confirmLabelColor = confirmLabelColor,
+            onDismiss = onDismiss
         ),
         title = title,
         titleAlignment = titleAlignment,
