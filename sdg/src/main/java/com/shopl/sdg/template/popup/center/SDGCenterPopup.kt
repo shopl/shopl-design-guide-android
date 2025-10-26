@@ -48,8 +48,8 @@ fun SDGCenterPopup(
         onDismissRequest = {
             when (buttonOption) {
                 is SDGCenterPopupButtonOption.OneOption -> buttonOption.onClick()
-                is SDGCenterPopupButtonOption.TwoOption -> buttonOption.onClickCancel()
-                is SDGCenterPopupButtonOption.DeleteOption -> buttonOption.onClickCancel()
+                is SDGCenterPopupButtonOption.TwoOption -> buttonOption.run { onDismiss?.let { it() } ?: onClickCancel() }
+                is SDGCenterPopupButtonOption.DeleteOption -> buttonOption.run { onDismiss?.let { it() } ?: onClickCancel() }
             }
         },
         DialogProperties(

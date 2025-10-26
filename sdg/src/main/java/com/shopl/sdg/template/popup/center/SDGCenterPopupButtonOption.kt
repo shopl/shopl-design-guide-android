@@ -15,9 +15,10 @@ sealed interface SDGCenterPopupButtonOption {
         val confirmLabel: String,
         val onClickCancel: () -> Unit,
         val onClickConfirm: () -> Unit,
-        val confirmEnabled: Boolean = true,
         val cancelLabelColor: Color,
         val confirmLabelColor: Color,
+        val confirmEnabled: Boolean = true,
+        val onDismiss: (() -> Unit)? = null
     ) : SDGCenterPopupButtonOption
 
     data class DeleteOption(
@@ -25,8 +26,9 @@ sealed interface SDGCenterPopupButtonOption {
         val cancelLabel: String,
         val onClickCancel: () -> Unit,
         val onClickDelete: () -> Unit,
-        val deleteEnabled: Boolean = true,
         val cancelLabelColor: Color,
         val deleteLabelColor: Color,
+        val deleteEnabled: Boolean = true,
+        val onDismiss: (() -> Unit)? = null
     ) : SDGCenterPopupButtonOption
 }
