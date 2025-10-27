@@ -106,18 +106,17 @@ fun SDGConfirmPopup(
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            IOText(
+            SDGText(
                 text = title,
                 textColor = SDGColor.Neutral700,
-                fontSize = 18.sp,
-                typeface = IOTypeface.SEMI_BOLD
+                typography = SDGTypography.Title2SB
             )
             description?.let {
-                IOText(
+                SDGText(
                     modifier = Modifier.padding(top = 16.dp),
                     text = it,
                     textColor = SDGColor.Neutral600,
-                    fontSize = 16.sp,
+                    typography = SDGTypography.Body1R
                 )
             }
         }
@@ -184,18 +183,17 @@ fun SDGInfoPopup(
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            IOText(
+            SDGText(
                 text = title,
                 textColor = SDGColor.Neutral700,
-                fontSize = 18.sp,
-                typeface = IOTypeface.SEMI_BOLD
+                typography = SDGTypography.Title2SB
             )
             description?.let {
-                IOText(
+                SDGText(
                     modifier = Modifier.padding(top = 16.dp),
                     text = it,
                     textColor = SDGColor.Neutral600,
-                    fontSize = 16.sp,
+                    typography = SDGTypography.Body1R
                 )
             }
         }
