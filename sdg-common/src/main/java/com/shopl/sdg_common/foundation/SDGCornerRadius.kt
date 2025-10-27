@@ -9,15 +9,10 @@ import androidx.compose.ui.unit.dp
  */
 object SDGCornerRadius {
 
-    @Deprecated("RoundedCornerShape 사용 시 BoxRadius를 사용해야 합니다.")
     val Radius4 = 4.dp
-    @Deprecated("RoundedCornerShape 사용 시 BoxRadius를 사용해야 합니다.")
     val Radius8 = 8.dp
-    @Deprecated("RoundedCornerShape 사용 시 BoxRadius를 사용해야 합니다.")
     val Radius12 = 12.dp
-    @Deprecated("RoundedCornerShape 사용 시 BoxRadius를 사용해야 합니다.")
     val Radius16 = 16.dp
-    @Deprecated("RoundedCornerShape 사용 시 BoxRadius를 사용해야 합니다.")
     val Radius20 = 20.dp
 
     /**
