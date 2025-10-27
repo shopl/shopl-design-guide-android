@@ -53,6 +53,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_common.util.textCenterAlignment
 import com.shopl.sdg_resource.R
 
+@Deprecated("제거 예정", ReplaceWith("SDGCenterPopup을 사용하세요"))
 @Composable
 fun SDGConfirmPopup(
     modifier: Modifier = Modifier,
@@ -80,6 +81,7 @@ fun SDGConfirmPopup(
     )
 }
 
+@Deprecated("제거 예정", ReplaceWith("SDGCenterPopup을 사용하세요"))
 @Composable
 fun SDGConfirmPopup(
     modifier: Modifier = Modifier,
@@ -123,6 +125,7 @@ fun SDGConfirmPopup(
     }
 }
 
+@Deprecated("제거 예정", ReplaceWith("SDGCenterPopup을 사용하세요"))
 @Composable
 fun SDGInfoPopup(
     confirmLabel: String = stringResource(id = R.string.dialog_common_btn_ok),
@@ -138,6 +141,7 @@ fun SDGInfoPopup(
     )
 }
 
+@Deprecated("제거 예정", ReplaceWith("SDGCenterPopup을 사용하세요"))
 @Composable
 fun SDGInfoPopup(
     confirmLabel: String = stringResource(id = R.string.dialog_common_btn_ok),
@@ -153,6 +157,7 @@ fun SDGInfoPopup(
     )
 }
 
+@Deprecated("제거 예정", ReplaceWith("SDGCenterPopup을 사용하세요"))
 @Composable
 fun SDGInfoPopup(
     confirmLabel: String = stringResource(id = R.string.dialog_common_btn_ok),
@@ -168,6 +173,7 @@ fun SDGInfoPopup(
     )
 }
 
+@Deprecated("제거 예정", ReplaceWith("SDGCenterPopup을 사용하세요"))
 @Composable
 fun SDGInfoPopup(
     confirmLabel: String = stringResource(id = R.string.dialog_common_btn_ok),
@@ -200,6 +206,7 @@ fun SDGInfoPopup(
     }
 }
 
+@Deprecated("제거 예정", ReplaceWith("SDGCenterPopup을 사용하세요"))
 @Composable
 fun SDGIconPopup(
     @DrawableRes resId: Int,
