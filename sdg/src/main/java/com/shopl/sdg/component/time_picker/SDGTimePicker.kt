@@ -116,12 +116,6 @@ private fun SDGTwoOptionTimePicker(option: TwoOption) {
                 )
             }
 
-            SDGText(
-                text = ":",
-                typography = SDGTypography.Body1R,
-                textColor = SDGColor.Neutral700,
-            )
-
             Box(modifier = Modifier.weight(1f)) {
                 SDGTimePickerBody(
                     value = option.right.value,
