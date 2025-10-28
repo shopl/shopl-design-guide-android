@@ -27,6 +27,7 @@ import androidx.compose.ui.zIndex
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ext.dropShadow
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.PersistentList
@@ -131,13 +132,12 @@ private fun SDGTwoLineSegmentUnit(
             .sizeIn(minWidth = 50.dp, minHeight = 58.dp)
             .clip(RoundedCornerShape(8.dp))
             .clickable(hasRipple = false) { onLabelClick() }
-            .background(Color.Transparent),
+            .background(Color.Transparent)
+            .padding(Spacing4),
         contentAlignment = Alignment.Center
     ) {
         SDGText(
-            modifier = Modifier.padding(
-                horizontal = 4.dp
-            ),
+            modifier = Modifier.padding(horizontal = Spacing4),
             text = label,
             typography = SDGTypography.Body2R,
             maxLines = 2,
@@ -160,13 +160,12 @@ private fun SDGOneLineSegmentUnit(
             .sizeIn(minWidth = 32.dp, minHeight = 40.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(Color.Transparent)
+            .padding(Spacing4)
             .clickable(hasRipple = false) { onLabelClick() },
         contentAlignment = Alignment.Center
     ) {
         SDGText(
-            modifier = Modifier.padding(
-                horizontal = 4.dp
-            ),
+            modifier = Modifier.padding(horizontal = Spacing4),
             text = label,
             typography = SDGTypography.Body2R,
             maxLines = 1,
