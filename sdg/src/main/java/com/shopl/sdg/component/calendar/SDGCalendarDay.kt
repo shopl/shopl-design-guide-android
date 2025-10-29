@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shopl.sdg.component.number_picker.SDGNumberPicker
+import com.shopl.sdg.component.number_picker.SDGNumberPickerOption.OneOption
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ext.distanceDays
 import com.shopl.sdg_common.foundation.SDGColor
@@ -58,6 +59,7 @@ import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -725,21 +727,27 @@ private fun MonthSelector(
                 modifier = Modifier.background(color = SDGColor.Transparent)
             ) {
                 SDGNumberPicker(
-                    value = currentDate.year,
-                    range = 1970..1970 + 1000,
-                    onValueChange = {
-                        currentDate = currentDate.withDate(it, currentDate.monthOfYear, currentDate.dayOfMonth)
-                        onChangeDate(currentDate)
-                    }
+                    option = OneOption(
+                        value = currentDate.year,
+                        rangeList = (1970..(1970 + 1000)).toPersistentList(),
+                        onValueChange = {
+                            currentDate = currentDate.withDate(it, currentDate.monthOfYear, currentDate.dayOfMonth)
+                            onChangeDate(currentDate)
+                        },
+                        supportsInfiniteScroll = false
+                    )
                 )
 
                 SDGNumberPicker(
-                    value = currentDate.monthOfYear,
-                    range = 1..12,
-                    onValueChange = {
-                        currentDate = currentDate.withDate(currentDate.year, it, currentDate.dayOfMonth)
-                        onChangeDate(currentDate)
-                    }
+                    option = OneOption(
+                        value = currentDate.monthOfYear,
+                        rangeList = (1..12).toPersistentList(),
+                        onValueChange = {
+                            currentDate = currentDate.withDate(currentDate.year, it, currentDate.dayOfMonth)
+                            onChangeDate(currentDate)
+                        },
+                        supportsInfiniteScroll = false
+                    )
                 )
             }
         }
