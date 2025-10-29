@@ -71,6 +71,7 @@ private fun SDGOneOptionNumberPicker(option: OneOption) {
         rangeList = option.rangeList,
         onValueChange = option.onValueChange,
         width = option.width,
+        supportsInfiniteScroll = option.supportsInfiniteScroll,
     )
 }
 
@@ -95,6 +96,7 @@ private fun SDGTwoOptionNumberPicker(option: TwoOption) {
                     rangeList = option.left.rangeList,
                     onValueChange = option.left.onValueChange,
                     width = option.left.width,
+                    supportsInfiniteScroll = option.left.supportsInfiniteScroll,
                 )
             }
 
@@ -110,6 +112,7 @@ private fun SDGTwoOptionNumberPicker(option: TwoOption) {
                     rangeList = option.right.rangeList,
                     onValueChange = option.right.onValueChange,
                     width = option.right.width,
+                    supportsInfiniteScroll = option.right.supportsInfiniteScroll,
                 )
             }
         }
@@ -122,16 +125,19 @@ private fun SDGNumberPickerBody(
     rangeList: PersistentList<Int>,
     onValueChange: (Int) -> Unit,
     width: Dp = 0.dp,
+    supportsInfiniteScroll: Boolean = true,
 ) {
-    if (rangeList.size < VISIBLE_COUNT && rangeList.isNotEmpty()) {
-        FinitePickerBody(
+    val useInfiniteScroll = supportsInfiniteScroll && rangeList.size >= VISIBLE_COUNT
+
+    if (useInfiniteScroll) {
+        InfinitePickerBody(
             value = value,
             rangeList = rangeList,
             onValueChange = onValueChange,
             width = width,
         )
     } else {
-        InfinitePickerBody(
+        FinitePickerBody(
             value = value,
             rangeList = rangeList,
             onValueChange = onValueChange,
@@ -449,7 +455,8 @@ private fun PreviewSDGNumberPicker() {
         option = OneOption(
             value = value,
             rangeList = (1..10).toPersistentList(),
-            onValueChange = { value = it }
+            onValueChange = { value = it },
+            supportsInfiniteScroll = true
         )
     )
 }
@@ -465,12 +472,14 @@ private fun PreviewSDGNumberPickerTwoOption() {
             left = TwoOption.OptionModel(
                 value = leftValue,
                 rangeList = (0..9).toPersistentList(),
-                onValueChange = { leftValue = it }
+                onValueChange = { leftValue = it },
+                supportsInfiniteScroll = true
             ),
             right = TwoOption.OptionModel(
                 value = rightValue,
                 rangeList = (10..99 step 5).toPersistentList(),
-                onValueChange = { rightValue = it }
+                onValueChange = { rightValue = it },
+                supportsInfiniteScroll = false
             )
         )
     )

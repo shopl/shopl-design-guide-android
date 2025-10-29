@@ -10,6 +10,7 @@ sealed interface SDGNumberPickerOption {
         val rangeList: PersistentList<Int>,
         val onValueChange: (Int) -> Unit,
         val width: Dp = 0.dp,
+        val supportsInfiniteScroll: Boolean,
     ) : SDGNumberPickerOption
 
     data class TwoOption(
@@ -21,6 +22,7 @@ sealed interface SDGNumberPickerOption {
             val rangeList: PersistentList<Int>,
             val onValueChange: (Int) -> Unit,
             val width: Dp = 0.dp,
+            val supportsInfiniteScroll: Boolean,
         )
     }
 }
