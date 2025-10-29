@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -57,27 +58,35 @@ private const val VIRTUAL_ITEM_COUNT = Int.MAX_VALUE
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=18805-226&m=dev">Figma</a>
  */
 @Composable
-fun SDGNumberPicker(option: SDGNumberPickerOption) {
+fun SDGNumberPicker(
+    option: SDGNumberPickerOption,
+    marginValues: PaddingValues = PaddingValues()
+) {
     when (option) {
-        is OneOption -> SDGOneOptionNumberPicker(option)
-        is TwoOption -> SDGTwoOptionNumberPicker(option)
+        is OneOption -> SDGOneOptionNumberPicker(option = option, marginValues = marginValues)
+        is TwoOption -> SDGTwoOptionNumberPicker(option = option, marginValues = marginValues)
     }
 }
 
 @Composable
-private fun SDGOneOptionNumberPicker(option: OneOption) {
-    SDGNumberPickerBody(
-        value = option.value,
-        rangeList = option.rangeList,
-        onValueChange = option.onValueChange,
-        width = option.width,
-        supportsInfiniteScroll = option.supportsInfiniteScroll,
-    )
+private fun SDGOneOptionNumberPicker(option: OneOption, marginValues: PaddingValues) {
+    Box(modifier = Modifier.padding(marginValues)) {
+        SDGNumberPickerBody(
+            value = option.value,
+            rangeList = option.rangeList,
+            onValueChange = option.onValueChange,
+            width = option.width,
+            supportsInfiniteScroll = option.supportsInfiniteScroll,
+        )
+    }
 }
 
 @Composable
-private fun SDGTwoOptionNumberPicker(option: TwoOption) {
-    Box(contentAlignment = Alignment.Center) {
+private fun SDGTwoOptionNumberPicker(option: TwoOption, marginValues: PaddingValues) {
+    Box(
+        modifier = Modifier.padding(marginValues),
+        contentAlignment = Alignment.Center
+    ) {
         HighlightingBox()
 
         Row(
