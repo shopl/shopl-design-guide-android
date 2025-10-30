@@ -114,6 +114,9 @@ jobs:
             mkdir -p "$ARTIFACT_DIR"
 
             MODULE_PREFIX="$MOD"
+            if [[ "$MOD" == "sdg" ]]; then
+              MODULE_PREFIX="SDG-Android"
+            fi
 
             POM="$MOD/build/publications/maven/pom-default.xml"
             AAR="$MOD/build/outputs/aar/${MODULE_PREFIX}-release.aar"
