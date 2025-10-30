@@ -27,14 +27,6 @@ class SDGLibraryPublishingConventionPlugin : Plugin<Project> {
 //                publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
             publishToMavenCentral(automaticRelease = true)
 
-            // 로컬 퍼블리시 시에는 서명 생략 (개발환경 편의)
-            val isLocalPublish =
-                gradle.startParameter.taskNames.any { it.contains("MavenLocal", ignoreCase = true) } ||
-                    providers.gradleProperty("skipSigning").isPresent
-            if (!isLocalPublish) {
-                signAllPublications()
-            }
-
             coordinates(
                 GROUP,
                 publishArtifact,
