@@ -37,6 +37,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shopl.sdg.component.avatar.IOAvatar
@@ -111,6 +112,7 @@ sealed class SDGTopNaviMenu(
     data class TextMenu(
         override val iconResId: Int? = null,
         override val iconTint: Color? = null,
+        val iconSize: Dp? = null,
         val textMenuTitle: String = "",
         override val onMenuClick: () -> Unit,
     ) : SDGTopNaviMenu(iconResId, onMenuClick, iconTint)

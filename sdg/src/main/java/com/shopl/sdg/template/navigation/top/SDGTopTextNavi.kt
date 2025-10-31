@@ -2,6 +2,7 @@ package com.shopl.sdg.template.navigation.top
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -79,12 +80,16 @@ fun SDGTopTextNavi(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (menu.iconResId != null) {
-                    SDGImage(
-                        modifier = Modifier
-                            .size(20.dp),
-                        resId = menu.iconResId,
-                        color = menu.iconTint,
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.size(size = 20.dp)
+                    ) {
+                        SDGImage(
+                            modifier = Modifier.size(menu.iconSize ?: 20.dp),
+                            resId = menu.iconResId,
+                            color = menu.iconTint,
+                        )
+                    }
                 }
                 SDGText(
                     text = menu.textMenuTitle,
