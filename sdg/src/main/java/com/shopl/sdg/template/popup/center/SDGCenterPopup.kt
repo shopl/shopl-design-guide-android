@@ -3,9 +3,7 @@ package com.shopl.sdg.template.popup.center
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -25,6 +23,8 @@ import androidx.compose.ui.window.DialogWindowProvider
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing24
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
@@ -42,7 +42,7 @@ fun SDGCenterPopup(
     buttonOption: SDGCenterPopupButtonOption,
     title: String? = null,
     titleAlignment: TextAlign = TextAlign.Left,
-    body: @Composable ColumnScope.() -> Unit,
+    body: @Composable (ColumnScope.() -> Unit)?,
 ) {
     Dialog(
         onDismissRequest = {
@@ -72,25 +72,28 @@ fun SDGCenterPopup(
                     color = SDGColor.Neutral0,
                     shape = RoundedCornerShape(SDGCornerRadius.Radius20)
                 )
-                .padding(top = SDGSpacing.Spacing24)
+                .padding(top = Spacing24)
         ) {
             if (!title.isNullOrBlank()) {
                 SDGCenterPopupTitle(
-                    modifier = Modifier.padding(horizontal = SDGSpacing.Spacing24),
+                    modifier = Modifier
+                        .padding(horizontal = Spacing24)
+                        .padding(bottom = if (body == null) Spacing24 else Spacing12),
                     title = title,
                     titleAlignment = titleAlignment
                 )
-                Spacer(modifier = Modifier.height(12.dp))
             }
 
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = SDGSpacing.Spacing24)
-                    .weight(1f, false)
-                    .verticalScroll(rememberScrollState())
-                    .padding(top = SDGSpacing.Spacing4, bottom = SDGSpacing.Spacing28)
-            ) {
-                body()
+            body?.let {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = Spacing24)
+                        .weight(1f, false)
+                        .verticalScroll(rememberScrollState())
+                        .padding(top = SDGSpacing.Spacing4, bottom = SDGSpacing.Spacing28)
+                ) {
+                    it()
+                }
             }
 
             SDGCenterPopupButton(buttonOption)
@@ -123,13 +126,7 @@ private fun PreviewSDGCenterPopupOneOption() {
             labelColor = SDGColor.Neutral700
         ),
         title = "팝업 타이틀",
-        body = {
-            SDGText(
-                text = "팝업 내용입니다. ".repeat(20),
-                typography = SDGTypography.Body1R,
-                textColor = SDGColor.Neutral700
-            )
-        }
+        body = null
     )
 }
 
