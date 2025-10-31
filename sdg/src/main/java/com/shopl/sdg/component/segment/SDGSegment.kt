@@ -142,7 +142,7 @@ private fun SDGTwoLineSegmentUnit(
             .sizeIn(minWidth = 50.dp, minHeight = 58.dp)
             .clip(RoundedCornerShape(8.dp))
             .clickable(hasRipple = false) { onLabelClick() }
-            .background(Color.Transparent),
+            .background(SDGColor.Transparent),
         contentAlignment = Alignment.Center
     ) {
         SDGText(
@@ -171,7 +171,7 @@ private fun SDGOneLineSegmentUnit(
             .zIndex(1f)
             .sizeIn(minWidth = 32.dp, minHeight = 40.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(Color.Transparent)
+            .background(SDGColor.Transparent)
             .clickable(hasRipple = false) { onLabelClick() },
         contentAlignment = Alignment.Center
     ) {
