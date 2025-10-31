@@ -4,8 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.shopl.sdg.template.popup.center.SDGCenterPopup
 import com.shopl.sdg.template.popup.center.SDGCenterPopupButtonOption
+import com.shopl.sdg.template.popup.center.preview.SDGDeleteCenterPopupParameterProvider
+import com.shopl.sdg.template.popup.center.preview.SDGDeleteCenterPopupPreviewData
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
@@ -20,7 +23,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 @Composable
 fun SDGDeleteCenterPopup(
     title: String?,
-    description: String,
+    description: String?,
     cancelLabel: String,
     onClickCancel: () -> Unit,
     onClickDelete: () -> Unit,
@@ -42,29 +45,35 @@ fun SDGDeleteCenterPopup(
         ),
         title = title,
         titleAlignment = titleAlignment,
-    ) {
-        SDGText(
-            text = description,
-            typography = SDGTypography.Body1R,
-            textColor = SDGColor.Neutral600
-        )
-    }
+        body = description.takeIf { !it.isNullOrBlank() }?.let {
+            @Composable {
+                SDGText(
+                    text = it,
+                    typography = SDGTypography.Body1R,
+                    textColor = SDGColor.Neutral600
+                )
+            }
+        }
+    )
 }
 
 @Preview
 @Composable
-private fun PreviewSDGDeleteCenterPopup() {
+private fun PreviewSDGDeleteCenterPopup(
+    @PreviewParameter(SDGDeleteCenterPopupParameterProvider::class)
+    data: SDGDeleteCenterPopupPreviewData
+) {
     SDGDeleteCenterPopup(
-        title = "Title",
-        description = "Description",
-        cancelLabel = "Cancel",
+        title = data.title,
+        description = data.description,
+        cancelLabel = data.cancelLabel,
         onClickCancel = {},
         onClickDelete = {},
-        deleteLabel = "Delete",
-        deleteEnabled = true,
-        cancelLabelColor = SDGColor.Neutral600,
-        deleteLabelColor = SDGColor.Red300,
-        titleAlignment = TextAlign.Left
+        deleteLabel = data.deleteLabel,
+        deleteEnabled = data.deleteEnabled,
+        cancelLabelColor = data.cancelLabelColor,
+        deleteLabelColor = data.deleteLabelColor,
+        titleAlignment = data.titleAlignment
     )
 }
 
