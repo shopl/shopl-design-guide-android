@@ -24,6 +24,7 @@ import androidx.compose.ui.zIndex
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ext.dropShadow
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
@@ -140,7 +141,7 @@ private fun SDGTwoLineSegmentUnit(
             .padding(paddingValues)
             .zIndex(1f)
             .sizeIn(minWidth = 50.dp, minHeight = 58.dp)
-            .clip(RoundedCornerShape(8.dp))
+            .clip(SDGCornerRadius.BoxRadius.Radius8)
             .clickable(hasRipple = false) { onLabelClick() }
             .background(SDGColor.Transparent),
         contentAlignment = Alignment.Center
@@ -170,7 +171,7 @@ private fun SDGOneLineSegmentUnit(
             .padding(paddingValues)
             .zIndex(1f)
             .sizeIn(minWidth = 32.dp, minHeight = 40.dp)
-            .clip(RoundedCornerShape(8.dp))
+            .clip(SDGCornerRadius.BoxRadius.Radius8)
             .background(SDGColor.Transparent)
             .clickable(hasRipple = false) { onLabelClick() },
         contentAlignment = Alignment.Center
