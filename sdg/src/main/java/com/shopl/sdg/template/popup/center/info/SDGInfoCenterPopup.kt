@@ -4,8 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.shopl.sdg.template.popup.center.SDGCenterPopup
 import com.shopl.sdg.template.popup.center.SDGCenterPopupButtonOption
+import com.shopl.sdg.template.popup.center.preview.SDGInfoCenterPopupPreviewData
+import com.shopl.sdg.template.popup.center.preview.SDGInfoCenterPopupPreviewParameterProvider
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
@@ -20,7 +23,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 @Composable
 fun SDGInfoCenterPopup(
     title: String?,
-    description: String,
+    description: String?,
     confirmLabel: String,
     onClickConfirm: () -> Unit,
     confirmLabelColor: Color = SDGColor.Neutral700,
@@ -36,25 +39,31 @@ fun SDGInfoCenterPopup(
         ),
         title = title,
         titleAlignment = titleAlignment,
-    ) {
-        SDGText(
-            text = description,
-            typography = SDGTypography.Body1R,
-            textColor = SDGColor.Neutral600
-        )
-    }
+        body = description.takeIf { !it.isNullOrBlank() }?.let {
+            @Composable {
+                SDGText(
+                    text = it,
+                    typography = SDGTypography.Body1R,
+                    textColor = SDGColor.Neutral600
+                )
+            }
+        }
+    )
 }
 
 @Preview
 @Composable
-private fun PreviewSDGInfoCenterPopup() {
+private fun PreviewSDGInfoCenterPopup(
+    @PreviewParameter(SDGInfoCenterPopupPreviewParameterProvider::class)
+    data: SDGInfoCenterPopupPreviewData
+) {
     SDGInfoCenterPopup(
-        title = "Title",
-        description = "Description",
-        confirmLabel = "확인",
+        title = data.title,
+        description = data.description,
+        confirmLabel = data.confirmLabel,
         onClickConfirm = {},
-        confirmLabelColor = SDGColor.Neutral700,
-        titleAlignment = TextAlign.Left,
-        enabled = true,
+        confirmLabelColor = data.confirmLabelColor,
+        titleAlignment = data.titleAlignment,
+        enabled = data.enabled
     )
 }
