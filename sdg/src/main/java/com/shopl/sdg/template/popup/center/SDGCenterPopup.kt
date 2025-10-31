@@ -16,10 +16,13 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
+import com.shopl.sdg.template.popup.center.preview.SDGCenterPopupParameterProvider
+import com.shopl.sdg.template.popup.center.preview.SDGCenterPopupPreviewData
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
@@ -118,63 +121,14 @@ private fun SDGCenterPopupTitle(
 
 @Preview
 @Composable
-private fun PreviewSDGCenterPopupOneOption() {
+private fun PreviewSDGCenterPopup(
+    @PreviewParameter(SDGCenterPopupParameterProvider::class)
+    data: SDGCenterPopupPreviewData
+) {
     SDGCenterPopup(
-        buttonOption = SDGCenterPopupButtonOption.OneOption(
-            label = "확인",
-            onClick = {},
-            labelColor = SDGColor.Neutral700
-        ),
-        title = "팝업 타이틀",
-        body = null
-    )
-}
-
-@Preview
-@Composable
-private fun PreviewSDGCenterPopupTwoOption() {
-    SDGCenterPopup(
-        buttonOption = SDGCenterPopupButtonOption.TwoOption(
-            cancelLabel = "취소",
-            confirmLabel = "확인",
-            onClickCancel = {},
-            onClickConfirm = {},
-            cancelLabelColor = SDGColor.Neutral700,
-            confirmLabelColor = SDGColor.Neutral700
-        ),
-        title = "팝업 타이틀",
-        titleAlignment = TextAlign.Center,
-        body = {
-            SDGText(
-                text = "팝업 내용입니다. ".repeat(20),
-                typography = SDGTypography.Body1R,
-                textColor = SDGColor.Neutral700
-            )
-        }
-    )
-}
-
-@Preview
-@Composable
-private fun PreviewSDGCenterPopupDeleteOption() {
-    SDGCenterPopup(
-        buttonOption = SDGCenterPopupButtonOption.DeleteOption(
-            deleteLabel = "삭제",
-            cancelLabel = "취소",
-            onClickCancel = {},
-            onClickDelete = {},
-            deleteLabelColor = SDGColor.Red300,
-            cancelLabelColor = SDGColor.Neutral700
-        ),
-        title = "팝업 타이틀",
-        body = {
-            repeat(40) {
-                SDGText(
-                    text = "팝업 내용입니다. ",
-                    typography = SDGTypography.Body1R,
-                    textColor = SDGColor.Neutral700
-                )
-            }
-        }
+        buttonOption = data.buttonOption,
+        title = data.title,
+        titleAlignment = data.titleAlignment,
+        body = data.body
     )
 }
