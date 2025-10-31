@@ -1,11 +1,8 @@
 package com.shopl.sdg.component.segment
 
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
@@ -15,11 +12,11 @@ import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,6 +24,8 @@ import androidx.compose.ui.zIndex
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ext.dropShadow
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.SDGCornerRadius
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
@@ -80,10 +79,17 @@ fun SDGSegment(
             divider = {}
         ) {
             labels.forEachIndexed { index, label ->
+                val itemPadding = PaddingValues(
+                    top = Spacing4,
+                    bottom = Spacing4,
+                    start = if (index == 0) Spacing4 else Spacing2,
+                    end = if (index == labels.lastIndex) Spacing4 else Spacing2
+                )
                 SDGSegmentUnit(
                     line = line,
                     label = label,
                     selected = selectedIndex == index,
+                    paddingValues = itemPadding,
                     onLabelClick = {
                         onLabelClick(index)
                     }
@@ -98,6 +104,7 @@ private fun SDGSegmentUnit(
     line: SDGSegmentTextLine,
     label: String,
     selected: Boolean,
+    paddingValues: PaddingValues,
     onLabelClick: () -> Unit
 ) {
     when (line) {
@@ -105,6 +112,7 @@ private fun SDGSegmentUnit(
             SDGTwoLineSegmentUnit(
                 label = label,
                 selected = selected,
+                paddingValues = paddingValues,
                 onLabelClick = onLabelClick
             )
         }
@@ -113,6 +121,7 @@ private fun SDGSegmentUnit(
             SDGOneLineSegmentUnit(
                 label = label,
                 selected = selected,
+                paddingValues = paddingValues,
                 onLabelClick = onLabelClick
             )
         }
@@ -124,23 +133,25 @@ private fun SDGTwoLineSegmentUnit(
     modifier: Modifier = Modifier,
     label: String,
     selected: Boolean,
+    paddingValues: PaddingValues,
     onLabelClick: () -> Unit
 ) {
     Box(
         modifier = modifier
+            .padding(paddingValues)
             .zIndex(1f)
             .sizeIn(minWidth = 50.dp, minHeight = 58.dp)
-            .clip(RoundedCornerShape(8.dp))
+            .clip(SDGCornerRadius.BoxRadius.Radius8)
             .clickable(hasRipple = false) { onLabelClick() }
-            .background(Color.Transparent)
-            .padding(Spacing4),
+            .background(SDGColor.Transparent),
         contentAlignment = Alignment.Center
     ) {
         SDGText(
-            modifier = Modifier.padding(horizontal = Spacing4),
+            modifier = Modifier.padding(horizontal = Spacing4, vertical = Spacing4),
             text = label,
             typography = SDGTypography.Body2R,
             maxLines = 2,
+            textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
             textColor = if (selected) SDGColor.Neutral700 else SDGColor.Neutral500
         )
@@ -152,22 +163,24 @@ private fun SDGOneLineSegmentUnit(
     modifier: Modifier = Modifier,
     label: String,
     selected: Boolean,
+    paddingValues: PaddingValues,
     onLabelClick: () -> Unit
 ) {
     Box(
         modifier = modifier
+            .padding(paddingValues)
             .zIndex(1f)
             .sizeIn(minWidth = 32.dp, minHeight = 40.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(Color.Transparent)
-            .padding(Spacing4)
+            .clip(SDGCornerRadius.BoxRadius.Radius8)
+            .background(SDGColor.Transparent)
             .clickable(hasRipple = false) { onLabelClick() },
         contentAlignment = Alignment.Center
     ) {
         SDGText(
-            modifier = Modifier.padding(horizontal = Spacing4),
+            modifier = Modifier.padding(horizontal = Spacing4, vertical = Spacing4),
             text = label,
             typography = SDGTypography.Body2R,
+            textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             textColor = if (selected) SDGColor.Neutral700 else SDGColor.Neutral500
@@ -180,26 +193,19 @@ private fun SDGSegmentIndicator(
     tabPositions: List<TabPosition>,
     selectedIndex: Int,
 ) {
-    val transition = updateTransition(targetState = selectedIndex, label = "indicator")
-    val indicatorLeft by transition.animateDp(
-        label = "",
-        transitionSpec = {
-            spring(stiffness = Spring.StiffnessLow)
-        }
-    ) {
-        tabPositions[it].left
-    }
-    val indicatorRight by transition.animateDp(
-        label = "",
-        transitionSpec = { spring(stiffness = Spring.StiffnessLow) }
-    ) {
-        tabPositions[it].right
-    }
+    val startInset = if (selectedIndex == 0) Spacing4 else Spacing2
+    val endInset = if (selectedIndex == tabPositions.lastIndex) Spacing4 else Spacing2
 
     Box(
         Modifier
             .tabIndicatorOffset(tabPositions[selectedIndex])
-            .padding(4.dp)
+            .fillMaxHeight()
+            .padding(
+                start = startInset,
+                end = endInset,
+                top = Spacing4,
+                bottom = Spacing4
+            )
             .dropShadow(
                 shape = RoundedCornerShape(8.dp),
                 offsetX = 1.dp,
@@ -207,8 +213,6 @@ private fun SDGSegmentIndicator(
                 blur = 4.dp,
                 color = SDGColor.Neutral900_a5
             )
-            .width(indicatorRight - indicatorLeft)
-            .fillMaxHeight()
             .clip(RoundedCornerShape(8.dp))
             .background(SDGColor.Neutral0)
     )
