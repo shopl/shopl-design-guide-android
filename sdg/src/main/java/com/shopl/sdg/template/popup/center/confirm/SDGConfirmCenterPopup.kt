@@ -4,8 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.shopl.sdg.template.popup.center.SDGCenterPopup
 import com.shopl.sdg.template.popup.center.SDGCenterPopupButtonOption
+import com.shopl.sdg.template.popup.center.preview.SDGConfirmCenterPopupParameterProvider
+import com.shopl.sdg.template.popup.center.preview.SDGConfirmCenterPopupPreviewData
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
@@ -20,7 +23,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 @Composable
 fun SDGConfirmCenterPopup(
     title: String?,
-    description: String,
+    description: String?,
     confirmLabel: String,
     onClickConfirm: () -> Unit,
     cancelLabel: String,
@@ -44,26 +47,34 @@ fun SDGConfirmCenterPopup(
         ),
         title = title,
         titleAlignment = titleAlignment,
-    ) {
-        SDGText(
-            text = description,
-            typography = SDGTypography.Body1R,
-            textColor = SDGColor.Neutral600
-        )
-    }
+        body = description.takeIf { !it.isNullOrBlank() }?.let {
+            @Composable {
+                SDGText(
+                    text = it,
+                    typography = SDGTypography.Body1R,
+                    textColor = SDGColor.Neutral600
+                )
+            }
+        }
+    )
 }
 
 @Preview
 @Composable
-private fun PreviewSDGConfirmCenterPopup() {
+private fun PreviewSDGConfirmCenterPopup(
+    @PreviewParameter(SDGConfirmCenterPopupParameterProvider::class)
+    data: SDGConfirmCenterPopupPreviewData
+) {
     SDGConfirmCenterPopup(
-        title = "Title",
-        description = "Description",
-        confirmLabel = "Confirm",
+        title = data.title,
+        description = data.description,
+        confirmLabel = data.confirmLabel,
         onClickConfirm = {},
-        cancelLabel = "Cancel",
+        cancelLabel = data.cancelLabel,
         onClickCancel = {},
-        confirmEnabled = true,
-        titleAlignment = TextAlign.Center
+        confirmEnabled = data.confirmEnabled,
+        titleAlignment = data.titleAlignment,
+        cancelLabelColor = data.cancelLabelColor,
+        confirmLabelColor = data.confirmLabelColor
     )
 }
