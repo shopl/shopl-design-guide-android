@@ -1,7 +1,6 @@
 package com.shopl.sdg.template.popup
 
 import android.annotation.SuppressLint
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -48,7 +47,6 @@ import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
-import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_common.util.textCenterAlignment
 import com.shopl.sdg_resource.R
@@ -206,48 +204,6 @@ fun SDGInfoPopup(
     }
 }
 
-@Deprecated("제거 예정", ReplaceWith("SDGCenterPopup을 사용하세요"))
-@Composable
-fun SDGIconPopup(
-    @DrawableRes resId: Int,
-    confirmLabel: String = stringResource(id = R.string.dialog_common_btn_ok),
-    onClickConfirm: () -> Unit,
-    title: String,
-    description: String? = null
-) {
-    SDGPopup(
-        singleButton = true,
-        confirmLabel = confirmLabel,
-        onClickConfirm = onClickConfirm
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            SDGImage(
-                modifier = Modifier
-                    .size(75.dp),
-                resId = resId,
-                color = null
-            )
-            SDGText(
-                modifier = Modifier.padding(top = 20.dp),
-                text = title,
-                typography = SDGTypography.Title2SB,
-                textColor = SDGColor.Neutral700
-            )
-            description?.let {
-                SDGText(
-                    modifier = Modifier.padding(top = 12.dp),
-                    text = it,
-                    typography = SDGTypography.Body1R,
-                    textColor = SDGColor.Neutral600,
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-    }
-}
 
 @SuppressLint("NewApi")
 @Composable
@@ -530,19 +486,6 @@ private fun SDGPopupBottomButtonPreview2() {
             onClickConfirm = { },
             onClickCancel = { },
             isBottomDialog = true
-        )
-    }
-}
-
-@Composable
-@Preview
-private fun PreviewSDGIconPopup() {
-    Surface(Modifier.fillMaxSize()) {
-        SDGIconPopup(
-            resId = R.drawable.popup_ic_warning,
-            onClickConfirm = {},
-            title = "기록을 남길 수 없습니다.",
-            description = "정시 출근 인정 범위가 적용되어 10:00 에 출근한 것으로 처리되었습니다.\n10:00 이후에 다시 시도해주세요."
         )
     }
 }
