@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.text_input.InputState
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInput
 import com.shopl.sdg.template.popup.center.SDGCenterPopup
@@ -19,6 +18,8 @@ import com.shopl.sdg.template.popup.center.preview.SDGInputCenterPopupPreviewBod
 import com.shopl.sdg.template.popup.center.preview.SDGInputCenterPopupPreviewData
 import com.shopl.sdg_common.enums.OutlineType
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
@@ -86,7 +87,7 @@ private fun Description(description: String) {
         textColor = SDGColor.Neutral600
     )
 
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(Spacing16))
 }
 
 @Composable
@@ -107,7 +108,7 @@ private fun InputPopupBody(
         textColor = SDGColor.Neutral400
     )
 
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(Spacing8))
 
     SDGFixedTextInput(
         outlineType = OutlineType.BASIC,
