@@ -122,10 +122,6 @@ jobs:
             local src="$1"
             local dest="$2"
             local src_asc="${src}.asc"
-            local dest_dir
-            dest_dir=$(dirname "$dest")
-            local dest_base
-            dest_base=$(basename "$dest")
             local dest_asc="${dest}.asc"
 
             if [[ -f "$src_asc" ]]; then
@@ -136,6 +132,7 @@ jobs:
 
             for HASH_CMD in md5sum sha1sum sha256sum sha512sum; do
               if command -v "$HASH_CMD" >/dev/null 2>&1; then
+                local SUFFIX
                 case "$HASH_CMD" in
                   md5sum) SUFFIX="md5" ;;
                   sha1sum) SUFFIX="sha1" ;;

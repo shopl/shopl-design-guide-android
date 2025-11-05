@@ -1,6 +1,9 @@
 package com.shopl.sdg.build_logic.convention
 
 import com.shopl.sdg.build_logic.PublishingConfig.GROUP
+import com.shopl.sdg.build_logic.PublishingConfig.SDG_ARTIFACT_ID
+import com.shopl.sdg.build_logic.PublishingConfig.SDG_COMMON_ARTIFACT_ID
+import com.shopl.sdg.build_logic.PublishingConfig.SDG_RESOURCE_ARTIFACT_ID
 import com.shopl.sdg.build_logic.PublishingConfig.VERSION
 import com.shopl.sdg.build_logic.libs
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
@@ -20,10 +23,13 @@ class SDGLibraryPublishingConventionPlugin : Plugin<Project> {
 
 //        afterEvaluate {
         extensions.configure<MavenPublishBaseExtension> {
-            //                val publishArtifact = (target.findProperty("artifactId") as? String)
-            val publishArtifact = providers.gradleProperty("artifactId")
-                .orElse(name)
-                .get()
+            val publishArtifact = (findProperty("artifactId") as? String)
+                ?: when (name) {
+                    "sdg" -> SDG_ARTIFACT_ID
+                    "sdg-common" -> SDG_COMMON_ARTIFACT_ID
+                    "sdg-resource" -> SDG_RESOURCE_ARTIFACT_ID
+                    else -> name
+                }
 //                publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
             publishToMavenCentral(automaticRelease = true)
 
