@@ -112,6 +112,7 @@ jobs:
           trap 'rm -rf "$GNUPGHOME"' EXIT
           gpg --batch --yes --pinentry-mode loopback --passphrase "$SIGNING_PASSWORD" --import ./secring.gpg
 
+          # maven central 저장소 업로드용 산출물에 서명과 체크섬을 붙이는 함수
           sign_or_copy() {
             local src="$1"
             local dest="$2"
@@ -139,7 +140,8 @@ jobs:
               fi
             done
           }
- 
+
+          # 각 모듈 output을 Maven Central Directory 규칙에 맞춰 배치하고 서명/해시를 보장
           for MOD in sdg sdg-resource sdg-common; do
             POM="$MOD/build/publications/maven/pom-default.xml"
             if [[ ! -f "$POM" ]]; then
