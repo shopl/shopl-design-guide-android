@@ -21,16 +21,14 @@ class SDGLibraryPublishingConventionPlugin : Plugin<Project> {
             apply(libs.findPlugin("vanniktech.maven").get().get().pluginId)
         }
 
-//        afterEvaluate {
         extensions.configure<MavenPublishBaseExtension> {
             val publishArtifact = (findProperty("artifactId") as? String)
                 ?: when (name) {
-                    "sdg" -> SDG_ARTIFACT_ID
-                    "sdg-common" -> SDG_COMMON_ARTIFACT_ID
-                    "sdg-resource" -> SDG_RESOURCE_ARTIFACT_ID
+                    SDG_NAME -> SDG_ARTIFACT_ID
+                    SDG_COMMON_NAME -> SDG_COMMON_ARTIFACT_ID
+                    SDG_RESOURCE_NAME -> SDG_RESOURCE_ARTIFACT_ID
                     else -> name
                 }
-//                publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
             publishToMavenCentral(automaticRelease = true)
 
             coordinates(
@@ -73,6 +71,10 @@ class SDGLibraryPublishingConventionPlugin : Plugin<Project> {
                 }
             }
         }
-//        }
+    }
+    companion object {
+        private const val SDG_NAME = "sdg"
+        private const val SDG_COMMON_NAME = "sdg-common"
+        private const val SDG_RESOURCE_NAME = "sdg-resource"
     }
 }
