@@ -1,37 +1,31 @@
 name: Maven Central REST 배포
 
-# on:
-#   pull_request:
-#     types: [ closed ]
-#     branches:
-#       - main
-#   workflow_dispatch:
-#     inputs:
-#       enable_slack:
-#         description: "Send Slack notifications"
-#         required: false
-#         default: "false"
-
 on:
-  push:
+  pull_request:
+    types: [ closed ]
     branches:
-      - deploy-test
+      - main
 
 jobs:
   publish:
-    # if 조건은 push 트리거용으로 단순화
-    if: github.event_name == 'push'
+    if: |
+      github.event.pull_request.merged == true &&
+      (
+        contains(join(github.event.pull_request.labels.*.name, ','), 'major') ||
+        contains(join(github.event.pull_request.labels.*.name, ','), 'minor') ||
+        contains(join(github.event.pull_request.labels.*.name, ','), 'patch')
+      )
     runs-on: ubuntu-latest
 
     steps:
-      # - name: 빌드 시작 Slack Notification
-      #   uses: rtCamp/action-slack-notify@v2
-      #   env:
-      #     SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-      #     SLACK_MESSAGE: |
-      #       :rocket: *[빌드 시작]*  
-      #       *변경사항*: ${{ github.event.pull_request.title }}
-      #     SLACK_COLOR: '#CCCCFF'
+      - name: 빌드 시작 Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_MESSAGE: |
+            :rocket: *[빌드 시작]*  
+            *변경사항*: ${{ github.event.pull_request.title }}
+          SLACK_COLOR: '#CCCCFF'
 
       - name: jq 설치
         run: sudo apt-get update && sudo apt-get install -y jq
@@ -75,25 +69,25 @@ jobs:
         id: build_all_modules
         run: ./gradlew clean build :sdg:publishToMavenLocal :sdg-resource:publishToMavenLocal :sdg-common:publishToMavenLocal
 
-      # - name: 빌드 성공 Slack Notification
-      #   if: ${{ success() && steps.build_all_modules.conclusion == 'success' }}
-      #   uses: rtCamp/action-slack-notify@v2
-      #   env:
-      #     SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-      #     SLACK_MESSAGE: |
-      #       :white_check_mark: *[빌드 성공]*  
-      #       *변경사항*: ${{ github.event.pull_request.title }}
-      #     SLACK_COLOR: '#00C851'
+      - name: 빌드 성공 Slack Notification
+        if: ${{ success() && steps.build_all_modules.conclusion == 'success' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_MESSAGE: |
+            :white_check_mark: *[빌드 성공]*  
+            *변경사항*: ${{ github.event.pull_request.title }}
+          SLACK_COLOR: '#00C851'
 
-      # - name: 빌드 실패 Slack Notification
-      #   if: ${{ failure() && steps.build_all_modules.conclusion == 'failure' }}
-      #   uses: rtCamp/action-slack-notify@v2
-      #   env:
-      #     SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-      #     SLACK_MESSAGE: |
-      #       :x: *[빌드 실패]*  
-      #       *변경사항*: ${{ github.event.pull_request.title }}
-      #     SLACK_COLOR: '#FF4444'
+      - name: 빌드 실패 Slack Notification
+        if: ${{ failure() && steps.build_all_modules.conclusion == 'failure' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_MESSAGE: |
+            :x: *[빌드 실패]*  
+            *변경사항*: ${{ github.event.pull_request.title }}
+          SLACK_COLOR: '#FF4444'
 
       - name: 멀티모듈 패키징
         id: make_zip
@@ -278,22 +272,22 @@ jobs:
             echo "Still publishing, wait..."
           done
 
-      # - name: 배포 성공 Slack Notification
-      #   if: ${{ steps.poll_status.outputs.result == 'success' }}
-      #   uses: rtCamp/action-slack-notify@v2
-      #   env:
-      #     SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-      #     SLACK_MESSAGE: |
-      #       :star: *[배포 완료]*  
-      #       *변경사항*: ${{ github.event.pull_request.title }}
-      #     SLACK_COLOR: '#00C6AD'
+      - name: 배포 성공 Slack Notification
+        if: ${{ steps.poll_status.outputs.result == 'success' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_MESSAGE: |
+            :star: *[배포 완료]*  
+            *변경사항*: ${{ github.event.pull_request.title }}
+          SLACK_COLOR: '#00C6AD'
 
-      # - name: 배포 실패 Slack Notification
-      #   if: ${{ steps.poll_status.outputs.result == 'fail' }}
-      #   uses: rtCamp/action-slack-notify@v2
-      #   env:
-      #     SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
-      #     SLACK_MESSAGE: |
-      #       :warning: *[배포 실패]*  
-      #       *변경사항*: ${{ github.event.pull_request.title }}
-      #     SLACK_COLOR: '#FFA726'
+      - name: 배포 실패 Slack Notification
+        if: ${{ steps.poll_status.outputs.result == 'fail' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          SLACK_MESSAGE: |
+            :warning: *[배포 실패]*  
+            *변경사항*: ${{ github.event.pull_request.title }}
+          SLACK_COLOR: '#FFA726'
