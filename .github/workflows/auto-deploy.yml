@@ -104,12 +104,9 @@ jobs:
           set -e
           GROUP="${{ steps.extract_info.outputs.group }}"
           VERSION="${{ steps.extract_info.outputs.version }}"
-          declare -A ARTIFACT_IDS
-          ARTIFACT_IDS[sdg]="${{ steps.extract_info.outputs.sdg_artifactId }}"
-          ARTIFACT_IDS[sdg-resource]="${{ steps.extract_info.outputs.resource_artifactId }}"
-          ARTIFACT_IDS[sdg-common]="${{ steps.extract_info.outputs.common_artifactId }}"
-
           GROUP_PATH="${GROUP//.//}" # 예시: com.shopworks → com/shopworks
+
+          rm -rf "$GROUP_PATH"
 
           if [[ -z "$SIGNING_PASSWORD" || -z "$SIGNING_KEY_ID" ]]; then
             echo "::error::Signing secrets are not available"
@@ -125,6 +122,10 @@ jobs:
             local src="$1"
             local dest="$2"
             local src_asc="${src}.asc"
+            local dest_dir
+            dest_dir=$(dirname "$dest")
+            local dest_base
+            dest_base=$(basename "$dest")
             local dest_asc="${dest}.asc"
 
             if [[ -f "$src_asc" ]]; then
@@ -132,14 +133,37 @@ jobs:
             else
               gpg --batch --yes --pinentry-mode loopback --passphrase "$SIGNING_PASSWORD" --default-key "$SIGNING_KEY_ID" --armor --detach-sign --output "$dest_asc" "$dest"
             fi
-          }
 
+            for HASH_CMD in md5sum sha1sum sha256sum sha512sum; do
+              if command -v "$HASH_CMD" >/dev/null 2>&1; then
+                case "$HASH_CMD" in
+                  md5sum) SUFFIX="md5" ;;
+                  sha1sum) SUFFIX="sha1" ;;
+                  sha256sum) SUFFIX="sha256" ;;
+                  sha512sum) SUFFIX="sha512" ;;
+                  *) continue ;;
+                esac
+                "$HASH_CMD" "$dest" | cut -d ' ' -f1 > "${dest}.${SUFFIX}"
+                "$HASH_CMD" "$dest_asc" | cut -d ' ' -f1 > "${dest_asc}.${SUFFIX}"
+              fi
+            done
+          }
+ 
           for MOD in sdg sdg-resource sdg-common; do
-            ARTIFACT_ID="${ARTIFACT_IDS[$MOD]}"
-            ARTIFACT_DIR="${GROUP_PATH}/${ARTIFACT_ID}/${VERSION}"
+            POM="$MOD/build/publications/maven/pom-default.xml"
+            if [[ ! -f "$POM" ]]; then
+              echo "::error::POM not found for module $MOD" >&2
+              exit 1
+            fi
+            POM_ARTIFACT_ID=$(awk -F'[<>]' '/<artifactId>/{print $3; exit}' "$POM" | tr -d '[:space:]')
+            if [[ -z "$POM_ARTIFACT_ID" ]]; then
+              echo "::error::Failed to read artifactId from $POM" >&2
+              exit 1
+            fi
+
+            ARTIFACT_DIR="${GROUP_PATH}/${POM_ARTIFACT_ID}/${VERSION}"
             mkdir -p "$ARTIFACT_DIR"
 
-            POM="$MOD/build/publications/maven/pom-default.xml"
             AAR=""
             if [[ -d "$MOD/build/outputs/aar" ]]; then
               AAR=$(find "$MOD/build/outputs/aar" -maxdepth 1 -type f -name "*-release.aar" | head -n1)
@@ -153,11 +177,6 @@ jobs:
             JAVADOC_JAR=$(find "$MOD/build" -maxdepth 6 -type f -name "*-release-javadoc.jar" | head -n1)
             if [[ -z "$JAVADOC_JAR" ]]; then
               JAVADOC_JAR=$(find "$MOD/build" -maxdepth 6 -type f -name "release-javadoc.jar" | head -n1)
-            fi
-
-            if [[ ! -f "$POM" ]]; then
-              echo "::error::POM not found for module $MOD" >&2
-              exit 1
             fi
 
             if [[ -z "$AAR" || ! -f "$AAR" ]]; then
@@ -175,10 +194,10 @@ jobs:
               exit 1
             fi
 
-            DEST_POM="${ARTIFACT_ID}-${VERSION}.pom"
-            DEST_AAR="${ARTIFACT_ID}-${VERSION}.aar"
-            DEST_SOURCES_JAR="${ARTIFACT_ID}-${VERSION}-sources.jar"
-            DEST_JAVADOC_JAR="${ARTIFACT_ID}-${VERSION}-javadoc.jar"
+            DEST_POM="${POM_ARTIFACT_ID}-${VERSION}.pom"
+            DEST_AAR="${POM_ARTIFACT_ID}-${VERSION}.aar"
+            DEST_SOURCES_JAR="${POM_ARTIFACT_ID}-${VERSION}-sources.jar"
+            DEST_JAVADOC_JAR="${POM_ARTIFACT_ID}-${VERSION}-javadoc.jar"
 
             cp "$POM" "$ARTIFACT_DIR/$DEST_POM"
             cp "$AAR" "$ARTIFACT_DIR/$DEST_AAR"
@@ -190,12 +209,12 @@ jobs:
             sign_or_copy "$SRC_JAR" "$ARTIFACT_DIR/$DEST_SOURCES_JAR"
             sign_or_copy "$JAVADOC_JAR" "$ARTIFACT_DIR/$DEST_JAVADOC_JAR"
 
-            cd "$ARTIFACT_DIR"
-            for FILE in "$DEST_POM" "$DEST_AAR" "$DEST_SOURCES_JAR" "$DEST_JAVADOC_JAR"; do
-              md5sum "$FILE" | cut -d ' ' -f1 > "${FILE}.md5"
-              sha1sum "$FILE" | cut -d ' ' -f1 > "${FILE}.sha1"
-            done
-            cd -
+            MODULE_FILE="$MOD/build/publications/maven/module.json"
+            if [[ -f "$MODULE_FILE" ]]; then
+              DEST_MODULE="${POM_ARTIFACT_ID}-${VERSION}.module"
+              cp "$MODULE_FILE" "$ARTIFACT_DIR/$DEST_MODULE"
+              sign_or_copy "$MODULE_FILE" "$ARTIFACT_DIR/$DEST_MODULE"
+            fi
           done
 
           ZIP_NAME="com-shoplworks-SDG-Android-${VERSION}"
