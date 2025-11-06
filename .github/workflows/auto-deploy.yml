@@ -91,51 +91,123 @@ jobs:
 
       - name: 멀티모듈 패키징
         id: make_zip
+        env:
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
         run: |
           set -e
           GROUP="${{ steps.extract_info.outputs.group }}"
           VERSION="${{ steps.extract_info.outputs.version }}"
-          declare -A ARTIFACT_IDS
-          ARTIFACT_IDS[sdg]="${{ steps.extract_info.outputs.sdg_artifactId }}"
-          ARTIFACT_IDS[sdg-resource]="${{ steps.extract_info.outputs.resource_artifactId }}"
-          ARTIFACT_IDS[sdg-common]="${{ steps.extract_info.outputs.common_artifactId }}"
-
           GROUP_PATH="${GROUP//.//}" # 예시: com.shopworks → com/shopworks
 
-          for MOD in sdg sdg-resource sdg-common; do
-            ARTIFACT_ID="${ARTIFACT_IDS[$MOD]}"
-            ARTIFACT_DIR="${GROUP_PATH}/${ARTIFACT_ID}/${VERSION}"
-            mkdir -p "$ARTIFACT_DIR"
-          
-            # ouput 경로
-            if [[ "$MOD" == "sdg" ]]; then
-              POM=sdg/build/publications/maven/pom-default.xml
-              POM_ASC=sdg/build/publications/maven/pom-default.xml.asc
-              AAR=sdg/build/outputs/aar/sdg-release.aar
-              AAR_ASC=sdg/build/outputs/aar/sdg-release.aar.asc
-            elif [[ "$MOD" == "sdg-resource" ]]; then
-              POM=sdg-resource/build/publications/maven/pom-default.xml
-              POM_ASC=sdg-resource/build/publications/maven/pom-default.xml.asc
-              AAR=sdg-resource/build/outputs/aar/sdg-resource-release.aar
-              AAR_ASC=sdg-resource/build/outputs/aar/sdg-resource-release.aar.asc
+          rm -rf "$GROUP_PATH"
+
+          if [[ -z "$SIGNING_PASSWORD" || -z "$SIGNING_KEY_ID" ]]; then
+            echo "::error::Signing secrets are not available"
+            exit 1
+          fi
+
+          GNUPGHOME=$(mktemp -d)
+          export GNUPGHOME
+          trap 'rm -rf "$GNUPGHOME"' EXIT
+          gpg --batch --yes --pinentry-mode loopback --passphrase "$SIGNING_PASSWORD" --import ./secring.gpg
+
+          # maven central 저장소 업로드용 산출물에 서명과 체크섬을 붙이는 함수
+          sign_or_copy() {
+            local src="$1"
+            local dest="$2"
+            local src_asc="${src}.asc"
+            local dest_asc="${dest}.asc"
+
+            if [[ -f "$src_asc" ]]; then
+              cp "$src_asc" "$dest_asc"
             else
-              POM=sdg-common/build/publications/maven/pom-default.xml
-              POM_ASC=sdg-common/build/publications/maven/pom-default.xml.asc
-              AAR=sdg-common/build/outputs/aar/sdg-common-release.aar
-              AAR_ASC=sdg-common/build/outputs/aar/sdg-common-release.aar.asc
+              gpg --batch --yes --pinentry-mode loopback --passphrase "$SIGNING_PASSWORD" --default-key "$SIGNING_KEY_ID" --armor --detach-sign --output "$dest_asc" "$dest"
             fi
 
-            cp "$POM" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom"
-            cp "$POM_ASC" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.pom.asc"
-            cp "$AAR" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar"
-            cp "$AAR_ASC" "$ARTIFACT_DIR/${ARTIFACT_ID}-${VERSION}.aar.asc"
+            for HASH_CMD in md5sum sha1sum sha256sum sha512sum; do
+              if command -v "$HASH_CMD" >/dev/null 2>&1; then
+                local SUFFIX
+                case "$HASH_CMD" in
+                  md5sum) SUFFIX="md5" ;;
+                  sha1sum) SUFFIX="sha1" ;;
+                  sha256sum) SUFFIX="sha256" ;;
+                  sha512sum) SUFFIX="sha512" ;;
+                  *) continue ;;
+                esac
+                "$HASH_CMD" "$dest" | cut -d ' ' -f1 > "${dest}.${SUFFIX}"
+                "$HASH_CMD" "$dest_asc" | cut -d ' ' -f1 > "${dest_asc}.${SUFFIX}"
+              fi
+            done
+          }
 
-            cd "$ARTIFACT_DIR"
-            md5sum "${ARTIFACT_ID}-${VERSION}.pom" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.pom.md5"
-            sha1sum "${ARTIFACT_ID}-${VERSION}.pom" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.pom.sha1"
-            md5sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.aar.md5"
-            sha1sum "${ARTIFACT_ID}-${VERSION}.aar" | cut -d ' ' -f1 > "${ARTIFACT_ID}-${VERSION}.aar.sha1"
-            cd -
+          # 각 모듈 output을 Maven Central Directory 규칙에 맞춰 배치하고 서명/해시를 보장
+          for MOD in sdg sdg-resource sdg-common; do
+            POM="$MOD/build/publications/maven/pom-default.xml"
+            if [[ ! -f "$POM" ]]; then
+              echo "::error::POM not found for module $MOD" >&2
+              exit 1
+            fi
+            POM_ARTIFACT_ID=$(awk -F'[<>]' '/<artifactId>/{print $3; exit}' "$POM" | tr -d '[:space:]')
+            if [[ -z "$POM_ARTIFACT_ID" ]]; then
+              echo "::error::Failed to read artifactId from $POM" >&2
+              exit 1
+            fi
+
+            ARTIFACT_DIR="${GROUP_PATH}/${POM_ARTIFACT_ID}/${VERSION}"
+            mkdir -p "$ARTIFACT_DIR"
+
+            AAR=""
+            if [[ -d "$MOD/build/outputs/aar" ]]; then
+              AAR=$(find "$MOD/build/outputs/aar" -maxdepth 1 -type f -name "*-release.aar" | head -n1)
+            fi
+
+            SRC_JAR=$(find "$MOD/build" -maxdepth 6 -type f -name "*-release-sources.jar" | head -n1)
+            if [[ -z "$SRC_JAR" ]]; then
+              SRC_JAR=$(find "$MOD/build" -maxdepth 6 -type f -name "release-sources.jar" | head -n1)
+            fi
+
+            JAVADOC_JAR=$(find "$MOD/build" -maxdepth 6 -type f -name "*-release-javadoc.jar" | head -n1)
+            if [[ -z "$JAVADOC_JAR" ]]; then
+              JAVADOC_JAR=$(find "$MOD/build" -maxdepth 6 -type f -name "release-javadoc.jar" | head -n1)
+            fi
+
+            if [[ -z "$AAR" || ! -f "$AAR" ]]; then
+              echo "::error::AAR not found for module $MOD" >&2
+              exit 1
+            fi
+
+            if [[ -z "$SRC_JAR" || ! -f "$SRC_JAR" ]]; then
+              echo "::error::Sources JAR not found for module $MOD" >&2
+              exit 1
+            fi
+
+            if [[ -z "$JAVADOC_JAR" || ! -f "$JAVADOC_JAR" ]]; then
+              echo "::error::Javadoc JAR not found for module $MOD" >&2
+              exit 1
+            fi
+
+            DEST_POM="${POM_ARTIFACT_ID}-${VERSION}.pom"
+            DEST_AAR="${POM_ARTIFACT_ID}-${VERSION}.aar"
+            DEST_SOURCES_JAR="${POM_ARTIFACT_ID}-${VERSION}-sources.jar"
+            DEST_JAVADOC_JAR="${POM_ARTIFACT_ID}-${VERSION}-javadoc.jar"
+
+            cp "$POM" "$ARTIFACT_DIR/$DEST_POM"
+            cp "$AAR" "$ARTIFACT_DIR/$DEST_AAR"
+            cp "$SRC_JAR" "$ARTIFACT_DIR/$DEST_SOURCES_JAR"
+            cp "$JAVADOC_JAR" "$ARTIFACT_DIR/$DEST_JAVADOC_JAR"
+
+            sign_or_copy "$POM" "$ARTIFACT_DIR/$DEST_POM"
+            sign_or_copy "$AAR" "$ARTIFACT_DIR/$DEST_AAR"
+            sign_or_copy "$SRC_JAR" "$ARTIFACT_DIR/$DEST_SOURCES_JAR"
+            sign_or_copy "$JAVADOC_JAR" "$ARTIFACT_DIR/$DEST_JAVADOC_JAR"
+
+            MODULE_FILE="$MOD/build/publications/maven/module.json"
+            if [[ -f "$MODULE_FILE" ]]; then
+              DEST_MODULE="${POM_ARTIFACT_ID}-${VERSION}.module"
+              cp "$MODULE_FILE" "$ARTIFACT_DIR/$DEST_MODULE"
+              sign_or_copy "$MODULE_FILE" "$ARTIFACT_DIR/$DEST_MODULE"
+            fi
           done
 
           ZIP_NAME="com-shoplworks-SDG-Android-${VERSION}"
