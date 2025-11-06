@@ -16,6 +16,9 @@ jobs:
         contains(join(github.event.pull_request.labels.*.name, ','), 'patch')
       )
     runs-on: ubuntu-latest
+    env:
+      POLL_INTERVAL_SECONDS: ${{ vars.SDG_MAVEN_POLL_INTERVAL_SECONDS }}
+      POLL_MAX_ATTEMPTS: ${{ vars.SDG_MAVEN_POLL_MAX_ATTEMPTS }}
 
     steps:
       - name: 빌드 시작 Slack Notification
@@ -240,8 +243,11 @@ jobs:
         if: success()
         run: |
           PUBLISH_ID="${{ steps.publish_upload.outputs.publish_id }}"
-          for i in {1..20}; do
-            sleep 120
+          POLL_INTERVAL="${POLL_INTERVAL_SECONDS:-120}"
+          MAX_ATTEMPTS="${POLL_MAX_ATTEMPTS:-20}"
+          echo "Polling every ${POLL_INTERVAL}s (max ${MAX_ATTEMPTS} attempts)"
+          for ((i=1; i<=MAX_ATTEMPTS; i++)); do
+            sleep "$POLL_INTERVAL"
             RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "https://central.sonatype.com/api/v1/publisher/status?id=$PUBLISH_ID" \
               -H "Authorization: Bearer ${{ secrets.SONATYPE_PUBLISH_TOKEN }}")
             HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
