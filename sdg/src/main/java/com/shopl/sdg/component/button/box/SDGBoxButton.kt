@@ -125,7 +125,10 @@ fun SDGBoxButton(
 
             SDGText(
                 text = label,
-                textColor = if (enable) labelColor else labelColor.copy(alpha = 0.3f),
+                textColor = when {
+                    enable || labelColor == SDGColor.Neutral0 -> labelColor
+                    else -> labelColor.copy(alpha = 0.3f)
+                },
                 textAlign = TextAlign.Center,
                 typography = size.typography,
                 maxLines = 1,

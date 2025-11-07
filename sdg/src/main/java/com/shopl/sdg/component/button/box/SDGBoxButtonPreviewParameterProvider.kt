@@ -39,6 +39,16 @@ internal class SDGBoxButtonPreviewParameterProvider :
         ),
         SDGBoxButtonPreviewParameter(
             label = "비활성화 된 BoxButton",
+            labelColor = SDGColor.Neutral700,
+            backgroundColor = SDGColor.Secondary400,
+            size = SDGBoxButtonSize.Medium,
+            type = SDGBoxButtonType.Solid,
+            enable = false,
+            rightIcon = R.drawable.ic_common_next_s,
+            rightIconTint = SDGColor.Neutral0,
+        ),
+        SDGBoxButtonPreviewParameter(
+            label = "비활성화 된 흰 색상 라벨 BoxButton",
             labelColor = SDGColor.Neutral0,
             backgroundColor = SDGColor.Secondary400,
             size = SDGBoxButtonSize.Medium,
