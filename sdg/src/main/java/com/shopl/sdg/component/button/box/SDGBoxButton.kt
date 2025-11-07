@@ -21,6 +21,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
@@ -155,4 +157,30 @@ private fun SDGBoxButtonIcon(
         resId = iconResId,
         color = if (enable) iconTint else iconTint.copy(alpha = 0.3f)
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewSDGBoxButton(
+    @PreviewParameter(SDGBoxButtonPreviewParameterProvider::class)
+    parameter: SDGBoxButtonPreviewParameter
+) {
+    with(parameter) {
+        SDGBoxButton(
+            size = size,
+            type = type,
+            label = label,
+            labelColor = labelColor,
+            backgroundColor = backgroundColor,
+            onClick = {},
+            iconDownSize = iconDownSize,
+            enable = enable,
+            isFillMaxWidth = isFillMaxWidth,
+            leftIcon = leftIcon,
+            leftIconTint = leftIconTint,
+            rightIcon = rightIcon,
+            rightIconTint = rightIconTint,
+            marginValues = marginValues
+        )
+    }
 }
