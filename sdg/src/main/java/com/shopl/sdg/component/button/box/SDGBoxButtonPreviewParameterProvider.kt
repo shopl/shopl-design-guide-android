@@ -6,6 +6,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_resource.R
 
 internal class SDGBoxButtonPreviewParameterProvider :
@@ -19,7 +22,7 @@ internal class SDGBoxButtonPreviewParameterProvider :
             size = SDGBoxButtonSize.Medium,
             type = SDGBoxButtonType.Solid,
             isFillMaxWidth = true,
-            marginValues = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+            marginValues = PaddingValues(horizontal = Spacing16, vertical = Spacing8),
             leftIcon = R.drawable.ic_common_prev_s,
             leftIconTint = SDGColor.Neutral0,
         ),
@@ -32,7 +35,7 @@ internal class SDGBoxButtonPreviewParameterProvider :
             rightIcon = R.drawable.ic_common_next_s,
             rightIconTint = SDGColor.Neutral500,
             iconDownSize = true,
-            marginValues = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
+            marginValues = PaddingValues(horizontal = Spacing16, vertical = Spacing4),
         ),
         SDGBoxButtonPreviewParameter(
             label = "비활성화 된 BoxButton",
