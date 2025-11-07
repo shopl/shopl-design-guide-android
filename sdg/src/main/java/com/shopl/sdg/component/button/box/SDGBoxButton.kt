@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -85,20 +84,20 @@ fun SDGBoxButton(
                 .height(size.height)
                 .background(
                     color = if (enable) backgroundColor else backgroundColor.copy(alpha = 0.3f),
-                    shape = RoundedCornerShape(size.cornerRadius)
+                    shape = size.shape
                 )
                 .then(
                     if (type is SDGBoxButtonType.Line) {
                         Modifier.border(
                             width = 1.dp,
                             color = if (enable) type.lineColor else type.lineColor.copy(alpha = 0.3f),
-                            shape = RoundedCornerShape(size = size.cornerRadius),
+                            shape = size.shape
                         )
                     } else {
                         Modifier
                     }
                 )
-                .clip(RoundedCornerShape(size.cornerRadius))
+                .clip(size.shape)
                 .then(
                     if (enable) {
                         Modifier.clickable(
