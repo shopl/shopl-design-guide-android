@@ -2,6 +2,9 @@ package com.shopl.sdg.component.button.box
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing10
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing6
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 
 sealed class SDGBoxButtonSize(
@@ -13,7 +16,7 @@ sealed class SDGBoxButtonSize(
 ) {
     data object Medium : SDGBoxButtonSize(
         height = 42.dp,
-        horizontalSpacing = 16.dp,
+        horizontalSpacing = Spacing16,
         gap = 4.dp,
         cornerRadius = 12.dp,
         typography = SDGTypography.Body2R,
@@ -21,7 +24,7 @@ sealed class SDGBoxButtonSize(
 
     data object Small : SDGBoxButtonSize(
         height = 32.dp,
-        horizontalSpacing = 10.dp,
+        horizontalSpacing = Spacing10,
         gap = 2.dp,
         cornerRadius = 8.dp,
         typography = SDGTypography.Body3R,
@@ -29,7 +32,7 @@ sealed class SDGBoxButtonSize(
 
     data object XSmall : SDGBoxButtonSize(
         height = 20.dp,
-        horizontalSpacing = 6.dp,
+        horizontalSpacing = Spacing6,
         gap = 2.dp,
         cornerRadius = 6.dp,
         typography = SDGTypography.Body3R,
