@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
@@ -126,6 +127,8 @@ fun SDGBoxButton(
                 textColor = if (enable) labelColor else labelColor.copy(alpha = 0.3f),
                 textAlign = TextAlign.Center,
                 typography = size.typography,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             if (rightIcon != null && rightIconTint != null) {
