@@ -33,8 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.ui.components.IOText
-import com.shopl.sdg_common.ui.components.IOTypeface
+import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
 /**
@@ -127,13 +126,11 @@ fun SDGBoxButton(
                 )
                 Spacer(modifier = Modifier.width(size.gap))
             }
-            IOText(
+            SDGText(
                 text = label,
                 textColor = if (enable) labelColor else labelColor.copy(alpha = 0.3f),
-                fontSize = size.labelSize,
-                typeface = IOTypeface.REGULAR,
                 textAlign = TextAlign.Center,
-                lineHeight = size.labelSize
+                typography = size.typography
             )
             if (rightIcon != null && rightIconTint != null) {
                 Spacer(modifier = Modifier.width(size.gap))
