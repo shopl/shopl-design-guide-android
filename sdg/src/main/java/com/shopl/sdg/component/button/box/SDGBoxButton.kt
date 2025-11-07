@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
@@ -114,10 +115,11 @@ fun SDGBoxButton(
             horizontalArrangement = Arrangement.Center
         ) {
             if (leftIcon != null && leftIconTint != null) {
-                SDGImage(
-                    modifier = Modifier.size(14.dp),
-                    resId = leftIcon,
-                    color = if (enable) leftIconTint else leftIconTint.copy(alpha = 0.3f)
+                SDGBoxButtonIcon(
+                    size = size.iconSize,
+                    iconResId = leftIcon,
+                    iconTint = leftIconTint,
+                    enable = enable
                 )
                 Spacer(modifier = Modifier.width(size.iconGap))
             }
@@ -133,13 +135,29 @@ fun SDGBoxButton(
 
             if (rightIcon != null && rightIconTint != null) {
                 Spacer(modifier = Modifier.width(size.iconGap))
-                SDGImage(
-                    resId = rightIcon,
-                    color = if (enable) rightIconTint else rightIconTint.copy(alpha = 0.3f)
+                SDGBoxButtonIcon(
+                    size = size.iconSize,
+                    iconResId = rightIcon,
+                    iconTint = rightIconTint,
+                    enable = enable
                 )
             }
         }
     }
+}
+
+@Composable
+private fun SDGBoxButtonIcon(
+    size: Dp,
+    @DrawableRes iconResId: Int,
+    iconTint: Color,
+    enable: Boolean
+) {
+    SDGImage(
+        modifier = Modifier.size(size),
+        resId = iconResId,
+        color = if (enable) iconTint else iconTint.copy(alpha = 0.3f)
+    )
 }
 
 @Composable
