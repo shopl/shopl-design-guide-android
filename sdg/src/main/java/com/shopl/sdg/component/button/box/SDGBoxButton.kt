@@ -63,7 +63,6 @@ fun SDGBoxButton(
     marginValues: PaddingValues = PaddingValues(),
     debounceTimeMills: Long = 500,
 ) {
-
     Box(
         modifier = if (isFillMaxWidth) {
             Modifier
