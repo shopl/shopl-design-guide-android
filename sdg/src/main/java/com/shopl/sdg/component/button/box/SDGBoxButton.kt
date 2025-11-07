@@ -40,6 +40,7 @@ import com.shopl.sdg_resource.R
  *
  * 화면의 내용 영역에 배치하여 사용하는 일반적인 사각 형태의 버튼 컴포넌트
  *
+ * @param iconDownSize [SDGBoxButtonSize] 별 icon size down 여부(기존 사이즈에서 2dp만 down)
  * @param debounceTimeMills 중복 클릭 방지 시간
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7102-15102&m=dev">Figma</a>
@@ -52,6 +53,7 @@ fun SDGBoxButton(
     labelColor: Color,
     backgroundColor: Color,
     onClick: () -> Unit,
+    iconDownSize: Boolean = false,
     enable: Boolean = true,
     isFillMaxWidth: Boolean = false,
     @DrawableRes leftIcon: Int? = null,
@@ -114,9 +116,11 @@ fun SDGBoxButton(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
+            val iconSize = size.iconSize - if (iconDownSize) 2.dp else 0.dp
+
             if (leftIcon != null && leftIconTint != null) {
                 SDGBoxButtonIcon(
-                    size = size.iconSize,
+                    size = iconSize,
                     iconResId = leftIcon,
                     iconTint = leftIconTint,
                     enable = enable
@@ -136,7 +140,7 @@ fun SDGBoxButton(
             if (rightIcon != null && rightIconTint != null) {
                 Spacer(modifier = Modifier.width(size.iconGap))
                 SDGBoxButtonIcon(
-                    size = size.iconSize,
+                    size = iconSize,
                     iconResId = rightIcon,
                     iconTint = rightIconTint,
                     enable = enable
