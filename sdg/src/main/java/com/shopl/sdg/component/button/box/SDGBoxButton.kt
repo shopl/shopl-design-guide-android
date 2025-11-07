@@ -86,20 +86,20 @@ fun SDGBoxButton(
                 .height(size.height)
                 .background(
                     color = if (enable) backgroundColor else backgroundColor.copy(alpha = 0.3f),
-                    shape = RoundedCornerShape(size.radius)
+                    shape = RoundedCornerShape(size.cornerRadius)
                 )
                 .then(
                     if (type is SDGBoxButtonType.Line) {
                         Modifier.border(
                             width = 1.dp,
                             color = if (enable) type.lineColor else type.lineColor.copy(alpha = 0.3f),
-                            shape = RoundedCornerShape(size = size.radius),
+                            shape = RoundedCornerShape(size = size.cornerRadius),
                         )
                     } else {
                         Modifier
                     }
                 )
-                .clip(RoundedCornerShape(size.radius))
+                .clip(RoundedCornerShape(size.cornerRadius))
                 .then(
                     if (enable) {
                         Modifier.clickable(
@@ -112,7 +112,7 @@ fun SDGBoxButton(
                         Modifier
                     }
                 )
-                .padding(horizontal = size.horizontalPadding),
+                .padding(horizontal = size.horizontalSpacing),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
