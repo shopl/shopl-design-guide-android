@@ -123,7 +123,7 @@ fun SDGBoxButton(
                         color = if (enable) leftIconTint else leftIconTint.copy(alpha = 0.3f)
                     )
                 )
-                Spacer(modifier = Modifier.width(size.gap))
+                Spacer(modifier = Modifier.width(size.iconGap))
             }
             SDGText(
                 text = label,
@@ -132,7 +132,7 @@ fun SDGBoxButton(
                 typography = size.typography
             )
             if (rightIcon != null && rightIconTint != null) {
-                Spacer(modifier = Modifier.width(size.gap))
+                Spacer(modifier = Modifier.width(size.iconGap))
                 Image(
                     painter = painterResource(id = rightIcon),
                     contentDescription = null,

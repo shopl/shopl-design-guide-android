@@ -12,14 +12,14 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 sealed class SDGBoxButtonSize(
     val height: Dp,
     val horizontalSpacing: Dp,
-    val gap: Dp,
+    val iconGap: Dp,
     val shape: Shape,
     val typography: SDGTypography,
 ) {
     data object Medium : SDGBoxButtonSize(
         height = 42.dp,
         horizontalSpacing = Spacing16,
-        gap = 4.dp,
+        iconGap = 4.dp,
         shape = SDGCornerRadius.BoxRadius.Radius12,
         typography = SDGTypography.Body2R,
     )
@@ -27,7 +27,7 @@ sealed class SDGBoxButtonSize(
     data object Small : SDGBoxButtonSize(
         height = 32.dp,
         horizontalSpacing = Spacing10,
-        gap = 2.dp,
+        iconGap = 2.dp,
         shape = SDGCornerRadius.BoxRadius.Radius8,
         typography = SDGTypography.Body3R,
     )
@@ -35,7 +35,7 @@ sealed class SDGBoxButtonSize(
     data object XSmall : SDGBoxButtonSize(
         height = 20.dp,
         horizontalSpacing = Spacing6,
-        gap = 2.dp,
+        iconGap = 2.dp,
         shape = SDGCornerRadius.BoxRadius.Radius6,
         typography = SDGTypography.Body3R,
     )
