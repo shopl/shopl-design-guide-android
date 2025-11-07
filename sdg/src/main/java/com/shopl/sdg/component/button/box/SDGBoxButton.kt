@@ -1,7 +1,6 @@
 package com.shopl.sdg.component.button.box
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -25,13 +24,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
@@ -115,30 +113,26 @@ fun SDGBoxButton(
             horizontalArrangement = Arrangement.Center
         ) {
             if (leftIcon != null && leftIconTint != null) {
-                Image(
+                SDGImage(
                     modifier = Modifier.size(14.dp),
-                    painter = painterResource(id = leftIcon),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(
-                        color = if (enable) leftIconTint else leftIconTint.copy(alpha = 0.3f)
-                    )
+                    resId = leftIcon,
+                    color = if (enable) leftIconTint else leftIconTint.copy(alpha = 0.3f)
                 )
                 Spacer(modifier = Modifier.width(size.iconGap))
             }
+
             SDGText(
                 text = label,
                 textColor = if (enable) labelColor else labelColor.copy(alpha = 0.3f),
                 textAlign = TextAlign.Center,
-                typography = size.typography
+                typography = size.typography,
             )
+
             if (rightIcon != null && rightIconTint != null) {
                 Spacer(modifier = Modifier.width(size.iconGap))
-                Image(
-                    painter = painterResource(id = rightIcon),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(
-                        color = if (enable) rightIconTint else rightIconTint.copy(alpha = 0.3f)
-                    )
+                SDGImage(
+                    resId = rightIcon,
+                    color = if (enable) rightIconTint else rightIconTint.copy(alpha = 0.3f)
                 )
             }
         }
