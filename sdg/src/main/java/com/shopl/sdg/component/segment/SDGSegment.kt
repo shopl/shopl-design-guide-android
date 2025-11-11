@@ -140,7 +140,7 @@ private fun SDGTwoLineSegmentUnit(
         modifier = modifier
             .padding(paddingValues)
             .zIndex(1f)
-            .sizeIn(minWidth = 50.dp, minHeight = 58.dp)
+            .sizeIn(minWidth = 50.dp, minHeight = 50.dp)
             .clip(SDGCornerRadius.BoxRadius.Radius8)
             .clickable(hasRipple = false) { onLabelClick() }
             .background(SDGColor.Transparent),
@@ -170,7 +170,7 @@ private fun SDGOneLineSegmentUnit(
         modifier = modifier
             .padding(paddingValues)
             .zIndex(1f)
-            .sizeIn(minWidth = 32.dp, minHeight = 40.dp)
+            .sizeIn(minWidth = 32.dp, minHeight = 32.dp)
             .clip(SDGCornerRadius.BoxRadius.Radius8)
             .background(SDGColor.Transparent)
             .clickable(hasRipple = false) { onLabelClick() },
