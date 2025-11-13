@@ -78,7 +78,7 @@ fun SDGCheckOptionLabel(
 
 @Preview(showBackground = true)
 @Composable
-fun SDGCheckOptionLabelPreview() {
+private fun PreviewSDGCheckOptionLabel() {
     SDGCheckOptionLabel(
         size = SDGCheckOptionLabelSize.SMALL,
         label = "Label",
@@ -88,7 +88,7 @@ fun SDGCheckOptionLabelPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun SDGCheckOptionLabelCheckedPreview() {
+private fun PreviewSDGCheckOptionLabelChecked() {
     SDGCheckOptionLabel(
         size = SDGCheckOptionLabelSize.MEDIUM,
         label = "Label",
@@ -96,4 +96,12 @@ fun SDGCheckOptionLabelCheckedPreview() {
     )
 }
 
-
+@Preview(showBackground = true)
+@Composable
+private fun PreviewSDGCheckOptionLabelWithLineBreak() {
+    SDGCheckOptionLabel(
+        size = SDGCheckOptionLabelSize.MEDIUM,
+        label = "Long\nLabel",
+        isChecked = true
+    )
+}
