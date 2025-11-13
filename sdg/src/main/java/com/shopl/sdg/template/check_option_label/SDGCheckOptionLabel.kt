@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.check_option.SDGCheck
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing6
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.ui.components.SDGText
@@ -35,9 +35,7 @@ fun SDGCheckOptionLabel(
     onClick: (() -> Unit)? = null,
 ) {
     Row(
-        modifier = Modifier
-            .padding(marginValues),
-        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(marginValues),
         horizontalArrangement = Arrangement.spacedBy(
             when (size) {
                 SDGCheckOptionLabelSize.SMALL -> Spacing6
@@ -51,7 +49,8 @@ fun SDGCheckOptionLabel(
                 if (enabled) {
                     onClick?.invoke()
                 }
-            }
+            },
+            clickPadding = PaddingValues(vertical = SDGSpacing.Spacing2),
         )
         SDGText(
             modifier = Modifier
@@ -79,7 +78,7 @@ fun SDGCheckOptionLabel(
 
 @Preview(showBackground = true)
 @Composable
-fun SDGCheckOptionLabelPreview() {
+private fun PreviewSDGCheckOptionLabel() {
     SDGCheckOptionLabel(
         size = SDGCheckOptionLabelSize.SMALL,
         label = "Label",
@@ -89,7 +88,7 @@ fun SDGCheckOptionLabelPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun SDGCheckOptionLabelCheckedPreview() {
+private fun PreviewSDGCheckOptionLabelChecked() {
     SDGCheckOptionLabel(
         size = SDGCheckOptionLabelSize.MEDIUM,
         label = "Label",
@@ -97,4 +96,12 @@ fun SDGCheckOptionLabelCheckedPreview() {
     )
 }
 
-
+@Preview(showBackground = true)
+@Composable
+private fun PreviewSDGCheckOptionLabelWithLineBreak() {
+    SDGCheckOptionLabel(
+        size = SDGCheckOptionLabelSize.MEDIUM,
+        label = "Long\nLabel",
+        isChecked = true
+    )
+}
