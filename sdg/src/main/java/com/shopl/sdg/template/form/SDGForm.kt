@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.dropdown.SDGDropdown
@@ -231,6 +232,7 @@ fun SDGSelectedInputForm(
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
     inputStartIcon: @Composable (() -> Unit)? = null,
+    inputTextOverflow: TextOverflow = TextOverflow.Ellipsis,
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
 ) {
@@ -302,7 +304,8 @@ fun SDGSelectedInputForm(
             text = value,
             placeholder = hint ?: stringResource(id = R.string.select),
             onClick = onInputClick,
-            icon = inputStartIcon
+            icon = inputStartIcon,
+            overflow = inputTextOverflow
         )
     }
 }
@@ -319,6 +322,7 @@ fun SDGSelectedInputForm(
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
     inputStartIcon: @Composable (() -> Unit)? = null,
+    inputTextOverflow: TextOverflow = TextOverflow.Ellipsis,
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
 ) {
@@ -390,7 +394,8 @@ fun SDGSelectedInputForm(
             text = value,
             placeholder = hint ?: stringResource(id = R.string.select),
             onClick = onInputClick,
-            icon = inputStartIcon
+            icon = inputStartIcon,
+            overflow = inputTextOverflow
         )
     }
 }
