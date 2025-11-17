@@ -46,6 +46,7 @@ fun SDGSelectInput(
     icon: @Composable (() -> Unit)? = null,
     backgroundColor: Color = SDGColor.Neutral0,
     onClick: (() -> Unit)? = null,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
     Row(
         modifier = Modifier
@@ -95,7 +96,7 @@ fun SDGSelectInput(
                 }
             },
             typography = SDGTypography.Body1R,
-            overflow = TextOverflow.Ellipsis,
+            overflow = overflow,
             maxLines = 1
         )
         SDGImage(
@@ -122,9 +123,15 @@ private fun PreviewSDGSelectInput() {
         verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing20)
     ) {
         SDGSelectInput(
-            text = "Item Selected",
+            text = "Item Selected Item Selected Item Selected",
             state = SDGSelectInputState.Default,
             backgroundColor = SDGColor.Neutral50,
+        )
+        SDGSelectInput(
+            text = "Item Selected Item Selected Item Selected",
+            state = SDGSelectInputState.Default,
+            backgroundColor = SDGColor.Neutral50,
+            overflow = TextOverflow.MiddleEllipsis
         )
         SDGSelectInput(
             text = "Item Selected With Icon",
