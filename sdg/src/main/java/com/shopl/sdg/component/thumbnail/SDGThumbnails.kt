@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -73,13 +74,16 @@ fun SDGThumbnails(
                 onClickDelete = onClickDelete
             )
         } else {
-            imageModels.chunked(4).forEach {
+            imageModels.chunked(4).forEach { chunkedList ->
                 ImageRow(
-                    imageModels = it.toPersistentList(),
+                    imageModels = chunkedList.toPersistentList(),
                     onClickImage = onClickImage,
                     failureImageBackgroundColor = failureImageBackgroundColor,
                     deletable = deletable,
-                    onClickDelete = onClickDelete
+                    onClickDelete = { index ->
+                        val imageModel = chunkedList[index]
+                        onClickDelete?.invoke(imageModels.indexOf(imageModel))
+                    }
                 )
             }
         }
@@ -255,19 +259,21 @@ private fun PreviewThumbnails() {
     val images by remember {
         mutableStateOf(
             persistentListOf(
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
+                "image_url_1",
+                "image_url_2",
+                "image_url_3",
+                "image_url_4",
+                "image_url_5",
+                "image_url_6",
+                "image_url_7",
+                "image_url_8",
+                "image_url_9",
+                "image_url_10",
             )
         )
     }
+
+    var deletedIndex by remember { mutableStateOf<Int?>(null) }
 
     Column(
         modifier = Modifier
@@ -295,8 +301,17 @@ private fun PreviewThumbnails() {
             singleLine = false,
             onClickImage = {},
             deletable = true,
-            onClickDelete = {}
+            onClickDelete = {
+                deletedIndex = it
+            }
         )
+        deletedIndex?.let {
+            SDGText(
+                text = "Deleted Index : $deletedIndex",
+                textColor = SDGColor.Neutral700,
+                typography = SDGTypography.Body1SB
+            )
+        }
     }
 
 }
