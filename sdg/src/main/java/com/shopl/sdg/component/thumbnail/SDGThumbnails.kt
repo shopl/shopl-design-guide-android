@@ -48,6 +48,9 @@ private const val MAX_VISIBLE_IMAGES = 4
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6870-15446&t=MczCJoG28XDGLRPP-4">Figma</a>
  */
+
+private const val CHUNK_SIZE = 4
+
 @Composable
 fun SDGThumbnails(
     imageModels: PersistentList<Any>,
@@ -74,18 +77,18 @@ fun SDGThumbnails(
                 onClickDelete = onClickDelete
             )
         } else {
-            imageModels.chunked(4).forEach { chunkedList ->
+            imageModels.chunked(CHUNK_SIZE).forEachIndexed { chunkedIndex, chunkedList ->
                 ImageRow(
                     imageModels = chunkedList.toPersistentList(),
                     onClickImage = { index ->
-                        val imageModel = chunkedList[index]
-                        onClickImage(imageModels.indexOf(imageModel))
+                        val indexOfModels = CHUNK_SIZE * chunkedIndex + index
+                        onClickImage(indexOfModels)
                     },
                     failureImageBackgroundColor = failureImageBackgroundColor,
                     deletable = deletable,
                     onClickDelete = { index ->
-                        val imageModel = chunkedList[index]
-                        onClickDelete?.invoke(imageModels.indexOf(imageModel))
+                        val indexOfModels = CHUNK_SIZE * chunkedIndex + index
+                        onClickDelete?.invoke(indexOfModels)
                     }
                 )
             }
@@ -262,16 +265,16 @@ private fun PreviewThumbnails() {
     val images by remember {
         mutableStateOf(
             persistentListOf(
-                "image_url_1",
-                "image_url_2",
-                "image_url_3",
-                "image_url_4",
-                "image_url_5",
-                "image_url_6",
-                "image_url_7",
-                "image_url_8",
-                "image_url_9",
-                "image_url_10",
+                "image_url",
+                "image_url",
+                "image_url",
+                "image_url",
+                "image_url",
+                "image_url",
+                "image_url",
+                "image_url",
+                "image_url",
+                "image_url",
             )
         )
     }
