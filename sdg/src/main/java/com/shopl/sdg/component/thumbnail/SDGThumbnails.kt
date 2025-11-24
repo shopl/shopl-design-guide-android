@@ -77,7 +77,10 @@ fun SDGThumbnails(
             imageModels.chunked(4).forEach { chunkedList ->
                 ImageRow(
                     imageModels = chunkedList.toPersistentList(),
-                    onClickImage = onClickImage,
+                    onClickImage = { index ->
+                        val imageModel = chunkedList[index]
+                        onClickImage(imageModels.indexOf(imageModel))
+                    },
                     failureImageBackgroundColor = failureImageBackgroundColor,
                     deletable = deletable,
                     onClickDelete = { index ->
