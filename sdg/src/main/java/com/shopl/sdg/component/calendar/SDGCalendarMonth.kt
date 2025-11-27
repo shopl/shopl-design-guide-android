@@ -262,14 +262,14 @@ private fun SDGCalendarPager(
 
                             1 -> {
                                 val count = abs((list[0].year * 12 + list[0].monthOfYear) - (it.year * 12 + it.monthOfYear)) + 1
-                                if (mode.maxCount in 1..<count) {
-                                    onMaxCountError?.invoke(mode.maxCount)
-                                } else {
+                                if (count in 1..< mode.maxCount + 1) {
                                     if (it.isAfter(list[0])) {
                                         list.add(it)
                                     } else {
                                         list.add(0, it)
                                     }
+                                } else {
+                                    onMaxCountError?.invoke(mode.maxCount)
                                 }
                             }
 
@@ -478,7 +478,9 @@ private fun SDGCalendarPreview03() {
     Surface(Modifier.fillMaxSize()) {
         SDGCalendarMonth(
             initDate = DateTime.now(),
-            mode = SDGCalendarMonthMode.Period(),
+            mode = SDGCalendarMonthMode.Period(
+                maxCount = 3
+            ),
             maxDate = DateTime.now().plusDays(1).withTime(23, 59, 59, 59)
         ) {}
     }
