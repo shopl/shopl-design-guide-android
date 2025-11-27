@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -20,6 +21,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,12 +34,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.number_picker.SDGNumberPickerOption.OneOption
 import com.shopl.sdg.component.number_picker.SDGNumberPickerOption.TwoOption
+import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.round
@@ -170,6 +175,7 @@ private fun FinitePickerBody(
 ) {
     val lazyListState = rememberLazyListState()
     val snapBehavior = rememberSnapFlingBehavior(lazyListState)
+    val scrollToCenter = rememberCenterScrollHandler(lazyListState) { it }
 
     val itemHeightDp = ITEM_HEIGHT.dp
     val pickerHeightDp = PICKER_HEIGHT.dp
@@ -237,6 +243,7 @@ private fun FinitePickerBody(
                 FinitePickerItem(
                     value = rangeList[index],
                     isCenter = isCenter,
+                    onClick = { scrollToCenter(index) }
                 )
             }
         }
@@ -247,6 +254,7 @@ private fun FinitePickerBody(
 private fun FinitePickerItem(
     value: Int,
     isCenter: Boolean,
+    onClick: () -> Unit,
 ) {
     val selectedColor = SDGColor.Neutral700
     val unSelectedColor = SDGColor.Neutral400
@@ -257,6 +265,7 @@ private fun FinitePickerItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(ITEM_HEIGHT.dp)
+            .clickable(onClick = onClick)
     ) {
         SDGText(
             text = value.toString(),
@@ -306,6 +315,9 @@ private fun InfinitePickerBody(
     val lazyListState = rememberLazyListState(initialFirstVisibleItemIndex = initialTopIndex)
     val snapBehavior = rememberSnapFlingBehavior(lazyListState)
     val itemHeightPx = with(LocalDensity.current) { ITEM_HEIGHT.dp.roundToPx() }
+    val scrollToCenter = rememberCenterScrollHandler(lazyListState) { index ->
+        (index - CENTER_INDEX).coerceIn(0, VIRTUAL_ITEM_COUNT - 1)
+    }
 
     val highlightingTopIndex by remember {
         derivedStateOf {
@@ -399,6 +411,15 @@ private fun InfinitePickerBody(
                     index = virtualIndex,
                     highlightingIndex = highlightingTopIndex,
                     rangeList = displayList,
+                    onClick = {
+                        val rangeSize = displayList.size
+                        if (rangeSize == 0) return@InfinitePickerItem
+
+                        val realIndex = virtualIndex % rangeSize
+                        if (displayList[realIndex] == null) return@InfinitePickerItem
+
+                        scrollToCenter(virtualIndex)
+                    }
                 )
             }
         }
@@ -413,6 +434,7 @@ private fun InfinitePickerItem(
     index: Int,
     highlightingIndex: Int,
     rangeList: PersistentList<Int?>,
+    onClick: () -> Unit,
 ) {
     val rangeSize = rangeList.size
     if (rangeSize == 0) {
@@ -420,7 +442,7 @@ private fun InfinitePickerItem(
         return
     }
 
-    val realIndex = (((index % rangeSize) + rangeSize) % rangeSize)
+    val realIndex = index % rangeSize
     val currentValue = rangeList[realIndex]
 
     val selectedColor = SDGColor.Neutral700
@@ -435,6 +457,7 @@ private fun InfinitePickerItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(ITEM_HEIGHT.dp)
+            .clickable(onClick = onClick)
     ) {
         SDGText(
             text = currentValue?.toString().orEmpty(),
@@ -453,6 +476,28 @@ private fun HighlightingBox() {
             .clip(RoundedCornerShape(SDGCornerRadius.Radius8))
             .background(SDGColor.Neutral150)
     )
+}
+
+/**
+ * 클릭한 아이템을 중앙에 위치시키도록 [lazyListState]를 애니메이션 스크롤하는 핸들러
+ * [targetTopIndexProvider]는 클릭된 인덱스를 원하는 최상단 인덱스로 변환한다
+ */
+@Composable
+private fun rememberCenterScrollHandler(
+    lazyListState: LazyListState,
+    targetTopIndexProvider: (Int) -> Int
+): (Int) -> Unit {
+    val coroutineScope = rememberCoroutineScope()
+    val targetTopIndexProviderState by rememberUpdatedState(targetTopIndexProvider)
+
+    return remember(lazyListState) {
+        { index ->
+            coroutineScope.launch {
+                val targetTopIndex = targetTopIndexProviderState(index)
+                lazyListState.animateScrollToItem(targetTopIndex)
+            }
+        }
+    }
 }
 
 @Preview(showBackground = true)
