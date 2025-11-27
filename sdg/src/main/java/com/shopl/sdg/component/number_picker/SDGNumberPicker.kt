@@ -415,7 +415,7 @@ private fun InfinitePickerBody(
                         val rangeSize = displayList.size
                         if (rangeSize == 0) return@InfinitePickerItem
 
-                        val realIndex = (((virtualIndex % rangeSize) + rangeSize) % rangeSize)
+                        val realIndex = virtualIndex % rangeSize
                         if (displayList[realIndex] == null) return@InfinitePickerItem
 
                         scrollToCenter(virtualIndex)
@@ -442,7 +442,7 @@ private fun InfinitePickerItem(
         return
     }
 
-    val realIndex = (((index % rangeSize) + rangeSize) % rangeSize)
+    val realIndex = index % rangeSize
     val currentValue = rangeList[realIndex]
 
     val selectedColor = SDGColor.Neutral700
