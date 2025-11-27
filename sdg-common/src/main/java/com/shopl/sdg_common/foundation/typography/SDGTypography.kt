@@ -22,7 +22,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Point1SB : SDGTypography(
         TextStyle(
             fontSize = 28.sp,
-            lineHeight = 32.sp,
+            lineHeight = 34.sp,
             fontFamily = SDGTypeface.SEMI_BOLD.fontFamily
         )
     )
@@ -30,7 +30,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Point1R : SDGTypography(
         TextStyle(
             fontSize = 28.sp,
-            lineHeight = 32.sp,
+            lineHeight = 34.sp,
             fontFamily = SDGTypeface.REGULAR.fontFamily
         )
     )
@@ -38,7 +38,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Point2SB : SDGTypography(
         TextStyle(
             fontSize = 24.sp,
-            lineHeight = 28.sp,
+            lineHeight = 30.sp,
             fontFamily = SDGTypeface.SEMI_BOLD.fontFamily
         )
     )
@@ -46,7 +46,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Point2R : SDGTypography(
         TextStyle(
             fontSize = 24.sp,
-            lineHeight = 28.sp,
+            lineHeight = 30.sp,
             fontFamily = SDGTypeface.REGULAR.fontFamily
         )
     )
@@ -54,7 +54,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Title1SB : SDGTypography(
         TextStyle(
             fontSize = 20.sp,
-            lineHeight = 24.sp,
+            lineHeight = 26.sp,
             fontFamily = SDGTypeface.SEMI_BOLD.fontFamily
         )
     )
@@ -62,7 +62,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Title1R : SDGTypography(
         TextStyle(
             fontSize = 20.sp,
-            lineHeight = 24.sp,
+            lineHeight = 26.sp,
             fontFamily = SDGTypeface.REGULAR.fontFamily
         )
     )
@@ -70,7 +70,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Title2SB : SDGTypography(
         TextStyle(
             fontSize = 18.sp,
-            lineHeight = 22.sp,
+            lineHeight = 24.sp,
             fontFamily = SDGTypeface.SEMI_BOLD.fontFamily
         )
     )
@@ -78,7 +78,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Title2R : SDGTypography(
         TextStyle(
             fontSize = 18.sp,
-            lineHeight = 22.sp,
+            lineHeight = 24.sp,
             fontFamily = SDGTypeface.REGULAR.fontFamily
         )
     )
@@ -86,7 +86,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Body1SB : SDGTypography(
         TextStyle(
             fontSize = 16.sp,
-            lineHeight = 20.sp,
+            lineHeight = 22.sp,
             fontFamily = SDGTypeface.SEMI_BOLD.fontFamily
         )
     )
@@ -94,7 +94,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Body1R : SDGTypography(
         TextStyle(
             fontSize = 16.sp,
-            lineHeight = 20.sp,
+            lineHeight = 22.sp,
             fontFamily = SDGTypeface.REGULAR.fontFamily
         )
     )
@@ -102,7 +102,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Body2SB : SDGTypography(
         TextStyle(
             fontSize = 14.sp,
-            lineHeight = 18.sp,
+            lineHeight = 20.sp,
             fontFamily = SDGTypeface.SEMI_BOLD.fontFamily
         )
     )
@@ -110,7 +110,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Body2R : SDGTypography(
         TextStyle(
             fontSize = 14.sp,
-            lineHeight = 18.sp,
+            lineHeight = 20.sp,
             fontFamily = SDGTypeface.REGULAR.fontFamily
         )
     )
@@ -118,7 +118,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Body3SB : SDGTypography(
         TextStyle(
             fontSize = 12.sp,
-            lineHeight = 16.sp,
+            lineHeight = 18.sp,
             fontFamily = SDGTypeface.SEMI_BOLD.fontFamily
         )
     )
@@ -126,7 +126,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Body3R : SDGTypography(
         TextStyle(
             fontSize = 12.sp,
-            lineHeight = 16.sp,
+            lineHeight = 18.sp,
             fontFamily = SDGTypeface.REGULAR.fontFamily
         )
     )
@@ -134,7 +134,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Body4SB : SDGTypography(
         TextStyle(
             fontSize = 10.sp,
-            lineHeight = 14.sp,
+            lineHeight = 16.sp,
             fontFamily = SDGTypeface.SEMI_BOLD.fontFamily
         )
     )
@@ -142,7 +142,7 @@ sealed class SDGTypography(val style: TextStyle) {
     data object Body4R : SDGTypography(
         TextStyle(
             fontSize = 10.sp,
-            lineHeight = 14.sp,
+            lineHeight = 16.sp,
             fontFamily = SDGTypeface.REGULAR.fontFamily
         )
     )
