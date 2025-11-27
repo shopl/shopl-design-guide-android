@@ -1,7 +1,6 @@
 package com.shopl.sdg.component.number_picker
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +34,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.number_picker.SDGNumberPickerOption.OneOption
 import com.shopl.sdg.component.number_picker.SDGNumberPickerOption.TwoOption
+import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.typography.SDGTypography
