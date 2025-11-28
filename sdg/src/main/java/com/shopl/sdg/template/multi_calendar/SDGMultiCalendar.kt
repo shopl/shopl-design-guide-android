@@ -681,6 +681,7 @@ private fun MonthPeriodCalendar(
         modifier = modifier,
         initDate = initDate,
         mode = SDGCalendarMonthMode.Period(
+            maxCount =  type.maxCount,
             selected = if (startMonth != null && endMonth != null) {
                 startMonth to endMonth
             } else null
