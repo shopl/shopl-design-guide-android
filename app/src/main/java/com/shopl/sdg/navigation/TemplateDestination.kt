@@ -1,5 +1,6 @@
 package com.shopl.sdg.navigation
 
+import androidx.compose.runtime.Stable
 import kotlinx.serialization.Serializable
 
 /**
@@ -7,6 +8,7 @@ import kotlinx.serialization.Serializable
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=16930-2151&m=dev">Figma</a>
  */
+@Stable
 sealed interface TemplateDestination {
     @Serializable
     data object CalendarAndTime : TemplateDestination
@@ -20,6 +22,7 @@ sealed interface TemplateDestination {
     @Serializable
     data object EmptyImg : TemplateDestination
 
+    @Stable
     sealed interface FilterChip : TemplateDestination {
         @Serializable
         data object NaviFilterChip : FilterChip
@@ -28,6 +31,7 @@ sealed interface TemplateDestination {
         data object BodyFilterChip : FilterChip
     }
 
+    @Stable
     sealed interface Form : TemplateDestination {
         @Serializable
         data object DropdownForm : Form
@@ -45,6 +49,7 @@ sealed interface TemplateDestination {
         data object TimeSelectForm : Form
     }
 
+    @Stable
     sealed interface FoundationList : TemplateDestination {
         @Serializable
         data object UserList : FoundationList
@@ -71,6 +76,7 @@ sealed interface TemplateDestination {
     @Serializable
     data object MultiTimePicker : TemplateDestination
 
+    @Stable
     sealed interface Navigation : TemplateDestination {
         @Serializable
         data object BasicNavi : Navigation
@@ -85,6 +91,7 @@ sealed interface TemplateDestination {
         data object SearchNavi : Navigation
     }
 
+    @Stable
     sealed interface Popup : TemplateDestination {
         @Serializable
         data object CenterPopup : Popup
@@ -105,6 +112,7 @@ sealed interface TemplateDestination {
         data object ToastPopup : Popup
     }
 
+    @Stable
     sealed interface Profile : TemplateDestination {
         @Serializable
         data object BasicProfile : Profile

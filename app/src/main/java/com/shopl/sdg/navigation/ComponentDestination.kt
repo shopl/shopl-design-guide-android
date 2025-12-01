@@ -1,5 +1,6 @@
 package com.shopl.sdg.navigation
 
+import androidx.compose.runtime.Stable
 import kotlinx.serialization.Serializable
 
 /**
@@ -7,6 +8,7 @@ import kotlinx.serialization.Serializable
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6707-15003&m=dev">Figma</a>
  */
+@Stable
 sealed interface ComponentDestination {
     @Serializable
     data object Avatar : ComponentDestination
@@ -14,6 +16,7 @@ sealed interface ComponentDestination {
     @Serializable
     data object AttachmentList : ComponentDestination
 
+    @Stable
     sealed interface Badge : ComponentDestination {
         @Serializable
         data object CapsuleBadge : Badge
@@ -22,6 +25,7 @@ sealed interface ComponentDestination {
         data object BoxBadge : Badge
     }
 
+    @Stable
     sealed interface Button : ComponentDestination {
         @Serializable
         data object BottomButton : Button
@@ -54,6 +58,7 @@ sealed interface ComponentDestination {
     @Serializable
     data object Dropdown : ComponentDestination
 
+    @Stable
     sealed interface EmptyIcon : ComponentDestination {
         @Serializable
         data object BasicEmptyIcon : EmptyIcon
@@ -62,6 +67,7 @@ sealed interface ComponentDestination {
         data object ContentsEmptyIcon : EmptyIcon
     }
 
+    @Stable
     sealed interface Indicator : ComponentDestination {
         @Serializable
         data object TextIndicator : Indicator
@@ -79,6 +85,7 @@ sealed interface ComponentDestination {
     @Serializable
     data object NumberPicker : ComponentDestination
 
+    @Stable
     sealed interface Progress : ComponentDestination {
         @Serializable
         data object SystemProgress : Progress
@@ -96,6 +103,7 @@ sealed interface ComponentDestination {
     @Serializable
     data object Radio : ComponentDestination
 
+    @Stable
     sealed interface SearchBar : ComponentDestination {
         @Serializable
         data object CapsuleSearch : SearchBar
@@ -113,6 +121,7 @@ sealed interface ComponentDestination {
     @Serializable
     data object SelectInput : ComponentDestination
 
+    @Stable
     sealed interface Tab : ComponentDestination {
         @Serializable
         data object ScrollTab : Tab
@@ -127,6 +136,7 @@ sealed interface ComponentDestination {
         data object IconTab : Tab
     }
 
+    @Stable
     sealed interface TextInput : ComponentDestination {
         @Serializable
         data object SimpleTextInput : TextInput
