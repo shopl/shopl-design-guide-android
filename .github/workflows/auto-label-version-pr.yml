@@ -1,0 +1,83 @@
+name: PR 라벨링 자동화
+
+on:
+  pull_request:
+    types: [ opened, reopened ]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to label'
+        required: true
+        type: number
+
+jobs:
+  label-version-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: 브랜치 이름에서 버전 유형 추출
+        id: extract
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          echo "Branch name: $BRANCH_NAME"
+          
+          # Extract version type (patch, minor, major) from branch name
+          if [[ $BRANCH_NAME =~ version/.*/patch-.* ]]; then
+            echo "label=patch" >> $GITHUB_OUTPUT
+          elif [[ $BRANCH_NAME =~ version/.*/minor-.* ]]; then
+            echo "label=minor" >> $GITHUB_OUTPUT
+          elif [[ $BRANCH_NAME =~ version/.*/major-.* ]]; then
+            echo "label=major" >> $GITHUB_OUTPUT
+          else
+            echo "label=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: PR에 버전 라벨 추가
+        if: steps.extract.outputs.label != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const label = '${{ steps.extract.outputs.label }}';
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: [label]
+            });
+            console.log(`Added label: ${label}`);
+
+      - name: 유형 라벨 추가 (add/update/document)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const branchName = context.payload.pull_request ? context.payload.pull_request.head.ref : process.env.GITHUB_REF_NAME;
+            const prNumber = context.issue.number;
+
+            let label = null;
+            // Regex ported from create_pr.yml
+            if (/^add\/[^/]+\/.+$/.test(branchName)) {
+              label = "add";
+            } else if (/^update\/[^/]+\/.+$/.test(branchName)) {
+              label = "update";
+            } else if (/^document\/[^/]+\/.+$/.test(branchName)) {
+              label = "document";
+            }
+
+            if (label) {
+              try {
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  labels: [label],
+                });
+                console.log(`Added type label: ${label}`);
+              } catch (e) {
+                console.log('Label assignment failed:', e);
+              }
+            } else {
+              console.log('No matching type label found for branch:', branchName);
+            }
