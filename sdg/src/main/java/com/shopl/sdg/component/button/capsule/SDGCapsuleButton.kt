@@ -1,41 +1,33 @@
 package com.shopl.sdg.component.button.capsule
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.button.capsule.preview.SDGCapsuleButtonPreviewParam
+import com.shopl.sdg.component.button.capsule.preview.SDGCapsuleButtonPreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
-import com.shopl.sdg_common.ext.dpToSp
 import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.ui.components.IOText
-import com.shopl.sdg_common.ui.components.IOTypeface
-import com.shopl.sdg_resource.R
+import com.shopl.sdg_common.ui.components.SDGImage
+import com.shopl.sdg_common.ui.components.SDGText
 
 /**
  * SDG - Button - Capsule Button
@@ -52,6 +44,7 @@ fun SDGCapsuleButton(
     labelColor: Color,
     backgroundColor: Color,
     onClick: () -> Unit,
+    iconDownSized: Boolean = false,
     isFillMaxWidth: Boolean = false,
     enable: Boolean = true,
     @DrawableRes leftIcon: Int? = null,
@@ -68,6 +61,12 @@ fun SDGCapsuleButton(
             Modifier.width(IntrinsicSize.Max)
         }
     ) {
+        val backgroundColorByEnable = if (enable) backgroundColor else backgroundColor.copy(alpha = 0.3f)
+        val labelColorByEnable = when {
+            enable || labelColor == SDGColor.Neutral0 -> labelColor
+            else -> labelColor.copy(alpha = 0.3f)
+        }
+
         Row(
             modifier = Modifier
                 .padding(marginValues)
@@ -80,26 +79,26 @@ fun SDGCapsuleButton(
                 )
                 .height(size.height)
                 .background(
-                    color = backgroundColor,
-                    shape = RoundedCornerShape(size.radius)
+                    color = backgroundColorByEnable,
+                    shape = size.cornerRadius
                 )
                 .then(
                     if (type is SDGCapsuleButtonType.Line) {
                         Modifier.border(
                             width = 1.dp,
                             color = type.lineColor,
-                            shape = RoundedCornerShape(size = size.radius),
+                            shape = size.cornerRadius,
                         )
                     } else {
                         Modifier
                     }
                 )
-                .clip(RoundedCornerShape(size.radius))
+                .clip(size.cornerRadius)
                 .then(
                     if (enable) {
                         Modifier.clickable(
                             hasRipple = true,
-                            rippleColor = SDGColor.Neutral900,
+                            rippleColor = SDGColor.Neutral900_a10,
                             onClick = onClick,
                         )
                     } else {
@@ -110,274 +109,52 @@ fun SDGCapsuleButton(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
+            val iconSize = if (iconDownSized) size.defaultIconSize - 2.dp else size.defaultIconSize
+
             if (leftIcon != null && leftIconTint != null) {
-                Image(
-                    modifier = Modifier.size(14.dp),
-                    painter = painterResource(id = leftIcon),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(
-                        color = leftIconTint
-                    )
+                SDGImage(
+                    modifier = Modifier.size(iconSize),
+                    resId = leftIcon,
+                    color = leftIconTint
                 )
                 Spacer(modifier = Modifier.width(size.gap))
             }
-            IOText(
+            SDGText(
                 text = label,
-                textColor = labelColor,
-                fontSize = size.labelSize,
-                typeface = IOTypeface.REGULAR,
-                lineHeight = dpToSp(dp = size.height)
+                textColor = labelColorByEnable,
+                typography = size.typography,
             )
             if (rightIcon != null && rightIconTint != null) {
                 Spacer(modifier = Modifier.width(size.gap))
-                Image(
-                    painter = painterResource(id = rightIcon),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(
-                        color = rightIconTint
-                    )
+                SDGImage(
+                    modifier = Modifier.size(iconSize),
+                    resId = rightIcon,
+                    color = rightIconTint
                 )
             }
         }
     }
-
 }
 
-@Composable
-fun RowScope.SDGCapsuleButton(
-    weight: Float,
-    size: SDGCapsuleButtonSize,
-    type: SDGCapsuleButtonType,
-    label: String,
-    labelColor: Color,
-    backgroundColor: Color,
-    onClick: () -> Unit,
-    enable: Boolean = true,
-    @DrawableRes leftIcon: Int? = null,
-    leftIconTint: Color? = null,
-    @DrawableRes rightIcon: Int? = null,
-    rightIconTint: Color? = null,
-    marginValues: PaddingValues = PaddingValues(),
-) {
-    Box(Modifier.weight(weight)) {
-        SDGCapsuleButton(
-            isFillMaxWidth = true,
-            enable = enable,
-            size = size,
-            type = type,
-            label = label,
-            labelColor = labelColor,
-            backgroundColor = backgroundColor,
-            leftIcon = leftIcon,
-            leftIconTint = leftIconTint,
-            rightIcon = rightIcon,
-            rightIconTint = rightIconTint,
-            marginValues = marginValues,
-            onClick = onClick,
-        )
-    }
-}
-
-@Composable
-fun BoxScope.SDGCapsuleButton(
-    alignment: Alignment,
-    size: SDGCapsuleButtonSize,
-    type: SDGCapsuleButtonType,
-    label: String,
-    labelColor: Color,
-    backgroundColor: Color,
-    onClick: () -> Unit,
-    isFillMaxWidth: Boolean = false,
-    enable: Boolean = true,
-    @DrawableRes leftIcon: Int? = null,
-    leftIconTint: Color? = null,
-    @DrawableRes rightIcon: Int? = null,
-    rightIconTint: Color? = null,
-    marginValues: PaddingValues = PaddingValues(),
-) {
-    Box(Modifier.align(alignment)) {
-        SDGCapsuleButton(
-            isFillMaxWidth = isFillMaxWidth,
-            enable = enable,
-            size = size,
-            type = type,
-            label = label,
-            labelColor = labelColor,
-            backgroundColor = backgroundColor,
-            leftIcon = leftIcon,
-            leftIconTint = leftIconTint,
-            rightIcon = rightIcon,
-            rightIconTint = rightIconTint,
-            marginValues = marginValues,
-            onClick = onClick,
-        )
-    }
-}
-
-@Composable
 @Preview
-private fun PrevSDGCapsuleButton() {
-    Surface(Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            SDGCapsuleButton(
-                size = SDGCapsuleButtonSize.Medium,
-                type = SDGCapsuleButtonType.Solid,
-                enable = false,
-                leftIcon = R.drawable.ic_common_edit,
-                leftIconTint = SDGColor.Neutral0,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral0,
-                backgroundColor = SDGColor.Neutral600,
-                onClick = {}
-            )
-
-            SDGCapsuleButton(
-                size = SDGCapsuleButtonSize.Medium,
-                type = SDGCapsuleButtonType.Line(SDGColor.Neutral700),
-                leftIcon = R.drawable.ic_common_edit,
-                leftIconTint = SDGColor.Neutral700,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral700,
-                backgroundColor = SDGColor.Neutral0,
-                onClick = {}
-            )
-
-            SDGCapsuleButton(
-                isFillMaxWidth = true,
-                size = SDGCapsuleButtonSize.Medium,
-                type = SDGCapsuleButtonType.Line(SDGColor.Neutral700),
-                leftIcon = R.drawable.ic_common_edit,
-                leftIconTint = SDGColor.Neutral700,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral700,
-                backgroundColor = SDGColor.Neutral0,
-                onClick = {}
-            )
-        }
-
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            SDGCapsuleButton(
-                weight = 1f,
-                size = SDGCapsuleButtonSize.Medium,
-                type = SDGCapsuleButtonType.Line(SDGColor.Neutral700),
-                leftIcon = R.drawable.ic_common_edit,
-                leftIconTint = SDGColor.Neutral700,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral700,
-                backgroundColor = SDGColor.Neutral0,
-                onClick = {}
-            )
-
-            SDGCapsuleButton(
-                weight = 1f,
-                enable = false,
-                size = SDGCapsuleButtonSize.Medium,
-                type = SDGCapsuleButtonType.Line(SDGColor.Neutral700),
-                leftIcon = R.drawable.ic_common_edit,
-                leftIconTint = SDGColor.Neutral700,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral700,
-                backgroundColor = SDGColor.Neutral0,
-                onClick = {}
-            )
-
-            SDGCapsuleButton(
-                weight = 1f,
-                size = SDGCapsuleButtonSize.Medium,
-                type = SDGCapsuleButtonType.Solid,
-                leftIcon = R.drawable.ic_common_edit,
-                leftIconTint = SDGColor.Neutral700,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral700,
-                backgroundColor = SDGColor.Neutral200,
-                onClick = {}
-            )
-        }
-
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-
-            SDGCapsuleButton(
-                weight = 1f,
-                size = SDGCapsuleButtonSize.Medium,
-                type = SDGCapsuleButtonType.Solid,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral0,
-                backgroundColor = SDGColor.Neutral700,
-                onClick = {}
-            )
-
-            SDGCapsuleButton(
-                weight = 1f,
-                size = SDGCapsuleButtonSize.Medium,
-                type = SDGCapsuleButtonType.Solid,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral0,
-                backgroundColor = SDGColor.Primary300,
-                onClick = {}
-            )
-
-            SDGCapsuleButton(
-                weight = 1f,
-                size = SDGCapsuleButtonSize.Medium,
-                type = SDGCapsuleButtonType.Solid,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral600,
-                backgroundColor = SDGColor.Neutral200,
-                onClick = {}
-            )
-
-        }
-
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-
-            SDGCapsuleButton(
-                enable = false,
-                weight = 1f,
-                size = SDGCapsuleButtonSize.Medium,
-                type = SDGCapsuleButtonType.Solid,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral0,
-                backgroundColor = SDGColor.Neutral700,
-                onClick = {}
-            )
-
-            SDGCapsuleButton(
-                enable = false,
-                weight = 1f,
-                size = SDGCapsuleButtonSize.Medium,
-                type = SDGCapsuleButtonType.Solid,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral0,
-                backgroundColor = SDGColor.Primary300,
-                onClick = {}
-            )
-
-            SDGCapsuleButton(
-                enable = false,
-                weight = 1f,
-                size = SDGCapsuleButtonSize.Medium,
-                type = SDGCapsuleButtonType.Solid,
-                label = "작성하기",
-                labelColor = SDGColor.Neutral600,
-                backgroundColor = SDGColor.Neutral200,
-                onClick = {}
-            )
-
-        }
-
-        SDGCapsuleButton(
-            enable = false,
-            size = SDGCapsuleButtonSize.Medium,
-            type = SDGCapsuleButtonType.Solid,
-            label = "작성하기",
-            labelColor = SDGColor.Neutral0,
-            backgroundColor = SDGColor.Neutral700,
-            onClick = {}
-        )
-    }
+@Composable
+private fun PreviewSDGCapsuleButton(
+    @PreviewParameter(SDGCapsuleButtonPreviewParameterProvider::class)
+    param: SDGCapsuleButtonPreviewParam
+) {
+    SDGCapsuleButton(
+        size = param.size,
+        type = param.type,
+        label = param.label,
+        labelColor = param.labelColor,
+        backgroundColor = param.backgroundColor,
+        onClick = {},
+        enable = param.enable,
+        leftIcon = param.leftIcon,
+        leftIconTint = param.leftIconTint,
+        rightIcon = param.rightIcon,
+        rightIconTint = param.rightIconTint,
+        isFillMaxWidth = param.isFillMaxWidth,
+        iconDownSized = param.iconDownSized
+    )
 }
