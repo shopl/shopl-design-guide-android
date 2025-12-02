@@ -107,7 +107,7 @@ fun SDGCapsuleButton(
         ) {
             if (leftIcon != null && leftIconTint != null) {
                 SDGImage(
-                    modifier = Modifier.size(14.dp),
+                    modifier = Modifier.size(size.defaultIconSize),
                     resId = leftIcon,
                     color = leftIconTint
                 )
@@ -121,13 +121,13 @@ fun SDGCapsuleButton(
             if (rightIcon != null && rightIconTint != null) {
                 Spacer(modifier = Modifier.width(size.gap))
                 SDGImage(
+                    modifier = Modifier.size(size.defaultIconSize),
                     resId = rightIcon,
                     color = rightIconTint
                 )
             }
         }
     }
-
 }
 
 @Composable
