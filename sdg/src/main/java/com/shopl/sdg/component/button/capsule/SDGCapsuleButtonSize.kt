@@ -12,6 +12,7 @@ sealed class SDGCapsuleButtonSize(
     val cornerRadius: RoundedCornerShape,
     val gap: Dp,
     val typography: SDGTypography,
+    val defaultIconSize: Dp
 ) {
 
     data object Large : SDGCapsuleButtonSize(
@@ -20,6 +21,7 @@ sealed class SDGCapsuleButtonSize(
         gap = 8.dp,
         cornerRadius = SDGCornerRadius.BoxRadius.Radius25,
         typography = SDGTypography.Body1R,
+        defaultIconSize = 18.dp
     )
 
 
@@ -29,6 +31,7 @@ sealed class SDGCapsuleButtonSize(
         gap = 4.dp,
         cornerRadius = SDGCornerRadius.BoxRadius.Radius18,
         typography = SDGTypography.Body2R,
+        defaultIconSize = 16.dp
     )
 
 
@@ -38,6 +41,7 @@ sealed class SDGCapsuleButtonSize(
         gap = 2.dp,
         cornerRadius = SDGCornerRadius.BoxRadius.Radius14,
         typography = SDGTypography.Body3R,
+        defaultIconSize = 14.dp
     )
 
 
@@ -47,5 +51,6 @@ sealed class SDGCapsuleButtonSize(
         gap = 2.dp,
         cornerRadius = SDGCornerRadius.BoxRadius.Radius10,
         typography = SDGTypography.Body3R,
+        defaultIconSize = 14.dp
     )
 }
