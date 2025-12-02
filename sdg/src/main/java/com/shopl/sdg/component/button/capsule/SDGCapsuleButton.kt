@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -81,20 +80,20 @@ fun SDGCapsuleButton(
                 .height(size.height)
                 .background(
                     color = backgroundColor,
-                    shape = RoundedCornerShape(size.cornerRadius)
+                    shape = size.cornerRadius
                 )
                 .then(
                     if (type is SDGCapsuleButtonType.Line) {
                         Modifier.border(
                             width = 1.dp,
                             color = type.lineColor,
-                            shape = RoundedCornerShape(size = size.cornerRadius),
+                            shape = size.cornerRadius,
                         )
                     } else {
                         Modifier
                     }
                 )
-                .clip(RoundedCornerShape(size.cornerRadius))
+                .clip(size.cornerRadius)
                 .then(
                     if (enable) {
                         Modifier.clickable(
