@@ -39,9 +39,9 @@ object SDGCornerRadius {
         /**
          * Etc 일부 컴포넌트에 사용된 단위
          */
-        internal val Radius14 = RoundedCornerShape(14.dp)
-        internal val Radius18 = RoundedCornerShape(18.dp)
-        internal val Radius25 = RoundedCornerShape(25.dp)
+        val Radius14 = RoundedCornerShape(14.dp)
+        val Radius18 = RoundedCornerShape(18.dp)
+        val Radius25 = RoundedCornerShape(25.dp)
     }
 
 }
