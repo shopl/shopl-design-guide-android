@@ -12,7 +12,7 @@ sealed class SDGCapsuleButtonSize(
     val horizontalPadding: Dp,
     val cornerRadius: RoundedCornerShape,
     val gap: Dp,
-    val labelSize: TextUnit,
+    val typography: TextUnit,
 ) {
 
     data object Large : SDGCapsuleButtonSize(
@@ -20,7 +20,7 @@ sealed class SDGCapsuleButtonSize(
         horizontalPadding = 20.dp,
         gap = 8.dp,
         cornerRadius = SDGCornerRadius.BoxRadius.Radius25,
-        labelSize = 16.sp,
+        typography = 16.sp,
     )
 
 
@@ -29,7 +29,7 @@ sealed class SDGCapsuleButtonSize(
         horizontalPadding = 12.dp,
         gap = 4.dp,
         cornerRadius = SDGCornerRadius.BoxRadius.Radius18,
-        labelSize = 14.sp,
+        typography = 14.sp,
     )
 
 
@@ -38,7 +38,7 @@ sealed class SDGCapsuleButtonSize(
         horizontalPadding = 8.dp,
         gap = 2.dp,
         cornerRadius = SDGCornerRadius.BoxRadius.Radius14,
-        labelSize = 12.sp,
+        typography = 12.sp,
     )
 
 
@@ -47,6 +47,6 @@ sealed class SDGCapsuleButtonSize(
         horizontalPadding = 6.dp,
         gap = 2.dp,
         cornerRadius = SDGCornerRadius.BoxRadius.Radius10,
-        labelSize = 12.sp,
+        typography = 12.sp,
     )
 }

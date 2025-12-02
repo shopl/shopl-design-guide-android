@@ -123,7 +123,7 @@ fun SDGCapsuleButton(
             IOText(
                 text = label,
                 textColor = labelColor,
-                fontSize = size.labelSize,
+                fontSize = size.typography,
                 typeface = IOTypeface.REGULAR,
                 lineHeight = dpToSp(dp = size.height)
             )
