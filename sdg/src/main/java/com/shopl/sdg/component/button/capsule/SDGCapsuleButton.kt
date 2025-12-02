@@ -1,7 +1,6 @@
 package com.shopl.sdg.component.button.capsule
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -25,12 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
@@ -108,13 +106,10 @@ fun SDGCapsuleButton(
             horizontalArrangement = Arrangement.Center
         ) {
             if (leftIcon != null && leftIconTint != null) {
-                Image(
+                SDGImage(
                     modifier = Modifier.size(14.dp),
-                    painter = painterResource(id = leftIcon),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(
-                        color = leftIconTint
-                    )
+                    resId = leftIcon,
+                    color = leftIconTint
                 )
                 Spacer(modifier = Modifier.width(size.gap))
             }
@@ -125,12 +120,9 @@ fun SDGCapsuleButton(
             )
             if (rightIcon != null && rightIconTint != null) {
                 Spacer(modifier = Modifier.width(size.gap))
-                Image(
-                    painter = painterResource(id = rightIcon),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(
-                        color = rightIconTint
-                    )
+                SDGImage(
+                    resId = rightIcon,
+                    color = rightIconTint
                 )
             }
         }
