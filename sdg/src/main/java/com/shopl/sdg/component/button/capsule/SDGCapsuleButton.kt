@@ -47,6 +47,7 @@ fun SDGCapsuleButton(
     labelColor: Color,
     backgroundColor: Color,
     onClick: () -> Unit,
+    iconDownSized: Boolean = false,
     isFillMaxWidth: Boolean = false,
     enable: Boolean = true,
     @DrawableRes leftIcon: Int? = null,
@@ -105,9 +106,11 @@ fun SDGCapsuleButton(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
+            val iconSize = if (iconDownSized) size.defaultIconSize - 2.dp else size.defaultIconSize
+
             if (leftIcon != null && leftIconTint != null) {
                 SDGImage(
-                    modifier = Modifier.size(size.defaultIconSize),
+                    modifier = Modifier.size(iconSize),
                     resId = leftIcon,
                     color = leftIconTint
                 )
@@ -121,7 +124,7 @@ fun SDGCapsuleButton(
             if (rightIcon != null && rightIconTint != null) {
                 Spacer(modifier = Modifier.width(size.gap))
                 SDGImage(
-                    modifier = Modifier.size(size.defaultIconSize),
+                    modifier = Modifier.size(iconSize),
                     resId = rightIcon,
                     color = rightIconTint
                 )
