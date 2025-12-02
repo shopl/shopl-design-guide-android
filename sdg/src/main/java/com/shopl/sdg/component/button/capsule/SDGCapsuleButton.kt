@@ -61,6 +61,12 @@ fun SDGCapsuleButton(
             Modifier.width(IntrinsicSize.Max)
         }
     ) {
+        val backgroundColorByEnable = if (enable) backgroundColor else backgroundColor.copy(alpha = 0.3f)
+        val labelColorByEnable = when {
+            enable || labelColor == SDGColor.Neutral0 -> labelColor
+            else -> labelColor.copy(alpha = 0.3f)
+        }
+
         Row(
             modifier = Modifier
                 .padding(marginValues)
@@ -73,7 +79,7 @@ fun SDGCapsuleButton(
                 )
                 .height(size.height)
                 .background(
-                    color = backgroundColor,
+                    color = backgroundColorByEnable,
                     shape = size.cornerRadius
                 )
                 .then(
@@ -92,7 +98,7 @@ fun SDGCapsuleButton(
                     if (enable) {
                         Modifier.clickable(
                             hasRipple = true,
-                            rippleColor = SDGColor.Neutral900,
+                            rippleColor = SDGColor.Neutral900_a10,
                             onClick = onClick,
                         )
                     } else {
@@ -115,7 +121,7 @@ fun SDGCapsuleButton(
             }
             SDGText(
                 text = label,
-                textColor = labelColor,
+                textColor = labelColorByEnable,
                 typography = size.typography,
             )
             if (rightIcon != null && rightIconTint != null) {

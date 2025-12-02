@@ -29,7 +29,7 @@ internal class SDGCapsuleButtonPreviewParameterProvider : PreviewParameterProvid
         return SDGCapsuleButtonPreviewParam(
             label = "작성하기 활성 Solid 버튼",
             labelColor = SDGColor.Neutral0,
-            backgroundColor = SDGColor.Neutral700
+            backgroundColor = SDGColor.Neutral600
         )
     }
 
@@ -38,7 +38,7 @@ internal class SDGCapsuleButtonPreviewParameterProvider : PreviewParameterProvid
             enable = false,
             label = "작성하기 비활성 Solid 버튼",
             labelColor = SDGColor.Neutral0,
-            backgroundColor = SDGColor.Neutral700
+            backgroundColor = SDGColor.Neutral600
         )
     }
 
