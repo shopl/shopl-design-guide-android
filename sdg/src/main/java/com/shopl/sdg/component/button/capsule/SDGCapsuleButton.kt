@@ -81,20 +81,20 @@ fun SDGCapsuleButton(
                 .height(size.height)
                 .background(
                     color = backgroundColor,
-                    shape = RoundedCornerShape(size.radius)
+                    shape = RoundedCornerShape(size.cornerRadius)
                 )
                 .then(
                     if (type is SDGCapsuleButtonType.Line) {
                         Modifier.border(
                             width = 1.dp,
                             color = type.lineColor,
-                            shape = RoundedCornerShape(size = size.radius),
+                            shape = RoundedCornerShape(size = size.cornerRadius),
                         )
                     } else {
                         Modifier
                     }
                 )
-                .clip(RoundedCornerShape(size.radius))
+                .clip(RoundedCornerShape(size.cornerRadius))
                 .then(
                     if (enable) {
                         Modifier.clickable(

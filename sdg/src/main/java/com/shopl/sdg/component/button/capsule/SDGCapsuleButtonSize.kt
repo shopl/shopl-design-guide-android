@@ -8,8 +8,8 @@ import androidx.compose.ui.unit.sp
 sealed class SDGCapsuleButtonSize(
     val height: Dp,
     val horizontalPadding: Dp,
+    val cornerRadius: Dp,
     val gap: Dp,
-    val radius: Dp,
     val labelSize: TextUnit,
 ) {
 
@@ -17,7 +17,7 @@ sealed class SDGCapsuleButtonSize(
         height = 50.dp,
         horizontalPadding = 20.dp,
         gap = 8.dp,
-        radius = 25.dp,
+        cornerRadius = 25.dp,
         labelSize = 16.sp,
     )
 
@@ -26,7 +26,7 @@ sealed class SDGCapsuleButtonSize(
         height = 36.dp,
         horizontalPadding = 12.dp,
         gap = 4.dp,
-        radius = 18.dp,
+        cornerRadius = 18.dp,
         labelSize = 14.sp,
     )
 
@@ -35,7 +35,7 @@ sealed class SDGCapsuleButtonSize(
         height = 28.dp,
         horizontalPadding = 8.dp,
         gap = 2.dp,
-        radius = 14.dp,
+        cornerRadius = 14.dp,
         labelSize = 12.sp,
     )
 
@@ -44,7 +44,7 @@ sealed class SDGCapsuleButtonSize(
         height = 20.dp,
         horizontalPadding = 6.dp,
         gap = 2.dp,
-        radius = 10.dp,
+        cornerRadius = 10.dp,
         labelSize = 12.sp,
     )
 }
