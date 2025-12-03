@@ -1,10 +1,8 @@
 package com.shopl.sdg.component.header.icon
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.template.list_header.icon.SDGIconHeaderRightItem
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
@@ -38,18 +37,14 @@ import com.shopl.sdg_common.ui.components.SDGText
 fun SDGIconHeader(
     label: String,
     count: String? = null,
-    backgroundColor: Color = SDGColor.Transparent,
-    marginValues: PaddingValues = PaddingValues(),
     @DrawableRes iconResId: Int? = null,
     iconColor: Color? = null,
     iconHeaderRightItem: SDGIconHeaderRightItem? = null,
-    onLeftIconClick: (() -> Unit)? = null,
-    onRightIconClick: ((Int) -> Unit)? = null,
+    onIconClick: (() -> Unit)? = null,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = backgroundColor)
             .padding(horizontal = Spacing4),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Spacing12)
@@ -61,7 +56,7 @@ fun SDGIconHeader(
         ) {
             if (iconResId != null && iconColor != null) {
                 SDGImage(
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(20.dp),
                     resId = iconResId,
                     color = iconColor
                 )
