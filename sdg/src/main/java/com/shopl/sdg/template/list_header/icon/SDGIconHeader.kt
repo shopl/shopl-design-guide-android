@@ -85,21 +85,18 @@ fun SDGIconHeader(
 
         if (iconHeaderRightItem != null) {
             Row(
-                modifier = Modifier
-                    .then(
-                        if (iconHeaderRightItem.isBox) {
-                            Modifier
-                                .border(
-                                    width = 1.dp,
-                                    color = SDGColor.Neutral200,
-                                    shape = SDGCornerRadius.BoxRadius.Radius6
-                                )
-                                .padding(horizontal = Spacing8, vertical = Spacing4)
-                        } else {
-                            Modifier
-                                .padding(horizontal = Spacing8)
-                        }
-                    ),
+                modifier = if (iconHeaderRightItem.isBox) {
+                    Modifier
+                        .border(
+                            width = 1.dp,
+                            color = SDGColor.Neutral200,
+                            shape = SDGCornerRadius.BoxRadius.Radius6
+                        )
+                        .padding(horizontal = Spacing8, vertical = Spacing4)
+                } else {
+                    Modifier
+                        .padding(horizontal = Spacing8)
+                },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(Spacing8)
             ) {
