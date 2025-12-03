@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.template.list_header.icon.preview.SDGIconHeaderPreviewParam
 import com.shopl.sdg.template.list_header.icon.preview.SDGIconHeaderPreviewParameterProvider
+import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
@@ -73,7 +74,9 @@ fun SDGIconHeader(
 
             if (iconResId != null) {
                 SDGImage(
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable { onIconClick?.invoke() },
                     resId = iconResId,
                     color = iconColor
                 )
@@ -100,9 +103,11 @@ fun SDGIconHeader(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(Spacing8)
             ) {
-                iconHeaderRightItem.icons.forEachIndexed { index, (resId, color) ->
+                iconHeaderRightItem.icons.forEachIndexed { index, (resId, color, onClick) ->
                     SDGImage(
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable { onClick?.invoke() },
                         resId = resId,
                         color = color
                     )
