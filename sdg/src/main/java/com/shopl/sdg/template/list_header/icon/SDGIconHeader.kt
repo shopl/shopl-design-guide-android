@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.header.icon
+package com.shopl.sdg.template.list_header.icon
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.border
@@ -14,8 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.shopl.sdg.template.list_header.icon.SDGIconHeaderRightItem
+import com.shopl.sdg.template.list_header.icon.preview.SDGIconHeaderPreviewParam
+import com.shopl.sdg.template.list_header.icon.preview.SDGIconHeaderPreviewParameterProvider
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
@@ -50,18 +53,10 @@ fun SDGIconHeader(
         horizontalArrangement = Arrangement.spacedBy(Spacing12)
     ) {
         Row(
-            modifier = Modifier.weight(1f, false),
+            modifier = Modifier.weight(1f),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Spacing3)
         ) {
-            if (iconResId != null && iconColor != null) {
-                SDGImage(
-                    modifier = Modifier.size(20.dp),
-                    resId = iconResId,
-                    color = iconColor
-                )
-            }
-
             SDGText(
                 text = label,
                 textColor = SDGColor.Neutral700,
@@ -73,6 +68,14 @@ fun SDGIconHeader(
                     text = count,
                     textColor = SDGColor.Neutral700,
                     typography = SDGTypography.Body1SB
+                )
+            }
+
+            if (iconResId != null) {
+                SDGImage(
+                    modifier = Modifier.size(20.dp),
+                    resId = iconResId,
+                    color = iconColor
                 )
             }
         }
@@ -116,4 +119,19 @@ fun SDGIconHeader(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewSDGIconHeader(
+    @PreviewParameter(SDGIconHeaderPreviewParameterProvider::class)
+    param: SDGIconHeaderPreviewParam
+) {
+    SDGIconHeader(
+        label = param.label,
+        count = param.count,
+        iconResId = param.iconResId,
+        iconColor = param.iconColor,
+        iconHeaderRightItem = param.iconHeaderRightItem,
+    )
 }
