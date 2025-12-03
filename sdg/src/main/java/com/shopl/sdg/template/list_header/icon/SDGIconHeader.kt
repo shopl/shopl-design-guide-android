@@ -94,10 +94,10 @@ fun SDGIconHeader(
                                     color = SDGColor.Neutral200,
                                     shape = SDGCornerRadius.BoxRadius.Radius6
                                 )
-                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                                .padding(horizontal = Spacing8, vertical = Spacing4)
                         } else {
                             Modifier
-                                .padding(horizontal = 8.dp)
+                                .padding(horizontal = Spacing8)
                         }
                     ),
                 verticalAlignment = Alignment.CenterVertically,
