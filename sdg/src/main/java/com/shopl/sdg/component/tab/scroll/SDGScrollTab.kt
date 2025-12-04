@@ -5,11 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -22,14 +20,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.foundation.SDGTypography
+import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.PersistentList
 
 /**
  * SDG - Tab - Scroll Tab
  *
- * 스와이프 동작으로 Tab 간 이동이 가능한 탭 컴포넌트
+ * 제한없이 나열되는 탭 컴포넌트
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=8213-5076&m=dev">Figma</a>
  */
@@ -42,10 +40,6 @@ fun SDGScrollTab(
     backgroundColor: Color = SDGColor.Neutral0,
 ) {
     val listState = rememberLazyListState()
-
-    LaunchedEffect(selectedTabIndex) {
-        listState.animateScrollToItem(selectedTabIndex)
-    }
 
     LazyRow(
         modifier = Modifier
@@ -61,6 +55,10 @@ fun SDGScrollTab(
                 onClick = { onTabClick(index) }
             )
         }
+    }
+
+    LaunchedEffect(selectedTabIndex) {
+        listState.animateScrollToItem(selectedTabIndex)
     }
 }
 
@@ -81,7 +79,6 @@ private fun SDGScrollTabItem(
             typography = SDGTypography.Title2SB
         )
 
-        // Indicator / Underline
         if (isSelected) {
             Box(
                 modifier = Modifier
@@ -90,7 +87,6 @@ private fun SDGScrollTabItem(
                     .background(SDGColor.Neutral700)
             )
         } else {
-            // Default underline (divider)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
