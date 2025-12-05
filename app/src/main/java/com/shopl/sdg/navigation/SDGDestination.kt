@@ -1,5 +1,6 @@
 package com.shopl.sdg.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 /**
@@ -8,7 +9,7 @@ import kotlinx.serialization.Serializable
  * - Component: UI 컴포넌트들 (Button, Avatar 등)
  * - Template: 컴포넌트들이 조합된 템플릿
  */
-sealed interface SDGDestination {
+sealed interface SDGDestination : NavKey{
     
     /**
      * 홈 화면
