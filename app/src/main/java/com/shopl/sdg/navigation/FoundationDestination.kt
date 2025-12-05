@@ -15,16 +15,4 @@ sealed interface FoundationDestination : SDGDestination {
 
     @Serializable
     data object Typograph : FoundationDestination
-
-    @Serializable
-    data object Iconography : FoundationDestination
-
-    @Serializable
-    data object Illustration : FoundationDestination
-
-    @Serializable
-    data object Spacing : FoundationDestination
-
-    @Serializable
-    data object CornerRadius : FoundationDestination
 }
