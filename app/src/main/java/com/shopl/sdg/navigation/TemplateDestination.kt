@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=16930-2151&m=dev">Figma</a>
  */
 @Stable
-sealed interface TemplateDestination {
+sealed interface TemplateDestination : SDGDestination {
     @Serializable
     data object CalendarAndTime : TemplateDestination
 
