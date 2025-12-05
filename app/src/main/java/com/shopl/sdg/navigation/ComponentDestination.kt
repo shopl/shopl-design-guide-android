@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6707-15003&m=dev">Figma</a>
  */
 @Stable
-sealed interface ComponentDestination {
+sealed interface ComponentDestination : SDGDestination {
     @Serializable
     data object Avatar : ComponentDestination
 
