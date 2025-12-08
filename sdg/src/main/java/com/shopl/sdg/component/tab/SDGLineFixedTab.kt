@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -93,7 +94,9 @@ private fun Tab(
             modifier = Modifier.align(Alignment.TopCenter),
             text = text,
             textColor = if (selected) SDGColor.Neutral700 else SDGColor.Neutral350,
-            typography = SDGTypography.Body1SB
+            typography = SDGTypography.Body1SB,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
@@ -116,7 +119,7 @@ private fun Indicator(
 @Preview
 private fun PreviewTwoOptions() {
     SDGLineFixedTab(
-        tabTitles = listOf("Label", "Label"),
+        tabTitles = listOf("Label Label Label Label Label Label", "Label"),
         selectedTabIndex = 0,
     ) {}
 }
@@ -125,7 +128,7 @@ private fun PreviewTwoOptions() {
 @Preview
 private fun PreviewThreeOptions() {
     SDGLineFixedTab(
-        tabTitles = listOf("Label", "Label", "Label"),
+        tabTitles = listOf("Label Label Label Label Label", "Label", "Label"),
         selectedTabIndex = 1,
         indicatorColor = SDGColor.Primary300,
         dividerColor = SDGColor.Red300
