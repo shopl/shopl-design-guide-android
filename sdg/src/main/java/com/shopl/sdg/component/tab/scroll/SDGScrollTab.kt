@@ -3,16 +3,13 @@ package com.shopl.sdg.component.tab.scroll
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -21,8 +18,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg_common.ext.bottomBorder
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing20
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing6
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.PersistentList
@@ -45,32 +44,22 @@ fun SDGScrollTab(
 ) {
     val listState = rememberLazyListState()
 
-    Box {
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(backgroundColor)
-                .padding(marginValues),
-            contentPadding = contentPadding,
-            horizontalArrangement = spacedBy(Spacing20),
-            state = listState
-        ) {
-            itemsIndexed(titles) { index, title ->
-                SDGScrollTabItem(
-                    title = title,
-                    isSelected = index == selectedTabIndex,
-                    onClick = { onTabClick(index) }
-                )
-            }
+    LazyRow(
+        modifier = Modifier
+            .padding(marginValues)
+            .fillMaxWidth()
+            .background(backgroundColor),
+        contentPadding = contentPadding,
+        horizontalArrangement = spacedBy(Spacing20),
+        state = listState
+    ) {
+        itemsIndexed(titles) { index, title ->
+            SDGScrollTabItem(
+                title = title,
+                isSelected = index == selectedTabIndex,
+                onClick = { onTabClick(index) }
+            )
         }
-
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = SDGColor.Neutral200,
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-        )
     }
 
     LaunchedEffect(selectedTabIndex) {
@@ -85,7 +74,13 @@ private fun SDGScrollTabItem(
     onClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier.clickable(onClick = onClick),
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .bottomBorder(
+                strokeWidth = if (isSelected) 2.dp else 1.dp,
+                color = if (isSelected) SDGColor.GreenG else SDGColor.Red300
+            )
+            .padding(bottom = Spacing6),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SDGText(
@@ -93,22 +88,6 @@ private fun SDGScrollTabItem(
             textColor = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral350,
             typography = SDGTypography.Title2SB
         )
-
-        if (isSelected) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(2.dp)
-                    .background(SDGColor.Neutral700)
-            )
-        } else {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(SDGColor.Neutral200)
-            )
-        }
     }
 }
 

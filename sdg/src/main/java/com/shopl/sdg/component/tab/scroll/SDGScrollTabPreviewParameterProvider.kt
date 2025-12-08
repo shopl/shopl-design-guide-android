@@ -11,7 +11,7 @@ internal class SDGScrollTabPreviewParameterProvider :
 
     override val values: Sequence<SDGScrollTabPreviewParameter> = sequenceOf(
         SDGScrollTabPreviewParameter(
-            titles = persistentListOf("Label", "Label", "Label", "Label", "Label"),
+            titles = persistentListOf("Label", "긴 Label은 이렇게 처리됩니다.", "Label", "Label", "Label", "Label", "Label", "Label", "Label"),
             selectedTabIndex = 0,
         ),
         SDGScrollTabPreviewParameter(
