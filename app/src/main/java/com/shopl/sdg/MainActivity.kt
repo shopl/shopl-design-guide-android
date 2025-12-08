@@ -21,6 +21,7 @@ import com.shopl.sdg.tmp.BoxBadgeScreen
 import com.shopl.sdg.tmp.CapsuleBadgeScreen
 import com.shopl.sdg.tmp.HomeScreen
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
+import com.shopl.sdg.util.nav3PopupEnter
 import com.shopl.sdg_common.foundation.SDGColor
 
 class MainActivity : ComponentActivity() {
@@ -54,7 +55,9 @@ private fun NavigationBasic(innerPadding: PaddingValues) {
                 )
             }
 
-            entry<ComponentDestination.Avatar> {
+            entry<ComponentDestination.Avatar>(
+                metadata = nav3PopupEnter()
+            ) {
                 AvatarScreen(
                     onClick = { backStack.add(ComponentDestination.Badge.CapsuleBadge as ComponentDestination.Badge as SDGDestination) }
                 )
@@ -71,39 +74,6 @@ private fun NavigationBasic(innerPadding: PaddingValues) {
                     onClick = { backStack.add(ComponentDestination.Avatar as ComponentDestination as SDGDestination) }
                 )
             }
-        }
-//        entryProvider = { key ->
-//            when (key) {
-//                SDGDestination.Home -> NavEntry(key) {
-//                    HomeScreen(
-//                        onClick = { backStack.add(ComponentDestination.Avatar as ComponentDestination as SDGDestination) }
-//                    )
-//                }
-//
-//                ComponentDestination.Avatar -> NavEntry(key) {
-//                    AvatarScreen(
-//                        onClick = { backStack.add(ComponentDestination.Badge.CapsuleBadge as ComponentDestination.Badge as SDGDestination) }
-//                    )
-//                }
-//
-//                ComponentDestination.Badge.CapsuleBadge -> NavEntry(key) {
-//                    CapsuleBadgeScreen(
-//                        onClick = { backStack.add(ComponentDestination.Badge.BoxBadge as ComponentDestination.Badge as SDGDestination) }
-//                    )
-//                }
-//
-//                ComponentDestination.Badge.BoxBadge -> NavEntry(key) {
-//                    BoxBadgeScreen(
-//                        onClick = { backStack.add(ComponentDestination.Avatar as ComponentDestination as SDGDestination) }
-//                    )
-//                }
-//
-//                else -> NavEntry(key) {
-//                    EmptyScreen(
-//                        onClick = { backStack.add(ComponentDestination.Avatar as ComponentDestination as SDGDestination) }
-//                    )
-//                }
-//            }
-//        }
+        },
     )
 }
