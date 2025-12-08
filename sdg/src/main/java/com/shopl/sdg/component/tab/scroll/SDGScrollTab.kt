@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -41,20 +42,30 @@ fun SDGScrollTab(
 ) {
     val listState = rememberLazyListState()
 
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(backgroundColor)
-            .padding(marginValues),
-        state = listState
-    ) {
-        itemsIndexed(titles) { index, title ->
-            SDGScrollTabItem(
-                title = title,
-                isSelected = index == selectedTabIndex,
-                onClick = { onTabClick(index) }
-            )
+    Box {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(backgroundColor)
+                .padding(marginValues),
+            state = listState
+        ) {
+            itemsIndexed(titles) { index, title ->
+                SDGScrollTabItem(
+                    title = title,
+                    isSelected = index == selectedTabIndex,
+                    onClick = { onTabClick(index) }
+                )
+            }
         }
+
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = SDGColor.Neutral200,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+        )
     }
 
     LaunchedEffect(selectedTabIndex) {
