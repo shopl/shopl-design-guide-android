@@ -26,4 +26,5 @@ internal data class SDGScrollTabPreviewParameter(
     val titles: PersistentList<String>,
     val selectedTabIndex: Int,
     val marginValues: PaddingValues = PaddingValues(0.dp),
+    val contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp)
 )

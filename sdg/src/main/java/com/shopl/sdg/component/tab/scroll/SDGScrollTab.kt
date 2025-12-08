@@ -36,6 +36,7 @@ import kotlinx.collections.immutable.PersistentList
 fun SDGScrollTab(
     titles: PersistentList<String>,
     selectedTabIndex: Int,
+    contentPadding: PaddingValues,
     onTabClick: (Int) -> Unit,
     marginValues: PaddingValues = PaddingValues(),
     backgroundColor: Color = SDGColor.Neutral0,
@@ -48,6 +49,7 @@ fun SDGScrollTab(
                 .fillMaxWidth()
                 .background(backgroundColor)
                 .padding(marginValues),
+            contentPadding = contentPadding,
             state = listState
         ) {
             itemsIndexed(titles) { index, title ->
@@ -119,6 +121,7 @@ private fun PreviewSDGScrollTab(
             titles = titles,
             selectedTabIndex = selectedTabIndex,
             onTabClick = {},
+            contentPadding = contentPadding,
             marginValues = marginValues
         )
     }
