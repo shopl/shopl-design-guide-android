@@ -2,6 +2,7 @@ package com.shopl.sdg.component.tab.scroll
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing20
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.PersistentList
@@ -50,6 +52,7 @@ fun SDGScrollTab(
                 .background(backgroundColor)
                 .padding(marginValues),
             contentPadding = contentPadding,
+            horizontalArrangement = spacedBy(Spacing20),
             state = listState
         ) {
             itemsIndexed(titles) { index, title ->
@@ -86,7 +89,6 @@ private fun SDGScrollTabItem(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SDGText(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 12.dp),
             text = title,
             textColor = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral350,
             typography = SDGTypography.Title2SB
