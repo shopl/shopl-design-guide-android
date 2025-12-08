@@ -2,11 +2,16 @@ package com.shopl.sdg.component.tab.scroll
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -39,26 +44,33 @@ fun SDGScrollTab(
     selectedTabIndex: Int,
     contentPadding: PaddingValues,
     onTabClick: (Int) -> Unit,
-    marginValues: PaddingValues = PaddingValues(),
     backgroundColor: Color = SDGColor.Neutral0,
 ) {
     val listState = rememberLazyListState()
 
-    LazyRow(
+    Box(
         modifier = Modifier
-            .padding(marginValues)
             .fillMaxWidth()
-            .background(backgroundColor),
-        contentPadding = contentPadding,
-        horizontalArrangement = spacedBy(Spacing20),
-        state = listState
+            .background(backgroundColor)
     ) {
-        itemsIndexed(titles) { index, title ->
-            SDGScrollTabItem(
-                title = title,
-                isSelected = index == selectedTabIndex,
-                onClick = { onTabClick(index) }
-            )
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = contentPadding,
+            state = listState
+        ) {
+            itemsIndexed(titles) { index, title ->
+                Row(modifier = Modifier.height(IntrinsicSize.Min)) {
+                    SDGScrollTabItem(
+                        title = title,
+                        isSelected = index == selectedTabIndex,
+                        onClick = { onTabClick(index) }
+                    )
+
+                    if (index in 0 until titles.lastIndex) {
+                        SDGScrollTabSpacer()
+                    }
+                }
+            }
         }
     }
 
@@ -91,6 +103,19 @@ private fun SDGScrollTabItem(
     }
 }
 
+@Composable
+private fun SDGScrollTabSpacer() {
+    Box(
+        modifier = Modifier
+            .fillMaxHeight()
+            .width(Spacing20)
+            .bottomBorder(
+                strokeWidth = 1.dp,
+                color = SDGColor.SpecialOR
+            )
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSDGScrollTab(
@@ -103,7 +128,6 @@ private fun PreviewSDGScrollTab(
             selectedTabIndex = selectedTabIndex,
             onTabClick = {},
             contentPadding = contentPadding,
-            marginValues = marginValues
         )
     }
 }

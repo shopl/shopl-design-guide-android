@@ -17,7 +17,6 @@ internal class SDGScrollTabPreviewParameterProvider :
         SDGScrollTabPreviewParameter(
             titles = persistentListOf("전체", "진행중", "완료", "보류", "취소"),
             selectedTabIndex = 2,
-            marginValues = PaddingValues(horizontal = 16.dp)
         ),
     )
 }
@@ -25,6 +24,5 @@ internal class SDGScrollTabPreviewParameterProvider :
 internal data class SDGScrollTabPreviewParameter(
     val titles: PersistentList<String>,
     val selectedTabIndex: Int,
-    val marginValues: PaddingValues = PaddingValues(0.dp),
     val contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp)
 )
