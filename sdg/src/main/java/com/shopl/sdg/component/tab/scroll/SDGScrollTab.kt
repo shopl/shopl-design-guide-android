@@ -114,13 +114,7 @@ private fun SDGScrollTabItem(
             typography = SDGTypography.Title2SB,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            modifier = Modifier.then(
-                if (maxItemWidth != null) {
-                    Modifier.widthIn(max = maxItemWidth)
-                } else {
-                    Modifier
-                }
-            )
+            modifier = if (maxItemWidth != null) Modifier.widthIn(max = maxItemWidth) else Modifier
         )
     }
 }
