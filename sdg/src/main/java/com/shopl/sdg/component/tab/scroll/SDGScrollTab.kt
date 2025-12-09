@@ -16,7 +16,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +30,7 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing6
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.PersistentList
+import kotlinx.coroutines.launch
 
 /**
  * SDG - Tab - Scroll Tab
@@ -47,6 +48,7 @@ fun SDGScrollTab(
     backgroundColor: Color = SDGColor.Neutral0,
 ) {
     val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
@@ -63,7 +65,14 @@ fun SDGScrollTab(
                     SDGScrollTabItem(
                         title = title,
                         isSelected = index == selectedTabIndex,
-                        onClick = { onTabClick(index) }
+                        onClick = {
+                            onTabClick(index)
+                            if (index == titles.lastIndex) {
+                                coroutineScope.launch {
+                                    listState.animateScrollToItem(index)
+                                }
+                            }
+                        }
                     )
 
                     if (index in 0 until titles.lastIndex) {
@@ -72,10 +81,6 @@ fun SDGScrollTab(
                 }
             }
         }
-    }
-
-    LaunchedEffect(selectedTabIndex) {
-        listState.animateScrollToItem(selectedTabIndex)
     }
 }
 
