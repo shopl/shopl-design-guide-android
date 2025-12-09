@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -20,8 +21,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.bottomBorder
 import com.shopl.sdg_common.foundation.SDGColor
@@ -45,6 +48,7 @@ fun SDGScrollTab(
     selectedIndex: Int?,
     contentPadding: PaddingValues,
     onTabClick: (Int) -> Unit,
+    maxItemWidth: Dp? = null,
     backgroundColor: Color = SDGColor.Neutral0,
 ) {
     val listState = rememberLazyListState()
@@ -65,6 +69,7 @@ fun SDGScrollTab(
                     SDGScrollTabItem(
                         title = title,
                         isSelected = index == selectedIndex,
+                        maxItemWidth = maxItemWidth,
                         onClick = {
                             onTabClick(index)
                             if (index == titles.lastIndex) {
@@ -88,6 +93,7 @@ fun SDGScrollTab(
 private fun SDGScrollTabItem(
     title: String,
     isSelected: Boolean,
+    maxItemWidth: Dp?,
     onClick: () -> Unit
 ) {
     Column(
@@ -103,7 +109,16 @@ private fun SDGScrollTabItem(
         SDGText(
             text = title,
             textColor = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral350,
-            typography = SDGTypography.Title2SB
+            typography = SDGTypography.Title2SB,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+            modifier = Modifier.then(
+                if (maxItemWidth != null) {
+                    Modifier.widthIn(max = maxItemWidth)
+                } else {
+                    Modifier
+                }
+            )
         )
     }
 }
@@ -132,6 +147,7 @@ private fun PreviewSDGScrollTab(
             titles = titles,
             selectedIndex = selectedIndex,
             onTabClick = {},
+            maxItemWidth = maxItemWidth,
             contentPadding = contentPadding,
         )
     }
