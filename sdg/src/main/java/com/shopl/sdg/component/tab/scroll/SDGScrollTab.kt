@@ -44,6 +44,7 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun SDGScrollTab(
+    type: SDGScrollTabType,
     titles: PersistentList<String>,
     selectedIndex: Int?,
     contentPadding: PaddingValues,
@@ -144,6 +145,7 @@ private fun PreviewSDGScrollTab(
 ) {
     with(parameter) {
         SDGScrollTab(
+            type = type,
             titles = titles,
             selectedIndex = selectedIndex,
             onTabClick = {},
