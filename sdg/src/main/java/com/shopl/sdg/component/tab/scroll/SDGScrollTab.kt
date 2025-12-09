@@ -110,16 +110,7 @@ private fun SDGScrollTabItem(
     Column(
         modifier = Modifier
             .clickable(onClick = onClick)
-            .then(
-                if (type == SDGScrollTabType.Line) {
-                    Modifier.bottomBorder(
-                        strokeWidth = if (isSelected) 2.dp else 1.dp,
-                        color = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral200
-                    )
-                } else {
-                    Modifier
-                }
-            )
+            .tabItemStyle(type, isSelected)
             .padding(bottom = if (type == SDGScrollTabType.Line) Spacing6 else 0.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -157,6 +148,23 @@ private fun SDGScrollTabSpacer(type: SDGScrollTabType) {
                 }
             )
     )
+}
+
+/**
+ * 탭 아이템의 테두리와 패딩 스타일을 처리합니다.
+ */
+private fun Modifier.tabItemStyle(
+    type: SDGScrollTabType,
+    isSelected: Boolean
+): Modifier {
+    if (type != SDGScrollTabType.Line) return this
+
+    return this
+        .bottomBorder(
+            strokeWidth = if (isSelected) 2.dp else 1.dp,
+            color = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral200
+        )
+        .padding(bottom = Spacing6)
 }
 
 @Preview(showBackground = true)
