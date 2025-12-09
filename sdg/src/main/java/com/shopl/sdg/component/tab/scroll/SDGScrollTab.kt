@@ -70,7 +70,7 @@ fun SDGScrollTab(
             .background(backgroundColor)
     ) {
         LazyRow(
-            contentPadding = contentPadding ?: PaddingValues(horizontal = 0.dp),
+            contentPadding = contentPadding,
             state = listState
         ) {
             itemsIndexed(titles) { index, title ->
