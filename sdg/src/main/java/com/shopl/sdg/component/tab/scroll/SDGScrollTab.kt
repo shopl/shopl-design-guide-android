@@ -104,8 +104,7 @@ private fun SDGScrollTabItem(
     Column(
         modifier = Modifier
             .clickable(onClick = onClick)
-            .tabItemStyle(type, isSelected)
-            .padding(bottom = if (type == SDGScrollTabType.Line) Spacing6 else 0.dp),
+            .tabItemStyle(type, isSelected),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SDGText(
@@ -159,7 +158,6 @@ private fun Modifier.tabSpacerStyle(
             strokeWidth = 1.dp,
             color = SDGColor.Neutral200
         )
-        .padding(bottom = Spacing6)
 }
 
 @Preview(showBackground = true)
