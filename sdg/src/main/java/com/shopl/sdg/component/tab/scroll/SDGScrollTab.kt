@@ -47,10 +47,10 @@ fun SDGScrollTab(
     type: SDGScrollTabType,
     titles: PersistentList<String>,
     selectedIndex: Int?,
+    onTabClick: (Int) -> Unit,
     isFillMaxWidth: Boolean = true,
     contentPadding: PaddingValues = PaddingValues(horizontal = 0.dp),
     marginValues: PaddingValues = PaddingValues(0.dp),
-    onTabClick: (Int) -> Unit,
     maxItemWidth: Dp? = null,
     backgroundColor: Color = SDGColor.Neutral0,
 ) {
