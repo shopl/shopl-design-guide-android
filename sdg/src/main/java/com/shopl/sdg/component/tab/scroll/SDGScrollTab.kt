@@ -131,16 +131,7 @@ private fun SDGScrollTabSpacer(type: SDGScrollTabType) {
         modifier = Modifier
             .fillMaxHeight()
             .width(Spacing20)
-            .then(
-                if (type == SDGScrollTabType.Line) {
-                    Modifier.bottomBorder(
-                        strokeWidth = 1.dp,
-                        color = SDGColor.Neutral200
-                    )
-                } else {
-                    Modifier
-                }
-            )
+            .tabSpacerStyle(type)
     )
 }
 
@@ -157,6 +148,22 @@ private fun Modifier.tabItemStyle(
         .bottomBorder(
             strokeWidth = if (isSelected) 2.dp else 1.dp,
             color = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral200
+        )
+        .padding(bottom = Spacing6)
+}
+
+/**
+ * 탭 스페이서의 스타일을 처리합니다.
+ */
+private fun Modifier.tabSpacerStyle(
+    type: SDGScrollTabType
+): Modifier {
+    if (type != SDGScrollTabType.Line) return this
+
+    return this
+        .bottomBorder(
+            strokeWidth = 1.dp,
+            color = SDGColor.Neutral200
         )
         .padding(bottom = Spacing6)
 }
