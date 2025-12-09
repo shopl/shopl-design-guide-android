@@ -90,7 +90,7 @@ fun SDGScrollTab(
                         }
                     )
 
-                    if (index in 0 until titles.lastIndex) {
+                    if (index < titles.lastIndex) {
                         SDGScrollTabSpacer(type = type)
                     }
                 }
