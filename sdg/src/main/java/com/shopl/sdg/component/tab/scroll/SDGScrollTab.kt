@@ -48,7 +48,8 @@ fun SDGScrollTab(
     titles: PersistentList<String>,
     selectedIndex: Int?,
     isFillMaxWidth: Boolean = true,
-    contentPadding: PaddingValues? = null,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 0.dp),
+    marginValues: PaddingValues = PaddingValues(0.dp),
     onTabClick: (Int) -> Unit,
     maxItemWidth: Dp? = null,
     backgroundColor: Color = SDGColor.Neutral0,
@@ -65,6 +66,7 @@ fun SDGScrollTab(
                     Modifier
                 }
             )
+            .padding(marginValues)
             .background(backgroundColor)
     ) {
         LazyRow(
@@ -112,7 +114,7 @@ private fun SDGScrollTabItem(
                 if (type == SDGScrollTabType.Line) {
                     Modifier.bottomBorder(
                         strokeWidth = if (isSelected) 2.dp else 1.dp,
-                        color = if (isSelected) SDGColor.GreenG else SDGColor.Red300
+                        color = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral200
                     )
                 } else {
                     Modifier
@@ -148,7 +150,7 @@ private fun SDGScrollTabSpacer(type: SDGScrollTabType) {
                 if (type == SDGScrollTabType.Line) {
                     Modifier.bottomBorder(
                         strokeWidth = 1.dp,
-                        color = SDGColor.SpecialOR
+                        color = SDGColor.Neutral200
                     )
                 } else {
                     Modifier

@@ -40,7 +40,6 @@ class MainActivity : ComponentActivity() {
                             type = SDGScrollTabType.Line,
                             titles = tabTitles,
                             selectedIndex = selectedTabIndex,
-                            maxItemWidth = 20.dp,
                             contentPadding = PaddingValues(horizontal = 50.dp),
                             onTabClick = { index ->
                                 selectedTabIndex = index
@@ -50,7 +49,9 @@ class MainActivity : ComponentActivity() {
                         SDGScrollTab(
                             type = SDGScrollTabType.Text,
                             titles = tabTitles2,
+                            isFillMaxWidth = false,
                             selectedIndex = selectedIndex,
+                            marginValues = PaddingValues(horizontal = 100.dp),
                             onTabClick = { index ->
                                 selectedIndex = index
                             }
