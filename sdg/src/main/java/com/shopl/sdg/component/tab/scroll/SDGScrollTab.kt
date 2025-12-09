@@ -47,7 +47,8 @@ fun SDGScrollTab(
     type: SDGScrollTabType,
     titles: PersistentList<String>,
     selectedIndex: Int?,
-    contentPadding: PaddingValues,
+    isFillMaxWidth: Boolean = true,
+    contentPadding: PaddingValues? = null,
     onTabClick: (Int) -> Unit,
     maxItemWidth: Dp? = null,
     backgroundColor: Color = SDGColor.Neutral0,
@@ -57,17 +58,23 @@ fun SDGScrollTab(
 
     Box(
         modifier = Modifier
-            .fillMaxWidth()
+            .then(
+                if (isFillMaxWidth) {
+                    Modifier.fillMaxWidth()
+                } else {
+                    Modifier
+                }
+            )
             .background(backgroundColor)
     ) {
         LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = contentPadding,
+            contentPadding = contentPadding ?: PaddingValues(horizontal = 0.dp),
             state = listState
         ) {
             itemsIndexed(titles) { index, title ->
                 Row(modifier = Modifier.height(IntrinsicSize.Min)) {
                     SDGScrollTabItem(
+                        type = type,
                         title = title,
                         isSelected = index == selectedIndex,
                         maxItemWidth = maxItemWidth,
@@ -82,7 +89,7 @@ fun SDGScrollTab(
                     )
 
                     if (index in 0 until titles.lastIndex) {
-                        SDGScrollTabSpacer()
+                        SDGScrollTabSpacer(type = type)
                     }
                 }
             }
@@ -92,6 +99,7 @@ fun SDGScrollTab(
 
 @Composable
 private fun SDGScrollTabItem(
+    type: SDGScrollTabType,
     title: String,
     isSelected: Boolean,
     maxItemWidth: Dp?,
@@ -100,11 +108,17 @@ private fun SDGScrollTabItem(
     Column(
         modifier = Modifier
             .clickable(onClick = onClick)
-            .bottomBorder(
-                strokeWidth = if (isSelected) 2.dp else 1.dp,
-                color = if (isSelected) SDGColor.GreenG else SDGColor.Red300
+            .then(
+                if (type == SDGScrollTabType.Line) {
+                    Modifier.bottomBorder(
+                        strokeWidth = if (isSelected) 2.dp else 1.dp,
+                        color = if (isSelected) SDGColor.GreenG else SDGColor.Red300
+                    )
+                } else {
+                    Modifier
+                }
             )
-            .padding(bottom = Spacing6),
+            .padding(bottom = if (type == SDGScrollTabType.Line) Spacing6 else 0.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SDGText(
@@ -125,14 +139,20 @@ private fun SDGScrollTabItem(
 }
 
 @Composable
-private fun SDGScrollTabSpacer() {
+private fun SDGScrollTabSpacer(type: SDGScrollTabType) {
     Box(
         modifier = Modifier
             .fillMaxHeight()
             .width(Spacing20)
-            .bottomBorder(
-                strokeWidth = 1.dp,
-                color = SDGColor.SpecialOR
+            .then(
+                if (type == SDGScrollTabType.Line) {
+                    Modifier.bottomBorder(
+                        strokeWidth = 1.dp,
+                        color = SDGColor.SpecialOR
+                    )
+                } else {
+                    Modifier
+                }
             )
     )
 }
