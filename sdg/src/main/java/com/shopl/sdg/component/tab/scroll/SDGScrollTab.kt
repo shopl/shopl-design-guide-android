@@ -59,13 +59,7 @@ fun SDGScrollTab(
 
     Box(
         modifier = Modifier
-            .then(
-                if (isFillMaxWidth) {
-                    Modifier.fillMaxWidth()
-                } else {
-                    Modifier
-                }
-            )
+            .then(if (isFillMaxWidth) Modifier.fillMaxWidth() else Modifier)
             .padding(marginValues)
             .background(backgroundColor)
     ) {
