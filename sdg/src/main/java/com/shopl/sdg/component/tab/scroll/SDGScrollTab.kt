@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SDGScrollTab(
     titles: PersistentList<String>,
-    selectedTabIndex: Int,
+    selectedIndex: Int?,
     contentPadding: PaddingValues,
     onTabClick: (Int) -> Unit,
     backgroundColor: Color = SDGColor.Neutral0,
@@ -64,7 +64,7 @@ fun SDGScrollTab(
                 Row(modifier = Modifier.height(IntrinsicSize.Min)) {
                     SDGScrollTabItem(
                         title = title,
-                        isSelected = index == selectedTabIndex,
+                        isSelected = index == selectedIndex,
                         onClick = {
                             onTabClick(index)
                             if (index == titles.lastIndex) {
@@ -130,7 +130,7 @@ private fun PreviewSDGScrollTab(
     with(parameter) {
         SDGScrollTab(
             titles = titles,
-            selectedTabIndex = selectedTabIndex,
+            selectedIndex = selectedIndex,
             onTabClick = {},
             contentPadding = contentPadding,
         )

@@ -12,17 +12,17 @@ internal class SDGScrollTabPreviewParameterProvider :
     override val values: Sequence<SDGScrollTabPreviewParameter> = sequenceOf(
         SDGScrollTabPreviewParameter(
             titles = persistentListOf("Label", "긴 Label은 이렇게 처리됩니다.", "Label", "Label", "Label", "Label", "Label", "Label", "Label"),
-            selectedTabIndex = 0,
+            selectedIndex = 0,
         ),
         SDGScrollTabPreviewParameter(
             titles = persistentListOf("전체", "진행중", "완료", "보류", "취소"),
-            selectedTabIndex = 2,
+            selectedIndex = 2,
         ),
     )
 }
 
 internal data class SDGScrollTabPreviewParameter(
     val titles: PersistentList<String>,
-    val selectedTabIndex: Int,
+    val selectedIndex: Int,
     val contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp)
 )
