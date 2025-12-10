@@ -1,13 +1,19 @@
 package com.shopl.sdg.component.navigation.basic
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing10
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.ui.components.SDGImage
 
 /**
@@ -21,13 +27,20 @@ import com.shopl.sdg_common.ui.components.SDGImage
  */
 @Composable
 fun SDGBasicNavi(
+    leftIcon: SDGBasicNaviIconItem?,
+    backgroundColor: Color
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
+            .background(color = backgroundColor)
+            .padding(horizontal = Spacing10, vertical = Spacing4),
+        horizontalArrangement = spacedBy(Spacing10)
     ) {
-
+        leftIcon?.let {
+            SDGBasicNaviIcon(icon = it)
+        }
     }
 }
 
