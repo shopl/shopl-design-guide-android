@@ -12,6 +12,7 @@ internal class SDGBasicNaviPreviewParameterProvider :
 
     override val values: Sequence<SDGBasicNaviPreviewParameter> = sequenceOf(
         기본_화면_타이틀(),
+        타이틀이_없는_경우(),
         우측_아이콘이_없는_긴_화면_타이틀(),
         우측_아이콘만_있는_경우(),
         긴_화면_타이틀(),
@@ -27,6 +28,20 @@ internal class SDGBasicNaviPreviewParameterProvider :
                 onClick = {}
             ),
             rightIcons = null
+        )
+    }
+
+    private fun 타이틀이_없는_경우(): SDGBasicNaviPreviewParameter {
+        return SDGBasicNaviPreviewParameter(
+            title = null,
+            backgroundColor = SDGColor.Neutral0,
+            leftIcon = SDGBasicNaviIconItem(
+                resId = R.drawable.ic_navi_back_android,
+                onClick = {}
+            ),
+            rightIcons = persistentListOf(
+                SDGBasicNaviIconItem(R.drawable.ic_navi_filter, {}, showDot = true),
+            )
         )
     }
 
@@ -85,7 +100,7 @@ internal class SDGBasicNaviPreviewParameterProvider :
 }
 
 internal data class SDGBasicNaviPreviewParameter(
-    val title: String,
+    val title: String?,
     val backgroundColor: Color,
     val titleColor: Color = SDGColor.Neutral900,
     val leftIcon: SDGBasicNaviIconItem?,

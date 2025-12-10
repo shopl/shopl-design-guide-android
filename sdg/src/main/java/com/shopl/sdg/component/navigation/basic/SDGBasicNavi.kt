@@ -41,10 +41,10 @@ import kotlinx.collections.immutable.PersistentList
  */
 @Composable
 fun SDGBasicNavi(
+    title: String?,
     leftIcon: SDGBasicNaviIconItem?,
     rightIcons: PersistentList<SDGBasicNaviIconItem>?,
     backgroundColor: Color,
-    title: String = "",
     titleColor: Color = SDGColor.Neutral900
 ) {
     Row(
@@ -64,7 +64,7 @@ fun SDGBasicNavi(
         }
 
         SDGText(
-            text = title,
+            text = title ?: "",
             typography = SDGTypography.NaviTitle,
             textColor = titleColor,
             maxLines = 1,
