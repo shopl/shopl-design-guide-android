@@ -1,7 +1,7 @@
 package com.shopl.sdg.component.navigation.basic
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
@@ -85,7 +84,7 @@ private fun SDGBasicNaviRightIconRow(
 ) {
     Row(
         modifier = Modifier.width(124.dp),
-        horizontalArrangement = spacedBy(Spacing2),
+        horizontalArrangement = Arrangement.spacedBy(Spacing2, Alignment.End),
         verticalAlignment = Alignment.CenterVertically
     ) {
         icons.forEach { SDGBasicNaviIcon(icon = it) }
