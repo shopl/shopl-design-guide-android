@@ -14,6 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
@@ -98,6 +101,23 @@ private fun SDGBasicNaviIcon(icon: SDGBasicNaviIconItem) {
             modifier = Modifier
                 .size(40.dp)
                 .clickable(onClick = onClick)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewSDGBasicNavi(
+    @PreviewParameter(SDGBasicNaviPreviewParameterProvider::class)
+    parameter: SDGBasicNaviPreviewParameter
+) {
+    with(parameter) {
+        SDGBasicNavi(
+            leftIcon = leftIcon,
+            rightIcons = rightIcons,
+            backgroundColor = backgroundColor,
+            title = title,
+            titleColor = titleColor
         )
     }
 }
