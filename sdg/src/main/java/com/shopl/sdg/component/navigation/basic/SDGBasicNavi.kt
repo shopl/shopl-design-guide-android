@@ -1,11 +1,16 @@
 package com.shopl.sdg.component.navigation.basic
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg_common.ext.clickable
+import com.shopl.sdg_common.ui.components.SDGImage
 
 /**
  * SDG - Navigation - Basic Navi
@@ -17,7 +22,8 @@ import androidx.compose.ui.unit.dp
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19779-9926&t=0IkMpxxx2xWJ4zUm-4">Figma</a>
  */
 @Composable
-fun SDGBasicNavi(modifier: Modifier = Modifier) {
+fun SDGBasicNavi(
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -25,4 +31,19 @@ fun SDGBasicNavi(modifier: Modifier = Modifier) {
     ) {
 
     }
+}
+
+@Composable
+private fun SDGBasicNaviIcon(
+    @DrawableRes iconResId: Int,
+    color: Color?,
+    onClick: () -> Unit
+) {
+    SDGImage(
+        resId = iconResId,
+        color = color,
+        modifier = Modifier
+            .size(40.dp)
+            .clickable(onClick = onClick)
+    )
 }
