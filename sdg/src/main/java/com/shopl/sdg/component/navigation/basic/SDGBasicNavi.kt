@@ -1,7 +1,11 @@
 package com.shopl.sdg.component.navigation.basic
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 /**
  * SDG - Navigation - Basic Navi
@@ -14,5 +18,11 @@ import androidx.compose.ui.Modifier
  */
 @Composable
 fun SDGBasicNavi(modifier: Modifier = Modifier) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
+    ) {
 
+    }
 }
