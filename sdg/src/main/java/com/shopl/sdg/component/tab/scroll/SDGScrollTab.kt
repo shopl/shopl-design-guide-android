@@ -118,6 +118,9 @@ private fun SDGScrollTabItem(
     }
 }
 
+/**
+ * SDG 스크롤 탭 아이템들 사이에 공간을 제공하는 컴포넌트
+ */
 @Composable
 private fun SDGScrollTabSpacer(type: SDGScrollTabType) {
     Box(
