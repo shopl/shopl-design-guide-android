@@ -47,6 +47,12 @@ fun SDGBasicNavi(
     backgroundColor: Color,
     titleColor: Color = SDGColor.Neutral900
 ) {
+    if (rightIcons != null) {
+        require(rightIcons.size < 4) {
+            "우측 아이콘은 최대 3개까지만 사용 가능합니다."
+        }
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
