@@ -3,7 +3,6 @@ package com.shopl.sdg.component.tab.scroll
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -18,7 +17,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
@@ -101,21 +99,17 @@ private fun SDGScrollTabItem(
     maxItemWidth: Dp?,
     onClick: () -> Unit
 ) {
-    Column(
+    SDGText(
+        text = title,
+        textColor = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral350,
+        typography = SDGTypography.Title2SB,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1,
         modifier = Modifier
+            .then(if (maxItemWidth != null) Modifier.widthIn(max = maxItemWidth) else Modifier)
             .clickable(onClick = onClick)
-            .tabItemStyle(type, isSelected),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        SDGText(
-            text = title,
-            textColor = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral350,
-            typography = SDGTypography.Title2SB,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
-            modifier = if (maxItemWidth != null) Modifier.widthIn(max = maxItemWidth) else Modifier
-        )
-    }
+            .tabItemStyle(type, isSelected)
+    )
 }
 
 /**
