@@ -118,6 +118,10 @@ sealed class SDGTopNaviMenu(
     ) : SDGTopNaviMenu(iconResId, onMenuClick, iconTint)
 }
 
+@Deprecated(
+    message = "제거 예정. SDGBasicNavi를 사용하세요",
+    replaceWith = ReplaceWith(expression = "SDGBasicNavi"),
+)
 @Composable
 fun SDGTopNaviBasic(
     title: String = "",
