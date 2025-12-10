@@ -1,6 +1,7 @@
 package com.shopl.sdg.component.navigation.basic
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
@@ -22,6 +24,7 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
+import kotlinx.collections.immutable.PersistentList
 
 /**
  * SDG - Navigation - Basic Navi
@@ -35,6 +38,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 @Composable
 fun SDGBasicNavi(
     leftIcon: SDGBasicNaviIconItem?,
+    rightIcons: PersistentList<SDGBasicNaviIconItem>?,
     backgroundColor: Color,
     title: String = "",
     titleColor: Color = SDGColor.Neutral900
@@ -62,19 +66,35 @@ fun SDGBasicNavi(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f)
         )
+
+        if (!rightIcons.isNullOrEmpty()) {
+            Spacer(Modifier.width(Spacing10))
+
+            SDGBasicNaviRightIconRow(icons = rightIcons)
+        }
     }
 }
 
 @Composable
-private fun SDGBasicNaviIcon(
-    icon: SDGBasicNaviIconItem,
-    modifier: Modifier = Modifier,
+private fun SDGBasicNaviRightIconRow(
+    icons: PersistentList<SDGBasicNaviIconItem>
 ) {
+    Row(
+        modifier = Modifier.width(124.dp),
+        horizontalArrangement = spacedBy(Spacing2),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        icons.forEach { SDGBasicNaviIcon(icon = it) }
+    }
+}
+
+@Composable
+private fun SDGBasicNaviIcon(icon: SDGBasicNaviIconItem) {
     with(icon) {
         SDGImage(
             resId = resId,
             color = color,
-            modifier = modifier
+            modifier = Modifier
                 .size(40.dp)
                 .clickable(onClick = onClick)
         )
