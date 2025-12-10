@@ -1,20 +1,27 @@
 package com.shopl.sdg.component.navigation.basic
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
+import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing10
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
+import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
+import com.shopl.sdg_common.ui.components.SDGText
 
 /**
  * SDG - Navigation - Basic Navi
@@ -28,19 +35,33 @@ import com.shopl.sdg_common.ui.components.SDGImage
 @Composable
 fun SDGBasicNavi(
     leftIcon: SDGBasicNaviIconItem?,
-    backgroundColor: Color
+    backgroundColor: Color,
+    title: String = "",
+    titleColor: Color = SDGColor.Neutral900
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
             .background(color = backgroundColor)
-            .padding(horizontal = Spacing10, vertical = Spacing4),
-        horizontalArrangement = spacedBy(Spacing10)
+            .padding(vertical = Spacing4)
+            .padding(start = if (leftIcon == null) Spacing16 else Spacing10)
+            .padding(end = Spacing10),
     ) {
         leftIcon?.let {
             SDGBasicNaviIcon(icon = it)
         }
+
+        Spacer(Modifier.width(Spacing2))
+
+        SDGText(
+            text = title,
+            typography = SDGTypography.NaviTitle,
+            textColor = titleColor,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f)
+        )
     }
 }
 
