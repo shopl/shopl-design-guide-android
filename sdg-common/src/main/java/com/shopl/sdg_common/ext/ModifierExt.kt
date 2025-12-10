@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
@@ -290,4 +291,26 @@ fun Modifier.dropShadow(
         canvas.drawOutline(shadowOutline, paint)
         canvas.restore()
     }
+}
+
+/**
+ * 하단 테두리(Border)를 그립니다.
+ *
+ * @param strokeWidth 테두리 두께 (기본값: 1.dp)
+ * @param color 테두리 색상
+ */
+fun Modifier.bottomBorder(
+    strokeWidth: Dp = 1.dp,
+    color: Color
+) = drawBehind {
+    val strokeWidthPx = strokeWidth.toPx()
+    val width = size.width
+    val height = size.height - strokeWidthPx / 2
+
+    drawLine(
+        color = color,
+        start = Offset(x = 0f, y = height),
+        end = Offset(x = width, y = height),
+        strokeWidth = strokeWidthPx
+    )
 }
