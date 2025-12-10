@@ -1,13 +1,11 @@
 package com.shopl.sdg.component.navigation.basic
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ui.components.SDGImage
@@ -35,15 +33,16 @@ fun SDGBasicNavi(
 
 @Composable
 private fun SDGBasicNaviIcon(
-    @DrawableRes iconResId: Int,
-    color: Color?,
-    onClick: () -> Unit
+    icon: SDGBasicNaviIconItem,
+    modifier: Modifier = Modifier,
 ) {
-    SDGImage(
-        resId = iconResId,
-        color = color,
-        modifier = Modifier
-            .size(40.dp)
-            .clickable(onClick = onClick)
-    )
+    with(icon) {
+        SDGImage(
+            resId = resId,
+            color = color,
+            modifier = modifier
+                .size(40.dp)
+                .clickable(onClick = onClick)
+        )
+    }
 }
