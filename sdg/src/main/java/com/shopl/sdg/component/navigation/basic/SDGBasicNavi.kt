@@ -51,6 +51,7 @@ fun SDGBasicNavi(
             .padding(vertical = Spacing4)
             .padding(start = if (leftIcon == null) Spacing16 else Spacing10)
             .padding(end = Spacing10),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         leftIcon?.let {
             SDGBasicNaviIcon(icon = it)
