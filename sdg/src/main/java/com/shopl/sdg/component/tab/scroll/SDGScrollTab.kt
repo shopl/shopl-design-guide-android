@@ -175,8 +175,11 @@ private fun PreviewSDGScrollTab(
             titles = titles,
             selectedIndex = selectedIndex,
             onTabClick = {},
-            maxItemWidth = maxItemWidth,
+            isFillMaxWidth = isFillMaxWidth,
             contentPadding = contentPadding,
+            marginValues = marginValues,
+            maxItemWidth = maxItemWidth,
+            backgroundColor = backgroundColor
         )
     }
 }
