@@ -57,9 +57,9 @@ fun SDGBasicNavi(
     ) {
         leftIcon?.let {
             SDGBasicNaviIcon(icon = it)
-        }
 
-        Spacer(Modifier.width(Spacing2))
+            Spacer(Modifier.width(Spacing2))
+        }
 
         SDGText(
             text = title,
