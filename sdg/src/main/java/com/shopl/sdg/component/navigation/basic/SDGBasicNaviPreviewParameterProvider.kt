@@ -12,14 +12,27 @@ internal class SDGBasicNaviPreviewParameterProvider :
 
     override val values: Sequence<SDGBasicNaviPreviewParameter> = sequenceOf(
         기본_화면_타이틀(),
-        긴_화면_타이틀(),
+        우측_아이콘이_없는_긴_화면_타이틀(),
         우측_아이콘만_있는_경우(),
+        긴_화면_타이틀(),
         배경색_변경_Primary()
     )
 
     private fun 기본_화면_타이틀(): SDGBasicNaviPreviewParameter {
         return SDGBasicNaviPreviewParameter(
             title = "화면 타이틀",
+            backgroundColor = SDGColor.Neutral0,
+            leftIcon = SDGBasicNaviIconItem(
+                resId = R.drawable.ic_navi_back_android,
+                onClick = {}
+            ),
+            rightIcons = null
+        )
+    }
+
+    private fun 우측_아이콘이_없는_긴_화면_타이틀(): SDGBasicNaviPreviewParameter {
+        return SDGBasicNaviPreviewParameter(
+            title = "우측 아이콘이 없는 긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요",
             backgroundColor = SDGColor.Neutral0,
             leftIcon = SDGBasicNaviIconItem(
                 resId = R.drawable.ic_navi_back_android,
