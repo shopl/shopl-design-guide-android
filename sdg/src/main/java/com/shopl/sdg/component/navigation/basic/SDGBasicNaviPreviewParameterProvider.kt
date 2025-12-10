@@ -52,7 +52,7 @@ internal class SDGBasicNaviPreviewParameterProvider :
             ),
             rightIcons = persistentListOf(
                 SDGBasicNaviIconItem(R.drawable.ic_navi_search, {}),
-                SDGBasicNaviIconItem(R.drawable.ic_navi_filter, {}),
+                SDGBasicNaviIconItem(R.drawable.ic_navi_filter, {}, showDot = true),
                 SDGBasicNaviIconItem(R.drawable.ic_navi_chat, {})
             )
         )

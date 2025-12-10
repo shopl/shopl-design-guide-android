@@ -1,7 +1,9 @@
 package com.shopl.sdg.component.navigation.basic
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -94,13 +96,28 @@ private fun SDGBasicNaviRightIconRow(
 @Composable
 private fun SDGBasicNaviIcon(icon: SDGBasicNaviIconItem) {
     with(icon) {
-        SDGImage(
-            resId = resId,
-            color = color,
-            modifier = Modifier
-                .size(40.dp)
-                .clickable(onClick = onClick)
-        )
+        Box {
+            SDGImage(
+                resId = resId,
+                color = color,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clickable(onClick = onClick)
+            )
+
+            if (showDot) {
+                Canvas(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(8.dp)
+                        .align(Alignment.TopEnd)
+                ) {
+                    drawCircle(
+                        color = SDGColor.Red350
+                    )
+                }
+            }
+        }
     }
 }
 
