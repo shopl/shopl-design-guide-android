@@ -11,6 +11,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -19,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+import kotlinx.coroutines.delay
 
 /**
  * SDG - Button - Bottom Button
@@ -27,13 +34,18 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7097-15078&m=dev">Figma</a>
  */
+
+private const val DEFAULT_DEBOUNCE_TIME = 1000L
+
 @Composable
 fun SDGBottomButton(
     title: String,
     onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
     type: SDGBottomButtonType = SDGBottomButtonType.POSITIVE,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    debounce: Boolean = true,
+    debounceTime: Long = DEFAULT_DEBOUNCE_TIME,
 ) {
     val (activeColor, disabledColor, textColor) = when (type) {
         SDGBottomButtonType.POSITIVE -> Triple(SDGColor.Primary300, SDGColor.Primary50, SDGColor.Neutral0)
@@ -42,10 +54,18 @@ fun SDGBottomButton(
         SDGBottomButtonType.NORMAL_DARK -> Triple(SDGColor.Neutral600, SDGColor.Neutral200, SDGColor.Neutral0)
     }
 
+    val debouncedClick = if (debounce) {
+        rememberDebouncedClick(
+            delayMs = debounceTime
+        ) { onClick() }
+    } else {
+        onClick
+    }
+
     Button(
         enabled = enabled,
         shape = RoundedCornerShape(25.dp),
-        onClick = onClick,
+        onClick = debouncedClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = activeColor,
             disabledContainerColor = disabledColor
@@ -68,9 +88,32 @@ fun SDGBottomButton(
     }
 }
 
+@Composable
+private fun rememberDebouncedClick(
+    delayMs: Long = DEFAULT_DEBOUNCE_TIME,
+    onClick: () -> Unit
+): () -> Unit {
+    var enabled by remember { mutableStateOf(true) }
+
+    LaunchedEffect(enabled) {
+        if (!enabled) {
+            delay(delayMs)
+            enabled = true
+        }
+    }
+
+    return {
+        if (enabled) {
+            enabled = false
+            onClick()
+        }
+    }
+}
+
 @Preview
 @Composable
 fun PreviewBottomButton() {
+    var clickCount by remember { mutableIntStateOf(0) }
     Surface {
         Column(
             verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -78,22 +121,28 @@ fun PreviewBottomButton() {
             SDGBottomButton(
                 title = "POSITIVE",
                 type = SDGBottomButtonType.POSITIVE,
-                onClick = {}
+                onClick = { clickCount++ }
             )
             SDGBottomButton(
                 title = "NEGATIVE",
                 type = SDGBottomButtonType.NEGATIVE,
-                onClick = {}
+                onClick = { clickCount++ }
             )
             SDGBottomButton(
                 title = "NORMAL",
                 type = SDGBottomButtonType.NORMAL,
-                onClick = {}
+                onClick = { clickCount++ }
             )
             SDGBottomButton(
                 title = "NORMAL DARK",
                 type = SDGBottomButtonType.NORMAL_DARK,
-                onClick = {}
+                debounce = false,
+                onClick = { clickCount++ }
+            )
+            SDGText(
+                text = "Click Count : $clickCount",
+                textColor = SDGColor.Neutral700,
+                typography = SDGTypography.Body1R
             )
         }
     }
