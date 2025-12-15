@@ -11,6 +11,14 @@ import androidx.compose.ui.unit.sp
 @Immutable
 sealed class SDGTypography(val style: TextStyle) {
 
+    data object SpecialSB : SDGTypography(
+        TextStyle(
+            fontSize = 44.sp,
+            lineHeight = 48.sp,
+            fontFamily = SDGTypeface.SEMI_BOLD.fontFamily
+        )
+    )
+
     data object NaviTitle : SDGTypography(
         TextStyle(
             fontSize = 19.sp,
