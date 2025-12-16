@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.sp
 @Immutable
 sealed class SDGTypography(val style: TextStyle) {
 
+    /** 예외 강조 **/
     data object Special1SB : SDGTypography(
         TextStyle(
             fontSize = 44.sp,
@@ -19,6 +20,7 @@ sealed class SDGTypography(val style: TextStyle) {
         )
     )
 
+    /** 상단 네비게이션바의 타이틀 **/
     data object NaviTitle : SDGTypography(
         TextStyle(
             fontSize = 19.sp,
@@ -27,6 +29,7 @@ sealed class SDGTypography(val style: TextStyle) {
         )
     )
 
+    /** 특정 요소 강조 **/
     data object Point1SB : SDGTypography(
         TextStyle(
             fontSize = 28.sp,
@@ -59,6 +62,7 @@ sealed class SDGTypography(val style: TextStyle) {
         )
     )
 
+    /** 타이틀 강조 **/
     data object Title1SB : SDGTypography(
         TextStyle(
             fontSize = 20.sp,
@@ -91,6 +95,7 @@ sealed class SDGTypography(val style: TextStyle) {
         )
     )
 
+    /** 기본 타이틀 및 본문 강조 **/
     data object Body1SB : SDGTypography(
         TextStyle(
             fontSize = 16.sp,
