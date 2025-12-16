@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.sp
 @Immutable
 sealed class SDGTypography(val style: TextStyle) {
 
-    data object SpecialSB : SDGTypography(
+    data object Special1SB : SDGTypography(
         TextStyle(
             fontSize = 44.sp,
             lineHeight = 48.sp,
