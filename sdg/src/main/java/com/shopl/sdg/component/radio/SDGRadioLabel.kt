@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -25,13 +26,68 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shopl.sdg.component.checkbox.SDGCheckBox
+import com.shopl.sdg.component.radio.preview.SDGRadioLabelPreviewParameterProvider
+import com.shopl.sdg.component.radio.preview.SDGRadioLabelPreviewParams
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.ui.components.IOText
+import com.shopl.sdg_common.ui.components.SDGText
 import kotlin.math.roundToInt
 
+@Composable
+fun SDGRadioLabel(
+    type: SDGRadioLabelType,
+    label: String,
+    isChecked: Boolean,
+    enabled: Boolean = true,
+    defaultLabelColor: Color = SDGColor.Neutral700,
+    checkedLabelColor: Color? = null,
+    checkedBackgroundColor: Color? = null,
+    marginValues: PaddingValues = PaddingValues(),
+    onClick: (() -> Unit)? = null,
+) {
+    Row(
+        modifier = Modifier.padding(paddingValues = marginValues),
+        horizontalArrangement = Arrangement.spacedBy(space = Spacing8),
+    ) {
+        SDGCheckBox(
+            isChecked = isChecked,
+            enabled = enabled,
+            checkedBackgroundColor = checkedBackgroundColor ?: SDGColor.Primary300,
+            onClick = { if (enabled) onClick?.invoke() },
+            clickPadding = PaddingValues(vertical = SDGSpacing.Spacing2),
+        )
+
+        SDGText(
+            modifier = Modifier.then(other = if (enabled) Modifier.clickable { onClick?.invoke() } else Modifier),
+            text = label,
+            textColor = if (enabled) checkedLabelColor
+                ?: defaultLabelColor else SDGColor.Neutral300,
+            typography = type.typography,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewSDGRadioLabel(
+    @PreviewParameter(SDGRadioLabelPreviewParameterProvider::class)
+    params: SDGRadioLabelPreviewParams
+) {
+    SDGRadioLabel(
+        type = params.type,
+        label = params.label,
+        isChecked = params.isChecked,
+        enabled = params.enabled,
+        checkedLabelColor = params.checkTextColor,
+    )
+}
 
 @Composable
 fun SDGRadio(
