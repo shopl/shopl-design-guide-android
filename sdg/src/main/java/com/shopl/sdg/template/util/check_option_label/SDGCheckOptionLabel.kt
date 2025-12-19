@@ -1,4 +1,4 @@
-package com.shopl.sdg.template.check_option_label
+package com.shopl.sdg.template.util.check_option_label
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.check_option.SDGCheck
+import com.shopl.sdg.template.check_option_label.SDGCheckOptionLabelSize
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
@@ -17,7 +19,7 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.ui.components.SDGText
 
 /**
- * SDG - Check Option Label
+ * SDG - Check Option Label(AnnotatedString only)
  *
  * 하나의 옵션을 선택 또는 확인하는 Check Option과 Label이 조합된 템플릿
  *
@@ -26,7 +28,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 @Composable
 fun SDGCheckOptionLabel(
     size: SDGCheckOptionLabelSize,
-    label: String,
+    label: AnnotatedString,
     isChecked: Boolean,
     enabled: Boolean = true,
     defaultTextColor: Color = SDGColor.Neutral700,
@@ -81,7 +83,7 @@ fun SDGCheckOptionLabel(
 private fun PreviewSDGCheckOptionLabel() {
     SDGCheckOptionLabel(
         size = SDGCheckOptionLabelSize.SMALL,
-        label = "Label",
+        label = AnnotatedString("Label"),
         isChecked = false
     )
 }
@@ -91,7 +93,7 @@ private fun PreviewSDGCheckOptionLabel() {
 private fun PreviewSDGCheckOptionLabelChecked() {
     SDGCheckOptionLabel(
         size = SDGCheckOptionLabelSize.MEDIUM,
-        label = "Label",
+        label = AnnotatedString("Label"),
         isChecked = true
     )
 }
@@ -101,7 +103,7 @@ private fun PreviewSDGCheckOptionLabelChecked() {
 private fun PreviewSDGCheckOptionLabelWithLineBreak() {
     SDGCheckOptionLabel(
         size = SDGCheckOptionLabelSize.MEDIUM,
-        label = "Long\nLabel",
+        label = AnnotatedString("Long\nLabel"),
         isChecked = true
     )
 }
