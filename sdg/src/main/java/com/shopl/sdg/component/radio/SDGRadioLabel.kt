@@ -124,7 +124,7 @@ fun SDGRadio(
     ) {
         Canvas(
             modifier = Modifier
-                .padding(top = 3.dp)
+                .padding(top = 2.dp)
                 .size(16.dp)
                 .background(
                     color = radioBackgroundColor,
