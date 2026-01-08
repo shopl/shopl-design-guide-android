@@ -26,11 +26,15 @@ import com.shopl.sdg_common.foundation.SDGColor
 @Composable
 fun SDGRadio(
     isSelected: Boolean,
-    modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
     color: SDGRadioColor = SDGRadioColor.BASIC,
     size: SDGRadioSize = SDGRadioSize.MEDIUM,
 ) {
-    val radioColor = if (isSelected) color.color else SDGColor.Neutral200
+    val radioColor = when {
+        !isEnabled -> SDGColor.Neutral200
+        isSelected -> color.color
+        else -> SDGColor.Neutral200
+    }
     val circleSize = when (size) {
         SDGRadioSize.LARGE -> 18.dp
         SDGRadioSize.MEDIUM -> 16.dp
@@ -39,14 +43,17 @@ fun SDGRadio(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
+        modifier = Modifier
             .size(size = circleSize)
             .background(color = radioColor, shape = CircleShape)
     ) {
         Box(
             modifier = Modifier
                 .size(size = innerCircleSize)
-                .background(color = SDGColor.Neutral0, shape = CircleShape)
+                .background(
+                    color = SDGColor.Neutral0,
+                    shape = CircleShape,
+                )
         )
     }
 }
