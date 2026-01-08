@@ -2,6 +2,7 @@ package com.shopl.sdg.component.list_header_label
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,7 +33,8 @@ fun SDGListHeaderLabel(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Spacing3)
+        horizontalArrangement = Arrangement.spacedBy(Spacing3),
+        modifier = Modifier.fillMaxWidth()
     ) {
         SDGText(
             text = title,
