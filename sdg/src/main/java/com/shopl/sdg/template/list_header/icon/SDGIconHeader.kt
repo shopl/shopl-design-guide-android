@@ -41,8 +41,6 @@ import com.shopl.sdg_common.ui.components.SDGText
 fun SDGIconHeader(
     label: String,
     count: String? = null,
-    @DrawableRes iconResId: Int? = null,
-    iconColor: Color? = null,
     iconHeaderRightItem: SDGIconHeaderRightItem? = null,
     onIconClick: (() -> Unit)? = null,
 ) {
@@ -53,35 +51,6 @@ fun SDGIconHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Spacing12)
     ) {
-        Row(
-            modifier = Modifier.weight(1f),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(Spacing3)
-        ) {
-            SDGText(
-                text = label,
-                textColor = SDGColor.Neutral700,
-                typography = SDGTypography.Body1SB
-            )
-
-            if (count != null) {
-                SDGText(
-                    text = count,
-                    textColor = SDGColor.Neutral700,
-                    typography = SDGTypography.Body1SB
-                )
-            }
-
-            if (iconResId != null) {
-                SDGImage(
-                    modifier = Modifier
-                        .size(20.dp)
-                        .clickable { onIconClick?.invoke() },
-                    resId = iconResId,
-                    color = iconColor
-                )
-            }
-        }
 
         if (iconHeaderRightItem != null) {
             Row(
