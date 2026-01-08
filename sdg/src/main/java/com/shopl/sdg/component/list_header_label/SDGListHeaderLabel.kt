@@ -1,16 +1,20 @@
 package com.shopl.sdg.component.list_header_label
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing3
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
@@ -54,6 +58,20 @@ fun SDGListHeaderLabel(
                 .clickable { onIconClick?.invoke() },
             resId = R.drawable.ic_common_dropdown,
             color = SDGColor.Neutral700
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewSDGListHeaderLabel() {
+    Column(
+        modifier = Modifier.padding(Spacing4),
+        verticalArrangement = Arrangement.spacedBy(Spacing4)
+    ) {
+        SDGListHeaderLabel(
+            title = "Title Only",
+            count = null
         )
     }
 }
