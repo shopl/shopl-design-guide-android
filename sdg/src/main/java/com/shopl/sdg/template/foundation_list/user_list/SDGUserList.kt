@@ -32,8 +32,8 @@ fun SDGUserList(
     buttonLabel: String,
     users: PersistentList<SDGUserUiModel>,
     onClickButton: () -> Unit,
-    onClickAvatar: (() -> Unit)? = null,
-    onClickProfile: (() -> Unit)? = null
+    onClickAvatar: ((userId: String) -> Unit)? = null,
+    onClickProfile: ((userId: String) -> Unit)? = null
 ) {
     SDGCenterPopup(
         buttonOption = SDGCenterPopupButtonOption.OneOption(
@@ -52,8 +52,8 @@ fun SDGUserList(
                 backgroundColor = user.profileBackgroundColor,
                 type = user.profileType,
                 avatarBadge = user.profileAvatarBadge,
-                onClickAvatar = onClickAvatar,
-                onClickProfile = onClickProfile,
+                onClickAvatar = { onClickAvatar?.let { onClickAvatar(user.userId) } },
+                onClickProfile = { onClickProfile?.let { onClickProfile(user.userId) } },
             )
         }
     }
@@ -68,6 +68,7 @@ private fun PreviewSDGUserList() {
             buttonLabel = "Label",
             users = List(size = 100) {
                 SDGUserUiModel(
+                    userId = it.toString(),
                     profileUserRegImg = null,
                     profileUserName = "직원명",
                     profileGroupName = "그룹명",
