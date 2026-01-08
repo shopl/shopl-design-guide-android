@@ -28,7 +28,6 @@ import com.shopl.sdg_common.foundation.SDGColor
 @Composable
 fun SDGRadio(
     isSelected: Boolean,
-    modifier: Modifier = Modifier,
     color: SDGRadioColor = SDGRadioColor.BASIC,
     size: SDGRadioSize = SDGRadioSize.MEDIUM,
 ) {
@@ -41,7 +40,7 @@ fun SDGRadio(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
+        modifier = Modifier
             .size(size = circleSize)
             .background(color = radioColor, shape = CircleShape)
     ) {
