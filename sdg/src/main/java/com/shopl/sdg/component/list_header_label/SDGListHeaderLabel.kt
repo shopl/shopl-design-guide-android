@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing3
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
@@ -35,7 +35,7 @@ fun SDGListHeaderLabel(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Spacing3),
+        horizontalArrangement = Arrangement.spacedBy(Spacing2),
         modifier = Modifier.fillMaxWidth()
     ) {
         SDGText(
