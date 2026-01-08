@@ -53,11 +53,11 @@ fun SDGListHeaderLabel(
         }
 
         SDGImage(
+            resId = R.drawable.ic_common_dropdown,
+            color = SDGColor.Neutral700,
             modifier = Modifier
                 .size(20.dp)
-                .clickable { onIconClick?.invoke() },
-            resId = R.drawable.ic_common_dropdown,
-            color = SDGColor.Neutral700
+                .clickable { onIconClick?.invoke() }
         )
     }
 }
