@@ -46,7 +46,7 @@ fun SDGListHeaderLabel(
 
         if (count != null) {
             SDGText(
-                text = count,
+                text = "($count)",
                 textColor = SDGColor.Neutral700,
                 typography = SDGTypography.Body1SB
             )
@@ -71,7 +71,7 @@ private fun PreviewSDGListHeaderLabel() {
     ) {
         SDGListHeaderLabel(
             title = "Title Only",
-            count = null
+            count = "1"
         )
     }
 }
