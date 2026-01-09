@@ -46,4 +46,6 @@
     <string name="some_days">%1$s n</string>
     <string name="assigned_workplace">Kezelt munkahely</string>
     <string name="no_registered_members">Nincsenek regisztrált tagok</string>
+    <string name="sdg_cm_single_group">Csoport</string>
+    <string name="sdg_cm_position">Pozíció</string>
 </resources>

@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.shopl.sdg.template.foundation_list.group_and_position_list.preview.SDGGroupAndPositionPreviewParameterProvider
@@ -21,6 +22,7 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.PersistentList
+import com.shopl.sdg_resource.R
 
 /**
  * SDG - Template - Group & Position List
@@ -50,9 +52,8 @@ fun SDGGroupAndPositionList(
     ) {
         if (groups.isNotEmpty()) {
             item {
-                // TODO: stringResource
                 SDGText(
-                    text = "그룹",
+                    text = stringResource(id = R.string.sdg_cm_single_group),
                     typography = SDGTypography.Body2R,
                     textColor = SDGColor.Neutral400
                 )
@@ -83,7 +84,7 @@ fun SDGGroupAndPositionList(
         if (positions.isNotEmpty()) {
             item {
                 SDGText(
-                    text = "직무/직급",
+                    text = stringResource(id = R.string.sdg_cm_position),
                     typography = SDGTypography.Body2R,
                     textColor = SDGColor.Neutral400
                 )

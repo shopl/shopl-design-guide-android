@@ -46,4 +46,6 @@
     <string name="some_days">%1$s ngày</string>
     <string name="assigned_workplace">Nơi làm việc phụ trách</string>
     <string name="no_registered_members">Chưa có thành viên nào đăng ký.</string>
+    <string name="sdg_cm_single_group">Nhóm</string>
+    <string name="sdg_cm_position">Chức vụ</string>
 </resources>

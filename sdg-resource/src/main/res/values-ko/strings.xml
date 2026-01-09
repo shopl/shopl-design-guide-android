@@ -46,4 +46,6 @@
     <string name="some_days">%1$s일</string>
     <string name="assigned_workplace">담당 근무지</string>
     <string name="no_registered_members">등록된 구성원이 없습니다</string>
+    <string name="sdg_cm_single_group">그룹</string>
+    <string name="sdg_cm_position">직무/직급</string>
 </resources>

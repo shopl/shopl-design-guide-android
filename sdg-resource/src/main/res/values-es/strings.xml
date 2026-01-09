@@ -46,4 +46,6 @@
     <string name="time_h">%1$sh</string>
     <string name="time_m">%1$sm</string>
     <string name="no_registered_members">No hay miembros registrados.</string>
+    <string name="sdg_cm_single_group">Grupo</string>
+    <string name="sdg_cm_position">Posición</string>
 </resources>
