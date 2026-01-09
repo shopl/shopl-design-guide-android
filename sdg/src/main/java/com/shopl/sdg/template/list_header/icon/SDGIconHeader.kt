@@ -31,6 +31,8 @@ import com.shopl.sdg_common.ui.components.SDGImage
  *
  * 리스트 최상단에 표시되는 정보와 아이콘이 조합된 템플릿
  *
+ * @param count Local Format을 위한 String 타입
+ *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=21463-14546&m=dev">Figma</a>
  */
 @Composable
