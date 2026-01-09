@@ -15,6 +15,9 @@ import com.shopl.sdg_resource.R
 /**
  * [RowScope] [SDGListHeaderLabel]
  * weight 값 지정 가능
+ *
+ * @param count Local Format을 위한 String 타입
+ *
  */
 @Composable
 fun RowScope.SDGListHeaderLabel(

@@ -25,6 +25,8 @@ import com.shopl.sdg_resource.R
  *
  * 리스트 상단에 위치하는 타이틀 컴포넌트
  *
+ * @param count Local Format을 위한 String 타입
+ *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=22084-3889&m=dev">Figma</a>
  */
 @Composable
