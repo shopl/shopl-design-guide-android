@@ -28,15 +28,10 @@ import com.shopl.sdg_common.foundation.SDGColor
 @Composable
 fun SDGRadio(
     isSelected: Boolean,
-    isEnabled: Boolean = true,
     selectedColor: SDGRadioColor = SDGRadioColor.BASIC,
     size: SDGRadioSize = SDGRadioSize.MEDIUM,
 ) {
-    val radioColor = when {
-        isSelected -> selectedColor.color
-        !isEnabled -> SDGColor.Neutral200
-        else -> SDGColor.Neutral200
-    }
+    val radioColor = if (isSelected) selectedColor.color else SDGColor.Neutral200
     val circleSize = when (size) {
         SDGRadioSize.LARGE -> 18.dp
         SDGRadioSize.MEDIUM -> 16.dp

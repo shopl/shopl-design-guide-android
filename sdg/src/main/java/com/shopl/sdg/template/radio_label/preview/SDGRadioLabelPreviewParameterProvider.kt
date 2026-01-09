@@ -7,27 +7,43 @@ internal class SDGRadioLabelPreviewParameterProvider :
     PreviewParameterProvider<SDGRadioLabelPreviewParams> {
 
     override val values: Sequence<SDGRadioLabelPreviewParams> = sequenceOf(
-        선택된_상태_LABEL_BASIC_한줄(),
-        선택된_상태_LABEL_SPECIAL_한줄(),
-        비활성_상태_LABEL_BASIC_한줄(),
+        활성_상태_및_선택_상태_LABEL_BASIC_한줄(),
+        활성_상태_및_선택_상태_LABEL_COLOR_한줄(),
+        활성_상태_및_비선택_상태_LABEL_BASIC_한줄(),
+        비활성_상태_및_선택_상태_LABEL_BASIC_한줄(),
+        비활성_상태_및_비선택_상태_LABEL_BASIC_한줄(),
         비활성_상태_LABEL_BASIC_여러줄(),
     )
 
-    private fun 선택된_상태_LABEL_BASIC_한줄() = SDGRadioLabelPreviewParams(
+    private fun 활성_상태_및_선택_상태_LABEL_BASIC_한줄() = SDGRadioLabelPreviewParams(
         isSelected = true,
         isEnabled = true,
         labelColor = SDGRadioLabelColor.BASIC,
         label = "옵션",
     )
 
-    private fun 선택된_상태_LABEL_SPECIAL_한줄() = SDGRadioLabelPreviewParams(
+    private fun 활성_상태_및_선택_상태_LABEL_COLOR_한줄() = SDGRadioLabelPreviewParams(
         isSelected = true,
         isEnabled = true,
         labelColor = SDGRadioLabelColor.COLOR,
         label = "옵션",
     )
 
-    private fun 비활성_상태_LABEL_BASIC_한줄() = SDGRadioLabelPreviewParams(
+    private fun 활성_상태_및_비선택_상태_LABEL_BASIC_한줄() = SDGRadioLabelPreviewParams(
+        isSelected = false,
+        isEnabled = true,
+        labelColor = SDGRadioLabelColor.BASIC,
+        label = "옵션",
+    )
+
+    private fun 비활성_상태_및_선택_상태_LABEL_BASIC_한줄() = SDGRadioLabelPreviewParams(
+        isSelected = true,
+        isEnabled = false,
+        labelColor = SDGRadioLabelColor.BASIC,
+        label = "옵션",
+    )
+
+    private fun 비활성_상태_및_비선택_상태_LABEL_BASIC_한줄() = SDGRadioLabelPreviewParams(
         isSelected = false,
         isEnabled = false,
         labelColor = SDGRadioLabelColor.BASIC,

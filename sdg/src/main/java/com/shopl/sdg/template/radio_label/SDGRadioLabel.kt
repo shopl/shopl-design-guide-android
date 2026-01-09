@@ -66,7 +66,6 @@ fun SDGRadioLabel(
         ) {
             SDGRadio(
                 isSelected = isSelected,
-                isEnabled = isEnabled,
                 selectedColor = radioColor,
                 size = radioSize,
             )
