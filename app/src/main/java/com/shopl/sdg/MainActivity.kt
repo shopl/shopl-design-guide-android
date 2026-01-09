@@ -10,8 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import com.shopl.sdg.template.list_header.icon.IconType
 import com.shopl.sdg.template.list_header.icon.SDGIconHeader
-import com.shopl.sdg.template.list_header.icon.SDGIconHeaderRightItem
+import com.shopl.sdg.template.list_header.icon.SDGIconHeaderIcon
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_resource.R
@@ -33,60 +34,68 @@ class MainActivity : ComponentActivity() {
                         SDGIconHeader(
                             label = "메일",
                             count = "12",
+                            iconType = IconType.ONLY_ICON,
+                            rightIcons = persistentListOf(
+                                SDGIconHeaderIcon(R.drawable.ic_common_search, SDGColor.Neutral700),
+                                SDGIconHeaderIcon(R.drawable.ic_common_company, SDGColor.Neutral700),
+                                SDGIconHeaderIcon(R.drawable.ic_common_staff, SDGColor.Neutral700)
+                            ),
                         )
 
                         SDGIconHeader(
                             label = "메일",
                             count = "12",
-                            rightIcons = SDGIconHeaderRightItem(
-                                icons = persistentListOf(
-                                    SDGIconHeaderRightItem.SDGIconHeaderIcon(
-                                        resId = R.drawable.ic_common_company,
-                                        color = SDGColor.Primary300,
-                                        onClick = {}
-                                    ),
-                                    SDGIconHeaderRightItem.SDGIconHeaderIcon(
-                                        resId = R.drawable.ic_common_company,
-                                        color = SDGColor.Primary300,
-                                        onClick = {}
-                                    ),
-                                    SDGIconHeaderRightItem.SDGIconHeaderIcon(
-                                        resId = R.drawable.ic_common_company,
-                                        color = SDGColor.Primary300,
-                                        onClick = {}
-                                    )
+                            iconType = IconType.WITH_BOX,
+                            rightIcons = persistentListOf(
+                                SDGIconHeaderIcon(
+                                    resId = R.drawable.ic_common_company,
+                                    color = SDGColor.Primary300,
+                                    onClick = {}
                                 ),
-                                isBox = true
+                                SDGIconHeaderIcon(
+                                    resId = R.drawable.ic_common_company,
+                                    color = SDGColor.Primary300,
+                                    onClick = {}
+                                ),
+                                SDGIconHeaderIcon(
+                                    resId = R.drawable.ic_common_company,
+                                    color = SDGColor.Primary300,
+                                    onClick = {}
+                                )
                             )
                         )
 
                         SDGIconHeader(
                             label = "메일",
                             count = "12",
+                            iconType = IconType.ONLY_ICON,
+                            rightIcons = persistentListOf(
+                                SDGIconHeaderIcon(R.drawable.ic_common_search, SDGColor.Neutral700),
+                                SDGIconHeaderIcon(R.drawable.ic_common_company, SDGColor.Neutral700),
+                                SDGIconHeaderIcon(R.drawable.ic_common_staff, SDGColor.Neutral700)
+                            ),
                         )
 
                         SDGIconHeader(
                             label = "메일",
                             count = "12",
-                            rightIcons = SDGIconHeaderRightItem(
-                                icons = persistentListOf(
-                                    SDGIconHeaderRightItem.SDGIconHeaderIcon(
-                                        resId = R.drawable.ic_common_company,
-                                        color = SDGColor.Primary300,
-                                        onClick = {}
-                                    ),
-                                    SDGIconHeaderRightItem.SDGIconHeaderIcon(
-                                        resId = R.drawable.ic_common_company,
-                                        color = SDGColor.Primary300,
-                                        onClick = {}
-                                    ),
-                                    SDGIconHeaderRightItem.SDGIconHeaderIcon(
-                                        resId = R.drawable.ic_common_company,
-                                        color = SDGColor.Primary300,
-                                        onClick = {}
-                                    )
+                            iconType = IconType.ONLY_ICON,
+                            rightIcons = persistentListOf(
+                                SDGIconHeaderIcon(
+                                    resId = R.drawable.ic_common_company,
+                                    color = SDGColor.Primary300,
+                                    onClick = {}
                                 ),
-                                isBox = false
+                                SDGIconHeaderIcon(
+                                    resId = R.drawable.ic_common_company,
+                                    color = SDGColor.Primary300,
+                                    onClick = {}
+                                ),
+                                SDGIconHeaderIcon(
+                                    resId = R.drawable.ic_common_company,
+                                    color = SDGColor.Primary300,
+                                    onClick = {}
+                                )
                             )
                         )
                     }

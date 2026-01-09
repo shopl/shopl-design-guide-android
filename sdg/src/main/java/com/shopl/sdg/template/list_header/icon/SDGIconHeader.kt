@@ -40,8 +40,8 @@ import kotlinx.collections.immutable.PersistentList
 fun SDGIconHeader(
     label: String,
     iconType: IconType,
+    rightIcons: PersistentList<SDGIconHeaderIcon>,
     count: String? = null,
-    rightIcons: PersistentList<SDGIconHeaderIcon>? = null,
     onIconClick: (() -> Unit)? = null,
 ) {
     Row(
@@ -58,40 +58,38 @@ fun SDGIconHeader(
             onIconClick = onIconClick
         )
 
-        if (rightIcons != null) {
-            Row(
-                modifier = if (iconType == IconType.WITH_BOX) {
-                    Modifier
-                        .border(
-                            width = 1.dp,
-                            color = SDGColor.Neutral200,
-                            shape = SDGCornerRadius.BoxRadius.Radius6
-                        )
-                        .padding(horizontal = Spacing8, vertical = Spacing4)
-                } else {
-                    Modifier
-                        .padding(horizontal = Spacing8)
-                },
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(Spacing8)
-            ) {
-                rightIcons.forEachIndexed { index, (resId, color, onClick) ->
-                    SDGImage(
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable { onClick?.invoke() },
-                        resId = resId,
-                        color = color
+        Row(
+            modifier = if (iconType == IconType.WITH_BOX) {
+                Modifier
+                    .border(
+                        width = 1.dp,
+                        color = SDGColor.Neutral200,
+                        shape = SDGCornerRadius.BoxRadius.Radius6
                     )
+                    .padding(horizontal = Spacing8, vertical = Spacing4)
+            } else {
+                Modifier
+                    .padding(horizontal = Spacing8)
+            },
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(Spacing8)
+        ) {
+            rightIcons.forEachIndexed { index, (resId, color, onClick) ->
+                SDGImage(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable { onClick?.invoke() },
+                    resId = resId,
+                    color = color
+                )
 
-                    if (rightIcons.size > 1 && index != rightIcons.lastIndex) {
-                        VerticalDivider(
-                            modifier = Modifier
-                                .width(1.dp)
-                                .height(14.dp),
-                            color = SDGColor.Neutral200
-                        )
-                    }
+                if (rightIcons.size > 1 && index != rightIcons.lastIndex) {
+                    VerticalDivider(
+                        modifier = Modifier
+                            .width(1.dp)
+                            .height(14.dp),
+                        color = SDGColor.Neutral200
+                    )
                 }
             }
         }
@@ -108,6 +106,6 @@ private fun PreviewSDGIconHeader(
         label = param.label,
         count = param.count,
         iconType = param.iconType,
-        rightIcons = param.iconHeaderRightItem,
+        rightIcons = param.rightIcons,
     )
 }
