@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
@@ -43,7 +44,10 @@ fun SDGListHeaderLabel(
         SDGText(
             text = title,
             textColor = SDGColor.Neutral700,
-            typography = SDGTypography.Body1SB
+            typography = SDGTypography.Body1SB,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f, false)
         )
 
         if (count != null) {
