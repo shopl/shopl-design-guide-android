@@ -19,10 +19,7 @@ import kotlinx.collections.immutable.toPersistentList
 /**
  * SDG - Template - User List
  *
- * 사용자 목록을 Center Popup 형태로 노출하는 컴포넌트입니다.
- *
- * 각 사용자 항목은 프로필 정보와 아바타 영역을 포함하며,
- * 하단에는 단일 액션 버튼이 고정되어 노출됩니다.
+ * 구성원 전체 목록을 확인하는 템플릿
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19877-34076&m=dev">Figma</a>
  */
@@ -52,8 +49,8 @@ fun SDGUserList(
                 backgroundColor = user.profileBackgroundColor,
                 type = user.profileType,
                 avatarBadge = user.profileAvatarBadge,
-                onClickAvatar = { onClickAvatar?.let { onClickAvatar(user.userId) } },
-                onClickProfile = { onClickProfile?.let { onClickProfile(user.userId) } },
+                onClickAvatar = { onClickAvatar?.invoke(user.userId) },
+                onClickProfile = { onClickProfile?.invoke(user.userId) },
             )
         }
     }

@@ -46,4 +46,6 @@
     <string name="some_days">%1$s日</string>
     <string name="assigned_workplace">担当勤務地</string>
     <string name="no_registered_members">登録されているメンバーがいません。</string>
+    <string name="sdg_cm_single_group">グループ</string>
+    <string name="sdg_cm_position">職務/職級</string>
 </resources>

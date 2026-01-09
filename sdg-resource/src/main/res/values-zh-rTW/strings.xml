@@ -46,4 +46,6 @@
     <string name="some_days">%1$s天</string>
     <string name="assigned_workplace">負責工作地點</string>
     <string name="no_registered_members">沒有註冊的成員</string>
+    <string name="sdg_cm_single_group">群組</string>
+    <string name="sdg_cm_position">職務/職級</string>
 </resources>

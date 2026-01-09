@@ -46,4 +46,6 @@
     <string name="some_days">%1$s วัน</string>
     <string name="assigned_workplace">สถานที่ทำงานที่จัดการ</string>
     <string name="no_registered_members">ไม่มีสมาชิกที่ลงทะเบียน</string>
+    <string name="sdg_cm_single_group">กลุ่ม</string>
+    <string name="sdg_cm_position">ตำแหน่งงาน</string>
 </resources>
