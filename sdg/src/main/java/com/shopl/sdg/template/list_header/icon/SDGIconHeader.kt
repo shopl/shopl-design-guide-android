@@ -25,6 +25,7 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.ui.components.SDGImage
+import kotlinx.collections.immutable.PersistentList
 
 /**
  * SDG - List Header - Icon Header
@@ -38,8 +39,9 @@ import com.shopl.sdg_common.ui.components.SDGImage
 @Composable
 fun SDGIconHeader(
     label: String,
+    iconType: IconType,
     count: String? = null,
-    iconHeaderRightItem: SDGIconHeaderRightItem? = null,
+    rightIcons: PersistentList<SDGIconHeaderIcon>? = null,
     onIconClick: (() -> Unit)? = null,
 ) {
     Row(
@@ -56,9 +58,9 @@ fun SDGIconHeader(
             onIconClick = onIconClick
         )
 
-        if (iconHeaderRightItem != null) {
+        if (rightIcons != null) {
             Row(
-                modifier = if (iconHeaderRightItem.isBox) {
+                modifier = if (iconType == IconType.WITH_BOX) {
                     Modifier
                         .border(
                             width = 1.dp,
@@ -73,7 +75,7 @@ fun SDGIconHeader(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(Spacing8)
             ) {
-                iconHeaderRightItem.icons.forEachIndexed { index, (resId, color, onClick) ->
+                rightIcons.forEachIndexed { index, (resId, color, onClick) ->
                     SDGImage(
                         modifier = Modifier
                             .size(20.dp)
@@ -82,7 +84,7 @@ fun SDGIconHeader(
                         color = color
                     )
 
-                    if (iconHeaderRightItem.icons.size > 1 && index != iconHeaderRightItem.icons.lastIndex) {
+                    if (rightIcons.size > 1 && index != rightIcons.lastIndex) {
                         VerticalDivider(
                             modifier = Modifier
                                 .width(1.dp)
@@ -105,6 +107,7 @@ private fun PreviewSDGIconHeader(
     SDGIconHeader(
         label = param.label,
         count = param.count,
-        iconHeaderRightItem = param.iconHeaderRightItem,
+        iconType = param.iconType,
+        rightIcons = param.iconHeaderRightItem,
     )
 }

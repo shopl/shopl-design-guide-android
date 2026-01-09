@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                         SDGIconHeader(
                             label = "메일",
                             count = "12",
-                            iconHeaderRightItem = SDGIconHeaderRightItem(
+                            rightIcons = SDGIconHeaderRightItem(
                                 icons = persistentListOf(
                                     SDGIconHeaderRightItem.SDGIconHeaderIcon(
                                         resId = R.drawable.ic_common_company,
@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                         SDGIconHeader(
                             label = "메일",
                             count = "12",
-                            iconHeaderRightItem = SDGIconHeaderRightItem(
+                            rightIcons = SDGIconHeaderRightItem(
                                 icons = persistentListOf(
                                     SDGIconHeaderRightItem.SDGIconHeaderIcon(
                                         resId = R.drawable.ic_common_company,
