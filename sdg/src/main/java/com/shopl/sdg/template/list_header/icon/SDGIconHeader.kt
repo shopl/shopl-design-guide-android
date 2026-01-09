@@ -42,7 +42,7 @@ fun SDGIconHeader(
     iconType: IconType,
     rightIcons: PersistentList<SDGIconHeaderIcon>,
     count: String? = null,
-    onIconClick: (() -> Unit)? = null,
+    onLeftIconClick: (() -> Unit)? = null,
 ) {
     Row(
         modifier = Modifier
@@ -55,7 +55,7 @@ fun SDGIconHeader(
             weight = 1f,
             title = label,
             count = count,
-            onIconClick = onIconClick
+            onIconClick = onLeftIconClick
         )
 
         Row(
