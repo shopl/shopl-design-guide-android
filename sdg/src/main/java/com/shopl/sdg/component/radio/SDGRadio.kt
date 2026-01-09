@@ -21,7 +21,7 @@ import com.shopl.sdg_common.foundation.SDGColor
  *
  * @param isSelected 선택 상태
  * @param size 라디오 버튼 크기 (Medium(Default, 16*16) or Large(18*18))
- * @param color 라디오 버튼 색상 (Basic(Default, Primary300) or Special(Neutral700))
+ * @param selectedColor 라디오 버튼 색상 (Basic(Default, Primary300) or Special(Neutral700))
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7349-16797&m=dev">Figma</a>
  */
@@ -29,12 +29,12 @@ import com.shopl.sdg_common.foundation.SDGColor
 fun SDGRadio(
     isSelected: Boolean,
     isEnabled: Boolean = true,
-    color: SDGRadioColor = SDGRadioColor.BASIC,
+    selectedColor: SDGRadioColor = SDGRadioColor.BASIC,
     size: SDGRadioSize = SDGRadioSize.MEDIUM,
 ) {
     val radioColor = when {
+        isSelected -> selectedColor.color
         !isEnabled -> SDGColor.Neutral200
-        isSelected -> color.color
         else -> SDGColor.Neutral200
     }
     val circleSize = when (size) {
@@ -69,6 +69,6 @@ private fun PreviewSDGRadio(
     SDGRadio(
         isSelected = params.isSelected,
         size = params.size,
-        color = params.color
+        selectedColor = params.color
     )
 }

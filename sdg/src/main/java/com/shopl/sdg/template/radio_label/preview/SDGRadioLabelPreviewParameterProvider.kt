@@ -23,7 +23,7 @@ internal class SDGRadioLabelPreviewParameterProvider :
     private fun 선택된_상태_LABEL_SPECIAL_한줄() = SDGRadioLabelPreviewParams(
         isSelected = true,
         isEnabled = true,
-        labelColor = SDGRadioLabelColor.SPECIAL,
+        labelColor = SDGRadioLabelColor.COLOR,
         label = "옵션",
     )
 

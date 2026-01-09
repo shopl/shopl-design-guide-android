@@ -4,5 +4,5 @@ import androidx.compose.ui.graphics.Color
 import com.shopl.sdg_common.foundation.SDGColor
 
 enum class SDGRadioLabelColor(val color: Color) {
-    BASIC(color = SDGColor.Neutral700), SPECIAL(color = SDGColor.Primary300)
+    BASIC(color = SDGColor.Neutral700), COLOR(color = SDGColor.Primary300)
 }

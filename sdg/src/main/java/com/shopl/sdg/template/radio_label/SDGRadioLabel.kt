@@ -15,6 +15,7 @@ import com.shopl.sdg.component.radio.SDGRadioColor
 import com.shopl.sdg.component.radio.SDGRadioSize
 import com.shopl.sdg.template.radio_label.preview.SDGRadioLabelPreviewParameterProvider
 import com.shopl.sdg.template.radio_label.preview.SDGRadioLabelPreviewParams
+import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.foundation.typography.SDGTypography
@@ -28,7 +29,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  * @param isSelected 라디오 선택 상태
  * @param label 라디오 옆에 표시되는 텍스트 라벨
  * @param isEnabled 컴포넌트 활성화 여부
- * @param labelColor 라벨 텍스트 색상 타입
+ * @param selectedLabelColor 라벨 텍스트 색상 타입
  * @param radioColor 라디오 버튼 색상 타입
  * @param radioSize 라디오 버튼 크기
  *
@@ -39,13 +40,14 @@ fun SDGRadioLabel(
     isSelected: Boolean,
     label: String,
     isEnabled: Boolean = true,
-    labelColor: SDGRadioLabelColor = SDGRadioLabelColor.BASIC,
+    selectedLabelColor: SDGRadioLabelColor = SDGRadioLabelColor.BASIC,
     radioColor: SDGRadioColor = SDGRadioColor.BASIC,
     radioSize: SDGRadioSize = SDGRadioSize.MEDIUM,
+    onClick: (() -> Unit)? = null,
 ) {
-    val labelTextColor = when {
-        !isEnabled -> SDGColor.Neutral300
-        isSelected -> labelColor.color
+    val labelColor = when {
+        isSelected -> selectedLabelColor.color
+        isEnabled -> SDGColor.Neutral700
         else -> SDGColor.Neutral300
     }
     val typography = SDGTypography.Body1R
@@ -54,7 +56,9 @@ fun SDGRadioLabel(
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(space = Spacing8),
-        verticalAlignment = Alignment.Top,
+        modifier = Modifier.then(
+            if (onClick != null && isEnabled) Modifier.clickable(onClick = onClick) else Modifier
+        ),
     ) {
         Box(
             modifier = Modifier.height(height = lineHeightDp),
@@ -63,14 +67,14 @@ fun SDGRadioLabel(
             SDGRadio(
                 isSelected = isSelected,
                 isEnabled = isEnabled,
-                color = radioColor,
+                selectedColor = radioColor,
                 size = radioSize,
             )
         }
 
         SDGText(
             text = label,
-            textColor = labelTextColor,
+            textColor = labelColor,
             typography = typography,
         )
     }
@@ -86,6 +90,6 @@ private fun PreviewSDGRadioLabel(
         isSelected = params.isSelected,
         isEnabled = params.isEnabled,
         label = params.label,
-        labelColor = params.labelColor,
+        selectedLabelColor = params.labelColor,
     )
 }
