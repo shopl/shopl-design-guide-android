@@ -1,7 +1,6 @@
 package com.shopl.sdg.template.list_header.icon.preview
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.shopl.sdg.template.list_header.icon.SDGIconHeaderRightItem
 import com.shopl.sdg_common.foundation.SDGColor
@@ -26,8 +25,6 @@ internal class SDGIconHeaderPreviewParameterProvider : PreviewParameterProvider<
     private fun 아이콘_헤더(): SDGIconHeaderPreviewParam {
         return SDGIconHeaderPreviewParam(
             label = "아이콘 라벨",
-            iconResId = R.drawable.ic_common_company, // 임의의 아이콘
-            iconColor = SDGColor.Neutral700
         )
     }
 
@@ -35,8 +32,6 @@ internal class SDGIconHeaderPreviewParameterProvider : PreviewParameterProvider<
         return SDGIconHeaderPreviewParam(
             label = "메일",
             count = "12",
-            iconResId = R.drawable.ic_common_mail,
-            iconColor = SDGColor.Neutral700
         )
     }
 
@@ -70,7 +65,5 @@ internal data class SDGIconHeaderPreviewParam(
     val label: String = "Label",
     val count: String? = null,
     val marginValues: PaddingValues = PaddingValues(),
-    val iconResId: Int? = null,
-    val iconColor: Color? = null,
     val iconHeaderRightItem: SDGIconHeaderRightItem? = null
 )

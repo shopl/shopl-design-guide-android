@@ -1,6 +1,5 @@
 package com.shopl.sdg.template.list_header.icon
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -13,22 +12,19 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.util.list_header_label.SDGListHeaderLabel
 import com.shopl.sdg.template.list_header.icon.preview.SDGIconHeaderPreviewParam
 import com.shopl.sdg.template.list_header.icon.preview.SDGIconHeaderPreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
-import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing3
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
-import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
-import com.shopl.sdg_common.ui.components.SDGText
 
 /**
  * SDG - List Header - Icon Header
@@ -51,6 +47,12 @@ fun SDGIconHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Spacing12)
     ) {
+        SDGListHeaderLabel(
+            weight = 1f,
+            title = label,
+            count = count,
+            onIconClick = onIconClick
+        )
 
         if (iconHeaderRightItem != null) {
             Row(
@@ -101,8 +103,6 @@ private fun PreviewSDGIconHeader(
     SDGIconHeader(
         label = param.label,
         count = param.count,
-        iconResId = param.iconResId,
-        iconColor = param.iconColor,
         iconHeaderRightItem = param.iconHeaderRightItem,
     )
 }
