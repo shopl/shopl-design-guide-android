@@ -46,7 +46,7 @@ fun SDGWorkplaceList(
         items(items = workplaces) { model ->
             SDGText(
                 text = "${model.workplaceName}${
-                    model.workplaceCode.takeIf { it.isNotEmpty() }?.let { "($it)" } ?: ""
+                    model.workplaceCode.takeIf { !it.isNullOrEmpty() }?.let { "($it)" } ?: ""
                 }",
                 typography = SDGTypography.Body1R,
                 textColor = SDGColor.Neutral700,
