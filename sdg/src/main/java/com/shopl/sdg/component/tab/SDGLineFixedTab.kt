@@ -33,6 +33,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7460-24521&m=dev">Figma</a>
  */
+@Deprecated("use fixed/SDGFixedTab")
 @Composable
 fun SDGLineFixedTab(
     modifier: Modifier = Modifier,
