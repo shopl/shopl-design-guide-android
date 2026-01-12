@@ -23,7 +23,7 @@ import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_resource.R
 
 /**
- * SDG - Component - Checkbox
+ * SDG - Component - Check Option
  *
  * 하나의 옵션을 선택 또는 확인하는 컴포넌트
  *
