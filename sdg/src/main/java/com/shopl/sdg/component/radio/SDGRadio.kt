@@ -19,7 +19,7 @@ import com.shopl.sdg_common.foundation.SDGColor
  *
  * 여러개의 옵션 중 단일 선택을 위한 컴포넌트
  *
- * @param isSelected 선택 상태
+ * @param status Radio 상태
  * @param size 라디오 버튼 크기 (Medium(Default, 16*16) or Large(18*18))
  * @param selectedColor 라디오 버튼 색상 (Basic(Default, Primary300) or Special(Neutral700))
  *
@@ -27,11 +27,15 @@ import com.shopl.sdg_common.foundation.SDGColor
  */
 @Composable
 fun SDGRadio(
-    isSelected: Boolean,
+    status: SDGRadioStatus,
     selectedColor: SDGRadioColor = SDGRadioColor.BASIC,
     size: SDGRadioSize = SDGRadioSize.MEDIUM,
 ) {
-    val radioColor = if (isSelected) selectedColor.color else SDGColor.Neutral200
+    val radioColor = when (status) {
+        SDGRadioStatus.DEFAULT -> SDGColor.Neutral200
+        SDGRadioStatus.SELECTED -> selectedColor.color
+        SDGRadioStatus.DISABLED -> SDGColor.Neutral200
+    }
     val circleSize = when (size) {
         SDGRadioSize.LARGE -> 18.dp
         SDGRadioSize.MEDIUM -> 16.dp
@@ -62,7 +66,7 @@ private fun PreviewSDGRadio(
     params: SDGRadioPreviewParams
 ) {
     SDGRadio(
-        isSelected = params.isSelected,
+        status = params.status,
         size = params.size,
         selectedColor = params.color
     )
