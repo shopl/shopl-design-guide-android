@@ -76,7 +76,7 @@ private fun Tab(
     Box(
         modifier = Modifier
             .height(32.dp)
-            .clickable(hasRipple = false) {
+            .clickable {
                 onClick()
             }
     ) {
