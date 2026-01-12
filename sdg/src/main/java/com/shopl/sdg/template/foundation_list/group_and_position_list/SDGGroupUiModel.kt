@@ -6,7 +6,7 @@ data class SDGGroupUiModel(
 ) {
 
     companion object {
-        val FIXTURE = SDGGroupUiModel(
+        internal val FIXTURE = SDGGroupUiModel(
             groupId = "",
             groupName = ""
         )

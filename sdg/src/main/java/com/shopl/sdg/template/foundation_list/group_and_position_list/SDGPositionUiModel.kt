@@ -6,7 +6,7 @@ data class SDGPositionUiModel(
 ) {
 
     companion object {
-        val FIXTURE = SDGPositionUiModel(
+        internal val FIXTURE = SDGPositionUiModel(
             positionId = "",
             positionName = ""
         )
