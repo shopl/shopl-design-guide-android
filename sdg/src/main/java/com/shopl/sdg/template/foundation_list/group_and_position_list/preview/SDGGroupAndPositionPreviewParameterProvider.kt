@@ -18,7 +18,7 @@ internal class SDGGroupAndPositionPreviewParameterProvider :
 
     private fun 그룹만_존재하는_경우() = SDGGroupAndPositionPreviewParams(
         groups = persistentListOf(
-            SDGGroupUiModel(groupName = "그룹 1")
+            SDGGroupUiModel.FIXTURE.copy(groupName = "그룹 1")
         ),
         positions = persistentListOf(),
     )
@@ -26,25 +26,25 @@ internal class SDGGroupAndPositionPreviewParameterProvider :
     private fun 포지션만_존재하는_경우() = SDGGroupAndPositionPreviewParams(
         groups = persistentListOf(),
         positions = persistentListOf(
-            SDGPositionUiModel(positionName = "포지션 1")
+            SDGPositionUiModel.FIXTURE.copy(positionName = "포지션 1")
         ),
     )
 
     private fun 그룹과_포지션이_모두_존재하는_경우() = SDGGroupAndPositionPreviewParams(
         groups = persistentListOf(
-            SDGGroupUiModel(groupName = "그룹 1")
+            SDGGroupUiModel.FIXTURE.copy(groupName = "그룹 1")
         ),
         positions = persistentListOf(
-            SDGPositionUiModel(positionName = "포지션 1")
+            SDGPositionUiModel.FIXTURE.copy(positionName = "포지션 1")
         ),
     )
 
     private fun 그룹과_포지션이_각각_10개_이상_존재하는_경우() = SDGGroupAndPositionPreviewParams(
         groups = List(size = 10) {
-            SDGGroupUiModel(groupName = "그룹 1")
+            SDGGroupUiModel.FIXTURE.copy(groupName = "그룹 1")
         }.toPersistentList(),
         positions = List(size = 10) {
-            SDGPositionUiModel(positionName = "포지션 1")
+            SDGPositionUiModel.FIXTURE.copy(positionName = "포지션 1")
         }.toPersistentList(),
     )
 }
