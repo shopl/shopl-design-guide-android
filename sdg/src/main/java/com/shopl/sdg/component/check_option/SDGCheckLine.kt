@@ -28,6 +28,7 @@ import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_resource.R
 
+@Deprecated("use SDGCheckOption(type = Line)")
 @Composable
 fun SDGCheckLine(
     unCheckedStrokeColor: Color = SDGColor.Neutral300,

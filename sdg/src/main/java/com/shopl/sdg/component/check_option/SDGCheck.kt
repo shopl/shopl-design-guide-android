@@ -24,6 +24,7 @@ import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_resource.R
 
+@Deprecated("use SDGCheckOption(type = Solid)")
 @Composable
 fun SDGCheck(
     isChecked: Boolean,
