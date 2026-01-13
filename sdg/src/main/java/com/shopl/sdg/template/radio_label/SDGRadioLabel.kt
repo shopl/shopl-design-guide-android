@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.shopl.sdg.component.radio.SDGRadio
 import com.shopl.sdg.component.radio.SDGRadioColor
 import com.shopl.sdg.component.radio.SDGRadioSize
+import com.shopl.sdg.component.radio.SDGRadioStatus
 import com.shopl.sdg.template.radio_label.preview.SDGRadioLabelPreviewParameterProvider
 import com.shopl.sdg.template.radio_label.preview.SDGRadioLabelPreviewParams
 import com.shopl.sdg_common.ext.clickable
@@ -26,9 +27,8 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * 여러개의 옵션 중 단일 선택을 위한 Radio와 Label이 조합된 템플릿
  *
- * @param isSelected 라디오 선택 상태
+ * @param status 라디오 라벨 상태
  * @param label 라디오 옆에 표시되는 텍스트 라벨
- * @param isEnabled 컴포넌트 활성화 여부
  * @param selectedLabelColor 라벨 텍스트 색상 타입
  * @param radioColor 라디오 버튼 색상 타입
  * @param radioSize 라디오 버튼 크기
@@ -37,18 +37,17 @@ import com.shopl.sdg_common.ui.components.SDGText
  */
 @Composable
 fun SDGRadioLabel(
-    isSelected: Boolean,
     label: String,
-    isEnabled: Boolean = true,
+    status : SDGRadioLabelStatus,
     selectedLabelColor: SDGRadioLabelColor = SDGRadioLabelColor.BASIC,
     radioColor: SDGRadioColor = SDGRadioColor.BASIC,
     radioSize: SDGRadioSize = SDGRadioSize.MEDIUM,
     onClick: (() -> Unit)? = null,
 ) {
-    val labelColor = when {
-        isSelected -> selectedLabelColor.color
-        isEnabled -> SDGColor.Neutral700
-        else -> SDGColor.Neutral300
+    val labelColor = when(status) {
+        SDGRadioLabelStatus.DEFAULT -> SDGColor.Neutral700
+        SDGRadioLabelStatus.SELECTED -> selectedLabelColor.color
+        SDGRadioLabelStatus.DISABLED -> SDGColor.Neutral300
     }
     val typography = SDGTypography.Body1R
     val density = LocalDensity.current
@@ -57,7 +56,9 @@ fun SDGRadioLabel(
     Row(
         horizontalArrangement = Arrangement.spacedBy(space = Spacing8),
         modifier = Modifier.then(
-            if (onClick != null && isEnabled) Modifier.clickable(onClick = onClick) else Modifier
+            if (onClick != null && status != SDGRadioLabelStatus.DISABLED) {
+                Modifier.clickable(onClick = onClick)
+            } else Modifier
         ),
     ) {
         Box(
@@ -65,7 +66,11 @@ fun SDGRadioLabel(
             contentAlignment = Alignment.Center
         ) {
             SDGRadio(
-                isSelected = isSelected,
+                status = when(status) {
+                    SDGRadioLabelStatus.DEFAULT -> SDGRadioStatus.DEFAULT
+                    SDGRadioLabelStatus.SELECTED -> SDGRadioStatus.SELECTED
+                    SDGRadioLabelStatus.DISABLED -> SDGRadioStatus.DISABLED
+                },
                 selectedColor = radioColor,
                 size = radioSize,
             )
@@ -86,8 +91,7 @@ private fun PreviewSDGRadioLabel(
     params: SDGRadioLabelPreviewParams
 ) {
     SDGRadioLabel(
-        isSelected = params.isSelected,
-        isEnabled = params.isEnabled,
+        status = params.status,
         label = params.label,
         selectedLabelColor = params.labelColor,
     )
