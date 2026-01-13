@@ -3,30 +3,38 @@ package com.shopl.sdg
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.ui.NavDisplay
+import com.shopl.sdg.navigation.SDGDestination
+import com.shopl.sdg.screen.OverviewScreen
+import com.shopl.sdg.ui.setEdgeToEdgeConfig
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
-import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.foundation.typography.SDGTypography
-import com.shopl.sdg_common.ui.components.SDGText
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        setEdgeToEdgeConfig()
         setContent {
             ShoplDesignGuideTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SDGText(
-                        modifier = Modifier.padding(innerPadding),
-                        text = "SDG",
-                        textColor = SDGColor.Neutral700,
-                        typography = SDGTypography.Body1R
-                    )
-                }
+                val backStack = remember { mutableStateListOf<Any>(SDGDestination.Overview) }
+
+                NavDisplay(
+                    backStack = backStack,
+                    onBack = { backStack.removeLastOrNull() },
+                    entryProvider = { key ->
+                        when (key) {
+                            is SDGDestination.Overview -> NavEntry(key) {
+                                OverviewScreen()
+                            }
+
+                            else -> {
+                                error("Unknown route: $key")
+                            }
+                        }
+                    }
+                )
             }
         }
     }

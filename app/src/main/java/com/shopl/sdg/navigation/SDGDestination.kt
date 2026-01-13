@@ -11,8 +11,8 @@ import kotlinx.serialization.Serializable
 sealed interface SDGDestination {
     
     /**
-     * 홈 화면
+     * 개요 화면
      */
     @Serializable
-    data object Home : SDGDestination
+    data object Overview : SDGDestination
 }
