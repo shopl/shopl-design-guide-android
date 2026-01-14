@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +37,76 @@ import com.shopl.sdg_common.util.textCenterAlignment
 @Composable
 fun SDGIconLabel(
     text: String,
+    textColor: Color,
+    size: SDGIconLabelSize,
+    type: SDGIconLabelType,
+    spacing: SDGIconLabelSpacing,
+    modifier: Modifier = Modifier,
+    @DrawableRes leftIconResId: Int? = null,
+    leftIconTint: Color? = null,
+    onClickLeftIcon: (() -> Unit)? = null,
+    @DrawableRes rightIconResId: Int? = null,
+    rightIconTint: Color? = null,
+    onClickRightIcon: (() -> Unit)? = null,
+    maxLines: Int = Int.MAX_VALUE,
+    isFillMaxWidth: Boolean = true,
+) {
+    SDGIconLabelContent(
+        text = AnnotatedString(text),
+        textColor = textColor,
+        size = size,
+        type = type,
+        spacing = spacing,
+        modifier = modifier,
+        leftIconResId = leftIconResId,
+        leftIconTint = leftIconTint,
+        onClickLeftIcon = onClickLeftIcon,
+        rightIconResId = rightIconResId,
+        rightIconTint = rightIconTint,
+        onClickRightIcon = onClickRightIcon,
+        maxLines = maxLines,
+        isFillMaxWidth = isFillMaxWidth
+    )
+}
+
+@Composable
+fun SDGIconLabel(
+    text: AnnotatedString,
+    textColor: Color,
+    size: SDGIconLabelSize,
+    type: SDGIconLabelType,
+    spacing: SDGIconLabelSpacing,
+    modifier: Modifier = Modifier,
+    @DrawableRes leftIconResId: Int? = null,
+    leftIconTint: Color? = null,
+    onClickLeftIcon: (() -> Unit)? = null,
+    @DrawableRes rightIconResId: Int? = null,
+    rightIconTint: Color? = null,
+    onClickRightIcon: (() -> Unit)? = null,
+    maxLines: Int = Int.MAX_VALUE,
+    isFillMaxWidth: Boolean = true,
+) {
+    SDGIconLabelContent(
+        text = text,
+        textColor = textColor,
+        size = size,
+        type = type,
+        spacing = spacing,
+        modifier = modifier,
+        leftIconResId = leftIconResId,
+        leftIconTint = leftIconTint,
+        onClickLeftIcon = onClickLeftIcon,
+        rightIconResId = rightIconResId,
+        rightIconTint = rightIconTint,
+        onClickRightIcon = onClickRightIcon,
+        maxLines = maxLines,
+        isFillMaxWidth = isFillMaxWidth
+    )
+}
+
+@Composable
+private fun SDGIconLabelContent(
+    text: AnnotatedString,
     textColor: Color,
     size: SDGIconLabelSize,
     type: SDGIconLabelType,
