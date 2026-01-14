@@ -1,6 +1,7 @@
-package com.shopl.sdg.screen.component
+package com.shopl.sdg.ui.screen.component
 
 import androidx.compose.runtime.Composable
+import com.shopl.sdg.R
 import com.shopl.sdg.component.navigation.basic.SDGBasicNavi
 import com.shopl.sdg.component.navigation.basic.SDGBasicNaviIconItem
 import com.shopl.sdg.ui.SDGScaffold
@@ -15,7 +16,7 @@ internal fun AvatarScreen() {
                 title = null,
                 backgroundColor = SDGColor.Neutral900,
                 leftIcon = SDGBasicNaviIconItem(
-                    resId = com.shopl.sdg.R.drawable.ic_navi_drawer,
+                    resId = R.drawable.ic_navi_drawer,
                     onClick = {}
                 ),
                 rightIcons = null

@@ -1,4 +1,4 @@
-package com.shopl.sdg.screen
+package com.shopl.sdg.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,10 +22,9 @@ import com.shopl.sdg.component.badge.box.SDGBoxBadgeSize
 import com.shopl.sdg.component.badge.box.SDGBoxBadgeType
 import com.shopl.sdg.component.navigation.basic.SDGBasicNavi
 import com.shopl.sdg.component.navigation.basic.SDGBasicNaviIconItem
-import com.shopl.sdg.model.components
-import com.shopl.sdg.model.foundations
-import com.shopl.sdg.navigation.ComponentDestination
-import com.shopl.sdg.navigation.SDGDestination
+import com.shopl.sdg.scene.SDGScene
+import com.shopl.sdg.scene.componentScenes
+import com.shopl.sdg.scene.foundationScenes
 import com.shopl.sdg.ui.SDGScaffold
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
@@ -35,7 +34,6 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
 
 /**
  * SDG Sample App - Overview
@@ -77,14 +75,14 @@ internal fun OverviewScreen(
                 Card(
                     title = "Foundation",
                     description = "일관된 레이아웃과 그에 따른 사용자 경험을 만드는 데 필수적인 시각적 요소입니다.",
-                    destinations = foundations
+                    scenes = foundationScenes
                 )
             }
             item {
                 Card(
                     title = "Component",
                     description = "각각의 기능을 구성하는 요소들의 조합니다.",
-                    destinations = components,
+                    scenes = componentScenes,
                 )
             }
             item {
@@ -126,7 +124,7 @@ private fun Header() {
 private fun Card(
     title: String,
     description: String,
-    destinations: PersistentList<SDGDestination>
+    scenes: PersistentList<SDGScene>
 ) {
     Column(
         modifier = Modifier
@@ -165,14 +163,14 @@ private fun Card(
             verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
             horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing8)
         ) {
-            destinations.forEach { destination ->
+            scenes.forEach { scene ->
                 SDGBoxBadge(
                     size = SDGBoxBadgeSize.XSmall,
                     type = SDGBoxBadgeType.Solid,
-                    label = destination.displayLabel,
-                    labelColor = if(destination.implemented) SDGColor.Neutral400 else SDGColor.Neutral300,
+                    label = scene.displayLabel,
+                    labelColor = if(scene.implemented) SDGColor.Neutral400 else SDGColor.Neutral300,
                     backgroundColor = SDGColor.Neutral50,
-                    enable = destination.implemented,
+                    enable = scene.implemented,
                     onClick = {}
                 )
             }

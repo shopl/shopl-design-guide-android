@@ -1,4 +1,4 @@
-package com.shopl.sdg.navigation
+package com.shopl.sdg.scene
 
 import androidx.compose.runtime.Stable
 
@@ -8,17 +8,17 @@ import androidx.compose.runtime.Stable
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6707-15003&m=dev">Figma</a>
  */
 @Stable
-sealed class ComponentDestination(
+sealed class ComponentScene(
     override val displayLabel: String,
     override val implemented: Boolean,
-) : SDGDestination(displayLabel, implemented) {
+) : SDGScene(displayLabel, implemented) {
 
-    data object Avatar : ComponentDestination(
+    data object Avatar : ComponentScene(
         displayLabel = "Avatar",
         implemented = false
     )
 
-    data object AttachmentList : ComponentDestination(
+    data object AttachmentList : ComponentScene(
         displayLabel = "Attachment List",
         implemented = false
     )
@@ -27,7 +27,7 @@ sealed class ComponentDestination(
     sealed class Badge(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : ComponentDestination(displayLabel, implemented) {
+    ) : ComponentScene(displayLabel, implemented) {
         data object CapsuleBadge : Badge(
             displayLabel = "Capsule Badge",
             implemented = false
@@ -43,7 +43,7 @@ sealed class ComponentDestination(
     sealed class Button(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : ComponentDestination(displayLabel, implemented) {
+    ) : ComponentScene(displayLabel, implemented) {
         data object BottomButton : Button(
             displayLabel = "Bottom Button",
             implemented = true
@@ -75,22 +75,22 @@ sealed class ComponentDestination(
         )
     }
 
-    data object Calendar : ComponentDestination(
+    data object Calendar : ComponentScene(
         displayLabel = "Calendar",
         implemented = false
     )
 
-    data object Checkbox : ComponentDestination(
+    data object Checkbox : ComponentScene(
         displayLabel = "Checkbox",
         implemented = false
     )
 
-    data object CheckOption : ComponentDestination(
+    data object CheckOption : ComponentScene(
         displayLabel = "Check Option",
         implemented = false
     )
 
-    data object Dropdown : ComponentDestination(
+    data object Dropdown : ComponentScene(
         displayLabel = "Dropdown",
         implemented = false
     )
@@ -99,7 +99,7 @@ sealed class ComponentDestination(
     sealed class EmptyIcon(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : ComponentDestination(displayLabel, implemented) {
+    ) : ComponentScene(displayLabel, implemented) {
         data object BasicEmptyIcon : EmptyIcon(
             displayLabel = "Basic Empty Icon",
             implemented = false
@@ -115,7 +115,7 @@ sealed class ComponentDestination(
     sealed class Indicator(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : ComponentDestination(displayLabel, implemented) {
+    ) : ComponentScene(displayLabel, implemented) {
         data object TextIndicator : Indicator(
             displayLabel = "Text Indicator",
             implemented = false
@@ -132,12 +132,12 @@ sealed class ComponentDestination(
         )
     }
 
-    data object IconLabel : ComponentDestination(
+    data object IconLabel : ComponentScene(
         displayLabel = "Icon Label",
         implemented = false
     )
 
-    data object NumberPicker : ComponentDestination(
+    data object NumberPicker : ComponentScene(
         displayLabel = "Number Picker",
         implemented = false
     )
@@ -146,7 +146,7 @@ sealed class ComponentDestination(
     sealed class Progress(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : ComponentDestination(displayLabel, implemented) {
+    ) : ComponentScene(displayLabel, implemented) {
         data object SystemProgress : Progress(
             displayLabel = "System Progress",
             implemented = false
@@ -168,7 +168,7 @@ sealed class ComponentDestination(
         )
     }
 
-    data object Radio : ComponentDestination(
+    data object Radio : ComponentScene(
         displayLabel = "Radio",
         implemented = false
     )
@@ -177,7 +177,7 @@ sealed class ComponentDestination(
     sealed class SearchBar(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : ComponentDestination(displayLabel, implemented) {
+    ) : ComponentScene(displayLabel, implemented) {
         data object CapsuleSearch : SearchBar(
             displayLabel = "Capsule Search",
             implemented = false
@@ -194,12 +194,12 @@ sealed class ComponentDestination(
         )
     }
 
-    data object Segment : ComponentDestination(
+    data object Segment : ComponentScene(
         displayLabel = "Segment",
         implemented = false
     )
 
-    data object SelectInput : ComponentDestination(
+    data object SelectInput : ComponentScene(
         displayLabel = "Select Input",
         implemented = false
     )
@@ -208,7 +208,7 @@ sealed class ComponentDestination(
     sealed class Tab(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : ComponentDestination(displayLabel, implemented) {
+    ) : ComponentScene(displayLabel, implemented) {
         data object ScrollTab : Tab(
             displayLabel = "Scroll Tab",
             implemented = false
@@ -234,7 +234,7 @@ sealed class ComponentDestination(
     sealed class TextInput(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : ComponentDestination(displayLabel, implemented) {
+    ) : ComponentScene(displayLabel, implemented) {
         data object SimpleTextInput : TextInput(
             displayLabel = "Simple Text Input",
             implemented = false
@@ -256,27 +256,27 @@ sealed class ComponentDestination(
         )
     }
 
-    data object Thumbnails : ComponentDestination(
+    data object Thumbnails : ComponentScene(
         displayLabel = "Thumbnails",
         implemented = false
     )
 
-    data object TimePicker : ComponentDestination(
+    data object TimePicker : ComponentScene(
         displayLabel = "Time Picker",
         implemented = false
     )
 
-    data object TimeSelectInput : ComponentDestination(
+    data object TimeSelectInput : ComponentScene(
         displayLabel = "Time Select Input",
         implemented = false
     )
 
-    data object Toggle : ComponentDestination(
+    data object Toggle : ComponentScene(
         displayLabel = "Toggle",
         implemented = false
     )
 
-    data object Tooltip : ComponentDestination(
+    data object Tooltip : ComponentScene(
         displayLabel = "Tooltip",
         implemented = false
     )

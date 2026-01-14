@@ -1,4 +1,4 @@
-package com.shopl.sdg.screen.component.button
+package com.shopl.sdg.ui.screen.component.button
 
 import androidx.compose.runtime.Composable
 import com.shopl.sdg.R

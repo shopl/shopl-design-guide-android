@@ -1,4 +1,4 @@
-package com.shopl.sdg.navigation
+package com.shopl.sdg.scene
 
 import androidx.compose.runtime.Stable
 
@@ -8,27 +8,27 @@ import androidx.compose.runtime.Stable
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=16930-2151&m=dev">Figma</a>
  */
 @Stable
-sealed class TemplateDestination(
+sealed class TemplateScene(
     override val displayLabel: String,
     override val implemented: Boolean,
-) : SDGDestination(displayLabel, implemented) {
+) : SDGScene(displayLabel, implemented) {
 
-    data object CalendarAndTime : TemplateDestination(
+    data object CalendarAndTime : TemplateScene(
         displayLabel = "Calendar and Time",
         implemented = false
     )
 
-    data object CheckboxLabel : TemplateDestination(
+    data object CheckboxLabel : TemplateScene(
         displayLabel = "Checkbox Label",
         implemented = false
     )
 
-    data object CheckOptionLabel : TemplateDestination(
+    data object CheckOptionLabel : TemplateScene(
         displayLabel = "Check Option Label",
         implemented = false
     )
 
-    data object EmptyImg : TemplateDestination(
+    data object EmptyImg : TemplateScene(
         displayLabel = "Empty Img",
         implemented = false
     )
@@ -37,7 +37,7 @@ sealed class TemplateDestination(
     sealed class FilterChip(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : TemplateDestination(displayLabel, implemented) {
+    ) : TemplateScene(displayLabel, implemented) {
         data object NaviFilterChip : FilterChip(
             displayLabel = "Navi Filter Chip",
             implemented = false
@@ -53,7 +53,7 @@ sealed class TemplateDestination(
     sealed class Form(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : TemplateDestination(displayLabel, implemented) {
+    ) : TemplateScene(displayLabel, implemented) {
         data object DropdownForm : Form(
             displayLabel = "Dropdown Form",
             implemented = false
@@ -84,7 +84,7 @@ sealed class TemplateDestination(
     sealed class FoundationList(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : TemplateDestination(displayLabel, implemented) {
+    ) : TemplateScene(displayLabel, implemented) {
         data object UserList : FoundationList(
             displayLabel = "User List",
             implemented = false
@@ -101,27 +101,27 @@ sealed class TemplateDestination(
         )
     }
 
-    data object History : TemplateDestination(
+    data object History : TemplateScene(
         displayLabel = "History",
         implemented = false
     )
 
-    data object HistoryMini : TemplateDestination(
+    data object HistoryMini : TemplateScene(
         displayLabel = "History Mini",
         implemented = false
     )
 
-    data object ListHeader : TemplateDestination(
+    data object ListHeader : TemplateScene(
         displayLabel = "List Header",
         implemented = false
     )
 
-    data object MultiCalendar : TemplateDestination(
+    data object MultiCalendar : TemplateScene(
         displayLabel = "Multi Calendar",
         implemented = false
     )
 
-    data object MultiTimePicker : TemplateDestination(
+    data object MultiTimePicker : TemplateScene(
         displayLabel = "Multi Time Picker",
         implemented = false
     )
@@ -130,7 +130,7 @@ sealed class TemplateDestination(
     sealed class Navigation(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : TemplateDestination(displayLabel, implemented) {
+    ) : TemplateScene(displayLabel, implemented) {
         data object BasicNavi : Navigation(
             displayLabel = "Basic Navi",
             implemented = false
@@ -156,7 +156,7 @@ sealed class TemplateDestination(
     sealed class Popup(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : TemplateDestination(displayLabel, implemented) {
+    ) : TemplateScene(displayLabel, implemented) {
         data object CenterPopup : Popup(
             displayLabel = "Center Popup",
             implemented = false
@@ -192,7 +192,7 @@ sealed class TemplateDestination(
     sealed class Profile(
         override val displayLabel: String,
         override val implemented: Boolean,
-    ) : TemplateDestination(displayLabel, implemented) {
+    ) : TemplateScene(displayLabel, implemented) {
         data object BasicProfile : Profile(
             displayLabel = "Basic Profile",
             implemented = false
@@ -214,7 +214,7 @@ sealed class TemplateDestination(
         )
     }
 
-    data object RadioLabel : TemplateDestination(
+    data object RadioLabel : TemplateScene(
         displayLabel = "Radio Label",
         implemented = false
     )
