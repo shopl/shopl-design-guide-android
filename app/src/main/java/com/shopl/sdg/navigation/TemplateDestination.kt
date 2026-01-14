@@ -1,7 +1,6 @@
 package com.shopl.sdg.navigation
 
 import androidx.compose.runtime.Stable
-import kotlinx.serialization.Serializable
 
 /**
  * SDG - Template
@@ -9,124 +8,214 @@ import kotlinx.serialization.Serializable
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=16930-2151&m=dev">Figma</a>
  */
 @Stable
-sealed interface TemplateDestination : SDGDestination {
-    @Serializable
-    data object CalendarAndTime : TemplateDestination
+sealed class TemplateDestination(
+    override val displayLabel: String,
+    override val implemented: Boolean,
+) : SDGDestination(displayLabel, implemented) {
 
-    @Serializable
-    data object CheckboxLabel : TemplateDestination
+    data object CalendarAndTime : TemplateDestination(
+        displayLabel = "Calendar and Time",
+        implemented = false
+    )
 
-    @Serializable
-    data object CheckOptionLabel : TemplateDestination
+    data object CheckboxLabel : TemplateDestination(
+        displayLabel = "Checkbox Label",
+        implemented = false
+    )
 
-    @Serializable
-    data object EmptyImg : TemplateDestination
+    data object CheckOptionLabel : TemplateDestination(
+        displayLabel = "Check Option Label",
+        implemented = false
+    )
+
+    data object EmptyImg : TemplateDestination(
+        displayLabel = "Empty Img",
+        implemented = false
+    )
 
     @Stable
-    sealed interface FilterChip : TemplateDestination {
-        @Serializable
-        data object NaviFilterChip : FilterChip
+    sealed class FilterChip(
+        override val displayLabel: String,
+        override val implemented: Boolean,
+    ) : TemplateDestination(displayLabel, implemented) {
+        data object NaviFilterChip : FilterChip(
+            displayLabel = "Navi Filter Chip",
+            implemented = false
+        )
 
-        @Serializable
-        data object BodyFilterChip : FilterChip
+        data object BodyFilterChip : FilterChip(
+            displayLabel = "Body Filter Chip",
+            implemented = false
+        )
     }
 
     @Stable
-    sealed interface Form : TemplateDestination {
-        @Serializable
-        data object DropdownForm : Form
+    sealed class Form(
+        override val displayLabel: String,
+        override val implemented: Boolean,
+    ) : TemplateDestination(displayLabel, implemented) {
+        data object DropdownForm : Form(
+            displayLabel = "Dropdown Form",
+            implemented = false
+        )
 
-        @Serializable
-        data object SelectForm : Form
+        data object SelectForm : Form(
+            displayLabel = "Select Form",
+            implemented = false
+        )
 
-        @Serializable
-        data object SimpleTextForm : Form
+        data object SimpleTextForm : Form(
+            displayLabel = "Simple Text Form",
+            implemented = false
+        )
 
-        @Serializable
-        data object FixedTextForm : Form
+        data object FixedTextForm : Form(
+            displayLabel = "Fixed Text Form",
+            implemented = false
+        )
 
-        @Serializable
-        data object TimeSelectForm : Form
+        data object TimeSelectForm : Form(
+            displayLabel = "Time Select Form",
+            implemented = false
+        )
     }
 
     @Stable
-    sealed interface FoundationList : TemplateDestination {
-        @Serializable
-        data object UserList : FoundationList
+    sealed class FoundationList(
+        override val displayLabel: String,
+        override val implemented: Boolean,
+    ) : TemplateDestination(displayLabel, implemented) {
+        data object UserList : FoundationList(
+            displayLabel = "User List",
+            implemented = false
+        )
 
-        @Serializable
-        data object WorkplaceList : FoundationList
+        data object WorkplaceList : FoundationList(
+            displayLabel = "Workplace List",
+            implemented = false
+        )
 
-        @Serializable
-        data object GroupAndPositionList : FoundationList
+        data object GroupAndPositionList : FoundationList(
+            displayLabel = "Group and Position List",
+            implemented = false
+        )
     }
 
-    @Serializable
-    data object History : TemplateDestination
+    data object History : TemplateDestination(
+        displayLabel = "History",
+        implemented = false
+    )
 
-    @Serializable
-    data object HistoryMini : TemplateDestination
+    data object HistoryMini : TemplateDestination(
+        displayLabel = "History Mini",
+        implemented = false
+    )
 
-    @Serializable
-    data object ListHeader : TemplateDestination
+    data object ListHeader : TemplateDestination(
+        displayLabel = "List Header",
+        implemented = false
+    )
 
-    @Serializable
-    data object MultiCalendar : TemplateDestination
+    data object MultiCalendar : TemplateDestination(
+        displayLabel = "Multi Calendar",
+        implemented = false
+    )
 
-    @Serializable
-    data object MultiTimePicker : TemplateDestination
+    data object MultiTimePicker : TemplateDestination(
+        displayLabel = "Multi Time Picker",
+        implemented = false
+    )
 
     @Stable
-    sealed interface Navigation : TemplateDestination {
-        @Serializable
-        data object BasicNavi : Navigation
+    sealed class Navigation(
+        override val displayLabel: String,
+        override val implemented: Boolean,
+    ) : TemplateDestination(displayLabel, implemented) {
+        data object BasicNavi : Navigation(
+            displayLabel = "Basic Navi",
+            implemented = false
+        )
 
-        @Serializable
-        data object CategoryNavi : Navigation
+        data object CategoryNavi : Navigation(
+            displayLabel = "Category Navi",
+            implemented = false
+        )
 
-        @Serializable
-        data object TextNavi : Navigation
+        data object TextNavi : Navigation(
+            displayLabel = "Text Navi",
+            implemented = false
+        )
 
-        @Serializable
-        data object SearchNavi : Navigation
+        data object SearchNavi : Navigation(
+            displayLabel = "Search Navi",
+            implemented = false
+        )
     }
 
     @Stable
-    sealed interface Popup : TemplateDestination {
-        @Serializable
-        data object CenterPopup : Popup
+    sealed class Popup(
+        override val displayLabel: String,
+        override val implemented: Boolean,
+    ) : TemplateDestination(displayLabel, implemented) {
+        data object CenterPopup : Popup(
+            displayLabel = "Center Popup",
+            implemented = false
+        )
 
-        @Serializable
-        data object BottomPopup : Popup
+        data object BottomPopup : Popup(
+            displayLabel = "Bottom Popup",
+            implemented = false
+        )
 
-        @Serializable
-        data object ListPopup : Popup
+        data object ListPopup : Popup(
+            displayLabel = "List Popup",
+            implemented = false
+        )
 
-        @Serializable
-        data object MiniListPopup : Popup
+        data object MiniListPopup : Popup(
+            displayLabel = "Mini List Popup",
+            implemented = false
+        )
 
-        @Serializable
-        data object IconPopup : Popup
+        data object IconPopup : Popup(
+            displayLabel = "Icon Popup",
+            implemented = false
+        )
 
-        @Serializable
-        data object ToastPopup : Popup
+        data object ToastPopup : Popup(
+            displayLabel = "Toast Popup",
+            implemented = false
+        )
     }
 
     @Stable
-    sealed interface Profile : TemplateDestination {
-        @Serializable
-        data object BasicProfile : Profile
+    sealed class Profile(
+        override val displayLabel: String,
+        override val implemented: Boolean,
+    ) : TemplateDestination(displayLabel, implemented) {
+        data object BasicProfile : Profile(
+            displayLabel = "Basic Profile",
+            implemented = false
+        )
 
-        @Serializable
-        data object SecondProfile : Profile
+        data object SecondProfile : Profile(
+            displayLabel = "Second Profile",
+            implemented = false
+        )
 
-        @Serializable
-        data object SimpleProfile : Profile
+        data object SimpleProfile : Profile(
+            displayLabel = "Simple Profile",
+            implemented = false
+        )
 
-        @Serializable
-        data object MiniProfile : Profile
+        data object MiniProfile : Profile(
+            displayLabel = "Mini Profile",
+            implemented = false
+        )
     }
 
-    @Serializable
-    data object RadioLabel : TemplateDestination
+    data object RadioLabel : TemplateDestination(
+        displayLabel = "Radio Label",
+        implemented = false
+    )
 }

@@ -5,10 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
 import com.shopl.sdg.navigation.SDGDestination
-import com.shopl.sdg.screen.OverviewScreen
+import com.shopl.sdg.navigation.provideNavEntry
 import com.shopl.sdg.ui.setEdgeToEdgeConfig
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 
@@ -25,13 +24,8 @@ class MainActivity : ComponentActivity() {
                     onBack = { backStack.removeLastOrNull() },
                     entryProvider = { key ->
                         when (key) {
-                            is SDGDestination.Overview -> NavEntry(key) {
-                                OverviewScreen()
-                            }
-
-                            else -> {
-                                error("Unknown route: $key")
-                            }
+                            is SDGDestination -> provideNavEntry(key)
+                            else -> error("Unknown route: $key")
                         }
                     }
                 )
