@@ -42,7 +42,7 @@ import kotlinx.collections.immutable.PersistentList
  */
 @Composable
 internal fun OverviewScreen(
-
+    moveToScene: (SDGScene) -> Unit ,
 ) {
     SDGScaffold(
         backgroundColor = SDGColor.Neutral900,
@@ -75,7 +75,8 @@ internal fun OverviewScreen(
                 Card(
                     title = "Foundation",
                     description = "일관된 레이아웃과 그에 따른 사용자 경험을 만드는 데 필수적인 시각적 요소입니다.",
-                    scenes = foundationScenes
+                    scenes = foundationScenes,
+                    onClickSceneButton = moveToScene
                 )
             }
             item {
@@ -83,6 +84,7 @@ internal fun OverviewScreen(
                     title = "Component",
                     description = "각각의 기능을 구성하는 요소들의 조합니다.",
                     scenes = componentScenes,
+                    onClickSceneButton = moveToScene
                 )
             }
             item {
@@ -124,7 +126,8 @@ private fun Header() {
 private fun Card(
     title: String,
     description: String,
-    scenes: PersistentList<SDGScene>
+    scenes: PersistentList<SDGScene>,
+    onClickSceneButton: (SDGScene) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -171,7 +174,7 @@ private fun Card(
                     labelColor = if(scene.implemented) SDGColor.Neutral400 else SDGColor.Neutral300,
                     backgroundColor = SDGColor.Neutral50,
                     enable = scene.implemented,
-                    onClick = {}
+                    onClick = { onClickSceneButton(scene) }
                 )
             }
         }
@@ -211,6 +214,8 @@ private fun BottomInfo() {
 @Composable
 private fun PreviewOverviewScreen() {
     ShoplDesignGuideTheme {
-        OverviewScreen()
+        OverviewScreen(
+            moveToScene = {}
+        )
     }
 }

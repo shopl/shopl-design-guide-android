@@ -10,13 +10,14 @@ import com.shopl.sdg_common.foundation.SDGColor
 @Composable
 internal fun BoxButtonScreen() {
     SDGScaffold(
-        backgroundColor = SDGColor.Neutral900,
+        backgroundColor = SDGColor.Neutral0,
         topBar = {
             SDGBasicNavi(
                 title = null,
-                backgroundColor = SDGColor.Neutral900,
+                backgroundColor = SDGColor.Neutral0,
                 leftIcon = SDGBasicNaviIconItem(
                     resId = R.drawable.ic_navi_drawer,
+                    color = SDGColor.Neutral700,
                     onClick = {}
                 ),
                 rightIcons = null
