@@ -7,6 +7,11 @@ import com.shopl.sdg.component.navigation.basic.SDGBasicNaviIconItem
 import com.shopl.sdg.ui.SDGScaffold
 import com.shopl.sdg_common.foundation.SDGColor
 
+/**
+ * SDG Sample App - Component - Button - BoxButton
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=22804-3346&m=dev">Figma</a>
+ */
 @Composable
 internal fun BoxButtonScreen() {
     SDGScaffold(

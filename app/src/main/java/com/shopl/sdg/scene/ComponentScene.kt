@@ -1,6 +1,7 @@
 package com.shopl.sdg.scene
 
 import androidx.compose.runtime.Stable
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * SDG - Component
@@ -8,7 +9,7 @@ import androidx.compose.runtime.Stable
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6707-15003&m=dev">Figma</a>
  */
 @Stable
-sealed class ComponentScene(
+internal sealed class ComponentScene(
     override val displayLabel: String,
     override val implemented: Boolean,
 ) : SDGScene(displayLabel, implemented) {
@@ -46,7 +47,7 @@ sealed class ComponentScene(
     ) : ComponentScene(displayLabel, implemented) {
         data object BottomButton : Button(
             displayLabel = "Bottom Button",
-            implemented = true
+            implemented = false
         )
 
         data object BoxButton : Button(
@@ -56,17 +57,17 @@ sealed class ComponentScene(
 
         data object CapsuleButton : Button(
             displayLabel = "Capsule Button",
-            implemented = true
+            implemented = false
         )
 
         data object FloatingButton : Button(
             displayLabel = "Floating Button",
-            implemented = true
+            implemented = false
         )
 
         data object GhostButton : Button(
             displayLabel = "Ghost Button",
-            implemented = true
+            implemented = false
         )
 
         data object IconButton : Button(
@@ -281,3 +282,50 @@ sealed class ComponentScene(
         implemented = false
     )
 }
+
+internal val componentScenes = persistentListOf(
+    ComponentScene.Avatar,
+    ComponentScene.AttachmentList,
+    ComponentScene.Badge.CapsuleBadge,
+    ComponentScene.Badge.BoxBadge,
+    ComponentScene.Button.BottomButton,
+    ComponentScene.Button.BoxButton,
+    ComponentScene.Button.CapsuleButton,
+    ComponentScene.Button.FloatingButton,
+    ComponentScene.Button.GhostButton,
+    ComponentScene.Button.IconButton,
+    ComponentScene.Calendar,
+    ComponentScene.Checkbox,
+    ComponentScene.CheckOption,
+    ComponentScene.Dropdown,
+    ComponentScene.EmptyIcon.BasicEmptyIcon,
+    ComponentScene.EmptyIcon.ContentsEmptyIcon,
+    ComponentScene.Indicator.TextIndicator,
+    ComponentScene.Indicator.NumberIndicator,
+    ComponentScene.Indicator.DotIndicator,
+    ComponentScene.IconLabel,
+    ComponentScene.NumberPicker,
+    ComponentScene.Progress.SystemProgress,
+    ComponentScene.Progress.CircularProgress,
+    ComponentScene.Progress.DotProgress,
+    ComponentScene.Progress.LinearProgress,
+    ComponentScene.Radio,
+    ComponentScene.SearchBar.CapsuleSearch,
+    ComponentScene.SearchBar.BoxSearch,
+    ComponentScene.SearchBar.CategorySearch,
+    ComponentScene.Segment,
+    ComponentScene.SelectInput,
+    ComponentScene.Tab.ScrollTab,
+    ComponentScene.Tab.FixedTab,
+    ComponentScene.Tab.BoxTab,
+    ComponentScene.Tab.IconTab,
+    ComponentScene.TextInput.SimpleTextInput,
+    ComponentScene.TextInput.FixedTextInput,
+    ComponentScene.TextInput.UnderlineInput,
+    ComponentScene.TextInput.LoginInput,
+    ComponentScene.Thumbnails,
+    ComponentScene.TimePicker,
+    ComponentScene.TimeSelectInput,
+    ComponentScene.Toggle,
+    ComponentScene.Tooltip,
+)

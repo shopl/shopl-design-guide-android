@@ -1,6 +1,7 @@
 package com.shopl.sdg.scene
 
 import androidx.compose.runtime.Stable
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * SDG - Foundation
@@ -8,7 +9,7 @@ import androidx.compose.runtime.Stable
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=4739-18081&m=dev">Figma</a>
  */
 @Stable
-sealed class FoundationScene(
+internal sealed class FoundationScene(
     override val displayLabel: String,
     override val implemented: Boolean,
 ) : SDGScene(displayLabel, implemented) {
@@ -37,3 +38,11 @@ sealed class FoundationScene(
         implemented = false
     )
 }
+
+internal val foundationScenes = persistentListOf(
+    FoundationScene.Color,
+    FoundationScene.CornerRadius,
+    FoundationScene.Iconography,
+    FoundationScene.Spacing,
+    FoundationScene.Typograph,
+)
