@@ -16,11 +16,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.R
 import com.shopl.sdg.component.badge.box.SDGBoxBadge
 import com.shopl.sdg.component.badge.box.SDGBoxBadgeSize
 import com.shopl.sdg.component.badge.box.SDGBoxBadgeType
 import com.shopl.sdg.component.navigation.basic.SDGBasicNavi
 import com.shopl.sdg.component.navigation.basic.SDGBasicNaviIconItem
+import com.shopl.sdg.model.components
+import com.shopl.sdg.model.foundations
+import com.shopl.sdg.navigation.ComponentDestination
+import com.shopl.sdg.navigation.SDGDestination
 import com.shopl.sdg.ui.SDGScaffold
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
@@ -48,7 +53,7 @@ internal fun OverviewScreen(
                 title = null,
                 backgroundColor = SDGColor.Neutral900,
                 leftIcon = SDGBasicNaviIconItem(
-                    resId = com.shopl.sdg.R.drawable.ic_navi_drawer,
+                    resId = R.drawable.ic_navi_drawer,
                     onClick = {}
                 ),
                 rightIcons = null
@@ -72,13 +77,14 @@ internal fun OverviewScreen(
                 Card(
                     title = "Foundation",
                     description = "일관된 레이아웃과 그에 따른 사용자 경험을 만드는 데 필수적인 시각적 요소입니다.",
-                    items = persistentListOf(
-                        "Color",
-                        "Corner Radius",
-                        "Iconography",
-                        "Spacing",
-                        "Typography",
-                    )
+                    destinations = foundations
+                )
+            }
+            item {
+                Card(
+                    title = "Component",
+                    description = "각각의 기능을 구성하는 요소들의 조합니다.",
+                    destinations = components,
                 )
             }
             item {
@@ -105,7 +111,7 @@ private fun Header() {
     ) {
         SDGImage(
             modifier = Modifier.fillMaxWidth(),
-            resId = com.shopl.sdg.R.drawable.logo_sdg,
+            resId = R.drawable.logo_sdg,
             color = null
         )
         SDGText(
@@ -120,7 +126,7 @@ private fun Header() {
 private fun Card(
     title: String,
     description: String,
-    items: PersistentList<String>
+    destinations: PersistentList<SDGDestination>
 ) {
     Column(
         modifier = Modifier
@@ -159,14 +165,14 @@ private fun Card(
             verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
             horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing8)
         ) {
-            items.forEach {
+            destinations.forEach { destination ->
                 SDGBoxBadge(
                     size = SDGBoxBadgeSize.XSmall,
                     type = SDGBoxBadgeType.Solid,
-                    label = it,
-                    labelColor = SDGColor.Neutral400,
+                    label = destination.displayLabel,
+                    labelColor = if(destination.implemented) SDGColor.Neutral400 else SDGColor.Neutral300,
                     backgroundColor = SDGColor.Neutral50,
-                    enable = true,
+                    enable = destination.implemented,
                     onClick = {}
                 )
             }
