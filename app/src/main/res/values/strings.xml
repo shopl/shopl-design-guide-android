@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ShoplDesignGuide</string>
+    <string name="overview_foundation_title">Foundation</string>
+    <string name="overview_foundation_description">일관된 레이아웃과 그에 따른 사용자 경험을 만드는 데 필수적인 시각적 요소입니다.</string>
+    <string name="overview_component_title">Component</string>
+    <string name="overview_component_description">각각의 기능을 구성하는 요소들의 조합니다.</string>
+    <string name="overview_template_title">Template</string>
+    <string name="overview_template_description">컴포넌트를 포함한 요소들의 조합입니다.</string>
 </resources>

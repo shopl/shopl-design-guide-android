@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.R
@@ -22,9 +25,11 @@ import com.shopl.sdg.component.badge.box.SDGBoxBadgeSize
 import com.shopl.sdg.component.badge.box.SDGBoxBadgeType
 import com.shopl.sdg.component.navigation.basic.SDGBasicNavi
 import com.shopl.sdg.component.navigation.basic.SDGBasicNaviIconItem
+import com.shopl.sdg.model.OverviewCardUiModel
 import com.shopl.sdg.scene.SDGScene
 import com.shopl.sdg.scene.componentScenes
 import com.shopl.sdg.scene.foundationScenes
+import com.shopl.sdg.scene.templateScenes
 import com.shopl.sdg.ui.SDGScaffold
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
@@ -44,6 +49,26 @@ import kotlinx.collections.immutable.PersistentList
 internal fun OverviewScreen(
     moveToScene: (SDGScene) -> Unit ,
 ) {
+    val context = LocalContext.current
+    val cardUiModels = remember {
+        mutableListOf(
+            OverviewCardUiModel(
+                title = context.getString(R.string.overview_foundation_title),
+                description = context.getString(R.string.overview_foundation_description),
+                scenes = foundationScenes
+            ),
+            OverviewCardUiModel(
+                title = context.getString(R.string.overview_component_title),
+                description = context.getString(R.string.overview_component_description),
+                scenes = componentScenes
+            ),
+            OverviewCardUiModel(
+                title = context.getString(R.string.overview_template_title),
+                description = context.getString(R.string.overview_template_description),
+                scenes = templateScenes
+            ),
+        )
+    }
     SDGScaffold(
         backgroundColor = SDGColor.Neutral900,
         topBar = {
@@ -71,19 +96,9 @@ internal fun OverviewScreen(
             item {
                 Header()
             }
-            item {
+            items(cardUiModels) {
                 Card(
-                    title = "Foundation",
-                    description = "일관된 레이아웃과 그에 따른 사용자 경험을 만드는 데 필수적인 시각적 요소입니다.",
-                    scenes = foundationScenes,
-                    onClickSceneButton = moveToScene
-                )
-            }
-            item {
-                Card(
-                    title = "Component",
-                    description = "각각의 기능을 구성하는 요소들의 조합니다.",
-                    scenes = componentScenes,
+                    uiModel = it,
                     onClickSceneButton = moveToScene
                 )
             }
@@ -124,11 +139,9 @@ private fun Header() {
 
 @Composable
 private fun Card(
-    title: String,
-    description: String,
-    scenes: PersistentList<SDGScene>,
+    uiModel: OverviewCardUiModel,
     onClickSceneButton: (SDGScene) -> Unit,
-) {
+) = with(uiModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
