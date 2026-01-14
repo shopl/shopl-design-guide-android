@@ -1,36 +1,39 @@
 package com.shopl.sdg.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.typography.SDGTypography
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = SDGColor.Neutral50,
+    secondary = SDGColor.Neutral700,
+    tertiary = SDGColor.Neutral0
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = SDGColor.Neutral700,
+    secondary = SDGColor.Neutral0,
+    tertiary = SDGColor.Neutral50
+)
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+private val Typography = Typography(
+    titleLarge = SDGTypography.Title1R.style,
+    titleMedium = SDGTypography.Title2R.style,
+    bodyLarge = SDGTypography.Body1R.style,
+    bodyMedium = SDGTypography.Body2R.style,
+    bodySmall = SDGTypography.Body3R.style,
+    labelLarge = SDGTypography.Body2R.style,
+    labelMedium = SDGTypography.Body3R.style,
+    labelSmall = SDGTypography.Body4R.style,
 )
 
 @Composable
