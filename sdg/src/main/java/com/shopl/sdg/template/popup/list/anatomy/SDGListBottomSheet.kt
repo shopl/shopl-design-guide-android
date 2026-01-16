@@ -3,6 +3,7 @@ package com.shopl.sdg.template.popup.list.anatomy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.template.util.list_popup_item_ui_state.SDGListPopupItemUiState
 import com.shopl.sdg_common.foundation.SDGColor
@@ -44,6 +46,11 @@ fun SDGListBottomSheet(
         skipPartiallyExpanded = true
     )
 ) {
+    val windowInfo = LocalWindowInfo.current
+    val density = LocalDensity.current
+    val maxHeight = with(density) {
+        (windowInfo.containerSize.height * 0.7f).toDp()
+    }
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
@@ -55,13 +62,12 @@ fun SDGListBottomSheet(
         contentColor = SDGColor.Neutral0,
         scrimColor = SDGColor.Neutral900_a40,
         dragHandle = null,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = SDGSpacing.Spacing60)
+        modifier = Modifier.fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .heightIn(max = maxHeight)
                 .navigationBarsPadding()
         ) {
             SDGSelectableTextList(
