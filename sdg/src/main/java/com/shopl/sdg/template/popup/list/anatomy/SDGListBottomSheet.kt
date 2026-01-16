@@ -62,9 +62,7 @@ fun SDGListBottomSheet(
         contentColor = SDGColor.Neutral0,
         scrimColor = SDGColor.Neutral900_a40,
         dragHandle = null,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = SDGSpacing.Spacing60)
+        modifier = Modifier.fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
