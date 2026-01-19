@@ -98,6 +98,7 @@ private fun ResetButton(
 
 private const val MAX_LABEL_LENGTH = 16
 private const val ELLIPSIS = "..."
+private const val VISIBLE_FILTER_THRESHOLD = 1
 
 @Composable
 private fun NaviFilterChip(
@@ -125,9 +126,9 @@ private fun NaviFilterChip(
                 overflow = TextOverflow.Ellipsis
             )
 
-            if (count > 0) {
+            if (count > VISIBLE_FILTER_THRESHOLD) {
                 SDGText(
-                    text = "+$count",
+                    text = "+${count - VISIBLE_FILTER_THRESHOLD}",
                     typography = SDGTypography.Body2R,
                     textColor = SDGColor.Neutral500,
                 )
