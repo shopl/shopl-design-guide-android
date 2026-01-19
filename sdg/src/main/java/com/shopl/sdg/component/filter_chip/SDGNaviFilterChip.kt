@@ -125,7 +125,7 @@ private fun NaviFilterChip(
                 overflow = TextOverflow.Ellipsis
             )
 
-            if (count > 1) {
+            if (count > 0) {
                 SDGText(
                     text = "+$count",
                     typography = SDGTypography.Body2R,
