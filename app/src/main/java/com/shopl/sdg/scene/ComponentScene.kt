@@ -57,7 +57,7 @@ internal sealed class ComponentScene(
 
         data object CapsuleButton : Button(
             displayLabel = "Capsule Button",
-            implemented = false
+            implemented = true
         )
 
         data object FloatingButton : Button(
