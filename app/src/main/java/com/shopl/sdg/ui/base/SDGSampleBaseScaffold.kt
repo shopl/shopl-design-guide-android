@@ -1,9 +1,10 @@
-package com.shopl.sdg.ui.screen
+package com.shopl.sdg.ui.base
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -24,6 +25,13 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
+/**
+ * SDG 샘플 페이지 작성을 위한 Base Scaffold
+ * Header - Body - Bottom(GuideLines)
+ *
+ * Component 전용 Scaffold : SDGSampleBaseComponentScaffold
+ * Template 전용 Scaffold : SDGSampleBaseTemplateScaffold(TBU)
+ */
 @Composable
 internal fun SDGSampleBaseScaffold(
     name: String,
@@ -56,12 +64,13 @@ internal fun SDGSampleBaseScaffold(
                     top = SDGSpacing.Spacing10,
                     bottom = SDGSpacing.Spacing40
                 ),
-            verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing16)
         ) {
             HeaderContent(
                 name = name,
                 description = description
             )
+
+            Spacer(modifier = Modifier.height(SDGSpacing.Spacing16))
 
             HorizontalDivider(
                 color = SDGColor.Neutral700
@@ -74,10 +83,11 @@ internal fun SDGSampleBaseScaffold(
                     color = SDGColor.Neutral200
                 )
 
+                Spacer(modifier = Modifier.height(SDGSpacing.Spacing20))
+
                 Column(
                     modifier = Modifier
                         .padding(
-                            top = SDGSpacing.Spacing4,
                             start = SDGSpacing.Spacing16,
                             end = SDGSpacing.Spacing16,
                         )
