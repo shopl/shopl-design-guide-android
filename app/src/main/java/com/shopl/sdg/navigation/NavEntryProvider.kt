@@ -11,6 +11,7 @@ import com.shopl.sdg.ui.screen.component.AvatarScreen
 import com.shopl.sdg.ui.screen.component.button.BottomButtonScreen
 import com.shopl.sdg.ui.screen.component.button.BoxButtonScreen
 import com.shopl.sdg.ui.screen.component.button.CapsuleButtonScreen
+import com.shopl.sdg.ui.screen.component.button.FloatingButtonScreen
 import com.shopl.sdg.ui.screen.component.button.GhostButtonScreen
 import com.shopl.sdg_common.foundation.SDGColor
 
@@ -79,6 +80,10 @@ private fun ComponentScreenRoute(destination: ComponentScene) {
 
                 is ComponentScene.Button.GhostButton -> {
                     GhostButtonScreen()
+                }
+
+                is ComponentScene.Button.FloatingButton -> {
+                    FloatingButtonScreen()
                 }
 
                 else -> {}
