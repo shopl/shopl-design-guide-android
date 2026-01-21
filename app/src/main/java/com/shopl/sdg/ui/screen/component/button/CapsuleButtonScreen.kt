@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.shopl.sdg.component.button.box.SDGBoxButton
-import com.shopl.sdg.component.button.box.SDGBoxButtonSize
-import com.shopl.sdg.component.button.box.SDGBoxButtonType
+import com.shopl.sdg.component.button.capsule.SDGCapsuleButton
+import com.shopl.sdg.component.button.capsule.SDGCapsuleButtonSize
+import com.shopl.sdg.component.button.capsule.SDGCapsuleButtonType
 import com.shopl.sdg.enums.SDGSampleStatus
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.scene.ComponentScene
@@ -20,42 +20,46 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import kotlinx.collections.immutable.persistentListOf
 
 /**
- * SDG Sample App - Component - Button - BoxButton
+ * SDG Sample App - Component - Button - CapsuleButton
  *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=22804-3346&m=dev">Figma</a>
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=22804-3378&m=dev">Figma</a>
  */
 @Composable
-internal fun BoxButtonScreen() {
+internal fun CapsuleButtonScreen() {
 
-    val types = persistentListOf<SDGSampleBaseTabItem<SDGBoxButtonType>>(
+    val types = persistentListOf<SDGSampleBaseTabItem<SDGCapsuleButtonType>>(
         SDGSampleBaseTabItem(
-            title = SDGBoxButtonType.Solid.typeName,
-            item = SDGBoxButtonType.Solid
+            title = SDGCapsuleButtonType.Solid.typeName,
+            item = SDGCapsuleButtonType.Solid
         ),
         SDGSampleBaseTabItem(
-            title = SDGBoxButtonType.Line(SDGColor.Neutral350).typeName,
-            item = SDGBoxButtonType.Line(SDGColor.Neutral350)
+            title = SDGCapsuleButtonType.Line(SDGColor.Neutral350).typeName,
+            item = SDGCapsuleButtonType.Line(SDGColor.Neutral350)
         ),
     )
 
-    val specs = persistentListOf<SDGSampleBaseTabItem<SDGBoxButtonSize>>(
+    val specs = persistentListOf<SDGSampleBaseTabItem<SDGCapsuleButtonSize>>(
         SDGSampleBaseTabItem(
-            title = SDGBoxButtonSize.Medium.sizeName,
-            item = SDGBoxButtonSize.Medium
+            title = SDGCapsuleButtonSize.Large.sizeName,
+            item = SDGCapsuleButtonSize.Large
         ),
         SDGSampleBaseTabItem(
-            title = SDGBoxButtonSize.Small.sizeName,
-            item = SDGBoxButtonSize.Small
+            title = SDGCapsuleButtonSize.Medium.sizeName,
+            item = SDGCapsuleButtonSize.Medium
         ),
         SDGSampleBaseTabItem(
-            title = SDGBoxButtonSize.XSmall.sizeName,
-            item = SDGBoxButtonSize.XSmall
+            title = SDGCapsuleButtonSize.Small.sizeName,
+            item = SDGCapsuleButtonSize.Small
+        ),
+        SDGSampleBaseTabItem(
+            title = SDGCapsuleButtonSize.XSmall.sizeName,
+            item = SDGCapsuleButtonSize.XSmall
         ),
     )
 
     SDGSampleBaseComponentScaffold(
-        componentName = ComponentScene.Button.BoxButton.displayLabel,
-        componentDescription = "화면 내에 배치하여 사용하는 일반적인 사각 형태의 버튼 컴포넌트",
+        componentName = ComponentScene.Button.CapsuleButton.displayLabel,
+        componentDescription = "화면 내에 배치하여 사용하는 좌우가 동그란 형태의 버튼 컴포넌트",
         types = types,
         specs = specs,
         guideLineDescriptions = persistentListOf(
@@ -73,8 +77,8 @@ internal fun BoxButtonScreen() {
 
 @Composable
 private fun ComponentContent(
-    type: SDGBoxButtonType,
-    size: SDGBoxButtonSize,
+    type: SDGCapsuleButtonType,
+    size: SDGCapsuleButtonSize,
     status: SDGSampleStatus,
 ) {
     Box(
@@ -85,13 +89,15 @@ private fun ComponentContent(
             ),
         contentAlignment = Alignment.Center
     ) {
-        SDGBoxButton(
+        SDGCapsuleButton(
             size = size,
             type = type,
             label = "Label",
-            labelColor = SDGColor.Neutral600,
-            backgroundColor = if (type == SDGBoxButtonType.Solid) {
-                SDGColor.Neutral200
+            labelColor = if (type == SDGCapsuleButtonType.Solid) {
+                SDGColor.Neutral0
+            } else SDGColor.Neutral600,
+            backgroundColor = if (type == SDGCapsuleButtonType.Solid) {
+                SDGColor.Neutral600
             } else SDGColor.Transparent,
             onClick = {},
             enable = status != SDGSampleStatus.DISABLED,
@@ -101,8 +107,8 @@ private fun ComponentContent(
 
 @Preview
 @Composable
-private fun PreviewBoxButtonScreen() {
+private fun PreviewCapsuleButtonScreen() {
     ShoplDesignGuideTheme {
-        BoxButtonScreen()
+        CapsuleButtonScreen()
     }
 }

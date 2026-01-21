@@ -9,6 +9,7 @@ import com.shopl.sdg.scene.SDGScene
 import com.shopl.sdg.ui.screen.OverviewScreen
 import com.shopl.sdg.ui.screen.component.AvatarScreen
 import com.shopl.sdg.ui.screen.component.button.BoxButtonScreen
+import com.shopl.sdg.ui.screen.component.button.CapsuleButtonScreen
 import com.shopl.sdg_common.foundation.SDGColor
 
 internal fun provideNavEntry(
@@ -20,9 +21,11 @@ internal fun provideNavEntry(
             is SDGScene.Overview -> OverviewScreenRoute(
                 moveToScene = moveToScene
             )
+
             is ComponentScene -> ComponentScreenRoute(
                 destination = destination
             )
+
             else -> {}
         }
     }
@@ -57,14 +60,21 @@ private fun ComponentScreenRoute(destination: ComponentScene) {
         is ComponentScene.Avatar -> {
             AvatarScreen()
         }
+
         is ComponentScene.Button -> {
-            when(destination) {
+            when (destination) {
                 is ComponentScene.Button.BoxButton -> {
                     BoxButtonScreen()
                 }
+
+                is ComponentScene.Button.CapsuleButton -> {
+                    CapsuleButtonScreen()
+                }
+
                 else -> {}
             }
         }
+
         else -> {}
     }
 }

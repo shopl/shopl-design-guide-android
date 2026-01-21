@@ -15,6 +15,8 @@ import com.shopl.sdg.scene.SDGScene
 import com.shopl.sdg.ui.setEdgeToEdgeConfig
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 
+private const val ANIMATION_DURATION = 300
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +36,7 @@ class MainActivity : ComponentActivity() {
                                     backStack.add(it)
                                 }
                             )
+
                             else -> error("Unknown route: $key")
                         }
                     },
@@ -41,30 +44,30 @@ class MainActivity : ComponentActivity() {
                         // Slide in from right when navigating forward
                         slideInHorizontally(
                             initialOffsetX = { it },
-                            animationSpec = tween(300)
+                            animationSpec = tween(ANIMATION_DURATION)
                         ) togetherWith slideOutHorizontally(
                             targetOffsetX = { -it },
-                            animationSpec = tween(300)
+                            animationSpec = tween(ANIMATION_DURATION)
                         )
                     },
                     popTransitionSpec = {
                         // Slide in from left when navigating back
                         slideInHorizontally(
                             initialOffsetX = { -it },
-                            animationSpec = tween(300)
+                            animationSpec = tween(ANIMATION_DURATION)
                         ) togetherWith slideOutHorizontally(
                             targetOffsetX = { it },
-                            animationSpec = tween(300)
+                            animationSpec = tween(ANIMATION_DURATION)
                         )
                     },
                     predictivePopTransitionSpec = {
                         // Slide in from left when navigating back
                         slideInHorizontally(
                             initialOffsetX = { -it },
-                            animationSpec = tween(300)
+                            animationSpec = tween(ANIMATION_DURATION)
                         ) togetherWith slideOutHorizontally(
                             targetOffsetX = { it },
-                            animationSpec = tween(300)
+                            animationSpec = tween(ANIMATION_DURATION)
                         )
                     }
                 )
