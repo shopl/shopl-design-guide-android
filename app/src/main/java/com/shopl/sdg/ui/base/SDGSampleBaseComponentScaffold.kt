@@ -80,7 +80,6 @@ private fun <TYPE, SPEC> BodyContent(
     var selectedSpecIndex by remember { mutableIntStateOf(0) }
     var selectedStatus by remember { mutableStateOf(SDGSampleStatus.DEFAULT) }
 
-    // Reset index if list size changes to prevent crashes
     LaunchedEffect(types.size) {
         if (selectedTypeIndex >= types.size && types.isNotEmpty()) {
             selectedTypeIndex = 0
@@ -92,7 +91,6 @@ private fun <TYPE, SPEC> BodyContent(
         }
     }
 
-    // Use derivedStateOf for safer and more performant state calculation
     val currentType by remember(types) {
         derivedStateOf { types.getOrNull(selectedTypeIndex)?.item }
     }
@@ -101,9 +99,6 @@ private fun <TYPE, SPEC> BodyContent(
     }
 
     if (types.isEmpty() && specs.isEmpty()) {
-        // You might want to show the component with default values
-        // or a placeholder if both lists are empty.
-        // For now, we'll render content with null type/spec.
         componentContent(null, null, selectedStatus)
         return
     }
