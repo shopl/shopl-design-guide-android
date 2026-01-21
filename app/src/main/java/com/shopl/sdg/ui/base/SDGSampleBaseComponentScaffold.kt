@@ -46,8 +46,8 @@ import kotlinx.collections.immutable.persistentListOf
 internal fun <TYPE, SPEC> SDGSampleBaseComponentScaffold(
     componentName: String,
     componentDescription: String,
-    types: PersistentList<SDGSampleBaseTabItem<TYPE>> = persistentListOf(),
-    specs: PersistentList<SDGSampleBaseTabItem<SPEC>> = persistentListOf(),
+    types: PersistentList<SDGSampleBaseTabItem<TYPE>>? = null,
+    specs: PersistentList<SDGSampleBaseTabItem<SPEC>>? = null,
     componentContent: @Composable (type: TYPE?, spec: SPEC?, status: SDGSampleStatus) -> Unit,
     guideLineDescriptions: PersistentList<String> = persistentListOf()
 ) {
@@ -72,33 +72,33 @@ internal fun <TYPE, SPEC> SDGSampleBaseComponentScaffold(
 
 @Composable
 private fun <TYPE, SPEC> BodyContent(
-    types: PersistentList<SDGSampleBaseTabItem<TYPE>>,
-    specs: PersistentList<SDGSampleBaseTabItem<SPEC>>,
+    types: PersistentList<SDGSampleBaseTabItem<TYPE>>?,
+    specs: PersistentList<SDGSampleBaseTabItem<SPEC>>?,
     componentContent: @Composable (currentType: TYPE?, currentSpec: SPEC?, currentStatus: SDGSampleStatus) -> Unit
 ) {
     var selectedTypeIndex by remember { mutableIntStateOf(0) }
     var selectedSpecIndex by remember { mutableIntStateOf(0) }
     var selectedStatus by remember { mutableStateOf(SDGSampleStatus.DEFAULT) }
 
-    LaunchedEffect(types.size) {
-        if (selectedTypeIndex >= types.size && types.isNotEmpty()) {
+    LaunchedEffect(types?.size) {
+        if (!types.isNullOrEmpty() && selectedTypeIndex >= types.size) {
             selectedTypeIndex = 0
         }
     }
-    LaunchedEffect(specs.size) {
-        if (selectedSpecIndex >= specs.size && specs.isNotEmpty()) {
+    LaunchedEffect(specs?.size) {
+        if (!specs.isNullOrEmpty() && selectedSpecIndex >= specs.size) {
             selectedSpecIndex = 0
         }
     }
 
     val currentType by remember(types) {
-        derivedStateOf { types.getOrNull(selectedTypeIndex)?.item }
+        derivedStateOf { types?.getOrNull(selectedTypeIndex)?.item }
     }
     val currentSpec by remember(specs) {
-        derivedStateOf { specs.getOrNull(selectedSpecIndex)?.item }
+        derivedStateOf { specs?.getOrNull(selectedSpecIndex)?.item }
     }
 
-    if (types.isEmpty() && specs.isEmpty()) {
+    if (types.isNullOrEmpty() && specs.isNullOrEmpty()) {
         componentContent(null, null, selectedStatus)
         return
     }
@@ -111,7 +111,7 @@ private fun <TYPE, SPEC> BodyContent(
     )
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        if (types.isNotEmpty()) {
+        if (!types.isNullOrEmpty()) {
             SDGSampleTypeTab(
                 modifier = tabModifier,
                 tabs = types,
@@ -120,11 +120,11 @@ private fun <TYPE, SPEC> BodyContent(
             )
         }
 
-        if (types.isNotEmpty() && specs.isNotEmpty()) {
+        if (!types.isNullOrEmpty() && !specs.isNullOrEmpty()) {
             HorizontalDivider(color = SDGColor.Neutral200)
         }
 
-        if (specs.isNotEmpty()) {
+        if (!specs.isNullOrEmpty()) {
             SDGSampleSpecTab(
                 modifier = tabModifier,
                 tabs = specs,

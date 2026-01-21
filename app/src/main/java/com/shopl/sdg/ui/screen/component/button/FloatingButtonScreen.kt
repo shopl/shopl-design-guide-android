@@ -32,10 +32,9 @@ internal fun FloatingButtonScreen() {
         ),
     )
 
-    SDGSampleBaseComponentScaffold(
+    SDGSampleBaseComponentScaffold<Unit, Unit>(
         componentName = ComponentScene.Button.FloatingButton.displayLabel,
         componentDescription = "화면 우측 하단에 고정으로 위치하며, 생성&추가 등의 동작을 위한 버튼 컴포넌트",
-        types = persistentListOf<SDGSampleBaseTabItem<Unit>>(),
         specs = specs,
         guideLineDescriptions = persistentListOf(
             "지정된 컬러를 사용합니다."

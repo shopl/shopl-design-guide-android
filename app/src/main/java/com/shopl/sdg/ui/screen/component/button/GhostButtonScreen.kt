@@ -48,10 +48,9 @@ internal fun GhostButtonScreen() {
     )
 
 
-    SDGSampleBaseComponentScaffold(
+    SDGSampleBaseComponentScaffold<Unit, SDGGhostButtonSize>(
         componentName = ComponentScene.Button.GhostButton.displayLabel,
         componentDescription = "화면의 내용 영역에 배치하여 사용하는 배경이 없는 형태의 버튼 컴포넌트",
-        types = persistentListOf<SDGSampleBaseTabItem<Unit>>(),
         specs = specs,
         guideLineDescriptions = persistentListOf(
             "SDG 컬러 시스템의 모든 컬러 적용 가능합니다."
