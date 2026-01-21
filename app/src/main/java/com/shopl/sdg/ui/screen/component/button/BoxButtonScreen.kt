@@ -29,26 +29,26 @@ internal fun BoxButtonScreen() {
 
     val types = persistentListOf<SDGSampleBaseTabItem<SDGBoxButtonType>>(
         SDGSampleBaseTabItem(
-            title = SDGBoxButtonType.Solid::class.simpleName.orEmpty(),
+            title = SDGBoxButtonType.Solid.typeName,
             item = SDGBoxButtonType.Solid
         ),
         SDGSampleBaseTabItem(
-            title = SDGBoxButtonType.Line::class.simpleName.orEmpty(),
+            title = SDGBoxButtonType.Line(SDGColor.Neutral350).typeName,
             item = SDGBoxButtonType.Line(SDGColor.Neutral350)
         ),
     )
 
     val specs = persistentListOf<SDGSampleBaseTabItem<SDGBoxButtonSize>>(
         SDGSampleBaseTabItem(
-            title = SDGBoxButtonSize.Medium::class.simpleName.orEmpty(),
+            title = SDGBoxButtonSize.Medium.sizeName,
             item = SDGBoxButtonSize.Medium
         ),
         SDGSampleBaseTabItem(
-            title = SDGBoxButtonSize.Small::class.simpleName.orEmpty(),
+            title = SDGBoxButtonSize.Small.sizeName,
             item = SDGBoxButtonSize.Small
         ),
         SDGSampleBaseTabItem(
-            title = SDGBoxButtonSize.XSmall::class.simpleName.orEmpty(),
+            title = SDGBoxButtonSize.XSmall.sizeName,
             item = SDGBoxButtonSize.XSmall
         ),
     )

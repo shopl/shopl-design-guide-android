@@ -17,6 +17,8 @@ sealed class SDGBoxButtonSize(
     val shape: Shape,
     val typography: SDGTypography,
 ) {
+    abstract val sizeName: String
+
     data object Medium : SDGBoxButtonSize(
         height = 42.dp,
         horizontalSpacing = Spacing16,
@@ -24,7 +26,9 @@ sealed class SDGBoxButtonSize(
         iconSize = 16.dp,
         shape = SDGCornerRadius.BoxRadius.Radius12,
         typography = SDGTypography.Body2R,
-    )
+    ) {
+        override val sizeName = "Medium"
+    }
 
     data object Small : SDGBoxButtonSize(
         height = 32.dp,
@@ -33,7 +37,9 @@ sealed class SDGBoxButtonSize(
         iconSize = 14.dp,
         shape = SDGCornerRadius.BoxRadius.Radius8,
         typography = SDGTypography.Body3R,
-    )
+    ) {
+        override val sizeName = "Small"
+    }
 
     data object XSmall : SDGBoxButtonSize(
         height = 20.dp,
@@ -42,5 +48,7 @@ sealed class SDGBoxButtonSize(
         iconSize = 14.dp,
         shape = SDGCornerRadius.BoxRadius.Radius6,
         typography = SDGTypography.Body3R,
-    )
+    ) {
+        override val sizeName = "XSmall"
+    }
 }

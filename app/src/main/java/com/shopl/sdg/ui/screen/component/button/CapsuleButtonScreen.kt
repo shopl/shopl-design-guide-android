@@ -29,30 +29,30 @@ internal fun CapsuleButtonScreen() {
 
     val types = persistentListOf<SDGSampleBaseTabItem<SDGCapsuleButtonType>>(
         SDGSampleBaseTabItem(
-            title = SDGCapsuleButtonType.Solid::class.simpleName.orEmpty(),
+            title = SDGCapsuleButtonType.Solid.typeName,
             item = SDGCapsuleButtonType.Solid
         ),
         SDGSampleBaseTabItem(
-            title = SDGCapsuleButtonType.Line::class.simpleName.orEmpty(),
+            title = SDGCapsuleButtonType.Line(SDGColor.Neutral350).typeName,
             item = SDGCapsuleButtonType.Line(SDGColor.Neutral350)
         ),
     )
 
     val specs = persistentListOf<SDGSampleBaseTabItem<SDGCapsuleButtonSize>>(
         SDGSampleBaseTabItem(
-            title = SDGCapsuleButtonSize.Large::class.simpleName.orEmpty(),
+            title = SDGCapsuleButtonSize.Large.sizeName,
             item = SDGCapsuleButtonSize.Large
         ),
         SDGSampleBaseTabItem(
-            title = SDGCapsuleButtonSize.Medium::class.simpleName.orEmpty(),
+            title = SDGCapsuleButtonSize.Medium.sizeName,
             item = SDGCapsuleButtonSize.Medium
         ),
         SDGSampleBaseTabItem(
-            title = SDGCapsuleButtonSize.Small::class.simpleName.orEmpty(),
+            title = SDGCapsuleButtonSize.Small.sizeName,
             item = SDGCapsuleButtonSize.Small
         ),
         SDGSampleBaseTabItem(
-            title = SDGCapsuleButtonSize.XSmall::class.simpleName.orEmpty(),
+            title = SDGCapsuleButtonSize.XSmall.sizeName,
             item = SDGCapsuleButtonSize.XSmall
         ),
     )
