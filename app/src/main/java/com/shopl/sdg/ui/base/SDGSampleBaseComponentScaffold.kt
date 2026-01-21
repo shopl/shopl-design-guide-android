@@ -59,7 +59,7 @@ internal fun <TYPE, SPEC> SDGSampleBaseComponentScaffold(
                 componentContent = componentContent
             )
         },
-        usageGuideLinesContent = if(guideLineDescriptions.isNotEmpty()) {
+        usageGuideLinesContent = if (guideLineDescriptions.isNotEmpty()) {
             {
                 SDGSampleBaseGuideLinesContent(
                     guideLineDescriptions = guideLineDescriptions
