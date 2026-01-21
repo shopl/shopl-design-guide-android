@@ -58,6 +58,10 @@ nav3Core = "1.0.0"
 # Accompanist
 accompanist = "0.28.0"
 
+# Detekt
+detekt = "2.0.0-alpha.1"
+detekt-formatting = "1.23.8"
+
 [libraries]
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -102,6 +106,8 @@ androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", vers
 
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -111,6 +117,7 @@ android-library = { id = "com.android.library", version.ref = "androidGradlePlug
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 vanniktech-maven = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven" }
+detekt = { id = "dev.detekt", version.ref = "detekt" }
 
 # 프로젝트 내 정의된 Plugin
 sdg-plugin-publishing = { id = "sdg.plugin.publishing", version = "unspecified" }
