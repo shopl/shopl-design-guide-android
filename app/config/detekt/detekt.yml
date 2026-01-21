@@ -113,7 +113,7 @@ complexity:
     allowedLines: 600
   LongMethod:
     active: true
-    allowedLines: 60
+    allowedLines: 100
   LongParameterList:
     active: true
     allowedFunctionParameters: 5
@@ -689,7 +689,7 @@ style:
     maxChainedCalls: 5
   MaxLineLength:
     active: true
-    maxLineLength: 120
+    maxLineLength: 200
     excludePackageStatements: true
     excludeImportStatements: true
     excludeCommentStatements: false

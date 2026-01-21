@@ -67,7 +67,7 @@ internal sealed class ComponentScene(
 
         data object GhostButton : Button(
             displayLabel = "Ghost Button",
-            implemented = false
+            implemented = true
         )
 
         data object IconButton : Button(

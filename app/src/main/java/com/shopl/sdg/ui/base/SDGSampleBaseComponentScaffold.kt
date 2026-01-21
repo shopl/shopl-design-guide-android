@@ -44,9 +44,11 @@ import kotlinx.collections.immutable.persistentListOf
 internal fun <TYPE, SPEC> SDGSampleBaseComponentScaffold(
     componentName: String,
     componentDescription: String,
-    types: PersistentList<SDGSampleBaseTabItem<TYPE>>,
-    specs: PersistentList<SDGSampleBaseTabItem<SPEC>>,
-    componentContent: @Composable (currentType: TYPE, currentSpec: SPEC, currentStatus: SDGSampleStatus) -> Unit,
+    types: PersistentList<SDGSampleBaseTabItem<TYPE>> = persistentListOf<SDGSampleBaseTabItem<TYPE>>(),
+    specs: PersistentList<SDGSampleBaseTabItem<SPEC>> = persistentListOf<SDGSampleBaseTabItem<SPEC>>(),
+    componentContent: @Composable (currentType: TYPE, currentSpec: SPEC, currentStatus: SDGSampleStatus) -> Unit = { _, _, _ -> },
+    componentTypeContent: @Composable (currentType: TYPE, currentStatus: SDGSampleStatus) -> Unit = { _, _ -> },
+    componentSpecContent: @Composable (currentSpec: SPEC, currentStatus: SDGSampleStatus) -> Unit = { _, _ -> },
     guideLineDescriptions: PersistentList<String> = persistentListOf()
 ) {
     SDGSampleBaseScaffold(
@@ -56,7 +58,22 @@ internal fun <TYPE, SPEC> SDGSampleBaseComponentScaffold(
             BodyContent(
                 types = types,
                 specs = specs,
-                componentContent = componentContent
+                componentContent = { type, spec, status ->
+                    when {
+                        type != null && spec != null -> {
+                            componentContent(type, spec, status)
+                        }
+
+                        type != null -> {
+                            componentTypeContent(type, status)
+                        }
+
+                        spec != null -> {
+                            componentSpecContent(spec, status)
+                        }
+
+                    }
+                }
             )
         },
         usageGuideLinesContent = if (guideLineDescriptions.isNotEmpty()) {
@@ -73,46 +90,54 @@ internal fun <TYPE, SPEC> SDGSampleBaseComponentScaffold(
 private fun <TYPE, SPEC> BodyContent(
     types: PersistentList<SDGSampleBaseTabItem<TYPE>>,
     specs: PersistentList<SDGSampleBaseTabItem<SPEC>>,
-    componentContent: @Composable (currentType: TYPE, currentSpec: SPEC, currentStatus: SDGSampleStatus) -> Unit
+    componentContent: @Composable (currentType: TYPE?, currentSpec: SPEC?, currentStatus: SDGSampleStatus) -> Unit
 ) {
     var selectedSpecIndex by remember { mutableIntStateOf(0) }
     var selectedTypeIndex by remember { mutableIntStateOf(0) }
     var selectedStatus by remember { mutableStateOf(SDGSampleStatus.DEFAULT) }
 
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        SDGSampleTypeTab(
-            modifier = Modifier.padding(
-                start = SDGSpacing.Spacing16,
-                top = SDGSpacing.Spacing16,
-                end = SDGSpacing.Spacing16,
-                bottom = SDGSpacing.Spacing12
-            ),
-            tabs = types,
-            selectedTabIndex = selectedTypeIndex,
-            onTabClick = {
-                selectedTypeIndex = it
+    if (types.isNotEmpty() || specs.isNotEmpty()) {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            if (types.isNotEmpty()) {
+                SDGSampleTypeTab(
+                    modifier = Modifier.padding(
+                        start = SDGSpacing.Spacing16,
+                        top = SDGSpacing.Spacing16,
+                        end = SDGSpacing.Spacing16,
+                        bottom = SDGSpacing.Spacing12
+                    ),
+                    tabs = types,
+                    selectedTabIndex = selectedTypeIndex,
+                    onTabClick = {
+                        selectedTypeIndex = it
+                    }
+                )
             }
-        )
 
-        HorizontalDivider(
-            color = SDGColor.Neutral200
-        )
-
-        SDGSampleSpecTab(
-            modifier = Modifier.padding(
-                start = SDGSpacing.Spacing16,
-                top = SDGSpacing.Spacing16,
-                end = SDGSpacing.Spacing16,
-                bottom = SDGSpacing.Spacing12
-            ),
-            tabs = specs,
-            selectedTabIndex = selectedSpecIndex,
-            onTabClick = {
-                selectedSpecIndex = it
+            if (types.isNotEmpty() && specs.isNotEmpty()) {
+                HorizontalDivider(
+                    color = SDGColor.Neutral200
+                )
             }
-        )
+
+            if (specs.isNotEmpty()) {
+                SDGSampleSpecTab(
+                    modifier = Modifier.padding(
+                        start = SDGSpacing.Spacing16,
+                        top = SDGSpacing.Spacing16,
+                        end = SDGSpacing.Spacing16,
+                        bottom = SDGSpacing.Spacing12
+                    ),
+                    tabs = specs,
+                    selectedTabIndex = selectedSpecIndex,
+                    onTabClick = {
+                        selectedSpecIndex = it
+                    }
+                )
+            }
+        }
 
         SDGSampleStatusBox(
             currentStatus = selectedStatus,
@@ -121,8 +146,8 @@ private fun <TYPE, SPEC> BodyContent(
             },
             content = {
                 componentContent(
-                    types[selectedTypeIndex].item,
-                    specs[selectedSpecIndex].item,
+                    if (types.size > selectedTypeIndex) types[selectedTypeIndex].item else null,
+                    if (specs.size > selectedSpecIndex) specs[selectedSpecIndex].item else null,
                     selectedStatus
                 )
             },
