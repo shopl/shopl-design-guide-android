@@ -29,7 +29,7 @@ internal fun <T> SDGSampleSpecTab(
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewSDGSampleSpecTab() {
     val specs = persistentListOf<SDGSampleBaseTabItem<SDGBoxButtonSize>>(

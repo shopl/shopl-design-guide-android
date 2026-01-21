@@ -29,7 +29,7 @@ internal fun <T> SDGSampleTypeTab(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewSDGSampleTypeTab() {
     val types = persistentListOf<SDGSampleBaseTabItem<SDGBoxBadgeType>>(

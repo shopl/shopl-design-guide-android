@@ -29,7 +29,7 @@ internal fun SDGSampleBaseGuideLinesContent(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewSDGSampleBaseGuideLinesContent() {
     SDGSampleBaseGuideLinesContent(

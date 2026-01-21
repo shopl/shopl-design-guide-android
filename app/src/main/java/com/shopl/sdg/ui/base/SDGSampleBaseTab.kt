@@ -50,7 +50,7 @@ internal fun <T> SDGSampleBaseTab(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewSDGSampleBaseTab() {
     val properties = persistentListOf<SDGSampleBaseTabItem<Any>>(
