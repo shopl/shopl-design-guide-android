@@ -78,7 +78,7 @@ internal fun SDGSampleBaseScaffold(
 
             bodyContent()
 
-            if (usageGuideLinesContent != null) {
+            if(usageGuideLinesContent != null) {
                 HorizontalDivider(
                     color = SDGColor.Neutral200
                 )
