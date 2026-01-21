@@ -40,7 +40,7 @@ internal fun FloatingButtonScreen() {
         guideLineDescriptions = persistentListOf(
             "지정된 컬러를 사용합니다."
         ),
-        componentSpecContent = { _, currentStatus ->
+        componentContent = { _, _, currentStatus ->
             ComponentContent(
                 status = currentStatus
             )

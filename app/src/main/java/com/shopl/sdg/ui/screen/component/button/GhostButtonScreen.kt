@@ -56,11 +56,13 @@ internal fun GhostButtonScreen() {
         guideLineDescriptions = persistentListOf(
             "SDG 컬러 시스템의 모든 컬러 적용 가능합니다."
         ),
-        componentSpecContent = { currentSpec, currentStatus ->
-            ComponentContent(
-                size = currentSpec,
-                status = currentStatus
-            )
+        componentContent = { _, currentSpec, currentStatus ->
+            if (currentSpec != null) {
+                ComponentContent(
+                    size = currentSpec,
+                    status = currentStatus
+                )
+            }
         }
     )
 }

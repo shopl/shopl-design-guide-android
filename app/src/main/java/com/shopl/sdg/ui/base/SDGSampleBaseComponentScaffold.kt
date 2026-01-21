@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -37,18 +39,16 @@ import kotlinx.collections.immutable.persistentListOf
  * @param componentDescription 해당 컴포넌트의 설명
  * @param types 샘플앱에 표기되는 Type 정보
  * @param specs 샘플앱에 표기되는 Size Spec 정보
- * @param componentContent 해당 컴포넌트를 그리는 영역
+ * @param componentContent 해당 컴포넌트를 그리는 영역. 선택된 type, spec, status를 인자로 받습니다.
  * @param guideLineDescriptions 가이드 라인에 대한 설명
  */
 @Composable
 internal fun <TYPE, SPEC> SDGSampleBaseComponentScaffold(
     componentName: String,
     componentDescription: String,
-    types: PersistentList<SDGSampleBaseTabItem<TYPE>> = persistentListOf<SDGSampleBaseTabItem<TYPE>>(),
-    specs: PersistentList<SDGSampleBaseTabItem<SPEC>> = persistentListOf<SDGSampleBaseTabItem<SPEC>>(),
-    componentContent: @Composable (currentType: TYPE, currentSpec: SPEC, currentStatus: SDGSampleStatus) -> Unit = { _, _, _ -> },
-    componentTypeContent: @Composable (currentType: TYPE, currentStatus: SDGSampleStatus) -> Unit = { _, _ -> },
-    componentSpecContent: @Composable (currentSpec: SPEC, currentStatus: SDGSampleStatus) -> Unit = { _, _ -> },
+    types: PersistentList<SDGSampleBaseTabItem<TYPE>> = persistentListOf(),
+    specs: PersistentList<SDGSampleBaseTabItem<SPEC>> = persistentListOf(),
+    componentContent: @Composable (type: TYPE?, spec: SPEC?, status: SDGSampleStatus) -> Unit,
     guideLineDescriptions: PersistentList<String> = persistentListOf()
 ) {
     SDGSampleBaseScaffold(
@@ -58,31 +58,15 @@ internal fun <TYPE, SPEC> SDGSampleBaseComponentScaffold(
             BodyContent(
                 types = types,
                 specs = specs,
-                componentContent = { type, spec, status ->
-                    when {
-                        type != null && spec != null -> {
-                            componentContent(type, spec, status)
-                        }
-
-                        type != null -> {
-                            componentTypeContent(type, status)
-                        }
-
-                        spec != null -> {
-                            componentSpecContent(spec, status)
-                        }
-
-                    }
-                }
+                componentContent = componentContent
             )
         },
-        usageGuideLinesContent = if (guideLineDescriptions.isNotEmpty()) {
-            {
-                SDGSampleBaseGuideLinesContent(
-                    guideLineDescriptions = guideLineDescriptions
-                )
+        usageGuideLinesContent = guideLineDescriptions.takeIf { it.isNotEmpty() }
+            ?.let { descriptions ->
+                @Composable {
+                    SDGSampleBaseGuideLinesContent(guideLineDescriptions = descriptions)
+                }
             }
-        } else null
     )
 }
 
@@ -92,72 +76,81 @@ private fun <TYPE, SPEC> BodyContent(
     specs: PersistentList<SDGSampleBaseTabItem<SPEC>>,
     componentContent: @Composable (currentType: TYPE?, currentSpec: SPEC?, currentStatus: SDGSampleStatus) -> Unit
 ) {
-    var selectedSpecIndex by remember { mutableIntStateOf(0) }
     var selectedTypeIndex by remember { mutableIntStateOf(0) }
+    var selectedSpecIndex by remember { mutableIntStateOf(0) }
     var selectedStatus by remember { mutableStateOf(SDGSampleStatus.DEFAULT) }
 
-    if (types.isNotEmpty() || specs.isNotEmpty()) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            if (types.isNotEmpty()) {
-                SDGSampleTypeTab(
-                    modifier = Modifier.padding(
-                        start = SDGSpacing.Spacing16,
-                        top = SDGSpacing.Spacing16,
-                        end = SDGSpacing.Spacing16,
-                        bottom = SDGSpacing.Spacing12
-                    ),
-                    tabs = types,
-                    selectedTabIndex = selectedTypeIndex,
-                    onTabClick = {
-                        selectedTypeIndex = it
-                    }
-                )
-            }
+    // Reset index if list size changes to prevent crashes
+    LaunchedEffect(types.size) {
+        if (selectedTypeIndex >= types.size && types.isNotEmpty()) {
+            selectedTypeIndex = 0
+        }
+    }
+    LaunchedEffect(specs.size) {
+        if (selectedSpecIndex >= specs.size && specs.isNotEmpty()) {
+            selectedSpecIndex = 0
+        }
+    }
 
-            if (types.isNotEmpty() && specs.isNotEmpty()) {
-                HorizontalDivider(
-                    color = SDGColor.Neutral200
-                )
-            }
+    // Use derivedStateOf for safer and more performant state calculation
+    val currentType by remember(types) {
+        derivedStateOf { types.getOrNull(selectedTypeIndex)?.item }
+    }
+    val currentSpec by remember(specs) {
+        derivedStateOf { specs.getOrNull(selectedSpecIndex)?.item }
+    }
 
-            if (specs.isNotEmpty()) {
-                SDGSampleSpecTab(
-                    modifier = Modifier.padding(
-                        start = SDGSpacing.Spacing16,
-                        top = SDGSpacing.Spacing16,
-                        end = SDGSpacing.Spacing16,
-                        bottom = SDGSpacing.Spacing12
-                    ),
-                    tabs = specs,
-                    selectedTabIndex = selectedSpecIndex,
-                    onTabClick = {
-                        selectedSpecIndex = it
-                    }
-                )
-            }
+    if (types.isEmpty() && specs.isEmpty()) {
+        // You might want to show the component with default values
+        // or a placeholder if both lists are empty.
+        // For now, we'll render content with null type/spec.
+        componentContent(null, null, selectedStatus)
+        return
+    }
+
+    val tabModifier = Modifier.padding(
+        start = SDGSpacing.Spacing16,
+        top = SDGSpacing.Spacing16,
+        end = SDGSpacing.Spacing16,
+        bottom = SDGSpacing.Spacing12
+    )
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        if (types.isNotEmpty()) {
+            SDGSampleTypeTab(
+                modifier = tabModifier,
+                tabs = types,
+                selectedTabIndex = selectedTypeIndex,
+                onTabClick = { selectedTypeIndex = it }
+            )
         }
 
-        SDGSampleStatusBox(
-            currentStatus = selectedStatus,
-            onClickStatus = {
-                selectedStatus = it
-            },
-            content = {
-                componentContent(
-                    if (types.size > selectedTypeIndex) types[selectedTypeIndex].item else null,
-                    if (specs.size > selectedSpecIndex) specs[selectedSpecIndex].item else null,
-                    selectedStatus
-                )
-            },
-            modifier = Modifier.padding(
-                start = SDGSpacing.Spacing16,
-                end = SDGSpacing.Spacing16,
-                bottom = SDGSpacing.Spacing16
+        if (types.isNotEmpty() && specs.isNotEmpty()) {
+            HorizontalDivider(color = SDGColor.Neutral200)
+        }
+
+        if (specs.isNotEmpty()) {
+            SDGSampleSpecTab(
+                modifier = tabModifier,
+                tabs = specs,
+                selectedTabIndex = selectedSpecIndex,
+                onTabClick = { selectedSpecIndex = it }
             )
-        )
+        }
     }
+
+    SDGSampleStatusBox(
+        modifier = Modifier.padding(
+            start = SDGSpacing.Spacing16,
+            end = SDGSpacing.Spacing16,
+            bottom = SDGSpacing.Spacing16
+        ),
+        currentStatus = selectedStatus,
+        onClickStatus = { selectedStatus = it },
+        content = {
+            componentContent(currentType, currentSpec, selectedStatus)
+        }
+    )
 }
 
 @Preview
@@ -168,51 +161,29 @@ private fun PreviewSDGSampleBaseComponentScaffold() {
             componentName = "SDG Component",
             componentDescription = "SDG Component Description",
             types = persistentListOf(
-                SDGSampleBaseTabItem(
-                    title = "Type 1",
-                    item = 0
-                ),
-                SDGSampleBaseTabItem(
-                    title = "Type 2",
-                    item = 0
-                ),
-                SDGSampleBaseTabItem(
-                    title = "Type 3",
-                    item = 0
-                ),
+                SDGSampleBaseTabItem("Type 1", 0),
+                SDGSampleBaseTabItem("Type 2", 1),
             ),
             specs = persistentListOf(
-                SDGSampleBaseTabItem(
-                    title = "Spec 1",
-                    item = 0
-                ),
-                SDGSampleBaseTabItem(
-                    title = "Spec 2",
-                    item = 0
-                ),
-                SDGSampleBaseTabItem(
-                    title = "Spec 3",
-                    item = 0
-                ),
+                SDGSampleBaseTabItem("Spec 1", 0),
+                SDGSampleBaseTabItem("Spec 2", 1),
             ),
             componentContent = { currentType, currentSpec, currentStatus ->
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp)
-                        .background(SDGColor.Neutral150)
+                        .background(SDGColor.Neutral150),
+                    contentAlignment = Alignment.Center
                 ) {
                     SDGText(
-                        modifier = Modifier.align(Alignment.Center),
-                        text = "SDG Component Content",
+                        text = "Type: $currentType, Spec: $currentSpec, Status: $currentStatus",
                         textColor = SDGColor.Neutral700,
                         typography = SDGTypography.Body3R
                     )
                 }
             },
-            guideLineDescriptions = persistentListOf(
-                "Usage GuideLine Description"
-            )
+            guideLineDescriptions = persistentListOf("Usage GuideLine Description")
         )
     }
 }

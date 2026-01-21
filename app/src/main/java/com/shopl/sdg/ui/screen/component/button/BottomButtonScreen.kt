@@ -72,11 +72,13 @@ internal fun BottomButtonScreen() {
             "지정된 컬러를 사용합니다."
         ),
         componentContent = { currentType, currentSpec, currentStatus ->
-            ComponentContent(
-                type = currentType,
-                spec = currentSpec,
-                status = currentStatus
-            )
+            if (currentType != null && currentSpec != null) {
+                ComponentContent(
+                    type = currentType,
+                    spec = currentSpec,
+                    status = currentStatus
+                )
+            }
         }
     )
 }
