@@ -1,8 +1,11 @@
+import dev.detekt.gradle.Detekt
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -22,7 +25,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -34,6 +40,13 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+
+    detekt {
+        ignoreFailures = false
+        toolVersion = "2.0.0-alpha.1"
+        config.setFrom(file("config/detekt/detekt.yml"))
+        buildUponDefaultConfig = true
     }
 }
 
@@ -65,4 +78,18 @@ dependencies {
     implementation(libs.androidx.navigation3.runtime)
 
     implementation(libs.accompanist.systemuicontroller)
+
+    detektPlugins(libs.detekt.formatting)
+}
+
+tasks.matching { task ->
+    task.name == "assembleDebug" || task.name == "assembleRelease"
+}.configureEach {
+    dependsOn("detekt")
+}
+
+tasks.withType<Detekt>().configureEach {
+    reports {
+        markdown.required.set(true)
+    }
 }

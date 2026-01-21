@@ -75,7 +75,7 @@ internal fun BoxButtonScreen() {
 private fun ComponentContent(
     type: SDGBoxButtonType,
     size: SDGBoxButtonSize,
-    status : SDGSampleStatus,
+    status: SDGSampleStatus,
 ) {
     Box(
         modifier = Modifier
@@ -90,7 +90,7 @@ private fun ComponentContent(
             type = type,
             label = "Label",
             labelColor = SDGColor.Neutral600,
-            backgroundColor = if(type == SDGBoxButtonType.Solid) {
+            backgroundColor = if (type == SDGBoxButtonType.Solid) {
                 SDGColor.Neutral200
             } else SDGColor.Transparent,
             onClick = {},

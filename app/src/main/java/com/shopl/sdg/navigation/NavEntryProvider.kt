@@ -21,9 +21,11 @@ internal fun provideNavEntry(
             is SDGScene.Overview -> OverviewScreenRoute(
                 moveToScene = moveToScene
             )
+
             is ComponentScene -> ComponentScreenRoute(
                 destination = destination
             )
+
             else -> {}
         }
     }
@@ -58,17 +60,21 @@ private fun ComponentScreenRoute(destination: ComponentScene) {
         is ComponentScene.Avatar -> {
             AvatarScreen()
         }
+
         is ComponentScene.Button -> {
-            when(destination) {
+            when (destination) {
                 is ComponentScene.Button.BoxButton -> {
                     BoxButtonScreen()
                 }
+
                 is ComponentScene.Button.CapsuleButton -> {
                     CapsuleButtonScreen()
                 }
+
                 else -> {}
             }
         }
+
         else -> {}
     }
 }

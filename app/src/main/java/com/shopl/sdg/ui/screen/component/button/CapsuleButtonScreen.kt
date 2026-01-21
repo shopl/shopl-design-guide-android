@@ -79,7 +79,7 @@ internal fun CapsuleButtonScreen() {
 private fun ComponentContent(
     type: SDGCapsuleButtonType,
     size: SDGCapsuleButtonSize,
-    status : SDGSampleStatus,
+    status: SDGSampleStatus,
 ) {
     Box(
         modifier = Modifier
@@ -93,10 +93,10 @@ private fun ComponentContent(
             size = size,
             type = type,
             label = "Label",
-            labelColor = if(type == SDGCapsuleButtonType.Solid) {
+            labelColor = if (type == SDGCapsuleButtonType.Solid) {
                 SDGColor.Neutral0
             } else SDGColor.Neutral600,
-            backgroundColor = if(type == SDGCapsuleButtonType.Solid) {
+            backgroundColor = if (type == SDGCapsuleButtonType.Solid) {
                 SDGColor.Neutral600
             } else SDGColor.Transparent,
             onClick = {},

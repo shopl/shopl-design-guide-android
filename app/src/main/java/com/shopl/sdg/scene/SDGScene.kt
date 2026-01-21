@@ -13,7 +13,7 @@ internal sealed class SDGScene(
     open val displayLabel: String = "",
     open val implemented: Boolean = false,
 ) {
-    
+
     /**
      * 개요 화면
      */

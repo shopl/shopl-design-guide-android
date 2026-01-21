@@ -38,7 +38,6 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
-import kotlinx.collections.immutable.PersistentList
 
 /**
  * SDG Sample App - Overview
@@ -47,7 +46,7 @@ import kotlinx.collections.immutable.PersistentList
  */
 @Composable
 internal fun OverviewScreen(
-    moveToScene: (SDGScene) -> Unit ,
+    moveToScene: (SDGScene) -> Unit,
 ) {
     val context = LocalContext.current
     val cardUiModels = remember {
@@ -184,7 +183,7 @@ private fun Card(
                     size = SDGBoxBadgeSize.XSmall,
                     type = SDGBoxBadgeType.Solid,
                     label = scene.displayLabel,
-                    labelColor = if(scene.implemented) SDGColor.Neutral400 else SDGColor.Neutral300,
+                    labelColor = if (scene.implemented) SDGColor.Neutral400 else SDGColor.Neutral300,
                     backgroundColor = SDGColor.Neutral50,
                     enable = scene.implemented,
                     onClick = { onClickSceneButton(scene) }
