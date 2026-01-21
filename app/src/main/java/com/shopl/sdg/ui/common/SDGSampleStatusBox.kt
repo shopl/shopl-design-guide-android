@@ -78,7 +78,7 @@ internal fun SDGSampleStatusBox(
     }
 }
 
-@Preview
+@Preview(showBackgroud = true)
 @Composable
 private fun PreviewSDGSampleStatusBox() {
     SDGSampleStatusBox(
