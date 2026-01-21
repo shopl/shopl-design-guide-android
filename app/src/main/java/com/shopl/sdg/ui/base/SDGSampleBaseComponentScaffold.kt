@@ -18,9 +18,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.enums.SDGSampleStatus
 import com.shopl.sdg.model.SDGSampleBaseTabItem
+import com.shopl.sdg.preview.SDGSampleBaseComponentParameterProvider
+import com.shopl.sdg.preview.SDGSampleBaseComponentUiState
 import com.shopl.sdg.ui.common.SDGSampleSpecTab
 import com.shopl.sdg.ui.common.SDGSampleStatusBox
 import com.shopl.sdg.ui.common.SDGSampleTypeTab
@@ -150,19 +153,16 @@ private fun <TYPE, SPEC> BodyContent(
 
 @Preview
 @Composable
-private fun PreviewSDGSampleBaseComponentScaffold() {
+private fun PreviewSDGSampleBaseComponentScaffold(
+    @PreviewParameter(SDGSampleBaseComponentParameterProvider::class)
+    uiState: SDGSampleBaseComponentUiState
+) {
     ShoplDesignGuideTheme {
         SDGSampleBaseComponentScaffold(
-            componentName = "SDG Component",
-            componentDescription = "SDG Component Description",
-            types = persistentListOf(
-                SDGSampleBaseTabItem("Type 1", 0),
-                SDGSampleBaseTabItem("Type 2", 1),
-            ),
-            specs = persistentListOf(
-                SDGSampleBaseTabItem("Spec 1", 0),
-                SDGSampleBaseTabItem("Spec 2", 1),
-            ),
+            componentName = uiState.componentName,
+            componentDescription = uiState.componentDescription,
+            types = uiState.types,
+            specs = uiState.specs,
             componentContent = { currentType, currentSpec, currentStatus ->
                 Box(
                     modifier = Modifier
@@ -178,7 +178,7 @@ private fun PreviewSDGSampleBaseComponentScaffold() {
                     )
                 }
             },
-            guideLineDescriptions = persistentListOf("Usage GuideLine Description")
+            guideLineDescriptions = uiState.guideLineDescriptions
         )
     }
 }
