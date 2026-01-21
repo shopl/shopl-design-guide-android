@@ -1,11 +1,13 @@
 package com.shopl.sdg.component.button.capsule
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 
+@Stable
 sealed class SDGCapsuleButtonSize(
     val height: Dp,
     val horizontalPadding: Dp,

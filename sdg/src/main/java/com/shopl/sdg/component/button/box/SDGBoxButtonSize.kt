@@ -1,5 +1,6 @@
 package com.shopl.sdg.component.button.box
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -9,6 +10,7 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing6
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 
+@Stable
 sealed class SDGBoxButtonSize(
     val height: Dp,
     val horizontalSpacing: Dp,

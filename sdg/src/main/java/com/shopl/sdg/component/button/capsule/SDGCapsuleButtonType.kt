@@ -1,7 +1,9 @@
 package com.shopl.sdg.component.button.capsule
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 
+@Stable
 sealed class SDGCapsuleButtonType {
     abstract val typeName: String
 
