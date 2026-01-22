@@ -62,11 +62,13 @@ internal fun BoxButtonScreen() {
             "SDG 컬러 시스템의 모든 컬러 적용 가능합니다."
         ),
         componentContent = { currentType, currentSpec, currentStatus ->
-            ComponentContent(
-                type = currentType,
-                size = currentSpec,
-                status = currentStatus
-            )
+            if (currentType != null && currentSpec != null) {
+                ComponentContent(
+                    type = currentType,
+                    size = currentSpec,
+                    status = currentStatus
+                )
+            }
         }
     )
 }
