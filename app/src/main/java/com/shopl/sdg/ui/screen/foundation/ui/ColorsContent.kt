@@ -24,9 +24,26 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-internal fun ColorsContent(
+internal fun PersistentList<ColorUiModel>.ColorsContent(title: String? = null) {
+    chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, chunkedColor ->
+        if (!title.isNullOrEmpty() && index == 0) {
+            ColorsWithTitleContent(
+                title = title,
+                colors = chunkedColor.toPersistentList()
+            )
+        } else {
+            ColorsContent(
+                colors = chunkedColor.toPersistentList()
+            )
+        }
+    }
+}
+
+@Composable
+private fun ColorsWithTitleContent(
     title: String,
     colors: PersistentList<ColorUiModel>
 ) {
@@ -46,7 +63,7 @@ internal fun ColorsContent(
 }
 
 @Composable
-internal fun ColorsContent(
+private fun ColorsContent(
     colors: PersistentList<ColorUiModel>
 ) {
     Row(
@@ -103,11 +120,12 @@ private fun ColorContent(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 private fun PreviewColorsContentWithTitle() {
     ShoplDesignGuideTheme {
-        ColorsContent(
+        ColorsWithTitleContent(
             title = "Color Description",
             colors = persistentListOf(
                 SDGColor.Neutral700.toUiModel("700"),

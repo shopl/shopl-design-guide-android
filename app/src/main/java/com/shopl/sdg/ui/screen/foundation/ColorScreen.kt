@@ -26,7 +26,6 @@ import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 
 /**
  * SDG Sample App - Foundation - Color
@@ -125,176 +124,98 @@ private fun BodyContent(
 @Composable
 private fun NeutralColorContent() {
     val defaultColors = persistentListOf(
-        SDGColor.Neutral900.toUiModel("900"),
-        SDGColor.Neutral700.toUiModel("700"),
-        SDGColor.Neutral600.toUiModel("600"),
-        SDGColor.Neutral500.toUiModel("500"),
-        SDGColor.Neutral400.toUiModel("400"),
-        SDGColor.Neutral350.toUiModel("350"),
-        SDGColor.Neutral300.toUiModel("300"),
-        SDGColor.Neutral250.toUiModel("250"),
-        SDGColor.Neutral200.toUiModel("200"),
-        SDGColor.Neutral150.toUiModel("150"),
-        SDGColor.Neutral100.toUiModel("100"),
-        SDGColor.Neutral50.toUiModel("50"),
-        SDGColor.Neutral0.toUiModel("0"),
+        SDGColor.Neutral900.toUiModel(displayLabel = "900"),
+        SDGColor.Neutral700.toUiModel(displayLabel = "700"),
+        SDGColor.Neutral600.toUiModel(displayLabel = "600"),
+        SDGColor.Neutral500.toUiModel(displayLabel = "500"),
+        SDGColor.Neutral400.toUiModel(displayLabel = "400"),
+        SDGColor.Neutral350.toUiModel(displayLabel = "350"),
+        SDGColor.Neutral300.toUiModel(displayLabel = "300"),
+        SDGColor.Neutral250.toUiModel(displayLabel = "250"),
+        SDGColor.Neutral200.toUiModel(displayLabel = "200"),
+        SDGColor.Neutral150.toUiModel(displayLabel = "150"),
+        SDGColor.Neutral100.toUiModel(displayLabel = "100"),
+        SDGColor.Neutral50.toUiModel(displayLabel = "50"),
+        SDGColor.Neutral0.toUiModel(displayLabel = "0"),
     )
     val alphaColors = persistentListOf(
-        SDGColor.Neutral900_a10.toUiModel("900-10"),
-        SDGColor.Neutral700_a10.toUiModel("700-10"),
-        SDGColor.Neutral600_a10.toUiModel("600-10"),
-        SDGColor.Neutral500_a10.toUiModel("500-10"),
-        SDGColor.Neutral400_a10.toUiModel("400-10"),
-        SDGColor.Neutral350_a10.toUiModel("350-10"),
-        SDGColor.Neutral300_a10.toUiModel("300-10"),
-        SDGColor.Neutral250_a10.toUiModel("250-10"),
-        SDGColor.Neutral200_a10.toUiModel("200-10"),
-        SDGColor.Neutral150_a10.toUiModel("150-10"),
-        SDGColor.Neutral100_a10.toUiModel("100-10"),
-        SDGColor.Neutral50_a10.toUiModel("50-10"),
-        SDGColor.Neutral0_a10.toUiModel("0-10"),
+        SDGColor.Neutral900_a10.toUiModel(displayLabel = "900-10"),
+        SDGColor.Neutral700_a10.toUiModel(displayLabel = "700-10"),
+        SDGColor.Neutral600_a10.toUiModel(displayLabel = "600-10"),
+        SDGColor.Neutral500_a10.toUiModel(displayLabel = "500-10"),
+        SDGColor.Neutral400_a10.toUiModel(displayLabel = "400-10"),
+        SDGColor.Neutral350_a10.toUiModel(displayLabel = "350-10"),
+        SDGColor.Neutral300_a10.toUiModel(displayLabel = "300-10"),
+        SDGColor.Neutral250_a10.toUiModel(displayLabel = "250-10"),
+        SDGColor.Neutral200_a10.toUiModel(displayLabel = "200-10"),
+        SDGColor.Neutral150_a10.toUiModel(displayLabel = "150-10"),
+        SDGColor.Neutral100_a10.toUiModel(displayLabel = "100-10"),
+        SDGColor.Neutral50_a10.toUiModel(displayLabel = "50-10"),
+        SDGColor.Neutral0_a10.toUiModel(displayLabel = "0-10"),
     )
-    defaultColors.chunked(COLOR_CHUNK_SIZE).forEach { chunkedColors ->
-        ColorsContent(
-            colors = chunkedColors.toPersistentList()
-        )
-    }
-    alphaColors.chunked(COLOR_CHUNK_SIZE).forEach { chunkedColors ->
-        ColorsContent(
-            colors = chunkedColors.toPersistentList()
-        )
-    }
+    defaultColors.ColorsContent()
+    alphaColors.ColorsContent()
 }
 
 @Composable
 private fun BradColorContent() {
     val primaryColors = persistentListOf(
-        SDGColor.Primary400.toUiModel("400"),
-        SDGColor.Primary300.toUiModel("300"),
-        SDGColor.Primary200.toUiModel("200"),
-        SDGColor.Primary50.toUiModel("50"),
-        SDGColor.Primary300_a10.toUiModel("300-10"),
+        SDGColor.Primary400.toUiModel(displayLabel = "400"),
+        SDGColor.Primary300.toUiModel(displayLabel = "300"),
+        SDGColor.Primary200.toUiModel(displayLabel = "200"),
+        SDGColor.Primary50.toUiModel(displayLabel = "50"),
+        SDGColor.Primary300_a10.toUiModel(displayLabel = "300-10"),
     )
     val secondaryColors = persistentListOf(
-        SDGColor.Secondary400.toUiModel("400"),
-        SDGColor.Secondary300.toUiModel("300"),
-        SDGColor.Secondary200.toUiModel("200"),
-        SDGColor.Secondary50.toUiModel("50"),
-        SDGColor.Secondary400_a10.toUiModel("400-10"),
-        SDGColor.Secondary300_a10.toUiModel("300-10"),
+        SDGColor.Secondary400.toUiModel(displayLabel = "400"),
+        SDGColor.Secondary300.toUiModel(displayLabel = "300"),
+        SDGColor.Secondary200.toUiModel(displayLabel = "200"),
+        SDGColor.Secondary50.toUiModel(displayLabel = "50"),
+        SDGColor.Secondary400_a10.toUiModel(displayLabel = "400-10"),
+        SDGColor.Secondary300_a10.toUiModel(displayLabel = "300-10"),
     )
-    primaryColors.chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, chunkedColor ->
-        if (index == 0) {
-            ColorsContent(
-                title = "Primary",
-                colors = chunkedColor.toPersistentList()
-            )
-        } else {
-            ColorsContent(
-                colors = chunkedColor.toPersistentList()
-            )
-        }
-    }
-    secondaryColors.chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, chunkedColor ->
-        if (index == 0) {
-            ColorsContent(
-                title = "Secondary",
-                colors = chunkedColor.toPersistentList()
-            )
-        } else {
-            ColorsContent(
-                colors = chunkedColor.toPersistentList()
-            )
-        }
-    }
+    primaryColors.ColorsContent(title = "Primary")
+    secondaryColors.ColorsContent(title = "Secondary")
 }
 
 @Composable
 private fun PointColorContent() {
     val redColors = persistentListOf(
-        SDGColor.Red400.toUiModel("400"),
-        SDGColor.Red350.toUiModel("350"),
-        SDGColor.Red300.toUiModel("300"),
-        SDGColor.Red50.toUiModel("50"),
-        SDGColor.Red300_a10.toUiModel("300-10"),
+        SDGColor.Red400.toUiModel(displayLabel = "400"),
+        SDGColor.Red350.toUiModel(displayLabel = "350"),
+        SDGColor.Red300.toUiModel(displayLabel = "300"),
+        SDGColor.Red50.toUiModel(displayLabel = "50"),
+        SDGColor.Red300_a10.toUiModel(displayLabel = "300-10"),
     )
     val yellowColors = persistentListOf(
-        SDGColor.YellowY.toUiModel("Y"),
-        SDGColor.YellowY_a10.toUiModel("Y-10"),
+        SDGColor.YellowY.toUiModel(displayLabel = "Y"),
+        SDGColor.YellowY_a10.toUiModel(displayLabel = "Y-10"),
     )
     val purpleColors = persistentListOf(
-        SDGColor.PurpleP.toUiModel("P"),
-        SDGColor.PurpleP_a10.toUiModel("P-10"),
+        SDGColor.PurpleP.toUiModel(displayLabel = "P"),
+        SDGColor.PurpleP_a10.toUiModel(displayLabel = "P-10"),
     )
     val greenColors = persistentListOf(
-        SDGColor.GreenG.toUiModel("G"),
-        SDGColor.GreenG_a10.toUiModel("G-10"),
+        SDGColor.GreenG.toUiModel(displayLabel = "G"),
+        SDGColor.GreenG_a10.toUiModel(displayLabel = "G-10"),
     )
-    redColors.chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, chunkedColor ->
-        if (index == 0) {
-            ColorsContent(
-                title = "Red",
-                colors = chunkedColor.toPersistentList()
-            )
-        } else {
-            ColorsContent(
-                colors = chunkedColor.toPersistentList()
-            )
-        }
-    }
-    yellowColors.chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, chunkedColor ->
-        if (index == 0) {
-            ColorsContent(
-                title = "Yellow",
-                colors = chunkedColor.toPersistentList()
-            )
-        } else {
-            ColorsContent(
-                colors = chunkedColor.toPersistentList()
-            )
-        }
-    }
-    purpleColors.chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, chunkedColor ->
-        if (index == 0) {
-            ColorsContent(
-                title = "Purple",
-                colors = chunkedColor.toPersistentList()
-            )
-        } else {
-            ColorsContent(
-                colors = chunkedColor.toPersistentList()
-            )
-        }
-    }
-    greenColors.chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, chunkedColor ->
-        if (index == 0) {
-            ColorsContent(
-                title = "Green",
-                colors = chunkedColor.toPersistentList()
-            )
-        } else {
-            ColorsContent(
-                colors = chunkedColor.toPersistentList()
-            )
-        }
-    }
+    redColors.ColorsContent(title = "Red")
+    yellowColors.ColorsContent(title = "Yellow")
+    purpleColors.ColorsContent(title = "Purple")
+    greenColors.ColorsContent(title = "Green")
 }
 
 @Composable
 private fun SpecialColorContent() {
     val specialColors = persistentListOf(
-        SDGColor.SpecialOR.toUiModel("OR"),
-        SDGColor.SpecialPK.toUiModel("PK"),
-        SDGColor.SpecialRP.toUiModel("RP"),
-        SDGColor.SpecialLe.toUiModel("Le"),
-        SDGColor.SpecialYG.toUiModel("YG"),
-        SDGColor.SpecialCG.toUiModel("CG"),
+        SDGColor.SpecialOR.toUiModel(displayLabel = "OR"),
+        SDGColor.SpecialPK.toUiModel(displayLabel = "PK"),
+        SDGColor.SpecialRP.toUiModel(displayLabel = "RP"),
+        SDGColor.SpecialLe.toUiModel(displayLabel = "Le"),
+        SDGColor.SpecialYG.toUiModel(displayLabel = "YG"),
+        SDGColor.SpecialCG.toUiModel(displayLabel = "CG"),
     )
-    specialColors.chunked(COLOR_CHUNK_SIZE).forEach { chunkedColor ->
-        ColorsContent(
-            colors = chunkedColor.toPersistentList()
-        )
-    }
+    specialColors.ColorsContent()
 }
 
 @Preview
