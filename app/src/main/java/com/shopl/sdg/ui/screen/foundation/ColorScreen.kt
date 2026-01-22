@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.scene.FoundationScene
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
-import com.shopl.sdg.ui.common.SDGSampleTypeTab
+import com.shopl.sdg.ui.common.SDGSampleSpecTab
 import com.shopl.sdg.ui.screen.foundation.ui.ColorsContent
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
@@ -69,7 +69,7 @@ internal fun ColorScreen() {
         description = "샤플 앱의 모든 요소에 적용되며, 일관된/뚜렷한/계층적인 컬러 사용으로 서비스의 아이덴티티 및 브랜드 경험을 만들어 줄 수 있는 주요 요소",
         bodyContent = {
             BodyContent(
-                types = types
+                specs = types
             )
         },
     )
@@ -78,10 +78,10 @@ internal fun ColorScreen() {
 
 @Composable
 private fun BodyContent(
-    types: PersistentList<SDGSampleBaseTabItem<ColorSpec>>,
+    specs: PersistentList<SDGSampleBaseTabItem<ColorSpec>>,
 ) {
 
-    var selectedType by remember { mutableStateOf(ColorSpec.NEUTRAL) }
+    var selectedSpec by remember { mutableStateOf(ColorSpec.NEUTRAL) }
 
     val tabModifier = Modifier.padding(
         start = SDGSpacing.Spacing16,
@@ -90,12 +90,12 @@ private fun BodyContent(
         bottom = SDGSpacing.Spacing12
     )
 
-    SDGSampleTypeTab(
+    SDGSampleSpecTab(
         modifier = tabModifier,
-        tabs = types,
-        selectedTabIndex = ColorSpec.entries.indexOf(selectedType),
+        tabs = specs,
+        selectedTabIndex = ColorSpec.entries.indexOf(selectedSpec),
         onTabClick = { index ->
-            selectedType = ColorSpec.entries[index]
+            selectedSpec = ColorSpec.entries[index]
         }
     )
 
@@ -112,7 +112,7 @@ private fun BodyContent(
             .padding(SDGSpacing.Spacing16),
         verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing40)
     ) {
-        when (selectedType) {
+        when (selectedSpec) {
             ColorSpec.NEUTRAL -> NeutralColorContent()
             ColorSpec.BRAND -> BradColorContent()
             ColorSpec.POINT -> PointColorContent()
