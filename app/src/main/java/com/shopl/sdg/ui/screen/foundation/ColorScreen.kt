@@ -18,7 +18,7 @@ import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.scene.FoundationScene
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
 import com.shopl.sdg.ui.common.SDGSampleSpecTab
-import com.shopl.sdg.ui.screen.foundation.model.toUiModel
+import com.shopl.sdg.ui.screen.foundation.model.toColorUiModel
 import com.shopl.sdg.ui.screen.foundation.ui.ColorsContent
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
@@ -124,34 +124,34 @@ private fun BodyContent(
 @Composable
 private fun NeutralColorContent() {
     val defaultColors = persistentListOf(
-        SDGColor.Neutral900.toUiModel(displayLabel = "900"),
-        SDGColor.Neutral700.toUiModel(displayLabel = "700"),
-        SDGColor.Neutral600.toUiModel(displayLabel = "600"),
-        SDGColor.Neutral500.toUiModel(displayLabel = "500"),
-        SDGColor.Neutral400.toUiModel(displayLabel = "400"),
-        SDGColor.Neutral350.toUiModel(displayLabel = "350"),
-        SDGColor.Neutral300.toUiModel(displayLabel = "300"),
-        SDGColor.Neutral250.toUiModel(displayLabel = "250"),
-        SDGColor.Neutral200.toUiModel(displayLabel = "200"),
-        SDGColor.Neutral150.toUiModel(displayLabel = "150"),
-        SDGColor.Neutral100.toUiModel(displayLabel = "100"),
-        SDGColor.Neutral50.toUiModel(displayLabel = "50"),
-        SDGColor.Neutral0.toUiModel(displayLabel = "0"),
+        SDGColor.Neutral900.toColorUiModel(displayLabel = "900"),
+        SDGColor.Neutral700.toColorUiModel(displayLabel = "700"),
+        SDGColor.Neutral600.toColorUiModel(displayLabel = "600"),
+        SDGColor.Neutral500.toColorUiModel(displayLabel = "500"),
+        SDGColor.Neutral400.toColorUiModel(displayLabel = "400"),
+        SDGColor.Neutral350.toColorUiModel(displayLabel = "350"),
+        SDGColor.Neutral300.toColorUiModel(displayLabel = "300"),
+        SDGColor.Neutral250.toColorUiModel(displayLabel = "250"),
+        SDGColor.Neutral200.toColorUiModel(displayLabel = "200"),
+        SDGColor.Neutral150.toColorUiModel(displayLabel = "150"),
+        SDGColor.Neutral100.toColorUiModel(displayLabel = "100"),
+        SDGColor.Neutral50.toColorUiModel(displayLabel = "50"),
+        SDGColor.Neutral0.toColorUiModel(displayLabel = "0"),
     )
     val alphaColors = persistentListOf(
-        SDGColor.Neutral900_a10.toUiModel(displayLabel = "900-10"),
-        SDGColor.Neutral700_a10.toUiModel(displayLabel = "700-10"),
-        SDGColor.Neutral600_a10.toUiModel(displayLabel = "600-10"),
-        SDGColor.Neutral500_a10.toUiModel(displayLabel = "500-10"),
-        SDGColor.Neutral400_a10.toUiModel(displayLabel = "400-10"),
-        SDGColor.Neutral350_a10.toUiModel(displayLabel = "350-10"),
-        SDGColor.Neutral300_a10.toUiModel(displayLabel = "300-10"),
-        SDGColor.Neutral250_a10.toUiModel(displayLabel = "250-10"),
-        SDGColor.Neutral200_a10.toUiModel(displayLabel = "200-10"),
-        SDGColor.Neutral150_a10.toUiModel(displayLabel = "150-10"),
-        SDGColor.Neutral100_a10.toUiModel(displayLabel = "100-10"),
-        SDGColor.Neutral50_a10.toUiModel(displayLabel = "50-10"),
-        SDGColor.Neutral0_a10.toUiModel(displayLabel = "0-10"),
+        SDGColor.Neutral900_a10.toColorUiModel(displayLabel = "900-10"),
+        SDGColor.Neutral700_a10.toColorUiModel(displayLabel = "700-10"),
+        SDGColor.Neutral600_a10.toColorUiModel(displayLabel = "600-10"),
+        SDGColor.Neutral500_a10.toColorUiModel(displayLabel = "500-10"),
+        SDGColor.Neutral400_a10.toColorUiModel(displayLabel = "400-10"),
+        SDGColor.Neutral350_a10.toColorUiModel(displayLabel = "350-10"),
+        SDGColor.Neutral300_a10.toColorUiModel(displayLabel = "300-10"),
+        SDGColor.Neutral250_a10.toColorUiModel(displayLabel = "250-10"),
+        SDGColor.Neutral200_a10.toColorUiModel(displayLabel = "200-10"),
+        SDGColor.Neutral150_a10.toColorUiModel(displayLabel = "150-10"),
+        SDGColor.Neutral100_a10.toColorUiModel(displayLabel = "100-10"),
+        SDGColor.Neutral50_a10.toColorUiModel(displayLabel = "50-10"),
+        SDGColor.Neutral0_a10.toColorUiModel(displayLabel = "0-10"),
     )
     defaultColors.ColorsContent()
     alphaColors.ColorsContent()
@@ -160,19 +160,19 @@ private fun NeutralColorContent() {
 @Composable
 private fun BradColorContent() {
     val primaryColors = persistentListOf(
-        SDGColor.Primary400.toUiModel(displayLabel = "400"),
-        SDGColor.Primary300.toUiModel(displayLabel = "300"),
-        SDGColor.Primary200.toUiModel(displayLabel = "200"),
-        SDGColor.Primary50.toUiModel(displayLabel = "50"),
-        SDGColor.Primary300_a10.toUiModel(displayLabel = "300-10"),
+        SDGColor.Primary400.toColorUiModel(displayLabel = "400"),
+        SDGColor.Primary300.toColorUiModel(displayLabel = "300"),
+        SDGColor.Primary200.toColorUiModel(displayLabel = "200"),
+        SDGColor.Primary50.toColorUiModel(displayLabel = "50"),
+        SDGColor.Primary300_a10.toColorUiModel(displayLabel = "300-10"),
     )
     val secondaryColors = persistentListOf(
-        SDGColor.Secondary400.toUiModel(displayLabel = "400"),
-        SDGColor.Secondary300.toUiModel(displayLabel = "300"),
-        SDGColor.Secondary200.toUiModel(displayLabel = "200"),
-        SDGColor.Secondary50.toUiModel(displayLabel = "50"),
-        SDGColor.Secondary400_a10.toUiModel(displayLabel = "400-10"),
-        SDGColor.Secondary300_a10.toUiModel(displayLabel = "300-10"),
+        SDGColor.Secondary400.toColorUiModel(displayLabel = "400"),
+        SDGColor.Secondary300.toColorUiModel(displayLabel = "300"),
+        SDGColor.Secondary200.toColorUiModel(displayLabel = "200"),
+        SDGColor.Secondary50.toColorUiModel(displayLabel = "50"),
+        SDGColor.Secondary400_a10.toColorUiModel(displayLabel = "400-10"),
+        SDGColor.Secondary300_a10.toColorUiModel(displayLabel = "300-10"),
     )
     primaryColors.ColorsContent(title = "Primary")
     secondaryColors.ColorsContent(title = "Secondary")
@@ -181,23 +181,23 @@ private fun BradColorContent() {
 @Composable
 private fun PointColorContent() {
     val redColors = persistentListOf(
-        SDGColor.Red400.toUiModel(displayLabel = "400"),
-        SDGColor.Red350.toUiModel(displayLabel = "350"),
-        SDGColor.Red300.toUiModel(displayLabel = "300"),
-        SDGColor.Red50.toUiModel(displayLabel = "50"),
-        SDGColor.Red300_a10.toUiModel(displayLabel = "300-10"),
+        SDGColor.Red400.toColorUiModel(displayLabel = "400"),
+        SDGColor.Red350.toColorUiModel(displayLabel = "350"),
+        SDGColor.Red300.toColorUiModel(displayLabel = "300"),
+        SDGColor.Red50.toColorUiModel(displayLabel = "50"),
+        SDGColor.Red300_a10.toColorUiModel(displayLabel = "300-10"),
     )
     val yellowColors = persistentListOf(
-        SDGColor.YellowY.toUiModel(displayLabel = "Y"),
-        SDGColor.YellowY_a10.toUiModel(displayLabel = "Y-10"),
+        SDGColor.YellowY.toColorUiModel(displayLabel = "Y"),
+        SDGColor.YellowY_a10.toColorUiModel(displayLabel = "Y-10"),
     )
     val purpleColors = persistentListOf(
-        SDGColor.PurpleP.toUiModel(displayLabel = "P"),
-        SDGColor.PurpleP_a10.toUiModel(displayLabel = "P-10"),
+        SDGColor.PurpleP.toColorUiModel(displayLabel = "P"),
+        SDGColor.PurpleP_a10.toColorUiModel(displayLabel = "P-10"),
     )
     val greenColors = persistentListOf(
-        SDGColor.GreenG.toUiModel(displayLabel = "G"),
-        SDGColor.GreenG_a10.toUiModel(displayLabel = "G-10"),
+        SDGColor.GreenG.toColorUiModel(displayLabel = "G"),
+        SDGColor.GreenG_a10.toColorUiModel(displayLabel = "G-10"),
     )
     redColors.ColorsContent(title = "Red")
     yellowColors.ColorsContent(title = "Yellow")
@@ -208,12 +208,12 @@ private fun PointColorContent() {
 @Composable
 private fun SpecialColorContent() {
     val specialColors = persistentListOf(
-        SDGColor.SpecialOR.toUiModel(displayLabel = "OR"),
-        SDGColor.SpecialPK.toUiModel(displayLabel = "PK"),
-        SDGColor.SpecialRP.toUiModel(displayLabel = "RP"),
-        SDGColor.SpecialLe.toUiModel(displayLabel = "Le"),
-        SDGColor.SpecialYG.toUiModel(displayLabel = "YG"),
-        SDGColor.SpecialCG.toUiModel(displayLabel = "CG"),
+        SDGColor.SpecialOR.toColorUiModel(displayLabel = "OR"),
+        SDGColor.SpecialPK.toColorUiModel(displayLabel = "PK"),
+        SDGColor.SpecialRP.toColorUiModel(displayLabel = "RP"),
+        SDGColor.SpecialLe.toColorUiModel(displayLabel = "Le"),
+        SDGColor.SpecialYG.toColorUiModel(displayLabel = "YG"),
+        SDGColor.SpecialCG.toColorUiModel(displayLabel = "CG"),
     )
     specialColors.ColorsContent()
 }

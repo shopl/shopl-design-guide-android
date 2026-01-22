@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.ui.screen.foundation.COLOR_CHUNK_SIZE
 import com.shopl.sdg.ui.screen.foundation.model.ColorUiModel
-import com.shopl.sdg.ui.screen.foundation.model.toUiModel
+import com.shopl.sdg.ui.screen.foundation.model.toColorUiModel
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
@@ -128,9 +128,9 @@ private fun PreviewColorsContentWithTitle() {
         ColorsWithTitleContent(
             title = "Color Description",
             colors = persistentListOf(
-                SDGColor.Neutral700.toUiModel("700"),
-                SDGColor.Neutral500.toUiModel("500"),
-                SDGColor.Neutral300.toUiModel("300"),
+                SDGColor.Neutral700.toColorUiModel("700"),
+                SDGColor.Neutral500.toColorUiModel("500"),
+                SDGColor.Neutral300.toColorUiModel("300"),
             )
         )
     }
@@ -142,9 +142,9 @@ private fun PreviewColorsContent() {
     ShoplDesignGuideTheme {
         ColorsContent(
             colors = persistentListOf(
-                SDGColor.Neutral700.toUiModel("700"),
-                SDGColor.Neutral500.toUiModel("500"),
-                SDGColor.Neutral300.toUiModel("300"),
+                SDGColor.Neutral700.toColorUiModel("700"),
+                SDGColor.Neutral500.toColorUiModel("500"),
+                SDGColor.Neutral300.toColorUiModel("300"),
             )
         )
     }
