@@ -49,6 +49,31 @@ private enum class SpacingSpec(val displayLabel: String) {
 private const val SPACE_BOX_ALPHA = 0.2f
 private const val SPACE_BOX_COLOR = 0xFF9747FF
 
+private val commonSpacings = persistentListOf(
+    SDGSpacing.Spacing2.toSpacingUiModel(displayLabel = "2"),
+    SDGSpacing.Spacing4.toSpacingUiModel(displayLabel = "4"),
+    SDGSpacing.Spacing6.toSpacingUiModel(displayLabel = "6"),
+    SDGSpacing.Spacing8.toSpacingUiModel(displayLabel = "8"),
+    SDGSpacing.Spacing10.toSpacingUiModel(displayLabel = "10"),
+    SDGSpacing.Spacing12.toSpacingUiModel(displayLabel = "12"),
+    SDGSpacing.Spacing16.toSpacingUiModel(displayLabel = "16"),
+    SDGSpacing.Spacing20.toSpacingUiModel(displayLabel = "20"),
+    SDGSpacing.Spacing24.toSpacingUiModel(displayLabel = "24"),
+    SDGSpacing.Spacing40.toSpacingUiModel(displayLabel = "40"),
+)
+
+private val specialSpacings = persistentListOf(
+    SDGSpacing.Spacing3.toSpacingUiModel(displayLabel = "3"),
+    SDGSpacing.Spacing5.toSpacingUiModel(displayLabel = "5"),
+    SDGSpacing.Spacing11.toSpacingUiModel(displayLabel = "11"),
+    SDGSpacing.Spacing18.toSpacingUiModel(displayLabel = "18"),
+    SDGSpacing.Spacing28.toSpacingUiModel(displayLabel = "28"),
+    SDGSpacing.Spacing32.toSpacingUiModel(displayLabel = "32"),
+    SDGSpacing.Spacing60.toSpacingUiModel(displayLabel = "60"),
+    SDGSpacing.Spacing100.toSpacingUiModel(displayLabel = "100"),
+    SDGSpacing.Spacing104.toSpacingUiModel(displayLabel = "104"),
+)
+
 @Composable
 internal fun SpacingScreen() {
 
@@ -113,18 +138,6 @@ private fun BodyContent(
     ) {
         when (selectedSpec) {
             SpacingSpec.COMMON -> {
-                val commonSpacings = persistentListOf(
-                    SDGSpacing.Spacing2.toSpacingUiModel(displayLabel = "2"),
-                    SDGSpacing.Spacing4.toSpacingUiModel(displayLabel = "4"),
-                    SDGSpacing.Spacing6.toSpacingUiModel(displayLabel = "6"),
-                    SDGSpacing.Spacing8.toSpacingUiModel(displayLabel = "8"),
-                    SDGSpacing.Spacing10.toSpacingUiModel(displayLabel = "10"),
-                    SDGSpacing.Spacing12.toSpacingUiModel(displayLabel = "12"),
-                    SDGSpacing.Spacing16.toSpacingUiModel(displayLabel = "16"),
-                    SDGSpacing.Spacing20.toSpacingUiModel(displayLabel = "20"),
-                    SDGSpacing.Spacing24.toSpacingUiModel(displayLabel = "24"),
-                    SDGSpacing.Spacing40.toSpacingUiModel(displayLabel = "40"),
-                )
                 SpacingContent(
                     title = "기본 2의 배수",
                     uiModels = commonSpacings
@@ -132,17 +145,6 @@ private fun BodyContent(
             }
 
             SpacingSpec.SPECIAL -> {
-                val specialSpacings = persistentListOf(
-                    SDGSpacing.Spacing3.toSpacingUiModel(displayLabel = "3"),
-                    SDGSpacing.Spacing5.toSpacingUiModel(displayLabel = "5"),
-                    SDGSpacing.Spacing11.toSpacingUiModel(displayLabel = "11"),
-                    SDGSpacing.Spacing18.toSpacingUiModel(displayLabel = "18"),
-                    SDGSpacing.Spacing28.toSpacingUiModel(displayLabel = "28"),
-                    SDGSpacing.Spacing32.toSpacingUiModel(displayLabel = "32"),
-                    SDGSpacing.Spacing60.toSpacingUiModel(displayLabel = "60"),
-                    SDGSpacing.Spacing100.toSpacingUiModel(displayLabel = "100"),
-                    SDGSpacing.Spacing104.toSpacingUiModel(displayLabel = "104"),
-                )
                 SpacingContent(
                     title = "추가적으로 화면 구성에 필요한 단위",
                     uiModels = specialSpacings
@@ -221,18 +223,6 @@ private fun PreviewSpacingScreen() {
 @Composable
 private fun PreviewCommonSpacingContent() {
     ShoplDesignGuideTheme {
-        val commonSpacings = persistentListOf(
-            SDGSpacing.Spacing2.toSpacingUiModel(displayLabel = "2"),
-            SDGSpacing.Spacing4.toSpacingUiModel(displayLabel = "4"),
-            SDGSpacing.Spacing6.toSpacingUiModel(displayLabel = "6"),
-            SDGSpacing.Spacing8.toSpacingUiModel(displayLabel = "8"),
-            SDGSpacing.Spacing10.toSpacingUiModel(displayLabel = "10"),
-            SDGSpacing.Spacing12.toSpacingUiModel(displayLabel = "12"),
-            SDGSpacing.Spacing16.toSpacingUiModel(displayLabel = "16"),
-            SDGSpacing.Spacing20.toSpacingUiModel(displayLabel = "20"),
-            SDGSpacing.Spacing24.toSpacingUiModel(displayLabel = "24"),
-            SDGSpacing.Spacing40.toSpacingUiModel(displayLabel = "40"),
-        )
         Column {
             SpacingContent(
                 title = "기본 2의 배수",
@@ -246,17 +236,6 @@ private fun PreviewCommonSpacingContent() {
 @Composable
 private fun PreviewSpecialSpacingContent() {
     ShoplDesignGuideTheme {
-        val specialSpacings = persistentListOf(
-            SDGSpacing.Spacing3.toSpacingUiModel(displayLabel = "3"),
-            SDGSpacing.Spacing5.toSpacingUiModel(displayLabel = "5"),
-            SDGSpacing.Spacing11.toSpacingUiModel(displayLabel = "11"),
-            SDGSpacing.Spacing18.toSpacingUiModel(displayLabel = "18"),
-            SDGSpacing.Spacing28.toSpacingUiModel(displayLabel = "28"),
-            SDGSpacing.Spacing32.toSpacingUiModel(displayLabel = "32"),
-            SDGSpacing.Spacing60.toSpacingUiModel(displayLabel = "60"),
-            SDGSpacing.Spacing100.toSpacingUiModel(displayLabel = "100"),
-            SDGSpacing.Spacing104.toSpacingUiModel(displayLabel = "104"),
-        )
         Column {
             SpacingContent(
                 title = "추가적으로 화면 구성에 필요한 단위",
