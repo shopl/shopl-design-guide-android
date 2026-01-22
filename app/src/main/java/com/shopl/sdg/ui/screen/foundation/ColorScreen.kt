@@ -12,8 +12,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.R
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.scene.FoundationScene
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
@@ -66,7 +68,7 @@ internal fun ColorScreen() {
 
     SDGSampleBaseScaffold(
         name = FoundationScene.Color.displayLabel,
-        description = "샤플 앱의 모든 요소에 적용되며, 일관된/뚜렷한/계층적인 컬러 사용으로 서비스의 아이덴티티 및 브랜드 경험을 만들어 줄 수 있는 주요 요소",
+        description = stringResource(R.string.foundation_color_description),
         bodyContent = {
             BodyContent(
                 specs = types

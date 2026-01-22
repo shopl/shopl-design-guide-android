@@ -18,8 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.R
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.scene.FoundationScene
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
@@ -90,7 +92,7 @@ internal fun SpacingScreen() {
 
     SDGSampleBaseScaffold(
         name = FoundationScene.Spacing.displayLabel,
-        description = "컴포넌트 및 템플릿, 그리고 모든 화면과 구성 요소 사이의 여백",
+        description = stringResource(R.string.foundation_spacing_description),
         bodyContent = {
             BodyContent(
                 specs = types
@@ -139,14 +141,14 @@ private fun BodyContent(
         when (selectedSpec) {
             SpacingSpec.COMMON -> {
                 SpacingContent(
-                    title = "기본 2의 배수",
+                    title = stringResource(R.string.foundation_spacing_common_description),
                     uiModels = commonSpacings
                 )
             }
 
             SpacingSpec.SPECIAL -> {
                 SpacingContent(
-                    title = "추가적으로 화면 구성에 필요한 단위",
+                    title = stringResource(R.string.foundation_spacing_special_description),
                     uiModels = specialSpacings
                 )
             }
@@ -225,7 +227,7 @@ private fun PreviewCommonSpacingContent() {
     ShoplDesignGuideTheme {
         Column {
             SpacingContent(
-                title = "기본 2의 배수",
+                title = stringResource(R.string.foundation_spacing_common_description),
                 uiModels = commonSpacings
             )
         }
@@ -238,7 +240,7 @@ private fun PreviewSpecialSpacingContent() {
     ShoplDesignGuideTheme {
         Column {
             SpacingContent(
-                title = "추가적으로 화면 구성에 필요한 단위",
+                title = stringResource(R.string.foundation_spacing_special_description),
                 uiModels = specialSpacings
             )
         }
