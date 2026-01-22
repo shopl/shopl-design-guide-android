@@ -43,7 +43,7 @@ private enum class ColorSpec(val displayLabel: String) {
 internal const val COLOR_CHUNK_SIZE = 5
 
 @Composable
-fun ColorScreen() {
+internal fun ColorScreen() {
 
     val types = persistentListOf(
         SDGSampleBaseTabItem(
