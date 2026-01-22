@@ -33,6 +33,8 @@ import kotlinx.coroutines.delay
  * 화면 하단에 고정으로 위치한 풀사이즈 버튼 컴포넌트
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7097-15078&m=dev">Figma</a>
+ *
+ * TODO : Size Spec 수정 필요
  */
 
 private const val DEFAULT_DEBOUNCE_TIME = 1000L
@@ -48,10 +50,24 @@ fun SDGBottomButton(
     debounceTime: Long = DEFAULT_DEBOUNCE_TIME,
 ) {
     val (activeColor, disabledColor, textColor) = when (type) {
-        SDGBottomButtonType.POSITIVE -> Triple(SDGColor.Primary300, SDGColor.Primary50, SDGColor.Neutral0)
+        SDGBottomButtonType.POSITIVE -> Triple(
+            SDGColor.Primary300,
+            SDGColor.Primary50,
+            SDGColor.Neutral0
+        )
+
         SDGBottomButtonType.NEGATIVE -> Triple(SDGColor.Red300, SDGColor.Red50, SDGColor.Neutral0)
-        SDGBottomButtonType.NORMAL -> Triple(SDGColor.Neutral200, SDGColor.Neutral200, SDGColor.Neutral700)
-        SDGBottomButtonType.NORMAL_DARK -> Triple(SDGColor.Neutral600, SDGColor.Neutral200, SDGColor.Neutral0)
+        SDGBottomButtonType.NORMAL -> Triple(
+            SDGColor.Neutral200,
+            SDGColor.Neutral200,
+            SDGColor.Neutral700
+        )
+
+        SDGBottomButtonType.NORMAL_DARK -> Triple(
+            SDGColor.Neutral600,
+            SDGColor.Neutral200,
+            SDGColor.Neutral0
+        )
     }
 
     val debouncedClick = if (debounce) {
