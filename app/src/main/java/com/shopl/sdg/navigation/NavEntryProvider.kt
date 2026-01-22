@@ -1,7 +1,7 @@
 package com.shopl.sdg.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.navigation3.runtime.NavEntry
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.shopl.sdg.scene.ComponentScene
@@ -45,7 +45,7 @@ private fun OverviewScreenRoute(
     moveToScene: (SDGScene) -> Unit,
 ) {
     val systemUiController = rememberSystemUiController()
-    LaunchedEffect(Unit) {
+    SideEffect {
         systemUiController.setStatusBarColor(
             color = SDGColor.Transparent,
             darkIcons = false
@@ -59,7 +59,7 @@ private fun OverviewScreenRoute(
 @Composable
 private fun FoundationScreenRoute(destination: FoundationScene) {
     val systemUiController = rememberSystemUiController()
-    LaunchedEffect(destination) {
+    SideEffect {
         systemUiController.setStatusBarColor(
             color = SDGColor.Transparent,
             darkIcons = true
@@ -77,7 +77,7 @@ private fun FoundationScreenRoute(destination: FoundationScene) {
 @Composable
 private fun ComponentScreenRoute(destination: ComponentScene) {
     val systemUiController = rememberSystemUiController()
-    LaunchedEffect(destination) {
+    SideEffect {
         systemUiController.setStatusBarColor(
             color = SDGColor.Transparent,
             darkIcons = true
