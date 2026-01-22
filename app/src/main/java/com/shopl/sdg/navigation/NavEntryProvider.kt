@@ -8,8 +8,11 @@ import com.shopl.sdg.scene.ComponentScene
 import com.shopl.sdg.scene.SDGScene
 import com.shopl.sdg.ui.screen.OverviewScreen
 import com.shopl.sdg.ui.screen.component.AvatarScreen
+import com.shopl.sdg.ui.screen.component.button.BottomButtonScreen
 import com.shopl.sdg.ui.screen.component.button.BoxButtonScreen
 import com.shopl.sdg.ui.screen.component.button.CapsuleButtonScreen
+import com.shopl.sdg.ui.screen.component.button.FloatingButtonScreen
+import com.shopl.sdg.ui.screen.component.button.GhostButtonScreen
 import com.shopl.sdg_common.foundation.SDGColor
 
 internal fun provideNavEntry(
@@ -63,12 +66,24 @@ private fun ComponentScreenRoute(destination: ComponentScene) {
 
         is ComponentScene.Button -> {
             when (destination) {
+                is ComponentScene.Button.BottomButton -> {
+                    BottomButtonScreen()
+                }
+
                 is ComponentScene.Button.BoxButton -> {
                     BoxButtonScreen()
                 }
 
                 is ComponentScene.Button.CapsuleButton -> {
                     CapsuleButtonScreen()
+                }
+
+                is ComponentScene.Button.GhostButton -> {
+                    GhostButtonScreen()
+                }
+
+                is ComponentScene.Button.FloatingButton -> {
+                    FloatingButtonScreen()
                 }
 
                 else -> {}

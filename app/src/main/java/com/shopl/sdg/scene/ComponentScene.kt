@@ -47,7 +47,7 @@ internal sealed class ComponentScene(
     ) : ComponentScene(displayLabel, implemented) {
         data object BottomButton : Button(
             displayLabel = "Bottom Button",
-            implemented = false
+            implemented = true
         )
 
         data object BoxButton : Button(
@@ -62,12 +62,12 @@ internal sealed class ComponentScene(
 
         data object FloatingButton : Button(
             displayLabel = "Floating Button",
-            implemented = false
+            implemented = true
         )
 
         data object GhostButton : Button(
             displayLabel = "Ghost Button",
-            implemented = false
+            implemented = true
         )
 
         data object IconButton : Button(
