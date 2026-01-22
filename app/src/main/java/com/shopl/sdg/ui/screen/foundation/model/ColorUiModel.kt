@@ -11,7 +11,7 @@ internal data class ColorUiModel(
     val color: Color = SDGColor.Transparent
 )
 
-internal fun Color.toUiModel(displayLabel: String): ColorUiModel = ColorUiModel(
+internal fun Color.toColorUiModel(displayLabel: String): ColorUiModel = ColorUiModel(
     displayLabel = displayLabel,
     color = this
 )
