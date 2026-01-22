@@ -15,6 +15,7 @@ import com.shopl.sdg.ui.screen.component.button.CapsuleButtonScreen
 import com.shopl.sdg.ui.screen.component.button.FloatingButtonScreen
 import com.shopl.sdg.ui.screen.component.button.GhostButtonScreen
 import com.shopl.sdg.ui.screen.foundation.ColorScreen
+import com.shopl.sdg.ui.screen.foundation.SpacingScreen
 import com.shopl.sdg_common.foundation.SDGColor
 
 internal fun provideNavEntry(
@@ -68,6 +69,10 @@ private fun FoundationScreenRoute(destination: FoundationScene) {
     when (destination) {
         is FoundationScene.Color -> {
             ColorScreen()
+        }
+
+        is FoundationScene.Spacing -> {
+            SpacingScreen()
         }
 
         else -> {}
