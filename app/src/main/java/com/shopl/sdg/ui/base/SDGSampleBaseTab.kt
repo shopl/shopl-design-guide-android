@@ -13,7 +13,7 @@ import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
-import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
@@ -26,7 +26,7 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 internal fun <T> SDGSampleBaseTab(
     tabTitle: String,
-    tabs: PersistentList<SDGSampleBaseTabItem<T>>,
+    tabs: ImmutableList<SDGSampleBaseTabItem<T>>,
     selectedTabIndex: Int,
     onTabClick: (Int) -> Unit,
     modifier: Modifier = Modifier,

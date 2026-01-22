@@ -6,7 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.button.box.SDGBoxButtonSize
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.ui.base.SDGSampleBaseTab
-import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 /**
@@ -14,7 +14,7 @@ import kotlinx.collections.immutable.persistentListOf
  */
 @Composable
 internal fun <T> SDGSampleSpecTab(
-    tabs: PersistentList<SDGSampleBaseTabItem<T>>,
+    tabs: ImmutableList<SDGSampleBaseTabItem<T>>,
     selectedTabIndex: Int,
     onTabClick: (Int) -> Unit,
     modifier: Modifier = Modifier,

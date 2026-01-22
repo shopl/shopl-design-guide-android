@@ -1,4 +1,4 @@
-package com.shopl.sdg.model
+package com.shopl.sdg.ui.screen.foundation.model
 
 import com.shopl.sdg.scene.SDGScene
 import kotlinx.collections.immutable.PersistentList

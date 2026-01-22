@@ -15,7 +15,7 @@ internal sealed class FoundationScene(
 ) : SDGScene(displayLabel, implemented) {
     data object Color : FoundationScene(
         displayLabel = "Color",
-        implemented = false
+        implemented = true
     )
 
     data object CornerRadius : FoundationScene(

@@ -7,7 +7,7 @@ import com.shopl.sdg.component.badge.box.SDGBoxBadgeType
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.ui.base.SDGSampleBaseTab
 import com.shopl.sdg_common.foundation.SDGColor
-import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 /**
@@ -15,7 +15,7 @@ import kotlinx.collections.immutable.persistentListOf
  */
 @Composable
 internal fun <T> SDGSampleTypeTab(
-    tabs: PersistentList<SDGSampleBaseTabItem<T>>,
+    tabs: ImmutableList<SDGSampleBaseTabItem<T>>,
     selectedTabIndex: Int,
     onTabClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
