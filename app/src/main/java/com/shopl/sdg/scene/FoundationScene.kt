@@ -30,7 +30,7 @@ internal sealed class FoundationScene(
 
     data object Spacing : FoundationScene(
         displayLabel = "Spacing",
-        implemented = false
+        implemented = true
     )
 
     data object Typograph : FoundationScene(

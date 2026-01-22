@@ -6,4 +6,8 @@
     <string name="overview_component_description">각각의 기능을 구성하는 요소들의 조합니다.</string>
     <string name="overview_template_title">Template</string>
     <string name="overview_template_description">컴포넌트를 포함한 요소들의 조합입니다.</string>
+    <string name="foundation_color_description">샤플 앱의 모든 요소에 적용되며, 일관된/뚜렷한/계층적인 컬러 사용으로 서비스의 아이덴티티 및 브랜드 경험을 만들어 줄 수 있는 주요 요소</string>
+    <string name="foundation_spacing_description">컴포넌트 및 템플릿, 그리고 모든 화면과 구성 요소 사이의 여백</string>
+    <string name="foundation_spacing_common_description">기본 2의 배수</string>
+    <string name="foundation_spacing_special_description">추가적으로 화면 구성에 필요한 단위</string>
 </resources>
