@@ -18,6 +18,7 @@ import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.scene.FoundationScene
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
 import com.shopl.sdg.ui.common.SDGSampleSpecTab
+import com.shopl.sdg.ui.screen.foundation.model.toUiModel
 import com.shopl.sdg.ui.screen.foundation.ui.ColorsContent
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
@@ -124,34 +125,34 @@ private fun BodyContent(
 @Composable
 private fun NeutralColorContent() {
     val defaultColors = persistentListOf(
-        SDGColor.Neutral900 to "900",
-        SDGColor.Neutral700 to "700",
-        SDGColor.Neutral600 to "600",
-        SDGColor.Neutral500 to "500",
-        SDGColor.Neutral400 to "400",
-        SDGColor.Neutral350 to "350",
-        SDGColor.Neutral300 to "300",
-        SDGColor.Neutral250 to "250",
-        SDGColor.Neutral200 to "200",
-        SDGColor.Neutral150 to "150",
-        SDGColor.Neutral100 to "100",
-        SDGColor.Neutral50 to "50",
-        SDGColor.Neutral0 to "0",
+        SDGColor.Neutral900.toUiModel("900"),
+        SDGColor.Neutral700.toUiModel("700"),
+        SDGColor.Neutral600.toUiModel("600"),
+        SDGColor.Neutral500.toUiModel("500"),
+        SDGColor.Neutral400.toUiModel("400"),
+        SDGColor.Neutral350.toUiModel("350"),
+        SDGColor.Neutral300.toUiModel("300"),
+        SDGColor.Neutral250.toUiModel("250"),
+        SDGColor.Neutral200.toUiModel("200"),
+        SDGColor.Neutral150.toUiModel("150"),
+        SDGColor.Neutral100.toUiModel("100"),
+        SDGColor.Neutral50.toUiModel("50"),
+        SDGColor.Neutral0.toUiModel("0"),
     )
     val alphaColors = persistentListOf(
-        SDGColor.Neutral900_a10 to "900-10",
-        SDGColor.Neutral700_a10 to "700-10",
-        SDGColor.Neutral600_a10 to "600-10",
-        SDGColor.Neutral500_a10 to "500-10",
-        SDGColor.Neutral400_a10 to "400-10",
-        SDGColor.Neutral350_a10 to "350-10",
-        SDGColor.Neutral300_a10 to "300-10",
-        SDGColor.Neutral250_a10 to "250-10",
-        SDGColor.Neutral200_a10 to "200-10",
-        SDGColor.Neutral150_a10 to "150-10",
-        SDGColor.Neutral100_a10 to "100-10",
-        SDGColor.Neutral50_a10 to "50-10",
-        SDGColor.Neutral0_a10 to "0-10",
+        SDGColor.Neutral900_a10.toUiModel("900-10"),
+        SDGColor.Neutral700_a10.toUiModel("700-10"),
+        SDGColor.Neutral600_a10.toUiModel("600-10"),
+        SDGColor.Neutral500_a10.toUiModel("500-10"),
+        SDGColor.Neutral400_a10.toUiModel("400-10"),
+        SDGColor.Neutral350_a10.toUiModel("350-10"),
+        SDGColor.Neutral300_a10.toUiModel("300-10"),
+        SDGColor.Neutral250_a10.toUiModel("250-10"),
+        SDGColor.Neutral200_a10.toUiModel("200-10"),
+        SDGColor.Neutral150_a10.toUiModel("150-10"),
+        SDGColor.Neutral100_a10.toUiModel("100-10"),
+        SDGColor.Neutral50_a10.toUiModel("50-10"),
+        SDGColor.Neutral0_a10.toUiModel("0-10"),
     )
     defaultColors.chunked(COLOR_CHUNK_SIZE).forEach { chunkedColors ->
         ColorsContent(
@@ -168,19 +169,19 @@ private fun NeutralColorContent() {
 @Composable
 private fun BradColorContent() {
     val primaryColors = persistentListOf(
-        SDGColor.Primary400 to "400",
-        SDGColor.Primary300 to "300",
-        SDGColor.Primary200 to "200",
-        SDGColor.Primary50 to "50",
-        SDGColor.Primary300_a10 to "300-10",
+        SDGColor.Primary400.toUiModel("400"),
+        SDGColor.Primary300.toUiModel("300"),
+        SDGColor.Primary200.toUiModel("200"),
+        SDGColor.Primary50.toUiModel("50"),
+        SDGColor.Primary300_a10.toUiModel("300-10"),
     )
     val secondaryColors = persistentListOf(
-        SDGColor.Secondary400 to "400",
-        SDGColor.Secondary300 to "300",
-        SDGColor.Secondary200 to "200",
-        SDGColor.Secondary50 to "50",
-        SDGColor.Secondary400_a10 to "400-10",
-        SDGColor.Secondary300_a10 to "300-10",
+        SDGColor.Secondary400.toUiModel("400"),
+        SDGColor.Secondary300.toUiModel("300"),
+        SDGColor.Secondary200.toUiModel("200"),
+        SDGColor.Secondary50.toUiModel("50"),
+        SDGColor.Secondary400_a10.toUiModel("400-10"),
+        SDGColor.Secondary300_a10.toUiModel("300-10"),
     )
     primaryColors.chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, chunkedColor ->
         if (index == 0) {
@@ -211,23 +212,23 @@ private fun BradColorContent() {
 @Composable
 private fun PointColorContent() {
     val redColors = persistentListOf(
-        SDGColor.Red400 to "400",
-        SDGColor.Red350 to "350",
-        SDGColor.Red300 to "300",
-        SDGColor.Red50 to "50",
-        SDGColor.Red300_a10 to "300-10",
+        SDGColor.Red400.toUiModel("400"),
+        SDGColor.Red350.toUiModel("350"),
+        SDGColor.Red300.toUiModel("300"),
+        SDGColor.Red50.toUiModel("50"),
+        SDGColor.Red300_a10.toUiModel("300-10"),
     )
     val yellowColors = persistentListOf(
-        SDGColor.YellowY to "Y",
-        SDGColor.YellowY_a10 to "Y-10",
+        SDGColor.YellowY.toUiModel("Y"),
+        SDGColor.YellowY_a10.toUiModel("Y-10"),
     )
     val purpleColors = persistentListOf(
-        SDGColor.PurpleP to "P",
-        SDGColor.PurpleP_a10 to "P-10",
+        SDGColor.PurpleP.toUiModel("P"),
+        SDGColor.PurpleP_a10.toUiModel("P-10"),
     )
     val greenColors = persistentListOf(
-        SDGColor.GreenG to "G",
-        SDGColor.GreenG_a10 to "G-10",
+        SDGColor.GreenG.toUiModel("G"),
+        SDGColor.GreenG_a10.toUiModel("G-10"),
     )
     redColors.chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, chunkedColor ->
         if (index == 0) {
@@ -282,14 +283,14 @@ private fun PointColorContent() {
 @Composable
 private fun SpecialColorContent() {
     val specialColors = persistentListOf(
-        SDGColor.SpecialOR to "OR",
-        SDGColor.SpecialPK to "PK",
-        SDGColor.SpecialRP to "RP",
-        SDGColor.SpecialLe to "Le",
-        SDGColor.SpecialYG to "YG",
-        SDGColor.SpecialCG to "CG",
+        SDGColor.SpecialOR.toUiModel("OR"),
+        SDGColor.SpecialPK.toUiModel("PK"),
+        SDGColor.SpecialRP.toUiModel("RP"),
+        SDGColor.SpecialLe.toUiModel("Le"),
+        SDGColor.SpecialYG.toUiModel("YG"),
+        SDGColor.SpecialCG.toUiModel("CG"),
     )
-    specialColors.chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, chunkedColor ->
+    specialColors.chunked(COLOR_CHUNK_SIZE).forEach { chunkedColor ->
         ColorsContent(
             colors = chunkedColor.toPersistentList()
         )

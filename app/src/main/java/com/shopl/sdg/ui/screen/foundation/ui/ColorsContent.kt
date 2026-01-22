@@ -12,10 +12,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.ui.screen.foundation.COLOR_CHUNK_SIZE
+import com.shopl.sdg.ui.screen.foundation.model.ColorUiModel
+import com.shopl.sdg.ui.screen.foundation.model.toUiModel
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
@@ -27,7 +28,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 internal fun ColorsContent(
     title: String,
-    colors: PersistentList<Pair<Color, String>>
+    colors: PersistentList<ColorUiModel>
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -46,7 +47,7 @@ internal fun ColorsContent(
 
 @Composable
 internal fun ColorsContent(
-    colors: PersistentList<Pair<Color, String>>
+    colors: PersistentList<ColorUiModel>
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -54,15 +55,13 @@ internal fun ColorsContent(
     ) {
         colors.forEach { color ->
             ColorContent(
-                displayLabel = color.second,
-                color = color.first
+                colorUiModel = color
             )
         }
         if (colors.size < COLOR_CHUNK_SIZE) {
             repeat(COLOR_CHUNK_SIZE - colors.size) {
                 ColorContent(
-                    displayLabel = "",
-                    color = SDGColor.Transparent
+                    colorUiModel = ColorUiModel()
                 )
             }
         }
@@ -71,8 +70,7 @@ internal fun ColorsContent(
 
 @Composable
 private fun ColorContent(
-    displayLabel: String,
-    color: Color,
+    colorUiModel: ColorUiModel
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
@@ -82,7 +80,7 @@ private fun ColorContent(
             modifier = Modifier
                 .size(40.dp)
                 .then(
-                    if (color == SDGColor.Neutral0 || color == SDGColor.Neutral0_a10) {
+                    if (colorUiModel.color == SDGColor.Neutral0 || colorUiModel.color == SDGColor.Neutral0_a10) {
                         Modifier.border(
                             width = 1.dp,
                             color = SDGColor.Neutral200,
@@ -93,12 +91,12 @@ private fun ColorContent(
                     }
                 )
                 .background(
-                    color = color,
+                    color = colorUiModel.color,
                     shape = CircleShape
                 )
         )
         SDGText(
-            text = displayLabel,
+            text = colorUiModel.displayLabel.orEmpty(),
             textColor = SDGColor.Neutral400,
             typography = SDGTypography.Body3R
         )
@@ -112,9 +110,9 @@ private fun PreviewColorsContentWithTitle() {
         ColorsContent(
             title = "Color Description",
             colors = persistentListOf(
-                SDGColor.Neutral700 to "700",
-                SDGColor.Neutral500 to "500",
-                SDGColor.Neutral300 to "300",
+                SDGColor.Neutral700.toUiModel("700"),
+                SDGColor.Neutral500.toUiModel("500"),
+                SDGColor.Neutral300.toUiModel("300"),
             )
         )
     }
@@ -126,9 +124,9 @@ private fun PreviewColorsContent() {
     ShoplDesignGuideTheme {
         ColorsContent(
             colors = persistentListOf(
-                SDGColor.Neutral700 to "700",
-                SDGColor.Neutral500 to "500",
-                SDGColor.Neutral300 to "300",
+                SDGColor.Neutral700.toUiModel("700"),
+                SDGColor.Neutral500.toUiModel("500"),
+                SDGColor.Neutral300.toUiModel("300"),
             )
         )
     }
