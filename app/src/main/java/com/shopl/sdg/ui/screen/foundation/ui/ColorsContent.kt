@@ -22,12 +22,12 @@ import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
-import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-internal fun PersistentList<ColorUiModel>.ColorsContent(title: String? = null) {
+internal fun ImmutableList<ColorUiModel>.ColorsContent(title: String? = null) {
     chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, chunkedColor ->
         if (!title.isNullOrEmpty() && index == 0) {
             ColorsWithTitleContent(
@@ -45,7 +45,7 @@ internal fun PersistentList<ColorUiModel>.ColorsContent(title: String? = null) {
 @Composable
 private fun ColorsWithTitleContent(
     title: String,
-    colors: PersistentList<ColorUiModel>
+    colors: ImmutableList<ColorUiModel>
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -64,7 +64,7 @@ private fun ColorsWithTitleContent(
 
 @Composable
 private fun ColorsContent(
-    colors: PersistentList<ColorUiModel>
+    colors: ImmutableList<ColorUiModel>
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),

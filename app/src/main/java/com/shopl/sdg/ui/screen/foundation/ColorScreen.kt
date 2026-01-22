@@ -24,7 +24,7 @@ import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
-import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 /**
@@ -78,7 +78,7 @@ internal fun ColorScreen() {
 
 @Composable
 private fun BodyContent(
-    specs: PersistentList<SDGSampleBaseTabItem<ColorSpec>>,
+    specs: ImmutableList<SDGSampleBaseTabItem<ColorSpec>>,
 ) {
 
     var selectedSpec by remember { mutableStateOf(ColorSpec.NEUTRAL) }
