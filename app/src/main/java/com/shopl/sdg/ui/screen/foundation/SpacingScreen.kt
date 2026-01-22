@@ -140,14 +140,14 @@ private fun BodyContent(
     ) {
         when (selectedSpec) {
             SpacingSpec.COMMON -> {
-                SpacingContent(
+                SpacingsContent(
                     title = stringResource(R.string.foundation_spacing_common_description),
                     uiModels = commonSpacings
                 )
             }
 
             SpacingSpec.SPECIAL -> {
-                SpacingContent(
+                SpacingsContent(
                     title = stringResource(R.string.foundation_spacing_special_description),
                     uiModels = specialSpacings
                 )
@@ -157,7 +157,7 @@ private fun BodyContent(
 }
 
 @Composable
-private fun SpacingContent(
+private fun SpacingsContent(
     title: String,
     uiModels: ImmutableList<SpacingUiModel>
 ) {
@@ -223,10 +223,10 @@ private fun PreviewSpacingScreen() {
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewCommonSpacingContent() {
+private fun PreviewCommonSpacingsContent() {
     ShoplDesignGuideTheme {
         Column {
-            SpacingContent(
+            SpacingsContent(
                 title = stringResource(R.string.foundation_spacing_common_description),
                 uiModels = commonSpacings
             )
@@ -236,10 +236,10 @@ private fun PreviewCommonSpacingContent() {
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewSpecialSpacingContent() {
+private fun PreviewSpecialSpacingsContent() {
     ShoplDesignGuideTheme {
         Column {
-            SpacingContent(
+            SpacingsContent(
                 title = stringResource(R.string.foundation_spacing_special_description),
                 uiModels = specialSpacings
             )
