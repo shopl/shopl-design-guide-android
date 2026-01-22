@@ -5,6 +5,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.navigation3.runtime.NavEntry
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.shopl.sdg.scene.ComponentScene
+import com.shopl.sdg.scene.FoundationScene
 import com.shopl.sdg.scene.SDGScene
 import com.shopl.sdg.ui.screen.OverviewScreen
 import com.shopl.sdg.ui.screen.component.AvatarScreen
@@ -13,6 +14,7 @@ import com.shopl.sdg.ui.screen.component.button.BoxButtonScreen
 import com.shopl.sdg.ui.screen.component.button.CapsuleButtonScreen
 import com.shopl.sdg.ui.screen.component.button.FloatingButtonScreen
 import com.shopl.sdg.ui.screen.component.button.GhostButtonScreen
+import com.shopl.sdg.ui.screen.foundation.ColorScreen
 import com.shopl.sdg_common.foundation.SDGColor
 
 internal fun provideNavEntry(
@@ -23,6 +25,10 @@ internal fun provideNavEntry(
         when (destination) {
             is SDGScene.Overview -> OverviewScreenRoute(
                 moveToScene = moveToScene
+            )
+
+            is FoundationScene -> FoundationScreenRoute(
+                destination = destination
             )
 
             is ComponentScene -> ComponentScreenRoute(
@@ -48,6 +54,24 @@ private fun OverviewScreenRoute(
     OverviewScreen(
         moveToScene = moveToScene
     )
+}
+
+@Composable
+private fun FoundationScreenRoute(destination: FoundationScene) {
+    val systemUiController = rememberSystemUiController()
+    SideEffect {
+        systemUiController.setStatusBarColor(
+            color = SDGColor.Transparent,
+            darkIcons = true
+        )
+    }
+    when (destination) {
+        is FoundationScene.Color -> {
+            ColorScreen()
+        }
+
+        else -> {}
+    }
 }
 
 @Composable
