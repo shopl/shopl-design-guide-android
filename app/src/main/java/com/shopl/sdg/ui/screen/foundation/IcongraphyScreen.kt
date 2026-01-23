@@ -28,6 +28,7 @@ import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.scene.FoundationScene
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
 import com.shopl.sdg.ui.common.SDGSampleSpecTab
+import com.shopl.sdg.ui.screen.foundation.model.toIconographyUiModel
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
@@ -51,6 +52,22 @@ private enum class IconographySpec(val displayLabel: String) {
 
 private const val ICON_BOX_ALPHA = 0.2f
 private const val ICON_BOX_COLOR = 0xFF9747FF
+
+private val smallIconographyUiModels = persistentListOf(
+    14.dp.toIconographyUiModel(displayLabel = "14*14"),
+    18.dp.toIconographyUiModel(displayLabel = "18*18"),
+)
+
+private val mediumIconographyUiModels = persistentListOf(
+    20.dp.toIconographyUiModel(displayLabel = "20*20"),
+    24.dp.toIconographyUiModel(displayLabel = "24*24"),
+)
+
+private val largeIconographyUiModels = persistentListOf(
+    36.dp.toIconographyUiModel(displayLabel = "36*36"),
+    40.dp.toIconographyUiModel(displayLabel = "40*40"),
+)
+
 
 @Composable
 internal fun IconographyScreen() {
@@ -118,56 +135,18 @@ private fun BodyContent(
             .padding(SDGSpacing.Spacing16),
         verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing40)
     ) {
-        when (selectedSpec) {
-            IconographySpec.SMALL -> {
-                SmallContent()
-            }
-
-            IconographySpec.MEDIUM -> {
-                MediumContent()
-            }
-
-            IconographySpec.LARGE -> {
-                LargeContent()
-            }
+        val uiModels = when (selectedSpec) {
+            IconographySpec.SMALL -> smallIconographyUiModels
+            IconographySpec.MEDIUM -> mediumIconographyUiModels
+            IconographySpec.LARGE -> largeIconographyUiModels
+        }
+        uiModels.forEach { uiModel ->
+            IconographyContent(
+                title = uiModel.displayLabel,
+                size = uiModel.size
+            )
         }
     }
-}
-
-@Composable
-private fun SmallContent() {
-    IconographyContent(
-        title = "14*14",
-        size = 14.dp
-    )
-    IconographyContent(
-        title = "18*18",
-        size = 18.dp
-    )
-}
-
-@Composable
-private fun MediumContent() {
-    IconographyContent(
-        title = "20*20",
-        size = 20.dp
-    )
-    IconographyContent(
-        title = "24*24",
-        size = 24.dp
-    )
-}
-
-@Composable
-private fun LargeContent() {
-    IconographyContent(
-        title = "36*36",
-        size = 36.dp
-    )
-    IconographyContent(
-        title = "40*40",
-        size = 40.dp
-    )
 }
 
 @Composable
@@ -222,7 +201,12 @@ private fun PreviewIconographyScreen() {
 private fun PreviewSmallContent() {
     ShoplDesignGuideTheme {
         Column {
-            SmallContent()
+            smallIconographyUiModels.forEach { uiModel ->
+                IconographyContent(
+                    title = uiModel.displayLabel,
+                    size = uiModel.size
+                )
+            }
         }
     }
 }
@@ -232,7 +216,12 @@ private fun PreviewSmallContent() {
 private fun PreviewMediumContent() {
     ShoplDesignGuideTheme {
         Column {
-            MediumContent()
+            mediumIconographyUiModels.forEach { uiModel ->
+                IconographyContent(
+                    title = uiModel.displayLabel,
+                    size = uiModel.size
+                )
+            }
         }
     }
 }
@@ -242,7 +231,12 @@ private fun PreviewMediumContent() {
 private fun PreviewLargeContent() {
     ShoplDesignGuideTheme {
         Column {
-            LargeContent()
+            largeIconographyUiModels.forEach { uiModel ->
+                IconographyContent(
+                    title = uiModel.displayLabel,
+                    size = uiModel.size
+                )
+            }
         }
     }
 }
