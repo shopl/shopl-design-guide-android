@@ -25,7 +25,7 @@ internal sealed class FoundationScene(
 
     data object Iconography : FoundationScene(
         displayLabel = "Iconography",
-        implemented = false
+        implemented = true
     )
 
     data object Spacing : FoundationScene(

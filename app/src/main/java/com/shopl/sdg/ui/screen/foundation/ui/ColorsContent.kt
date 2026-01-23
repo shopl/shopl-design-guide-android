@@ -27,17 +27,25 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-internal fun ImmutableList<ColorUiModel>.ColorsContent(title: String? = null) {
-    chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, chunkedColor ->
-        if (!title.isNullOrEmpty() && index == 0) {
-            ColorsWithTitleContent(
-                title = title,
-                colors = chunkedColor.toPersistentList()
-            )
-        } else {
-            ColorsContent(
-                colors = chunkedColor.toPersistentList()
-            )
+internal fun ImmutableList<ColorUiModel>.ColorsContent(
+    title: String? = null,
+    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(SDGSpacing.Spacing40)
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = verticalArrangement
+    ) {
+        chunked(COLOR_CHUNK_SIZE).forEachIndexed { index, uiModels ->
+            if (!title.isNullOrEmpty() && index == 0) {
+                ColorsWithTitleContent(
+                    title = title,
+                    colors = uiModels.toPersistentList()
+                )
+            } else {
+                ColorsContent(
+                    colors = uiModels.toPersistentList()
+                )
+            }
         }
     }
 }
