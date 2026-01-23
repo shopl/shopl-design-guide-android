@@ -177,7 +177,10 @@ private fun BradColorContent() {
         SDGColor.Secondary300_a10.toColorUiModel(displayLabel = "300-10"),
     )
     primaryColors.ColorsContent(title = "Primary")
-    secondaryColors.ColorsContent(title = "Secondary")
+    secondaryColors.ColorsContent(
+        title = "Secondary",
+        verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing12)
+    )
 }
 
 @Composable

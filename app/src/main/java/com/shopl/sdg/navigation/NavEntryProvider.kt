@@ -15,6 +15,7 @@ import com.shopl.sdg.ui.screen.component.button.CapsuleButtonScreen
 import com.shopl.sdg.ui.screen.component.button.FloatingButtonScreen
 import com.shopl.sdg.ui.screen.component.button.GhostButtonScreen
 import com.shopl.sdg.ui.screen.foundation.ColorScreen
+import com.shopl.sdg.ui.screen.foundation.IconographyScreen
 import com.shopl.sdg.ui.screen.foundation.SpacingScreen
 import com.shopl.sdg_common.foundation.SDGColor
 
@@ -73,6 +74,10 @@ private fun FoundationScreenRoute(destination: FoundationScene) {
 
         is FoundationScene.Spacing -> {
             SpacingScreen()
+        }
+
+        is FoundationScene.Iconography -> {
+            IconographyScreen()
         }
 
         else -> {}
