@@ -10,4 +10,5 @@
     <string name="foundation_spacing_description">컴포넌트 및 템플릿, 그리고 모든 화면과 구성 요소 사이의 여백</string>
     <string name="foundation_spacing_common_description">기본 2의 배수</string>
     <string name="foundation_spacing_special_description">추가적으로 화면 구성에 필요한 단위</string>
+    <string name="foundation_iconography_description">기호로 만든 시각 언어로 한정된 공간에서 정보를 효율적으로 전달하는 요소</string>
 </resources>
