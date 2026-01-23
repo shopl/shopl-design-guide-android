@@ -64,9 +64,9 @@ val monthFormatter01 = DateTimeFormat.forPattern("yyyy.MM")
 val monthFormatter02 = DateTimeFormat.forPattern("MM")
 
 sealed class SDGMultiCalendarModalType(open val maxCount: Int) {
-    data class Day(override val maxCount: Int = 1) : SDGMultiCalendarModalType(maxCount = maxCount)
-    data class Week(override val maxCount: Int = 1) : SDGMultiCalendarModalType(maxCount = maxCount)
-    data class Month(override val maxCount: Int = 1) :
+    data class Day(override val maxCount: Int = 0) : SDGMultiCalendarModalType(maxCount = maxCount)
+    data class Week(override val maxCount: Int = 0) : SDGMultiCalendarModalType(maxCount = maxCount)
+    data class Month(override val maxCount: Int = 0) :
         SDGMultiCalendarModalType(maxCount = maxCount)
 }
 
@@ -951,7 +951,7 @@ private fun PreviewCalendarMonth() {
                 typography = SDGTypography.Body1SB
             )
             TypeCalendar(
-                type = SDGMultiCalendarModalType.Month(maxCount = 12),
+                type = SDGMultiCalendarModalType.Month(),
                 weekStart = SDGDayOfWeek.SUNDAY,
                 initDate = DateTime.now(),
                 today = DateTime.now(),

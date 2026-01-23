@@ -72,11 +72,14 @@ sealed class SDGCalendarMonthSize(
 
 sealed class SDGCalendarMonthMode {
     data class Single(val selected: DateTime? = null) : SDGCalendarMonthMode()
-    data class Period(val selected: Pair<DateTime, DateTime>? = null, val maxCount: Int = 0) : SDGCalendarMonthMode()
+    data class Period(val selected: Pair<DateTime, DateTime>? = null, val maxCount: Int = 0) :
+        SDGCalendarMonthMode()
 }
 
-private val sizeComposableLocal = staticCompositionLocalOf<SDGCalendarMonthSize> { SDGCalendarMonthSize.Basic }
-private val modeComposableLocal = staticCompositionLocalOf<SDGCalendarMonthMode> { SDGCalendarMonthMode.Single() }
+private val sizeComposableLocal =
+    staticCompositionLocalOf<SDGCalendarMonthSize> { SDGCalendarMonthSize.Basic }
+private val modeComposableLocal =
+    staticCompositionLocalOf<SDGCalendarMonthMode> { SDGCalendarMonthMode.Single() }
 private val maxDateComposableLocal = staticCompositionLocalOf<DateTime?> { null }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -261,8 +264,10 @@ private fun SDGCalendarPager(
                             }
 
                             1 -> {
-                                val count = abs((list[0].year * 12 + list[0].monthOfYear) - (it.year * 12 + it.monthOfYear)) + 1
-                                if (count in 1..< mode.maxCount + 1) {
+                                val allowUnlimitedSelection = mode.maxCount == 0
+                                val count =
+                                    abs((list[0].year * 12 + list[0].monthOfYear) - (it.year * 12 + it.monthOfYear)) + 1
+                                if (allowUnlimitedSelection || count in 1..<mode.maxCount + 1) {
                                     if (it.isAfter(list[0])) {
                                         list.add(it)
                                     } else {
