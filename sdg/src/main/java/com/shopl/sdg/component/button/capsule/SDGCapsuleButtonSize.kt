@@ -1,11 +1,13 @@
 package com.shopl.sdg.component.button.capsule
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 
+@Stable
 sealed class SDGCapsuleButtonSize(
     val height: Dp,
     val horizontalPadding: Dp,
@@ -14,6 +16,7 @@ sealed class SDGCapsuleButtonSize(
     val typography: SDGTypography,
     val defaultIconSize: Dp
 ) {
+    abstract val sizeName: String
 
     data object Large : SDGCapsuleButtonSize(
         height = 50.dp,
@@ -22,7 +25,9 @@ sealed class SDGCapsuleButtonSize(
         cornerRadius = SDGCornerRadius.BoxRadius.Radius25,
         typography = SDGTypography.Body1R,
         defaultIconSize = 18.dp
-    )
+    ) {
+        override val sizeName = "Large"
+    }
 
 
     data object Medium : SDGCapsuleButtonSize(
@@ -32,7 +37,9 @@ sealed class SDGCapsuleButtonSize(
         cornerRadius = SDGCornerRadius.BoxRadius.Radius18,
         typography = SDGTypography.Body2R,
         defaultIconSize = 16.dp
-    )
+    ) {
+        override val sizeName = "Medium"
+    }
 
 
     data object Small : SDGCapsuleButtonSize(
@@ -42,7 +49,9 @@ sealed class SDGCapsuleButtonSize(
         cornerRadius = SDGCornerRadius.BoxRadius.Radius14,
         typography = SDGTypography.Body3R,
         defaultIconSize = 14.dp
-    )
+    ) {
+        override val sizeName = "Small"
+    }
 
 
     data object XSmall : SDGCapsuleButtonSize(
@@ -52,5 +61,7 @@ sealed class SDGCapsuleButtonSize(
         cornerRadius = SDGCornerRadius.BoxRadius.Radius10,
         typography = SDGTypography.Body3R,
         defaultIconSize = 14.dp
-    )
+    ) {
+        override val sizeName = "XSmall"
+    }
 }

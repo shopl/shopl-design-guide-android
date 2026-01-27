@@ -76,10 +76,19 @@ object SDGColor {
     val Neutral250 = Color(0xFFDDDDDD)
 
     @Stable
+    val Neutral250_a10 = Color(0x1ADDDDDD)
+
+    @Stable
     val Neutral200 = Color(0xFFEAEAEA)
 
     @Stable
+    val Neutral200_a10 = Color(0x1AEAEAEA)
+
+    @Stable
     val Neutral150 = Color(0xFFF2F2F2)
+
+    @Stable
+    val Neutral150_a10 = Color(0x1AF2F2F2)
 
     @Stable
     val Neutral150_a30 = Color(0x4DF2F2F2)
@@ -88,10 +97,19 @@ object SDGColor {
     val Neutral100 = Color(0xFFF6F6F6)
 
     @Stable
+    val Neutral100_a10 = Color(0x1AF6F6F6)
+
+    @Stable
     val Neutral50 = Color(0xFFF9F9F9)
 
     @Stable
+    val Neutral50_a10 = Color(0x1AF9F9F9)
+
+    @Stable
     val Neutral0 = Color(0xFFFFFFFF)
+
+    @Stable
+    val Neutral0_a10 = Color(0x1AFFFFFF)
 
     @Stable
     val Neutral0_a60 = Color(0x66FFFFFF)
@@ -176,6 +194,7 @@ object SDGColor {
 
     /** Special Color **/
     @Stable
+    @Deprecated("SpecialPK를 사용해주세요.")
     val PinkPK = Color(0xFFFFB2C5)
 
     @Stable
@@ -195,6 +214,9 @@ object SDGColor {
 
     @Stable
     val SpecialOR_a10 = Color(0x1AFFB200)
+
+    @Stable
+    val SpecialPK = Color(0xFFFFB2C5)
 
     @Stable
     val SpecialCG = Color(0xFFF1F4F6)
