@@ -1,15 +1,15 @@
-package com.shopl.sdg.template.navigation.search.preview
+package com.shopl.sdg.template.navi_search_bar.preview
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.shopl.sdg.template.navigation.search.SDGSearchNaviType
+import com.shopl.sdg.template.navi_search_bar.SDGNaviSearchBarType
 import com.shopl.sdg_common.foundation.SDGColor
 
 internal class SDGSearchNaviPreviewParameterProvider :
     PreviewParameterProvider<SDGSearchNaviPreviewData> {
     override val values: Sequence<SDGSearchNaviPreviewData> = sequenceOf(
         SDGSearchNaviPreviewData(
-            type = SDGSearchNaviType.Full(
+            type = SDGNaviSearchBarType.Full(
                 onClickClose = {},
                 iconColor = SDGColor.Neutral0
             ),
@@ -18,7 +18,7 @@ internal class SDGSearchNaviPreviewParameterProvider :
             backgroundColor = SDGColor.Secondary300
         ),
         SDGSearchNaviPreviewData(
-            type = SDGSearchNaviType.Back(
+            type = SDGNaviSearchBarType.Back(
                 onClickBack = {},
                 iconColor = SDGColor.Neutral0
             ),
@@ -30,7 +30,7 @@ internal class SDGSearchNaviPreviewParameterProvider :
 }
 
 internal data class SDGSearchNaviPreviewData(
-    val type: SDGSearchNaviType,
+    val type: SDGNaviSearchBarType,
     val input: String,
     val hint: String,
     val backgroundColor: Color

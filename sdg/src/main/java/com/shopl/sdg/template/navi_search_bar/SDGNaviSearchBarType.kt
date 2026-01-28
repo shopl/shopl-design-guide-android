@@ -1,18 +1,20 @@
-package com.shopl.sdg.template.navigation.search
+package com.shopl.sdg.template.navi_search_bar
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 import com.shopl.sdg_resource.R
 
 /**
  * 각 타입별로 앞/뒤 아이콘이 필요한지 여부와 클릭 액션을 담는다.
  */
-sealed interface SDGSearchNaviType {
+@Stable
+sealed interface SDGNaviSearchBarType {
     val icon: SDGSearchNaviIcon
 
     data class Full(
         private val onClickClose: () -> Unit,
         private val iconColor: Color
-    ) : SDGSearchNaviType {
+    ) : SDGNaviSearchBarType {
         override val icon: SDGSearchNaviIcon = SDGSearchNaviIcon(
             iconResId = R.drawable.ic_navi_close,
             iconColor = iconColor,
@@ -23,7 +25,7 @@ sealed interface SDGSearchNaviType {
     data class Back(
         private val onClickBack: () -> Unit,
         private val iconColor: Color
-    ) : SDGSearchNaviType {
+    ) : SDGNaviSearchBarType {
         override val icon: SDGSearchNaviIcon = SDGSearchNaviIcon(
             iconResId = R.drawable.ic_navi_back_android,
             iconColor = iconColor,
