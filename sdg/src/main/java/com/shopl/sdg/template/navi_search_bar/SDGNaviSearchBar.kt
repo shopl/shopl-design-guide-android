@@ -1,4 +1,4 @@
-package com.shopl.sdg.template.navigation.search
+package com.shopl.sdg.template.navi_search_bar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,20 +18,20 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.search_bar.capsule.SDGCapsuleSearchType
 import com.shopl.sdg.component.util.search_bar.capsule.SDGCapsuleSearch
-import com.shopl.sdg.template.navigation.search.preview.SDGSearchNaviPreviewData
-import com.shopl.sdg.template.navigation.search.preview.SDGSearchNaviPreviewParameterProvider
+import com.shopl.sdg.template.navi_search_bar.preview.SDGSearchNaviPreviewData
+import com.shopl.sdg.template.navi_search_bar.preview.SDGSearchNaviPreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ui.components.SDGImage
 
 /**
- * SDG - Navigation - Search Navi
+ * SDG - Navi Search bar - Navi Search Bar
  *
  * 화면의 상단에 위치하며, 검색바와 조합된 템플릿
  *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19821-30930&t=6UHqf2CQvDUAo0we-4">Figma</a>
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19803-24105&m=dev">Figma</a>
  */
 @Composable
-fun SDGSearchNavi(
+fun SDGNaviSearchBar(
     type: SDGSearchNaviType,
     input: String,
     hint: String,
@@ -88,11 +88,11 @@ private fun SearchNaviIconButton(icon: SDGSearchNaviIcon) {
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewSDGSearchNavi(
+private fun PreviewSDGNaviSearchBar(
     @PreviewParameter(SDGSearchNaviPreviewParameterProvider::class)
     previewData: SDGSearchNaviPreviewData
 ) {
-    SDGSearchNavi(
+    SDGNaviSearchBar(
         type = previewData.type,
         input = previewData.input,
         hint = previewData.hint,

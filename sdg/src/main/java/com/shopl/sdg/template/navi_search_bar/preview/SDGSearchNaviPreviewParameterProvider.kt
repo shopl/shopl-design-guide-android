@@ -1,8 +1,8 @@
-package com.shopl.sdg.template.navigation.search.preview
+package com.shopl.sdg.template.navi_search_bar.preview
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.shopl.sdg.template.navigation.search.SDGSearchNaviType
+import com.shopl.sdg.template.navi_search_bar.SDGSearchNaviType
 import com.shopl.sdg_common.foundation.SDGColor
 
 internal class SDGSearchNaviPreviewParameterProvider :

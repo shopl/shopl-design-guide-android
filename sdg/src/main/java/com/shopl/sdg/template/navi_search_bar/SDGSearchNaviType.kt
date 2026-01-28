@@ -1,4 +1,4 @@
-package com.shopl.sdg.template.navigation.search
+package com.shopl.sdg.template.navi_search_bar
 
 import androidx.compose.ui.graphics.Color
 import com.shopl.sdg_resource.R
