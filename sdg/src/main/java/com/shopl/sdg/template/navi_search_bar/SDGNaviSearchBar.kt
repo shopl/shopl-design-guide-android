@@ -32,7 +32,7 @@ import com.shopl.sdg_common.ui.components.SDGImage
  */
 @Composable
 fun SDGNaviSearchBar(
-    type: SDGSearchNaviType,
+    type: SDGNaviSearchBarType,
     input: String,
     hint: String,
     backgroundColor: Color,
@@ -52,7 +52,7 @@ fun SDGNaviSearchBar(
             .padding(horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (type is SDGSearchNaviType.Back) {
+        if (type is SDGNaviSearchBarType.Back) {
             SearchNaviIconButton(type.icon)
         }
 
@@ -69,7 +69,7 @@ fun SDGNaviSearchBar(
             keyboardActions = keyboardActions,
         )
 
-        if (type is SDGSearchNaviType.Full) {
+        if (type is SDGNaviSearchBarType.Full) {
             SearchNaviIconButton(type.icon)
         }
     }
