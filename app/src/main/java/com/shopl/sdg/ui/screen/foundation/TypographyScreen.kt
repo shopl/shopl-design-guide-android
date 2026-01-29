@@ -115,6 +115,7 @@ fun TypographScreen() {
                 specs = specs
             )
         },
+        // TODO : usage guide 추가
     )
 
 }
@@ -232,6 +233,7 @@ private fun TypographContentHeader() {
     }
 }
 
+// TODO : 클립 시 미리보기 팝업 추가
 @Composable
 private fun TypographContentFrame(
     typographies: ImmutableList<TypographyUiModel>,
