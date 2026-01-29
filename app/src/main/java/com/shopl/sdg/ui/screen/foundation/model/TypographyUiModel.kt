@@ -9,6 +9,7 @@ internal data class TypographyUiModel(
     val styleLabel: String,
     val sizeLabel: String,
     val weightLabel: String,
+    val typography: SDGTypography,
 )
 
 internal fun SDGTypography.toTypographyUiModel(
@@ -21,4 +22,5 @@ internal fun SDGTypography.toTypographyUiModel(
     } else {
         "Regular"
     },
+    typography = this
 )

@@ -23,12 +23,16 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.R
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.scene.FoundationScene
+import com.shopl.sdg.ui.base.SDGSampleBaseGuideLinesContent
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
 import com.shopl.sdg.ui.common.SDGSampleSpecTab
 import com.shopl.sdg.ui.common.SDGSampleTypeTab
 import com.shopl.sdg.ui.screen.foundation.model.TypographyUiModel
 import com.shopl.sdg.ui.screen.foundation.model.toTypographyUiModel
+import com.shopl.sdg.ui.screen.foundation.popup.TypographyPreviewPopup
+import com.shopl.sdg.ui.screen.foundation.state.TypographyPreviewPopupUiState
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
+import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
@@ -90,7 +94,7 @@ private const val RATIO_SIZE = 40F
 private const val RATIO_WEIGHT = 108F
 
 @Composable
-fun TypographScreen() {
+internal fun TypographScreen() {
 
     val types = persistentListOf(
         SDGSampleBaseTabItem(
@@ -115,7 +119,13 @@ fun TypographScreen() {
                 specs = specs
             )
         },
-        // TODO : usage guide 추가
+        usageGuideLinesContent = {
+            SDGSampleBaseGuideLinesContent(
+                guideLineDescriptions = persistentListOf(
+                    stringResource(R.string.usage_guideline_font_description)
+                )
+            )
+        }
     )
 
 }
@@ -158,7 +168,11 @@ private fun BodyContent(
 
     Column(
         modifier = Modifier
-            .padding(horizontal = SDGSpacing.Spacing16)
+            .padding(
+                start = SDGSpacing.Spacing16,
+                end = SDGSpacing.Spacing16,
+                bottom = SDGSpacing.Spacing16,
+            )
             .fillMaxWidth()
             .clip(SDGCornerRadius.BoxRadius.Radius8)
             .border(
@@ -181,18 +195,73 @@ private fun BodyContent(
 
 @Composable
 private fun TypographCommonContent() {
+
+    var popupUiState by remember {
+        mutableStateOf<TypographyPreviewPopupUiState>(
+            TypographyPreviewPopupUiState.Hidden
+        )
+    }
+
+    when (popupUiState) {
+        is TypographyPreviewPopupUiState.Visible -> {
+            TypographyPreviewPopup(
+                uiModels = (popupUiState as TypographyPreviewPopupUiState.Visible).uiModels,
+                onClickClose = {
+                    popupUiState = TypographyPreviewPopupUiState.Hidden
+                }
+            )
+        }
+
+        else -> {}
+    }
+
     Column {
         TypographContentHeader()
         HorizontalDivider(color = SDGColor.Neutral200)
-        TypographContentFrame(typographies = naviTypographies)
+        TypographContentFrame(
+            typographies = naviTypographies,
+            onClickPreview = {
+                popupUiState = TypographyPreviewPopupUiState.Visible(
+                    uiModels = naviTypographies
+                )
+            }
+        )
         HorizontalDivider(color = SDGColor.Neutral200)
-        TypographContentFrame(typographies = titleTypographies)
+        TypographContentFrame(
+            typographies = titleTypographies,
+            onClickPreview = {
+                popupUiState = TypographyPreviewPopupUiState.Visible(
+                    uiModels = titleTypographies
+                )
+            }
+        )
         HorizontalDivider(color = SDGColor.Neutral200)
-        TypographContentFrame(typographies = bodyTypographies)
+        TypographContentFrame(
+            typographies = bodyTypographies,
+            onClickPreview = {
+                popupUiState = TypographyPreviewPopupUiState.Visible(
+                    uiModels = bodyTypographies
+                )
+            }
+        )
         HorizontalDivider(color = SDGColor.Neutral200)
-        TypographContentFrame(typographies = pointTypographies)
+        TypographContentFrame(
+            typographies = pointTypographies,
+            onClickPreview = {
+                popupUiState = TypographyPreviewPopupUiState.Visible(
+                    uiModels = pointTypographies
+                )
+            }
+        )
         HorizontalDivider(color = SDGColor.Neutral200)
-        TypographContentFrame(typographies = specialTypographies)
+        TypographContentFrame(
+            typographies = specialTypographies,
+            onClickPreview = {
+                popupUiState = TypographyPreviewPopupUiState.Visible(
+                    uiModels = specialTypographies
+                )
+            }
+        )
     }
 }
 
@@ -237,6 +306,7 @@ private fun TypographContentHeader() {
 @Composable
 private fun TypographContentFrame(
     typographies: ImmutableList<TypographyUiModel>,
+    onClickPreview: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -263,6 +333,7 @@ private fun TypographContentFrame(
             }
         }
         SDGImage(
+            modifier = Modifier.clickable { onClickPreview() },
             resId = com.shopl.sdg_resource.R.drawable.ic_common_next,
             color = SDGColor.Neutral400,
         )
