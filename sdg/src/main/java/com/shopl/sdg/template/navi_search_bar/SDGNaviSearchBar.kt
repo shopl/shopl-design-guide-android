@@ -1,4 +1,4 @@
-package com.shopl.sdg.template.navi_search_bar
+package com.shopl.sdg.template.navigation.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +18,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.search_bar.capsule.SDGCapsuleSearchType
 import com.shopl.sdg.component.util.search_bar.capsule.SDGCapsuleSearch
+import com.shopl.sdg.template.navi_search_bar.SDGNaviSearchBarType
+import com.shopl.sdg.template.navi_search_bar.SDGSearchNaviIcon
 import com.shopl.sdg.template.navi_search_bar.preview.SDGSearchNaviPreviewData
 import com.shopl.sdg.template.navi_search_bar.preview.SDGSearchNaviPreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
@@ -52,8 +54,11 @@ fun SDGNaviSearchBar(
             .padding(horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (type is SDGNaviSearchBarType.Back) {
-            SearchNaviIconButton(type.icon)
+        when (type) {
+            is SDGNaviSearchBarType.Full,
+            is SDGNaviSearchBarType.Back -> type.leftIcon?.let { SearchNaviIconButton(it) }
+
+            is SDGNaviSearchBarType.Close -> Unit
         }
 
         SDGCapsuleSearch(
@@ -69,8 +74,11 @@ fun SDGNaviSearchBar(
             keyboardActions = keyboardActions,
         )
 
-        if (type is SDGNaviSearchBarType.Full) {
-            SearchNaviIconButton(type.icon)
+        when (type) {
+            is SDGNaviSearchBarType.Full,
+            is SDGNaviSearchBarType.Close -> type.rightIcon?.let { SearchNaviIconButton(it) }
+
+            is SDGNaviSearchBarType.Back -> Unit
         }
     }
 }
