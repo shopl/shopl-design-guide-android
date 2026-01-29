@@ -71,7 +71,7 @@ fun SDGScrollTab(
                         top = contentPadding.calculateTopPadding(),
                         bottom = contentPadding.calculateBottomPadding(),
                     )
-                    .height(1.dp)
+                    .height(height = 1.dp)
                     .align(Alignment.BottomStart)
                     .background(SDGColor.Neutral200)
             )
@@ -193,6 +193,5 @@ private fun PreviewSDGScrollTab(
                 backgroundColor = backgroundColor
             )
         }
-
     }
 }
