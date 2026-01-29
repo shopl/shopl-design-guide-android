@@ -35,7 +35,7 @@ internal sealed class FoundationScene(
 
     data object Typograph : FoundationScene(
         displayLabel = "Typograph",
-        implemented = false
+        implemented = true
     )
 }
 
