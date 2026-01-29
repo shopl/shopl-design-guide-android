@@ -1,4 +1,4 @@
-package com.shopl.sdg.template.navigation.search
+package com.shopl.sdg.template.navi_search_bar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,8 +18,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.search_bar.capsule.SDGCapsuleSearchType
 import com.shopl.sdg.component.util.search_bar.capsule.SDGCapsuleSearch
-import com.shopl.sdg.template.navi_search_bar.SDGNaviSearchBarType
-import com.shopl.sdg.template.navi_search_bar.SDGSearchNaviIcon
 import com.shopl.sdg.template.navi_search_bar.preview.SDGSearchNaviPreviewData
 import com.shopl.sdg.template.navi_search_bar.preview.SDGSearchNaviPreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
