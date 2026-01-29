@@ -17,6 +17,7 @@ import com.shopl.sdg.ui.screen.component.button.GhostButtonScreen
 import com.shopl.sdg.ui.screen.foundation.ColorScreen
 import com.shopl.sdg.ui.screen.foundation.IconographyScreen
 import com.shopl.sdg.ui.screen.foundation.SpacingScreen
+import com.shopl.sdg.ui.screen.foundation.TypographScreen
 import com.shopl.sdg_common.foundation.SDGColor
 
 internal fun provideNavEntry(
@@ -78,6 +79,10 @@ private fun FoundationScreenRoute(destination: FoundationScene) {
 
         is FoundationScene.Iconography -> {
             IconographyScreen()
+        }
+
+        is FoundationScene.Typograph -> {
+            TypographScreen()
         }
 
         else -> {}
