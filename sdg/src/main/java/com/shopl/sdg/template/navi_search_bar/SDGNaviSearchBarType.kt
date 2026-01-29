@@ -33,11 +33,11 @@ sealed interface SDGNaviSearchBarType {
 
     data class Back(
         private val onClickBack: () -> Unit,
-        private val rightIconColor: Color,
+        private val leftIconColor: Color,
     ) : SDGNaviSearchBarType {
         override val leftIcon: SDGSearchNaviIcon = SDGSearchNaviIcon(
             iconResId = R.drawable.ic_navi_back_android,
-            iconColor = rightIconColor,
+            iconColor = leftIconColor,
             onClick = onClickBack
         )
 
@@ -46,13 +46,13 @@ sealed interface SDGNaviSearchBarType {
 
     data class Close(
         private val onClickClose: () -> Unit,
-        private val iconColor: Color
+        private val rightIconColor: Color
     ) : SDGNaviSearchBarType {
         override val leftIcon: SDGSearchNaviIcon? = null
 
         override val rightIcon: SDGSearchNaviIcon = SDGSearchNaviIcon(
             iconResId = R.drawable.ic_navi_close,
-            iconColor = iconColor,
+            iconColor = rightIconColor,
             onClick = onClickClose
         )
     }

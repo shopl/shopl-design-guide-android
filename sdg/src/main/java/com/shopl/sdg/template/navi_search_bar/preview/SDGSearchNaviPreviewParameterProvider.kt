@@ -22,7 +22,7 @@ internal class SDGSearchNaviPreviewParameterProvider :
         SDGSearchNaviPreviewData(
             type = SDGNaviSearchBarType.Back(
                 onClickBack = {},
-                rightIconColor = SDGColor.Neutral0
+                leftIconColor = SDGColor.Neutral0
             ),
             input = "",
             hint = "브랜드를 검색해보세요",
@@ -31,7 +31,7 @@ internal class SDGSearchNaviPreviewParameterProvider :
         SDGSearchNaviPreviewData(
             type = SDGNaviSearchBarType.Close(
                 onClickClose = {},
-                iconColor = SDGColor.Neutral0
+                rightIconColor = SDGColor.Neutral0
             ),
             input = "검색 결과",
             hint = "검색어를 입력하세요",
