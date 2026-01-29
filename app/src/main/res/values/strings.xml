@@ -12,4 +12,5 @@
     <string name="foundation_spacing_special_description">추가적으로 화면 구성에 필요한 단위</string>
     <string name="foundation_iconography_description">기호로 만든 시각 언어로 한정된 공간에서 정보를 효율적으로 전달하는 요소</string>
     <string name="foundation_typography_description">정의된 서체, 크기, 색상을 통해 콘텐츠 중요도 및 전체 텍스트의 균형을 조정하여 서비스와 사용자의 커뮤니케이션을 돕는 주요 요소</string>
+    <string name="usage_guideline_font_description">지원되지 않는 언어는 각 OS 시스템폰트로 적용합니다.</string>
 </resources>

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.R
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.scene.FoundationScene
+import com.shopl.sdg.ui.base.SDGSampleBaseGuideLinesContent
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
 import com.shopl.sdg.ui.common.SDGSampleSpecTab
 import com.shopl.sdg.ui.common.SDGSampleTypeTab
@@ -115,7 +116,13 @@ fun TypographScreen() {
                 specs = specs
             )
         },
-        // TODO : usage guide 추가
+        usageGuideLinesContent = {
+            SDGSampleBaseGuideLinesContent(
+                guideLineDescriptions = persistentListOf(
+                    stringResource(R.string.usage_guideline_font_description)
+                )
+            )
+        }
     )
 
 }
@@ -158,7 +165,11 @@ private fun BodyContent(
 
     Column(
         modifier = Modifier
-            .padding(horizontal = SDGSpacing.Spacing16)
+            .padding(
+                start = SDGSpacing.Spacing16,
+                end = SDGSpacing.Spacing16,
+                bottom = SDGSpacing.Spacing16,
+            )
             .fillMaxWidth()
             .clip(SDGCornerRadius.BoxRadius.Radius8)
             .border(
@@ -237,6 +248,7 @@ private fun TypographContentHeader() {
 @Composable
 private fun TypographContentFrame(
     typographies: ImmutableList<TypographyUiModel>,
+    onClickPreview: () -> Unit,
 ) {
     Row(
         modifier = Modifier
