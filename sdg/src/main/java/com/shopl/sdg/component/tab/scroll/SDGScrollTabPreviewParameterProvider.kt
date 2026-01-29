@@ -20,7 +20,8 @@ internal class SDGScrollTabPreviewParameterProvider :
         스크롤_적은_아이템_Text(),
         선택_없음_Text(),
         여백_지정_Line(),
-        배경색_변경_Text()
+        배경색_변경_Text(),
+        Underline_화면_채움()
     )
 
     private fun 기본_Line(): SDGScrollTabPreviewParameter {
@@ -85,6 +86,16 @@ internal class SDGScrollTabPreviewParameterProvider :
             selectedIndex = 0,
             marginValues = PaddingValues(20.dp),
             isFillMaxWidth = false
+        )
+    }
+
+    private fun Underline_화면_채움(): SDGScrollTabPreviewParameter {
+        return SDGScrollTabPreviewParameter(
+            type = SDGScrollTabType.Line,
+            titles = persistentListOf("Label 1", "Label 2"),
+            selectedIndex = 0,
+            contentPadding = PaddingValues(20.dp),
+            isFillMaxWidth = true
         )
     }
 

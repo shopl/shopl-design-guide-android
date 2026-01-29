@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
@@ -61,6 +63,20 @@ fun SDGScrollTab(
             .padding(marginValues)
             .background(backgroundColor)
     ) {
+        if (isFillMaxWidth && type == SDGScrollTabType.Line) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = contentPadding.calculateTopPadding(),
+                        bottom = contentPadding.calculateBottomPadding(),
+                    )
+                    .height(1.dp)
+                    .align(Alignment.BottomStart)
+                    .background(SDGColor.Neutral200)
+            )
+        }
+
         LazyRow(
             contentPadding = contentPadding,
             state = listState
@@ -163,17 +179,20 @@ private fun PreviewSDGScrollTab(
     @PreviewParameter(SDGScrollTabPreviewParameterProvider::class)
     parameter: SDGScrollTabPreviewParameter
 ) {
-    with(parameter) {
-        SDGScrollTab(
-            type = type,
-            titles = titles,
-            selectedIndex = selectedIndex,
-            onTabClick = {},
-            isFillMaxWidth = isFillMaxWidth,
-            contentPadding = contentPadding,
-            marginValues = marginValues,
-            maxItemWidth = maxItemWidth,
-            backgroundColor = backgroundColor
-        )
+    Box(modifier = Modifier.fillMaxSize()) {
+        with(parameter) {
+            SDGScrollTab(
+                type = type,
+                titles = titles,
+                selectedIndex = selectedIndex,
+                onTabClick = {},
+                isFillMaxWidth = isFillMaxWidth,
+                contentPadding = contentPadding,
+                marginValues = marginValues,
+                maxItemWidth = maxItemWidth,
+                backgroundColor = backgroundColor
+            )
+        }
+
     }
 }
