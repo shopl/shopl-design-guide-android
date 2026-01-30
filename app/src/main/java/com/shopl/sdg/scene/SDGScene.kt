@@ -1,5 +1,8 @@
 package com.shopl.sdg.scene
 
+import androidx.compose.runtime.Composable
+import com.shopl.sdg.ui.screen.OverviewScreen
+
 /**
  * 세 가지 주요 카테고리로 구성
  * - Foundation: 디자인 시스템의 기본 요소 (Color, Typography 등)
@@ -14,8 +17,21 @@ internal sealed class SDGScene(
     open val implemented: Boolean = false,
 ) {
 
+    abstract val isDarkIcon: Boolean
+
+    @Composable
+    abstract fun Screen(moveToScene: (SDGScene) -> Unit)
+
     /**
      * 개요 화면
      */
-    data object Overview : SDGScene(implemented = true)
+    data object Overview : SDGScene(implemented = true) {
+
+        override val isDarkIcon: Boolean = false
+
+        @Composable
+        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            OverviewScreen(moveToScene = moveToScene)
+        }
+    }
 }
