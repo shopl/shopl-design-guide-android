@@ -6,7 +6,6 @@ import com.shopl.sdg.ui.screen.foundation.ColorScreen
 import com.shopl.sdg.ui.screen.foundation.IconographyScreen
 import com.shopl.sdg.ui.screen.foundation.SpacingScreen
 import com.shopl.sdg.ui.screen.foundation.TypographScreen
-import kotlinx.collections.immutable.persistentListOf
 
 /**
  * SDG - Foundation
@@ -78,11 +77,3 @@ internal sealed class FoundationScene(
         }
     }
 }
-
-internal val foundationScenes = persistentListOf(
-    FoundationScene.Color,
-    FoundationScene.CornerRadius,
-    FoundationScene.Iconography,
-    FoundationScene.Spacing,
-    FoundationScene.Typograph,
-)

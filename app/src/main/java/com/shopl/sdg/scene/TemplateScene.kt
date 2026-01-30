@@ -2,7 +2,6 @@ package com.shopl.sdg.scene
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import kotlinx.collections.immutable.persistentListOf
 
 /**
  * SDG - Template
@@ -459,40 +458,3 @@ internal sealed class TemplateScene(
         }
     }
 }
-
-internal val templateScenes = persistentListOf(
-    TemplateScene.CalendarAndTime,
-    TemplateScene.CheckboxLabel,
-    TemplateScene.CheckOptionLabel,
-    TemplateScene.EmptyImg,
-    TemplateScene.FilterChip.NaviFilterChip,
-    TemplateScene.FilterChip.BodyFilterChip,
-    TemplateScene.Form.DropdownForm,
-    TemplateScene.Form.SelectForm,
-    TemplateScene.Form.SimpleTextForm,
-    TemplateScene.Form.FixedTextForm,
-    TemplateScene.Form.TimeSelectForm,
-    TemplateScene.FoundationList.UserList,
-    TemplateScene.FoundationList.WorkplaceList,
-    TemplateScene.FoundationList.GroupAndPositionList,
-    TemplateScene.History,
-    TemplateScene.HistoryMini,
-    TemplateScene.ListHeader,
-    TemplateScene.MultiCalendar,
-    TemplateScene.MultiTimePicker,
-    TemplateScene.Navigation.BasicNavi,
-    TemplateScene.Navigation.CategoryNavi,
-    TemplateScene.Navigation.TextNavi,
-    TemplateScene.Navigation.SearchNavi,
-    TemplateScene.Popup.CenterPopup,
-    TemplateScene.Popup.BottomPopup,
-    TemplateScene.Popup.ListPopup,
-    TemplateScene.Popup.MiniListPopup,
-    TemplateScene.Popup.IconPopup,
-    TemplateScene.Popup.ToastPopup,
-    TemplateScene.Profile.BasicProfile,
-    TemplateScene.Profile.SecondProfile,
-    TemplateScene.Profile.SimpleProfile,
-    TemplateScene.Profile.MiniProfile,
-    TemplateScene.RadioLabel,
-)

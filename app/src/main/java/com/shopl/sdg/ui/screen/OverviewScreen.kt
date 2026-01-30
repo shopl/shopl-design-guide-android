@@ -26,11 +26,11 @@ import com.shopl.sdg.component.badge.box.SDGBoxBadgeType
 import com.shopl.sdg.component.navigation.basic.SDGBasicNavi
 import com.shopl.sdg.component.navigation.basic.SDGBasicNaviIconItem
 import com.shopl.sdg.scene.SDGScene
-import com.shopl.sdg.scene.componentScenes
-import com.shopl.sdg.scene.foundationScenes
-import com.shopl.sdg.scene.templateScenes
 import com.shopl.sdg.ui.SDGScaffold
 import com.shopl.sdg.ui.screen.foundation.model.OverviewCardUiModel
+import com.shopl.sdg.ui.screen.model.componentScenes
+import com.shopl.sdg.ui.screen.model.foundationScenes
+import com.shopl.sdg.ui.screen.model.templateScenes
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
