@@ -52,8 +52,11 @@ fun SDGNaviSearchBar(
             .padding(horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (type is SDGNaviSearchBarType.Back) {
-            SearchNaviIconButton(type.icon)
+        when (type) {
+            is SDGNaviSearchBarType.Full,
+            is SDGNaviSearchBarType.Back -> type.leftIcon?.let { SearchNaviIconButton(it) }
+
+            is SDGNaviSearchBarType.Close -> Unit
         }
 
         SDGCapsuleSearch(
@@ -69,8 +72,11 @@ fun SDGNaviSearchBar(
             keyboardActions = keyboardActions,
         )
 
-        if (type is SDGNaviSearchBarType.Full) {
-            SearchNaviIconButton(type.icon)
+        when (type) {
+            is SDGNaviSearchBarType.Full,
+            is SDGNaviSearchBarType.Close -> type.rightIcon?.let { SearchNaviIconButton(it) }
+
+            is SDGNaviSearchBarType.Back -> Unit
         }
     }
 }
