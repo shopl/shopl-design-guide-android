@@ -76,7 +76,7 @@ internal fun OverviewScreen(
                 backgroundColor = SDGColor.Neutral900,
                 leftIcon = SDGBasicNaviIconItem(
                     resId = R.drawable.ic_navi_drawer,
-                    onClick = {}
+                    onClick = { moveToScene(SDGScene.Menu) }
                 ),
                 rightIcons = null
             )

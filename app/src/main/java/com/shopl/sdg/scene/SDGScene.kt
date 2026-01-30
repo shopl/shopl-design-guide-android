@@ -1,6 +1,7 @@
 package com.shopl.sdg.scene
 
 import androidx.compose.runtime.Composable
+import com.shopl.sdg.ui.screen.MenuScreen
 import com.shopl.sdg.ui.screen.OverviewScreen
 
 /**
@@ -25,13 +26,35 @@ internal sealed class SDGScene(
     /**
      * 개요 화면
      */
-    data object Overview : SDGScene(implemented = true) {
+    data object Overview : SDGScene(
+        displayLabel = "Overview",
+        implemented = true
+    ) {
 
         override val isDarkIcon: Boolean = false
 
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit) {
             OverviewScreen(moveToScene = moveToScene)
+        }
+    }
+
+    /**
+     * 메뉴 화면
+     */
+    data object Menu : SDGScene(
+        displayLabel = "Menu",
+        implemented = true
+    ) {
+
+        override val isDarkIcon: Boolean = true
+
+        @Composable
+        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            MenuScreen(
+                moveToScene = moveToScene,
+                moveToBack = {}
+            )
         }
     }
 }
