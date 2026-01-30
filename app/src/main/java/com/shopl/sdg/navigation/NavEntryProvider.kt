@@ -1,9 +1,10 @@
 package com.shopl.sdg.navigation
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.core.view.WindowCompat
 import androidx.navigation3.runtime.NavEntry
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.shopl.sdg.scene.ComponentScene
 import com.shopl.sdg.scene.FoundationScene
 import com.shopl.sdg.scene.SDGScene
@@ -18,7 +19,6 @@ import com.shopl.sdg.ui.screen.foundation.ColorScreen
 import com.shopl.sdg.ui.screen.foundation.IconographyScreen
 import com.shopl.sdg.ui.screen.foundation.SpacingScreen
 import com.shopl.sdg.ui.screen.foundation.TypographScreen
-import com.shopl.sdg_common.foundation.SDGColor
 
 internal fun provideNavEntry(
     destination: SDGScene,
@@ -47,88 +47,92 @@ internal fun provideNavEntry(
 private fun OverviewScreenRoute(
     moveToScene: (SDGScene) -> Unit,
 ) {
-    val systemUiController = rememberSystemUiController()
-    SideEffect {
-        systemUiController.setStatusBarColor(
-            color = SDGColor.Transparent,
-            darkIcons = false
+    SDGRouteWrapper(
+        isDarkIcon = false
+    ) {
+        OverviewScreen(
+            moveToScene = moveToScene
         )
     }
-    OverviewScreen(
-        moveToScene = moveToScene
-    )
 }
 
 @Composable
 private fun FoundationScreenRoute(destination: FoundationScene) {
-    val systemUiController = rememberSystemUiController()
-    SideEffect {
-        systemUiController.setStatusBarColor(
-            color = SDGColor.Transparent,
-            darkIcons = true
-        )
-    }
-    when (destination) {
-        is FoundationScene.Color -> {
-            ColorScreen()
-        }
+    SDGRouteWrapper {
+        when (destination) {
+            is FoundationScene.Color -> {
+                ColorScreen()
+            }
 
-        is FoundationScene.Spacing -> {
-            SpacingScreen()
-        }
+            is FoundationScene.Spacing -> {
+                SpacingScreen()
+            }
 
-        is FoundationScene.Iconography -> {
-            IconographyScreen()
-        }
+            is FoundationScene.Iconography -> {
+                IconographyScreen()
+            }
 
-        is FoundationScene.Typograph -> {
-            TypographScreen()
-        }
+            is FoundationScene.Typograph -> {
+                TypographScreen()
+            }
 
-        else -> {}
+            else -> {}
+        }
     }
 }
 
 @Composable
 private fun ComponentScreenRoute(destination: ComponentScene) {
-    val systemUiController = rememberSystemUiController()
-    SideEffect {
-        systemUiController.setStatusBarColor(
-            color = SDGColor.Transparent,
-            darkIcons = true
-        )
-    }
-    when (destination) {
-        is ComponentScene.Avatar -> {
-            AvatarScreen()
-        }
-
-        is ComponentScene.Button -> {
-            when (destination) {
-                is ComponentScene.Button.BottomButton -> {
-                    BottomButtonScreen()
-                }
-
-                is ComponentScene.Button.BoxButton -> {
-                    BoxButtonScreen()
-                }
-
-                is ComponentScene.Button.CapsuleButton -> {
-                    CapsuleButtonScreen()
-                }
-
-                is ComponentScene.Button.GhostButton -> {
-                    GhostButtonScreen()
-                }
-
-                is ComponentScene.Button.FloatingButton -> {
-                    FloatingButtonScreen()
-                }
-
-                else -> {}
+    SDGRouteWrapper {
+        when (destination) {
+            is ComponentScene.Avatar -> {
+                AvatarScreen()
             }
-        }
 
-        else -> {}
+            is ComponentScene.Button -> {
+                when (destination) {
+                    is ComponentScene.Button.BottomButton -> {
+                        BottomButtonScreen()
+                    }
+
+                    is ComponentScene.Button.BoxButton -> {
+                        BoxButtonScreen()
+                    }
+
+                    is ComponentScene.Button.CapsuleButton -> {
+                        CapsuleButtonScreen()
+                    }
+
+                    is ComponentScene.Button.GhostButton -> {
+                        GhostButtonScreen()
+                    }
+
+                    is ComponentScene.Button.FloatingButton -> {
+                        FloatingButtonScreen()
+                    }
+
+                    else -> {}
+                }
+            }
+
+            else -> {}
+        }
     }
+}
+
+@Composable
+private fun SDGRouteWrapper(
+    isDarkIcon: Boolean = true,
+    content: @Composable () -> Unit
+) {
+    val activity = LocalActivity.current
+
+    SideEffect {
+        activity?.window?.let { window ->
+            val view = window.decorView
+            val windowInsetsController = WindowCompat.getInsetsController(window, view)
+            windowInsetsController.isAppearanceLightStatusBars = isDarkIcon
+        }
+    }
+    content()
 }
