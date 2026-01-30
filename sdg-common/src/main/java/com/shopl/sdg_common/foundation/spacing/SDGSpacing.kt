@@ -13,6 +13,7 @@ object SDGSpacing {
     /** Common: 화면 구성의 기본 단위 **/
     val Spacing2 = 2.dp
     val Spacing4 = 4.dp
+    val Spacing6 = 6.dp
     val Spacing8 = 8.dp
     val Spacing10 = 10.dp
     val Spacing12 = 12.dp
@@ -23,7 +24,9 @@ object SDGSpacing {
 
     /** Special: 화면 구성의 예외 단위 **/
     val Spacing3 = 3.dp
-    val Spacing6 = 6.dp
+    val Spacing5 = 5.dp
+    val Spacing11 = 11.dp
+    val Spacing18 = 18.dp
     val Spacing28 = 28.dp
     val Spacing32 = 32.dp
     val Spacing60 = 60.dp
