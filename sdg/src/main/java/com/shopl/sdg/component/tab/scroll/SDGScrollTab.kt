@@ -17,7 +17,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +33,6 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing6
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.PersistentList
-import kotlinx.coroutines.launch
 
 /**
  * SDG - Tab - Scroll Tab
@@ -55,7 +54,27 @@ fun SDGScrollTab(
     backgroundColor: Color = SDGColor.Neutral0,
 ) {
     val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(selectedIndex) {
+        if (selectedIndex != null && selectedIndex >= 0) {
+            val layoutInfo = listState.layoutInfo
+            val visibleItems = layoutInfo.visibleItemsInfo
+            val itemInfo = visibleItems.find { it.index == selectedIndex }
+
+            if (itemInfo == null) {
+                listState.animateScrollToItem(selectedIndex)
+            } else {
+                val viewportWidth = layoutInfo.viewportSize.width
+                val isPartiallyHidden = itemInfo.offset < 0 ||
+                        (itemInfo.offset + itemInfo.size) > viewportWidth
+
+                if (isPartiallyHidden) {
+                    val offset = (viewportWidth - itemInfo.size) / 2
+                    listState.animateScrollToItem(selectedIndex, -offset)
+                }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -79,23 +98,19 @@ fun SDGScrollTab(
 
         LazyRow(
             contentPadding = contentPadding,
-            state = listState
+            state = listState,
         ) {
-            itemsIndexed(titles) { index, title ->
+            itemsIndexed(
+                items = titles,
+                key = { index, _ -> index },
+            ) { index, title ->
                 Row(modifier = Modifier.height(IntrinsicSize.Min)) {
                     SDGScrollTabItem(
                         type = type,
                         title = title,
                         isSelected = index == selectedIndex,
                         maxItemWidth = maxItemWidth,
-                        onClick = {
-                            onTabClick(index)
-                            if (index == titles.lastIndex) {
-                                coroutineScope.launch {
-                                    listState.animateScrollToItem(index)
-                                }
-                            }
-                        }
+                        onClick = { onTabClick(index) }
                     )
 
                     if (index < titles.lastIndex) {
