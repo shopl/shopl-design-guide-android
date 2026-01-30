@@ -68,7 +68,10 @@ fun SDGScrollTab(
                 val isPartiallyHidden = itemInfo.offset < 0 ||
                         (itemInfo.offset + itemInfo.size) > viewportWidth
 
-                if (isPartiallyHidden) listState.animateScrollToItem(selectedIndex)
+                if (isPartiallyHidden) {
+                    val offset = (viewportWidth - itemInfo.size) / 2
+                    listState.animateScrollToItem(selectedIndex, -offset)
+                }
             }
         }
     }
@@ -97,7 +100,10 @@ fun SDGScrollTab(
             contentPadding = contentPadding,
             state = listState,
         ) {
-            itemsIndexed(items = titles) { index, title ->
+            itemsIndexed(
+                items = titles,
+                key = { index, _ -> index },
+            ) { index, title ->
                 Row(modifier = Modifier.height(IntrinsicSize.Min)) {
                     SDGScrollTabItem(
                         type = type,
