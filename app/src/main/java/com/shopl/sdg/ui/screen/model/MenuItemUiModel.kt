@@ -1,9 +1,11 @@
 package com.shopl.sdg.ui.screen.model
 
+import androidx.compose.runtime.Stable
 import com.shopl.sdg.scene.SDGScene
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
+@Stable
 internal sealed interface MenuItemUiModel {
 
     data class SectionItem(
@@ -11,7 +13,8 @@ internal sealed interface MenuItemUiModel {
     ) : MenuItemUiModel
 
     data class GroupItem(
-        val displayLabel: String
+        val displayLabel: String,
+        val hasImplementItems: Boolean,
     ) : MenuItemUiModel
 
     data class SceneItem(
@@ -28,8 +31,11 @@ internal fun MenuSectionUiModel.toMenuItemUiModels(
     menus.forEach { menu ->
         when (menu) {
             is MenuUiModel.GroupMenu -> {
-                menuItems.add(MenuItemUiModel.GroupItem(menu.groupName))
-
+                menuItems.add(
+                    MenuItemUiModel.GroupItem(
+                    displayLabel = menu.groupName,
+                    hasImplementItems = menu.sceneMenus.any { it.scene.implemented }
+                ))
                 if (expandedGroups.contains(menu.groupName)) {
                     menu.sceneMenus.forEach { sceneMenu ->
                         menuItems.add(
@@ -39,14 +45,6 @@ internal fun MenuSectionUiModel.toMenuItemUiModels(
                             )
                         )
                     }
-                }
-                menu.sceneMenus.forEach { sceneMenu ->
-                    menuItems.add(
-                        MenuItemUiModel.SceneItem(
-                            scene = sceneMenu.scene,
-                            isGroupingScene = true
-                        )
-                    )
                 }
             }
 

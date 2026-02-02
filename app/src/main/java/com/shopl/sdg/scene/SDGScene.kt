@@ -53,7 +53,17 @@ internal sealed class SDGScene(
 
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+            throw IllegalAccessException("Menu Screen is not implemented")
+        }
+
+        @Composable
+        fun MenuScreen(
+            fromScene: SDGScene?,
+            moveToScene: (SDGScene) -> Unit,
+            backToScene: () -> Unit
+        ) {
             MenuScreen(
+                fromScene = fromScene,
                 moveToScene = {
                     backToScene()
                     moveToScene(it)
@@ -61,5 +71,6 @@ internal sealed class SDGScene(
                 moveToBack = backToScene
             )
         }
+
     }
 }

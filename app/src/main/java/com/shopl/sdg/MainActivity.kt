@@ -48,75 +48,74 @@ class MainActivity : ComponentActivity() {
                         val scene = key as? SDGScene ?: error("Unknown key: $key")
                         NavEntry(scene) {
                             SDGRouteWrapper(isDarkIcon = scene.isDarkIcon) {
-                                scene.Screen(
-                                    moveToScene = { next -> backStack.add(next) },
-                                    backToScene = {
-                                        lastPoppedWasPopup = scene.isPopup
-                                        backStack.removeLastOrNull()
+                                when (scene) {
+                                    SDGScene.Menu -> {
+                                        val fromScene = if (backStack.size >= 2) {
+                                            backStack[backStack.size - 2] as? SDGScene
+                                        } else {
+                                            null
+                                        }
+                                        SDGScene.Menu.MenuScreen(
+                                            fromScene = fromScene,
+                                            moveToScene = { next -> backStack.add(next) },
+                                            backToScene = {
+                                                lastPoppedWasPopup = scene.isPopup
+                                                backStack.removeLastOrNull()
+                                            }
+                                        )
                                     }
-                                )
+
+                                    else -> {
+                                        scene.Screen(
+                                            moveToScene = { next -> backStack.add(next) },
+                                            backToScene = {
+                                                lastPoppedWasPopup = scene.isPopup
+                                                backStack.removeLastOrNull()
+                                            }
+                                        )
+                                    }
+                                }
                             }
                         }
                     },
                     transitionSpec = {
                         val targetScene = backStack.lastOrNull() as? SDGScene
-                        if (targetScene?.isPopup == true) {
-                            slideInVertically(
-                                initialOffsetY = { it },
-                                animationSpec = tween(ANIMATION_DURATION)
-                            ) + fadeIn(
-                                animationSpec = tween(ANIMATION_DURATION)
-                            ) togetherWith fadeOut(
-                                animationSpec = tween(ANIMATION_DURATION)
-                            )
-                        } else {
-                            slideInHorizontally(
-                                initialOffsetX = { it },
-                                animationSpec = tween(ANIMATION_DURATION)
-                            ) togetherWith slideOutHorizontally(
-                                targetOffsetX = { -it },
-                                animationSpec = tween(ANIMATION_DURATION)
-                            )
-                        }
+                        getTransitionSpec(isPopup = targetScene?.isPopup == true)
                     },
                     popTransitionSpec = {
-                        if (lastPoppedWasPopup) {
-                            slideInHorizontally(initialOffsetX = { 0 }) togetherWith slideOutVertically(
-                                targetOffsetY = { it },
-                                animationSpec = tween(ANIMATION_DURATION)
-                            ) + fadeOut()
-                        } else {
-                            slideInHorizontally(
-                                initialOffsetX = { -it },
-                                animationSpec = tween(ANIMATION_DURATION)
-                            ) togetherWith slideOutHorizontally(
-                                targetOffsetX = { it },
-                                animationSpec = tween(ANIMATION_DURATION)
-                            )
-                        }
+                        getPopTransitionSpec(isPopup = lastPoppedWasPopup)
                     },
                     predictivePopTransitionSpec = {
-                        if (lastPoppedWasPopup) {
-                            val enter = fadeIn(animationSpec = tween(ANIMATION_DURATION))
-                            val exit = slideOutVertically(
-                                targetOffsetY = { it },
-                                animationSpec = tween(ANIMATION_DURATION)
-                            ) + fadeOut()
-                            enter togetherWith exit
-                        } else {
-                            slideInHorizontally(
-                                initialOffsetX = { -it },
-                                animationSpec = tween(ANIMATION_DURATION)
-                            ) togetherWith slideOutHorizontally(
-                                targetOffsetX = { it },
-                                animationSpec = tween(ANIMATION_DURATION)
-                            )
-                        }
+                        getPopTransitionSpec(lastPoppedWasPopup)
                     }
                 )
             }
         }
     }
+}
+
+private fun getTransitionSpec(isPopup: Boolean) = if (isPopup) {
+    slideInVertically(initialOffsetY = { it }, animationSpec = tween(ANIMATION_DURATION)) +
+            fadeIn(animationSpec = tween(ANIMATION_DURATION)) togetherWith
+            fadeOut(animationSpec = tween(ANIMATION_DURATION))
+} else {
+    slideInHorizontally(
+        initialOffsetX = { it },
+        animationSpec = tween(ANIMATION_DURATION)
+    ) togetherWith
+            slideOutHorizontally(targetOffsetX = { -it }, animationSpec = tween(ANIMATION_DURATION))
+}
+
+private fun getPopTransitionSpec(isPopup: Boolean) = if (isPopup) {
+    slideInHorizontally(initialOffsetX = { 0 }) togetherWith
+            slideOutVertically(targetOffsetY = { it }, animationSpec = tween(ANIMATION_DURATION)) +
+            fadeOut()
+} else {
+    slideInHorizontally(
+        initialOffsetX = { -it },
+        animationSpec = tween(ANIMATION_DURATION)
+    ) togetherWith
+            slideOutHorizontally(targetOffsetX = { it }, animationSpec = tween(ANIMATION_DURATION))
 }
 
 @Composable

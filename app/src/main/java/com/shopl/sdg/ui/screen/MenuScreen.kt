@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +31,7 @@ import com.shopl.sdg.component.navigation.basic.SDGBasicNaviIconItem
 import com.shopl.sdg.scene.SDGScene
 import com.shopl.sdg.ui.SDGScaffold
 import com.shopl.sdg.ui.screen.model.MenuItemUiModel
+import com.shopl.sdg.ui.screen.model.MenuUiModel
 import com.shopl.sdg.ui.screen.model.componentMenuSection
 import com.shopl.sdg.ui.screen.model.foundationMenuSection
 import com.shopl.sdg.ui.screen.model.templateMenuSection
@@ -41,6 +44,8 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * SDG Sample App - Menu
@@ -53,13 +58,18 @@ private const val GROUP_ROTATE_COLLAPSED = 0f
 
 @Composable
 internal fun MenuScreen(
+    fromScene: SDGScene?,
     moveToScene: (SDGScene) -> Unit,
     moveToBack: () -> Unit,
 ) {
 
     val listState = rememberLazyListState()
 
-    var expandedGroups by remember { mutableStateOf(setOf<String>()) }
+    var expandedGroups by remember {
+        mutableStateOf(
+            findGroupForScene(fromScene)
+        )
+    }
 
     val onGroupClick: (String) -> Unit = { groupName ->
         expandedGroups = if (expandedGroups.contains(groupName)) {
@@ -70,10 +80,12 @@ internal fun MenuScreen(
     }
 
     val currentMenuItems = remember(expandedGroups) {
-        foundationMenuSection.toMenuItemUiModels(expandedGroups) +
+        (foundationMenuSection.toMenuItemUiModels(expandedGroups) +
                 componentMenuSection.toMenuItemUiModels(expandedGroups) +
-                templateMenuSection.toMenuItemUiModels(expandedGroups)
+                templateMenuSection.toMenuItemUiModels(expandedGroups)).toImmutableList()
     }
+
+    MenuFocusEffect(fromScene, currentMenuItems, listState)
 
     SDGScaffold(
         backgroundColor = SDGColor.Neutral0,
@@ -118,7 +130,7 @@ internal fun MenuScreen(
                 when (item) {
                     is MenuItemUiModel.SectionItem -> {
                         SectionContent(
-                            displayLabel = item.displayLabel
+                            displayLabel = item.displayLabel,
                         )
                     }
 
@@ -126,6 +138,7 @@ internal fun MenuScreen(
                         GroupContent(
                             displayLabel = item.displayLabel,
                             isExpanded = expandedGroups.contains(item.displayLabel),
+                            hasImplementItems = item.hasImplementItems,
                             onClick = {
                                 onGroupClick(item.displayLabel)
                             }
@@ -137,13 +150,67 @@ internal fun MenuScreen(
                             displayLabel = item.scene.displayLabel,
                             isImplemented = item.scene.implemented,
                             isGroupingScene = item.isGroupingScene,
+                            isSelected = item.scene == fromScene,
                             onClick = {
-                                moveToScene(item.scene)
+                                if (item.scene == fromScene) moveToBack()
+                                else moveToScene(item.scene)
                             }
                         )
                     }
                 }
             }
+        }
+    }
+}
+
+/**
+ * 특정 Scene이 속한 그룹을 찾아서 반환하는 함수
+ */
+private fun findGroupForScene(fromScene: SDGScene?): Set<String> {
+    if (fromScene == null) return emptySet()
+    val expandedSet = mutableSetOf<String>()
+    val allSections = listOf(foundationMenuSection, componentMenuSection, templateMenuSection)
+    allSections.forEach { section ->
+        section.menus.forEach { menu ->
+            when (menu) {
+                is MenuUiModel.GroupMenu -> {
+                    val hasScene = menu.sceneMenus.any { it.scene == fromScene }
+                    if (hasScene) {
+                        expandedSet.add(menu.groupName)
+                    }
+                }
+
+                is MenuUiModel.SceneMenu -> {
+                    // GroupMenu가 아닌 경우 무시
+                }
+            }
+        }
+    }
+    return expandedSet
+}
+
+/**
+ * 특정 Scene이 속한 그룹의 상단으로 스크롤을 맞춰주는 효과
+ */
+@Composable
+private fun MenuFocusEffect(
+    fromScene: SDGScene?,
+    items: ImmutableList<MenuItemUiModel>,
+    listState: LazyListState
+) {
+    LaunchedEffect(fromScene) {
+        val sceneIndex =
+            items.indexOfFirst { it is MenuItemUiModel.SceneItem && it.scene == fromScene }
+        if (sceneIndex != -1) {
+            var targetIndex = sceneIndex
+            for (i in sceneIndex downTo 0) {
+                if (items[i] is MenuItemUiModel.GroupItem) {
+                    targetIndex = i
+                    break
+                }
+            }
+            // Header + Overview 고려하여 offset +2
+            listState.scrollToItem(targetIndex + 2)
         }
     }
 }
@@ -168,6 +235,7 @@ private fun SectionContent(
 private fun GroupContent(
     displayLabel: String,
     isExpanded: Boolean,
+    hasImplementItems: Boolean,
     onClick: () -> Unit,
 ) {
     Row(
@@ -184,7 +252,7 @@ private fun GroupContent(
     ) {
         SDGText(
             text = displayLabel,
-            textColor = SDGColor.Neutral700,
+            textColor = if (hasImplementItems) SDGColor.Neutral700 else SDGColor.Neutral300,
             typography = SDGTypography.Title2SB
         )
         SDGImage(
@@ -200,6 +268,7 @@ private fun SceneContent(
     displayLabel: String,
     isGroupingScene: Boolean = false,
     isImplemented: Boolean = true,
+    isSelected: Boolean = false,
     onClick: () -> Unit
 ) {
     Box(
@@ -221,13 +290,21 @@ private fun SceneContent(
             SDGText(
                 modifier = Modifier.padding(start = SDGSpacing.Spacing8),
                 text = displayLabel,
-                textColor = if (isImplemented) SDGColor.Neutral600 else SDGColor.Neutral300,
+                textColor = when {
+                    !isImplemented -> SDGColor.Neutral300
+                    isSelected -> SDGColor.Primary300
+                    else -> SDGColor.Neutral600
+                },
                 typography = SDGTypography.Title2SB,
             )
         } else {
             SDGText(
                 text = displayLabel,
-                textColor = if (isImplemented) SDGColor.Neutral700 else SDGColor.Neutral300,
+                textColor = when {
+                    !isImplemented -> SDGColor.Neutral300
+                    isSelected -> SDGColor.Primary300
+                    else -> SDGColor.Neutral700
+                },
                 typography = SDGTypography.Title2SB,
             )
         }
@@ -272,6 +349,7 @@ private fun HeaderContent() {
 private fun PreviewMenuScreen() {
     ShoplDesignGuideTheme {
         MenuScreen(
+            fromScene = null,
             moveToScene = {},
             moveToBack = {}
         )
