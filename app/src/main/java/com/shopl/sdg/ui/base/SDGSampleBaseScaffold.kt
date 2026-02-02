@@ -51,7 +51,7 @@ internal fun SDGSampleBaseScaffold(
                 title = null,
                 backgroundColor = SDGColor.Neutral0,
                 leftIcon = SDGBasicNaviIconItem(
-                    resId = R.drawable.ic_navi_drawer,
+                    resId = com.shopl.sdg_resource.R.drawable.ic_navi_prev,
                     color = SDGColor.Neutral700,
                     onClick = {
                         onClickBack()
