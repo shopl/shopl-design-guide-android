@@ -25,7 +25,10 @@ import kotlinx.collections.immutable.persistentListOf
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=22804-3346&m=dev">Figma</a>
  */
 @Composable
-internal fun BoxButtonScreen() {
+internal fun BoxButtonScreen(
+    onClickBack: () -> Unit,
+    onClickMenu: () -> Unit,
+) {
 
     val types = persistentListOf<SDGSampleBaseTabItem<SDGBoxButtonType>>(
         SDGSampleBaseTabItem(
@@ -69,7 +72,9 @@ internal fun BoxButtonScreen() {
                     status = currentStatus
                 )
             }
-        }
+        },
+        onClickBack = onClickBack,
+        onClickMenu = onClickMenu
     )
 }
 
@@ -105,6 +110,9 @@ private fun ComponentContent(
 @Composable
 private fun PreviewBoxButtonScreen() {
     ShoplDesignGuideTheme {
-        BoxButtonScreen()
+        BoxButtonScreen(
+            onClickBack = {},
+            onClickMenu = {}
+        )
     }
 }

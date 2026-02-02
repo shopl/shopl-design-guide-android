@@ -49,6 +49,8 @@ import kotlinx.collections.immutable.persistentListOf
 internal fun <TYPE, SPEC> SDGSampleBaseComponentScaffold(
     componentName: String,
     componentDescription: String,
+    onClickBack: () -> Unit,
+    onClickMenu: () -> Unit,
     types: PersistentList<SDGSampleBaseTabItem<TYPE>>? = null,
     specs: PersistentList<SDGSampleBaseTabItem<SPEC>>? = null,
     componentContent: @Composable (type: TYPE?, spec: SPEC?, status: SDGSampleStatus) -> Unit,
@@ -64,6 +66,8 @@ internal fun <TYPE, SPEC> SDGSampleBaseComponentScaffold(
                 componentContent = componentContent
             )
         },
+        onClickBack = onClickBack,
+        onClickMenu = onClickMenu,
         usageGuideLinesContent = guideLineDescriptions.takeIf { it.isNotEmpty() }
             ?.let { descriptions ->
                 @Composable {
@@ -178,6 +182,8 @@ private fun PreviewSDGSampleBaseComponentScaffold(
                     )
                 }
             },
+            onClickBack = {},
+            onClickMenu = {},
             guideLineDescriptions = uiState.guideLineDescriptions
         )
     }

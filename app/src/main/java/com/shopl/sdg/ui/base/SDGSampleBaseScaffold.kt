@@ -26,6 +26,7 @@ import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * SDG 샘플 페이지 작성을 위한 Base Scaffold
@@ -39,6 +40,8 @@ internal fun SDGSampleBaseScaffold(
     name: String,
     description: String,
     bodyContent: @Composable () -> Unit,
+    onClickBack: () -> Unit,
+    onClickMenu: () -> Unit,
     usageGuideLinesContent: @Composable (() -> Unit)? = null,
 ) {
     SDGScaffold(
@@ -51,10 +54,18 @@ internal fun SDGSampleBaseScaffold(
                     resId = R.drawable.ic_navi_drawer,
                     color = SDGColor.Neutral700,
                     onClick = {
-                        // TODO : Show Menu
+                        onClickBack()
                     }
                 ),
-                rightIcons = null
+                rightIcons = persistentListOf(
+                    SDGBasicNaviIconItem(
+                        resId = R.drawable.ic_navi_drawer,
+                        color = SDGColor.Neutral700,
+                        onClick = {
+                            onClickMenu()
+                        }
+                    )
+                )
             )
         },
     ) {
@@ -169,7 +180,9 @@ private fun PreviewSDGSampleBaseScaffold() {
                         typography = SDGTypography.Body3R
                     )
                 }
-            }
+            },
+            onClickBack = {},
+            onClickMenu = {},
         )
     }
 }

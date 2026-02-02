@@ -30,7 +30,10 @@ import kotlinx.collections.immutable.persistentListOf
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=22804-3410&m=dev">Figma</a>
  */
 @Composable
-internal fun GhostButtonScreen() {
+internal fun GhostButtonScreen(
+    onClickBack: () -> Unit,
+    onClickMenu: () -> Unit,
+) {
 
     val specs = persistentListOf<SDGSampleBaseTabItem<SDGGhostButtonSize>>(
         SDGSampleBaseTabItem(
@@ -62,7 +65,9 @@ internal fun GhostButtonScreen() {
                     status = currentStatus
                 )
             }
-        }
+        },
+        onClickBack = onClickBack,
+        onClickMenu = onClickMenu
     )
 }
 
@@ -170,6 +175,9 @@ private fun ComponentContent(
 @Composable
 private fun PreviewGhostButtonScreen() {
     ShoplDesignGuideTheme {
-        GhostButtonScreen()
+        GhostButtonScreen(
+            onClickBack = {},
+            onClickMenu = {}
+        )
     }
 }

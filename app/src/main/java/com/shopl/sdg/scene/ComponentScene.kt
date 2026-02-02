@@ -76,7 +76,12 @@ internal sealed class ComponentScene(
         ) {
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                BottomButtonScreen()
+                BottomButtonScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = {
+                        moveToScene(Menu)
+                    }
+                )
             }
         }
 
@@ -86,7 +91,12 @@ internal sealed class ComponentScene(
         ) {
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                BoxButtonScreen()
+                BoxButtonScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = {
+                        moveToScene(Menu)
+                    }
+                )
             }
         }
 
@@ -96,7 +106,12 @@ internal sealed class ComponentScene(
         ) {
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                CapsuleButtonScreen()
+                CapsuleButtonScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = {
+                        moveToScene(Menu)
+                    }
+                )
             }
         }
 
@@ -106,7 +121,12 @@ internal sealed class ComponentScene(
         ) {
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                FloatingButtonScreen()
+                FloatingButtonScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = {
+                        moveToScene(Menu)
+                    }
+                )
             }
         }
 
@@ -116,7 +136,12 @@ internal sealed class ComponentScene(
         ) {
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                GhostButtonScreen()
+                GhostButtonScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = {
+                        moveToScene(Menu)
+                    }
+                )
             }
         }
 

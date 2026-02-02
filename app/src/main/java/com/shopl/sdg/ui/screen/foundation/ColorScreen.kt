@@ -45,7 +45,10 @@ private enum class ColorSpec(val displayLabel: String) {
 internal const val COLOR_CHUNK_SIZE = 5
 
 @Composable
-internal fun ColorScreen() {
+internal fun ColorScreen(
+    onClickBack: () -> Unit,
+    onClickMenu: () -> Unit,
+) {
 
     val types = persistentListOf(
         SDGSampleBaseTabItem(
@@ -74,6 +77,8 @@ internal fun ColorScreen() {
                 specs = types
             )
         },
+        onClickBack = onClickBack,
+        onClickMenu = onClickMenu,
     )
 
 }
@@ -227,7 +232,10 @@ private fun SpecialColorContent() {
 @Composable
 private fun PreviewColorScreen() {
     ShoplDesignGuideTheme {
-        ColorScreen()
+        ColorScreen(
+            onClickBack = {},
+            onClickMenu = {}
+        )
     }
 }
 

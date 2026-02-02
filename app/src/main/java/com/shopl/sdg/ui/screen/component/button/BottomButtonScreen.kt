@@ -31,7 +31,10 @@ private const val SPEC_FULL = 0
 private const val SPEC_ADAPTIVE = 1
 
 @Composable
-internal fun BottomButtonScreen() {
+internal fun BottomButtonScreen(
+    onClickBack: () -> Unit,
+    onClickMenu: () -> Unit,
+) {
 
     val types = persistentListOf(
         SDGSampleBaseTabItem(
@@ -79,7 +82,9 @@ internal fun BottomButtonScreen() {
                     status = currentStatus
                 )
             }
-        }
+        },
+        onClickBack = onClickBack,
+        onClickMenu = onClickMenu
     )
 }
 
@@ -135,6 +140,9 @@ private fun ComponentContent(
 @Composable
 private fun PreviewBottomButtonScreen() {
     ShoplDesignGuideTheme {
-        BottomButtonScreen()
+        BottomButtonScreen(
+            onClickBack = {},
+            onClickMenu = {}
+        )
     }
 }

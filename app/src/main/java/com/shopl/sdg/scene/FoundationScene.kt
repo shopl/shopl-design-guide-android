@@ -23,7 +23,12 @@ internal sealed class FoundationScene(
     ) {
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-            ColorScreen()
+            ColorScreen(
+                onClickBack = backToScene,
+                onClickMenu = {
+                    moveToScene(Menu)
+                }
+            )
         }
     }
 
@@ -43,7 +48,12 @@ internal sealed class FoundationScene(
     ) {
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-            IconographyScreen()
+            IconographyScreen(
+                onClickBack = backToScene,
+                onClickMenu = {
+                    moveToScene(Menu)
+                }
+            )
         }
     }
 
@@ -53,7 +63,12 @@ internal sealed class FoundationScene(
     ) {
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-            SpacingScreen()
+            SpacingScreen(
+                onClickBack = backToScene,
+                onClickMenu = {
+                    moveToScene(Menu)
+                }
+            )
         }
     }
 
@@ -63,7 +78,12 @@ internal sealed class FoundationScene(
     ) {
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-            TypographScreen()
+            TypographScreen(
+                onClickBack = backToScene,
+                onClickMenu = {
+                    moveToScene(Menu)
+                }
+            )
         }
     }
 }
