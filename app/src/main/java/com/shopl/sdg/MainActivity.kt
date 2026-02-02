@@ -37,7 +37,8 @@ class MainActivity : ComponentActivity() {
                         NavEntry(scene) {
                             SDGRouteWrapper(isDarkIcon = scene.isDarkIcon) {
                                 scene.Screen(
-                                    moveToScene = { next -> backStack.add(next) }
+                                    moveToScene = { next -> backStack.add(next) },
+                                    backToScene = { backStack.removeLastOrNull() }
                                 )
                             }
                         }

@@ -24,7 +24,7 @@ internal sealed class FoundationScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             ColorScreen()
         }
     }
@@ -36,7 +36,7 @@ internal sealed class FoundationScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -48,7 +48,7 @@ internal sealed class FoundationScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             IconographyScreen()
         }
     }
@@ -60,7 +60,7 @@ internal sealed class FoundationScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             SpacingScreen()
         }
     }
@@ -72,7 +72,7 @@ internal sealed class FoundationScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             TypographScreen()
         }
     }

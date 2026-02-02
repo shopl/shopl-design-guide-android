@@ -21,7 +21,7 @@ internal sealed class TemplateScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -33,7 +33,7 @@ internal sealed class TemplateScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -45,7 +45,7 @@ internal sealed class TemplateScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -57,7 +57,7 @@ internal sealed class TemplateScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -74,7 +74,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -86,7 +86,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -104,7 +104,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -116,7 +116,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -128,7 +128,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -140,7 +140,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -152,7 +152,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -170,7 +170,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -182,7 +182,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -194,7 +194,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -207,7 +207,7 @@ internal sealed class TemplateScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -219,7 +219,7 @@ internal sealed class TemplateScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -231,7 +231,7 @@ internal sealed class TemplateScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -243,7 +243,7 @@ internal sealed class TemplateScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -255,7 +255,7 @@ internal sealed class TemplateScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -272,7 +272,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -284,7 +284,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -296,7 +296,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -308,7 +308,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -326,7 +326,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -338,7 +338,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -350,7 +350,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -362,7 +362,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -374,7 +374,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -386,7 +386,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -404,7 +404,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -416,7 +416,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -428,7 +428,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -440,7 +440,7 @@ internal sealed class TemplateScene(
             override val isDarkIcon: Boolean = true
 
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -453,7 +453,7 @@ internal sealed class TemplateScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }

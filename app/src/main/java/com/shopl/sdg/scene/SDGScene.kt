@@ -21,7 +21,7 @@ internal sealed class SDGScene(
     abstract val isDarkIcon: Boolean
 
     @Composable
-    abstract fun Screen(moveToScene: (SDGScene) -> Unit)
+    abstract fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit)
 
     /**
      * 개요 화면
@@ -34,7 +34,7 @@ internal sealed class SDGScene(
         override val isDarkIcon: Boolean = false
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             OverviewScreen(moveToScene = moveToScene)
         }
     }
@@ -50,10 +50,13 @@ internal sealed class SDGScene(
         override val isDarkIcon: Boolean = true
 
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             MenuScreen(
-                moveToScene = moveToScene,
-                moveToBack = {}
+                moveToScene = {
+                    backToScene()
+                    moveToScene(it)
+                },
+                moveToBack = backToScene
             )
         }
     }
