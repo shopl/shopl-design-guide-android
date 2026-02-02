@@ -21,8 +21,6 @@ internal sealed class FoundationScene(
         displayLabel = "Color",
         implemented = true
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             ColorScreen()
@@ -33,8 +31,6 @@ internal sealed class FoundationScene(
         displayLabel = "Corner Radius",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
@@ -45,8 +41,6 @@ internal sealed class FoundationScene(
         displayLabel = "Iconography",
         implemented = true
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             IconographyScreen()
@@ -57,8 +51,6 @@ internal sealed class FoundationScene(
         displayLabel = "Spacing",
         implemented = true
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             SpacingScreen()
@@ -69,8 +61,6 @@ internal sealed class FoundationScene(
         displayLabel = "Typograph",
         implemented = true
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             TypographScreen()

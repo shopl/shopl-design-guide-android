@@ -18,7 +18,9 @@ internal sealed class SDGScene(
     open val implemented: Boolean = false,
 ) {
 
-    abstract val isDarkIcon: Boolean
+    open val isDarkIcon: Boolean = true
+
+    open val isPopup: Boolean = false
 
     @Composable
     abstract fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit)
@@ -47,7 +49,7 @@ internal sealed class SDGScene(
         implemented = true
     ) {
 
-        override val isDarkIcon: Boolean = true
+        override val isPopup: Boolean = true
 
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
