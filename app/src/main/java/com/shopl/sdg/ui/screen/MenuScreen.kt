@@ -67,7 +67,7 @@ internal fun MenuScreen(
 
     var expandedGroups by remember {
         mutableStateOf(
-            findGroupForScene(fromScene)
+            findExpandedGroupForScene(fromScene)
         )
     }
 
@@ -166,7 +166,7 @@ internal fun MenuScreen(
 /**
  * 특정 Scene이 속한 그룹을 찾아서 반환하는 함수
  */
-private fun findGroupForScene(fromScene: SDGScene?): Set<String> {
+private fun findExpandedGroupForScene(fromScene: SDGScene?): Set<String> {
     if (fromScene == null) return emptySet()
     val expandedSet = mutableSetOf<String>()
     val allSections = listOf(foundationMenuSection, componentMenuSection, templateMenuSection)
