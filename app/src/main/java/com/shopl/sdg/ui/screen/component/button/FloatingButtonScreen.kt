@@ -23,7 +23,10 @@ import kotlinx.collections.immutable.persistentListOf
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=22804-3444&m=dev">Figma</a>
  */
 @Composable
-internal fun FloatingButtonScreen() {
+internal fun FloatingButtonScreen(
+    onClickBack: () -> Unit,
+    onClickMenu: () -> Unit,
+) {
 
     val specs = persistentListOf(
         SDGSampleBaseTabItem(
@@ -43,7 +46,9 @@ internal fun FloatingButtonScreen() {
             ComponentContent(
                 status = currentStatus
             )
-        }
+        },
+        onClickBack = onClickBack,
+        onClickMenu = onClickMenu
     )
 }
 
@@ -72,6 +77,9 @@ private fun ComponentContent(
 @Composable
 private fun PreviewFloatingButtonScreen() {
     ShoplDesignGuideTheme {
-        FloatingButtonScreen()
+        FloatingButtonScreen(
+            onClickBack = {},
+            onClickMenu = {}
+        )
     }
 }

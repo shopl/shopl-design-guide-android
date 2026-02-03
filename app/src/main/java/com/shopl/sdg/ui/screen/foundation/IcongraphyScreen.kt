@@ -70,7 +70,10 @@ private val largeIconographyUiModels = persistentListOf(
 
 
 @Composable
-internal fun IconographyScreen() {
+internal fun IconographyScreen(
+    onClickBack: () -> Unit,
+    onClickMenu: () -> Unit,
+) {
 
     val types = persistentListOf(
         SDGSampleBaseTabItem(
@@ -95,6 +98,8 @@ internal fun IconographyScreen() {
                 specs = types
             )
         },
+        onClickBack = onClickBack,
+        onClickMenu = onClickMenu,
     )
 
 }
@@ -192,7 +197,10 @@ private fun IconographyContent(
 @Composable
 private fun PreviewIconographyScreen() {
     ShoplDesignGuideTheme {
-        IconographyScreen()
+        IconographyScreen(
+            onClickBack = {},
+            onClickMenu = {}
+        )
     }
 }
 

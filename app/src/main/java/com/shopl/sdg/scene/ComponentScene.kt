@@ -7,7 +7,6 @@ import com.shopl.sdg.ui.screen.component.button.BoxButtonScreen
 import com.shopl.sdg.ui.screen.component.button.CapsuleButtonScreen
 import com.shopl.sdg.ui.screen.component.button.FloatingButtonScreen
 import com.shopl.sdg.ui.screen.component.button.GhostButtonScreen
-import kotlinx.collections.immutable.persistentListOf
 
 /**
  * SDG - Component
@@ -24,10 +23,8 @@ internal sealed class ComponentScene(
         displayLabel = "Avatar",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -36,10 +33,8 @@ internal sealed class ComponentScene(
         displayLabel = "Attachment List",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -53,10 +48,8 @@ internal sealed class ComponentScene(
             displayLabel = "Capsule Badge",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -65,10 +58,8 @@ internal sealed class ComponentScene(
             displayLabel = "Box Badge",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -83,11 +74,14 @@ internal sealed class ComponentScene(
             displayLabel = "Bottom Button",
             implemented = true
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
-                BottomButtonScreen()
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+                BottomButtonScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = {
+                        moveToScene(Menu)
+                    }
+                )
             }
         }
 
@@ -95,11 +89,14 @@ internal sealed class ComponentScene(
             displayLabel = "Box Button",
             implemented = true
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
-                BoxButtonScreen()
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+                BoxButtonScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = {
+                        moveToScene(Menu)
+                    }
+                )
             }
         }
 
@@ -107,11 +104,14 @@ internal sealed class ComponentScene(
             displayLabel = "Capsule Button",
             implemented = true
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
-                CapsuleButtonScreen()
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+                CapsuleButtonScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = {
+                        moveToScene(Menu)
+                    }
+                )
             }
         }
 
@@ -119,11 +119,14 @@ internal sealed class ComponentScene(
             displayLabel = "Floating Button",
             implemented = true
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
-                FloatingButtonScreen()
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+                FloatingButtonScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = {
+                        moveToScene(Menu)
+                    }
+                )
             }
         }
 
@@ -131,11 +134,14 @@ internal sealed class ComponentScene(
             displayLabel = "Ghost Button",
             implemented = true
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
-                GhostButtonScreen()
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+                GhostButtonScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = {
+                        moveToScene(Menu)
+                    }
+                )
             }
         }
 
@@ -143,10 +149,8 @@ internal sealed class ComponentScene(
             displayLabel = "Icon Button",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -156,10 +160,8 @@ internal sealed class ComponentScene(
         displayLabel = "Calendar",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -168,10 +170,8 @@ internal sealed class ComponentScene(
         displayLabel = "Checkbox",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -180,10 +180,8 @@ internal sealed class ComponentScene(
         displayLabel = "Check Option",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -192,10 +190,8 @@ internal sealed class ComponentScene(
         displayLabel = "Dropdown",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -209,10 +205,8 @@ internal sealed class ComponentScene(
             displayLabel = "Basic Empty Icon",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -221,10 +215,8 @@ internal sealed class ComponentScene(
             displayLabel = "Contents Empty Icon",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -239,10 +231,8 @@ internal sealed class ComponentScene(
             displayLabel = "Text Indicator",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -251,10 +241,8 @@ internal sealed class ComponentScene(
             displayLabel = "Number Indicator",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -263,10 +251,8 @@ internal sealed class ComponentScene(
             displayLabel = "Dot Indicator",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -276,10 +262,8 @@ internal sealed class ComponentScene(
         displayLabel = "Icon Label",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -288,10 +272,8 @@ internal sealed class ComponentScene(
         displayLabel = "Number Picker",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -305,10 +287,8 @@ internal sealed class ComponentScene(
             displayLabel = "System Progress",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -317,10 +297,8 @@ internal sealed class ComponentScene(
             displayLabel = "Circular Progress",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -329,10 +307,8 @@ internal sealed class ComponentScene(
             displayLabel = "Dot Progress",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -341,10 +317,8 @@ internal sealed class ComponentScene(
             displayLabel = "Linear Progress",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -354,10 +328,8 @@ internal sealed class ComponentScene(
         displayLabel = "Radio",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -371,10 +343,8 @@ internal sealed class ComponentScene(
             displayLabel = "Capsule Search",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -383,10 +353,8 @@ internal sealed class ComponentScene(
             displayLabel = "Box Search",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -395,10 +363,8 @@ internal sealed class ComponentScene(
             displayLabel = "Category Search",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -408,10 +374,8 @@ internal sealed class ComponentScene(
         displayLabel = "Segment",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -420,10 +384,8 @@ internal sealed class ComponentScene(
         displayLabel = "Select Input",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -437,10 +399,8 @@ internal sealed class ComponentScene(
             displayLabel = "Scroll Tab",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -449,10 +409,8 @@ internal sealed class ComponentScene(
             displayLabel = "Fixed Tab",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -461,10 +419,8 @@ internal sealed class ComponentScene(
             displayLabel = "Box Tab",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -473,10 +429,8 @@ internal sealed class ComponentScene(
             displayLabel = "Icon Tab",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -491,10 +445,8 @@ internal sealed class ComponentScene(
             displayLabel = "Simple Text Input",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -503,10 +455,8 @@ internal sealed class ComponentScene(
             displayLabel = "Fixed Text Input",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -515,10 +465,8 @@ internal sealed class ComponentScene(
             displayLabel = "Underline Input",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -527,10 +475,8 @@ internal sealed class ComponentScene(
             displayLabel = "Login Input",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -540,10 +486,8 @@ internal sealed class ComponentScene(
         displayLabel = "Thumbnails",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -552,10 +496,8 @@ internal sealed class ComponentScene(
         displayLabel = "Time Picker",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -564,10 +506,8 @@ internal sealed class ComponentScene(
         displayLabel = "Time Select Input",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -576,10 +516,8 @@ internal sealed class ComponentScene(
         displayLabel = "Toggle",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -588,58 +526,9 @@ internal sealed class ComponentScene(
         displayLabel = "Tooltip",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
 }
-
-internal val componentScenes = persistentListOf(
-    ComponentScene.Avatar,
-    ComponentScene.AttachmentList,
-    ComponentScene.Badge.CapsuleBadge,
-    ComponentScene.Badge.BoxBadge,
-    ComponentScene.Button.BottomButton,
-    ComponentScene.Button.BoxButton,
-    ComponentScene.Button.CapsuleButton,
-    ComponentScene.Button.FloatingButton,
-    ComponentScene.Button.GhostButton,
-    ComponentScene.Button.IconButton,
-    ComponentScene.Calendar,
-    ComponentScene.Checkbox,
-    ComponentScene.CheckOption,
-    ComponentScene.Dropdown,
-    ComponentScene.EmptyIcon.BasicEmptyIcon,
-    ComponentScene.EmptyIcon.ContentsEmptyIcon,
-    ComponentScene.Indicator.TextIndicator,
-    ComponentScene.Indicator.NumberIndicator,
-    ComponentScene.Indicator.DotIndicator,
-    ComponentScene.IconLabel,
-    ComponentScene.NumberPicker,
-    ComponentScene.Progress.SystemProgress,
-    ComponentScene.Progress.CircularProgress,
-    ComponentScene.Progress.DotProgress,
-    ComponentScene.Progress.LinearProgress,
-    ComponentScene.Radio,
-    ComponentScene.SearchBar.CapsuleSearch,
-    ComponentScene.SearchBar.BoxSearch,
-    ComponentScene.SearchBar.CategorySearch,
-    ComponentScene.Segment,
-    ComponentScene.SelectInput,
-    ComponentScene.Tab.ScrollTab,
-    ComponentScene.Tab.FixedTab,
-    ComponentScene.Tab.BoxTab,
-    ComponentScene.Tab.IconTab,
-    ComponentScene.TextInput.SimpleTextInput,
-    ComponentScene.TextInput.FixedTextInput,
-    ComponentScene.TextInput.UnderlineInput,
-    ComponentScene.TextInput.LoginInput,
-    ComponentScene.Thumbnails,
-    ComponentScene.TimePicker,
-    ComponentScene.TimeSelectInput,
-    ComponentScene.Toggle,
-    ComponentScene.Tooltip,
-)

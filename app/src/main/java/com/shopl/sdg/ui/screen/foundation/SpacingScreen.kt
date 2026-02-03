@@ -77,7 +77,10 @@ private val specialSpacings = persistentListOf(
 )
 
 @Composable
-internal fun SpacingScreen() {
+internal fun SpacingScreen(
+    onClickBack: () -> Unit,
+    onClickMenu: () -> Unit,
+) {
 
     val types = persistentListOf(
         SDGSampleBaseTabItem(
@@ -98,6 +101,8 @@ internal fun SpacingScreen() {
                 specs = types
             )
         },
+        onClickBack = onClickBack,
+        onClickMenu = onClickMenu,
     )
 
 }
@@ -217,7 +222,10 @@ private fun SpacingContent(
 @Composable
 private fun PreviewSpacingScreen() {
     ShoplDesignGuideTheme {
-        SpacingScreen()
+        SpacingScreen(
+            onClickBack = {},
+            onClickMenu = {}
+        )
     }
 }
 

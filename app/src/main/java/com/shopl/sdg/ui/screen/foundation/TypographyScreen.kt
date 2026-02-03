@@ -94,7 +94,10 @@ private const val RATIO_SIZE = 40F
 private const val RATIO_WEIGHT = 108F
 
 @Composable
-internal fun TypographScreen() {
+internal fun TypographScreen(
+    onClickBack: () -> Unit,
+    onClickMenu: () -> Unit,
+) {
 
     val types = persistentListOf(
         SDGSampleBaseTabItem(
@@ -125,7 +128,9 @@ internal fun TypographScreen() {
                     stringResource(R.string.usage_guideline_font_description)
                 )
             )
-        }
+        },
+        onClickBack = onClickBack,
+        onClickMenu = onClickMenu,
     )
 
 }
@@ -382,6 +387,9 @@ private fun TypographContentRow(
 @Composable
 private fun PreviewTypographScreen() {
     ShoplDesignGuideTheme {
-        TypographScreen()
+        TypographScreen(
+            onClickBack = {},
+            onClickMenu = {}
+        )
     }
 }

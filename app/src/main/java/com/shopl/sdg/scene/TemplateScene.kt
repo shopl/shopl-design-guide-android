@@ -2,7 +2,6 @@ package com.shopl.sdg.scene
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import kotlinx.collections.immutable.persistentListOf
 
 /**
  * SDG - Template
@@ -19,10 +18,8 @@ internal sealed class TemplateScene(
         displayLabel = "Calendar and Time",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -31,10 +28,8 @@ internal sealed class TemplateScene(
         displayLabel = "Checkbox Label",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -43,10 +38,8 @@ internal sealed class TemplateScene(
         displayLabel = "Check Option Label",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -55,10 +48,8 @@ internal sealed class TemplateScene(
         displayLabel = "Empty Img",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -72,10 +63,8 @@ internal sealed class TemplateScene(
             displayLabel = "Navi Filter Chip",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -84,10 +73,8 @@ internal sealed class TemplateScene(
             displayLabel = "Body Filter Chip",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -102,10 +89,8 @@ internal sealed class TemplateScene(
             displayLabel = "Dropdown Form",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -114,10 +99,8 @@ internal sealed class TemplateScene(
             displayLabel = "Select Form",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -126,10 +109,8 @@ internal sealed class TemplateScene(
             displayLabel = "Simple Text Form",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -138,10 +119,8 @@ internal sealed class TemplateScene(
             displayLabel = "Fixed Text Form",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -150,10 +129,8 @@ internal sealed class TemplateScene(
             displayLabel = "Time Select Form",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -168,10 +145,8 @@ internal sealed class TemplateScene(
             displayLabel = "User List",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -180,10 +155,8 @@ internal sealed class TemplateScene(
             displayLabel = "Workplace List",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -192,10 +165,8 @@ internal sealed class TemplateScene(
             displayLabel = "Group and Position List",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -205,10 +176,8 @@ internal sealed class TemplateScene(
         displayLabel = "History",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -217,10 +186,8 @@ internal sealed class TemplateScene(
         displayLabel = "History Mini",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -229,10 +196,8 @@ internal sealed class TemplateScene(
         displayLabel = "List Header",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -241,10 +206,8 @@ internal sealed class TemplateScene(
         displayLabel = "Multi Calendar",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -253,10 +216,8 @@ internal sealed class TemplateScene(
         displayLabel = "Multi Time Picker",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -270,10 +231,8 @@ internal sealed class TemplateScene(
             displayLabel = "Basic Navi",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -282,10 +241,8 @@ internal sealed class TemplateScene(
             displayLabel = "Category Navi",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -294,10 +251,8 @@ internal sealed class TemplateScene(
             displayLabel = "Text Navi",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -306,10 +261,8 @@ internal sealed class TemplateScene(
             displayLabel = "Search Navi",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -324,10 +277,8 @@ internal sealed class TemplateScene(
             displayLabel = "Center Popup",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -336,10 +287,8 @@ internal sealed class TemplateScene(
             displayLabel = "Bottom Popup",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -348,10 +297,8 @@ internal sealed class TemplateScene(
             displayLabel = "List Popup",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -360,10 +307,8 @@ internal sealed class TemplateScene(
             displayLabel = "Mini List Popup",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -372,10 +317,8 @@ internal sealed class TemplateScene(
             displayLabel = "Icon Popup",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -384,10 +327,8 @@ internal sealed class TemplateScene(
             displayLabel = "Toast Popup",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -402,10 +343,8 @@ internal sealed class TemplateScene(
             displayLabel = "Basic Profile",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -414,10 +353,8 @@ internal sealed class TemplateScene(
             displayLabel = "Second Profile",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -426,10 +363,8 @@ internal sealed class TemplateScene(
             displayLabel = "Simple Profile",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -438,10 +373,8 @@ internal sealed class TemplateScene(
             displayLabel = "Mini Profile",
             implemented = false
         ) {
-            override val isDarkIcon: Boolean = true
-
             @Composable
-            override fun Screen(moveToScene: (SDGScene) -> Unit) {
+            override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
         }
@@ -451,48 +384,9 @@ internal sealed class TemplateScene(
         displayLabel = "Radio Label",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
 }
-
-internal val templateScenes = persistentListOf(
-    TemplateScene.CalendarAndTime,
-    TemplateScene.CheckboxLabel,
-    TemplateScene.CheckOptionLabel,
-    TemplateScene.EmptyImg,
-    TemplateScene.FilterChip.NaviFilterChip,
-    TemplateScene.FilterChip.BodyFilterChip,
-    TemplateScene.Form.DropdownForm,
-    TemplateScene.Form.SelectForm,
-    TemplateScene.Form.SimpleTextForm,
-    TemplateScene.Form.FixedTextForm,
-    TemplateScene.Form.TimeSelectForm,
-    TemplateScene.FoundationList.UserList,
-    TemplateScene.FoundationList.WorkplaceList,
-    TemplateScene.FoundationList.GroupAndPositionList,
-    TemplateScene.History,
-    TemplateScene.HistoryMini,
-    TemplateScene.ListHeader,
-    TemplateScene.MultiCalendar,
-    TemplateScene.MultiTimePicker,
-    TemplateScene.Navigation.BasicNavi,
-    TemplateScene.Navigation.CategoryNavi,
-    TemplateScene.Navigation.TextNavi,
-    TemplateScene.Navigation.SearchNavi,
-    TemplateScene.Popup.CenterPopup,
-    TemplateScene.Popup.BottomPopup,
-    TemplateScene.Popup.ListPopup,
-    TemplateScene.Popup.MiniListPopup,
-    TemplateScene.Popup.IconPopup,
-    TemplateScene.Popup.ToastPopup,
-    TemplateScene.Profile.BasicProfile,
-    TemplateScene.Profile.SecondProfile,
-    TemplateScene.Profile.SimpleProfile,
-    TemplateScene.Profile.MiniProfile,
-    TemplateScene.RadioLabel,
-)

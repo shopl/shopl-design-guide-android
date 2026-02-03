@@ -6,7 +6,6 @@ import com.shopl.sdg.ui.screen.foundation.ColorScreen
 import com.shopl.sdg.ui.screen.foundation.IconographyScreen
 import com.shopl.sdg.ui.screen.foundation.SpacingScreen
 import com.shopl.sdg.ui.screen.foundation.TypographScreen
-import kotlinx.collections.immutable.persistentListOf
 
 /**
  * SDG - Foundation
@@ -22,11 +21,14 @@ internal sealed class FoundationScene(
         displayLabel = "Color",
         implemented = true
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
-            ColorScreen()
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+            ColorScreen(
+                onClickBack = backToScene,
+                onClickMenu = {
+                    moveToScene(Menu)
+                }
+            )
         }
     }
 
@@ -34,10 +36,8 @@ internal sealed class FoundationScene(
         displayLabel = "Corner Radius",
         implemented = false
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
         }
     }
@@ -46,11 +46,14 @@ internal sealed class FoundationScene(
         displayLabel = "Iconography",
         implemented = true
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
-            IconographyScreen()
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+            IconographyScreen(
+                onClickBack = backToScene,
+                onClickMenu = {
+                    moveToScene(Menu)
+                }
+            )
         }
     }
 
@@ -58,11 +61,14 @@ internal sealed class FoundationScene(
         displayLabel = "Spacing",
         implemented = true
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
-            SpacingScreen()
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+            SpacingScreen(
+                onClickBack = backToScene,
+                onClickMenu = {
+                    moveToScene(Menu)
+                }
+            )
         }
     }
 
@@ -70,19 +76,14 @@ internal sealed class FoundationScene(
         displayLabel = "Typograph",
         implemented = true
     ) {
-        override val isDarkIcon: Boolean = true
-
         @Composable
-        override fun Screen(moveToScene: (SDGScene) -> Unit) {
-            TypographScreen()
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+            TypographScreen(
+                onClickBack = backToScene,
+                onClickMenu = {
+                    moveToScene(Menu)
+                }
+            )
         }
     }
 }
-
-internal val foundationScenes = persistentListOf(
-    FoundationScene.Color,
-    FoundationScene.CornerRadius,
-    FoundationScene.Iconography,
-    FoundationScene.Spacing,
-    FoundationScene.Typograph,
-)
