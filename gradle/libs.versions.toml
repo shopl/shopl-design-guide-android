@@ -57,6 +57,7 @@ material = "1.12.0"
 nav3Core = "1.0.0"
 
 # Detekt
+## https://github.com/detekt/detekt/releases
 detekt = "2.0.0-alpha.1"
 detekt-formatting = "1.23.8"
 
