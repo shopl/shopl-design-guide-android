@@ -19,7 +19,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.badge.box.preview.SDGBoxBadgePreviewParam
+import com.shopl.sdg.component.badge.box.preview.SDGBoxBadgePreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.SDGImage
@@ -102,6 +105,7 @@ fun SDGBoxBadge(
             Spacer(modifier = Modifier.width(size.iconGap))
         }
         SDGText(
+            modifier = Modifier.weight(1F, fill = false),
             text = label,
             textColor = labelColor,
             typography = size.typography,
@@ -121,12 +125,22 @@ fun SDGBoxBadge(
 
 @Preview
 @Composable
-private fun PrevSDGBoxBadge() {
+private fun PreviewPrevSDGBoxBadge(
+    @PreviewParameter(SDGBoxBadgePreviewParameterProvider::class)
+    param: SDGBoxBadgePreviewParam
+) {
     SDGBoxBadge(
-        size = SDGBoxBadgeSize.XSmall,
-        type = SDGBoxBadgeType.Solid,
-        label = "Label",
-        labelColor = SDGColor.Neutral900,
-        backgroundColor = SDGColor.Neutral0,
+        size = param.size,
+        type = param.type,
+        label = param.label,
+        labelColor = param.labelColor,
+        backgroundColor = param.backgroundColor,
+        isFillMaxWidth = param.isFillMaxWidth,
+        enable = param.enable,
+        leftIcon = param.leftIcon,
+        leftIconTint = param.leftIconTint,
+        rightIcon = param.rightIcon,
+        rightIconTint = param.rightIconTint,
+        onClick = {}
     )
 }
