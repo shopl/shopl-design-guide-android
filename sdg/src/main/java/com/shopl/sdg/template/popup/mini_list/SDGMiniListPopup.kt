@@ -1,5 +1,6 @@
 package com.shopl.sdg.template.popup.mini_list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,12 +11,13 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
@@ -35,7 +37,10 @@ fun SDGMiniListPopup(
     onClick: (itemText: SDGMiniListPopupBodyItemText) -> Unit
 ) {
     Column(
-        modifier = Modifier.width(200.dp)
+        modifier = Modifier
+            .width(200.dp)
+            .clip(SDGCornerRadius.BoxRadius.Radius20)
+            .background(SDGColor.Neutral0)
     ) {
         items.forEachIndexed { index, item ->
             SDGMiniListPopupBodyItem(
@@ -61,7 +66,6 @@ private fun SDGMiniListPopupBodyItem(
         SDGText(
             text = itemText.title,
             textColor = itemText.textColor,
-            textAlign = TextAlign.Center,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             typography = SDGTypography.Body1R,
@@ -77,12 +81,18 @@ private fun SDGMiniListPopupBodyItem(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSDGMiniListPopup() {
-    SDGMiniListPopup(
-        items = persistentListOf(
-            SDGMiniListPopupBodyItemText.Default("수정"),
-            SDGMiniListPopupBodyItemText.Default("복사"),
-            SDGMiniListPopupBodyItemText.Delete("삭제"),
-        ),
-        onClick = {}
-    )
+    Box(
+        modifier = Modifier
+            .background(SDGColor.Neutral700)
+            .padding(Spacing12)
+    ) {
+        SDGMiniListPopup(
+            items = persistentListOf(
+                SDGMiniListPopupBodyItemText.Default("수정"),
+                SDGMiniListPopupBodyItemText.Default("복사"),
+                SDGMiniListPopupBodyItemText.Delete("삭제"),
+            ),
+            onClick = {}
+        )
+    }
 }
