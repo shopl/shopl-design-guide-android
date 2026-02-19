@@ -1,6 +1,7 @@
 package com.shopl.sdg.template.popup.mini_list
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -10,10 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.template.util.list_popup_item_ui_state.SDGListPopupItemUiState
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+import kotlinx.collections.immutable.ImmutableList
 
 /**
  * SDG - Popup - Mini List Popup [2.0.0]
@@ -24,13 +27,15 @@ import com.shopl.sdg_common.ui.components.SDGText
  */
 @Composable
 fun SDGMiniListPopup(
-
+    items: ImmutableList<SDGListPopupItemUiState>
 ) {
+    Column {
 
+    }
 }
 
 @Composable
-private fun SDGListPopupBodyItem(
+private fun SDGMiniListPopupBodyItem(
     itemText: SDGMiniListPopupBodyItemText,
     onClick: (itemText: SDGMiniListPopupBodyItemText) -> Unit,
     modifier: Modifier = Modifier,
