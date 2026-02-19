@@ -1,7 +1,19 @@
 package com.shopl.sdg.template.popup.mini_list
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import com.shopl.sdg_common.ext.clickable
+import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
+import com.shopl.sdg_common.foundation.typography.SDGTypography
+import com.shopl.sdg_common.ui.components.SDGText
 
 /**
  * SDG - Popup - Mini List Popup [2.0.0]
@@ -11,6 +23,37 @@ import androidx.compose.ui.Modifier
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19220-4063&m=dev">Figma</a>
  */
 @Composable
-fun SDGMiniListPopup(modifier: Modifier = Modifier) {
-    
+fun SDGMiniListPopup(
+
+) {
+}
+
+@Composable
+private fun SDGListPopupItem(
+    itemText: SDGMiniListPopupItemText,
+    onClick: (itemText: SDGMiniListPopupItemText) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier) {
+        SDGText(
+            text = itemText.title,
+            textColor = itemText.textColor,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            typography = SDGTypography.Body1R,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onClick(itemText) }
+                .padding(horizontal = Spacing12)
+                .align(Alignment.Center),
+        )
+
+        HorizontalDivider(
+            color = SDGColor.Neutral200,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+        )
+    }
 }
