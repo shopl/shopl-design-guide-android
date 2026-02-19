@@ -29,9 +29,9 @@ fun SDGMiniListPopup(
 }
 
 @Composable
-private fun SDGListPopupItem(
-    itemText: SDGMiniListPopupItemText,
-    onClick: (itemText: SDGMiniListPopupItemText) -> Unit,
+private fun SDGListPopupBodyItem(
+    itemText: SDGMiniListPopupBodyItemText,
+    onClick: (itemText: SDGMiniListPopupBodyItemText) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
