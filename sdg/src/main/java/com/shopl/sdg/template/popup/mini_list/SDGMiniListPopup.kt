@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
@@ -18,6 +19,7 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * SDG - Popup - Mini List Popup [2.0.0]
@@ -67,4 +69,17 @@ private fun SDGMiniListPopupBodyItem(
                 .align(Alignment.Center),
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewSDGMiniListPopup() {
+    SDGMiniListPopup(
+        items = persistentListOf(
+            SDGMiniListPopupBodyItemText.Default("수정"),
+            SDGMiniListPopupBodyItemText.Default("복사"),
+            SDGMiniListPopupBodyItemText.Delete("삭제"),
+        ),
+        onClick = {}
+    )
 }
