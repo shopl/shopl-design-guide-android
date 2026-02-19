@@ -2,15 +2,15 @@ package com.shopl.sdg.template.popup.mini_list
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
-import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
@@ -26,6 +26,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 fun SDGMiniListPopup(
 
 ) {
+
 }
 
 @Composable
@@ -34,7 +35,7 @@ private fun SDGListPopupBodyItem(
     onClick: (itemText: SDGMiniListPopupBodyItemText) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier = modifier) {
+    Box(modifier = modifier.height(48.dp)) {
         SDGText(
             text = itemText.title,
             textColor = itemText.textColor,
@@ -47,13 +48,6 @@ private fun SDGListPopupBodyItem(
                 .clickable { onClick(itemText) }
                 .padding(horizontal = Spacing12)
                 .align(Alignment.Center),
-        )
-
-        HorizontalDivider(
-            color = SDGColor.Neutral200,
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
         )
     }
 }
