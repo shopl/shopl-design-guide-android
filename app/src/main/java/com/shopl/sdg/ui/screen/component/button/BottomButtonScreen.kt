@@ -22,7 +22,7 @@ import kotlinx.collections.immutable.persistentListOf
 /**
  * SDG Sample App - Component - Button - BottomButton
  *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19481-1283&m=dev">Figma</a>
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=22804-3311&m=dev">Figma</a>
  */
 
 @Composable
