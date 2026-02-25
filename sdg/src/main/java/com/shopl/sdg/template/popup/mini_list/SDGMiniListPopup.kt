@@ -38,7 +38,7 @@ fun SDGMiniListPopup(
 ) {
     Column(
         modifier = Modifier
-            .width(200.dp)
+            .width(POPUP_WIDTH)
             .clip(SDGCornerRadius.BoxRadius.Radius20)
             .background(SDGColor.Neutral0)
     ) {
@@ -62,11 +62,11 @@ private fun SDGMiniListPopupBodyItem(
     onClick: (itemText: SDGMiniListPopupBodyItemText) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier = modifier.height(48.dp)) {
+    Box(modifier = modifier.height(ITEM_HEIGHT)) {
         SDGText(
             text = itemText.title,
             textColor = itemText.textColor,
-            maxLines = 2,
+            maxLines = ITEM_MAX_LINES,
             overflow = TextOverflow.Ellipsis,
             typography = SDGTypography.Body1R,
             modifier = Modifier
@@ -96,3 +96,7 @@ private fun PreviewSDGMiniListPopup() {
         )
     }
 }
+
+private val POPUP_WIDTH = 200.dp
+private val ITEM_HEIGHT = 48.dp
+private const val ITEM_MAX_LINES = 2
