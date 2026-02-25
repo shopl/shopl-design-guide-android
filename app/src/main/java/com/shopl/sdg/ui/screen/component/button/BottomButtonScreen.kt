@@ -73,7 +73,7 @@ internal fun BottomButtonScreen(
             if (currentType != null && currentSpec != null) {
                 ComponentContent(
                     type = currentType,
-                    size = currentSpec,
+                    spec = currentSpec,
                     status = currentStatus
                 )
             }
@@ -86,7 +86,7 @@ internal fun BottomButtonScreen(
 @Composable
 private fun ComponentContent(
     type: SDGBottomButtonType,
-    size: SDGBottomButtonSpec,
+    spec: SDGBottomButtonSpec,
     status: SDGSampleStatus,
 ) {
     Box(
@@ -97,12 +97,12 @@ private fun ComponentContent(
             ),
         contentAlignment = Alignment.Center
     ) {
-        when (size) {
+        when (spec) {
             SDGBottomButtonSpec.FULL -> {
                 SDGBottomButton(
                     title = "Label",
                     onClick = {},
-                    spec = size,
+                    spec = spec,
                     type = type,
                     enabled = when (status) {
                         SDGSampleStatus.DEFAULT -> true
@@ -116,7 +116,7 @@ private fun ComponentContent(
                 SDGBottomButton(
                     title = "Label",
                     onClick = {},
-                    spec = size,
+                    spec = spec,
                     type = type,
                     enabled = when (status) {
                         SDGSampleStatus.DEFAULT -> true
