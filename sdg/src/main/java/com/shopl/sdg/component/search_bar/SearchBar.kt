@@ -49,6 +49,7 @@ import com.shopl.sdg_common.ui.components.TypefaceConfig
 import com.shopl.sdg_common.util.keyboardAsState
 import com.shopl.sdg_resource.R
 
+@Deprecated("레거시 Box Search", replaceWith = ReplaceWith("SDGBoxSearch"))
 @Composable
 fun SDGBasicBoxSearch(
     outlineType: OutlineType,
@@ -473,7 +474,7 @@ fun RowScope.SDGBasicRoundSearch(
 @Composable
 fun PrevSearch() {
     var text by remember { mutableStateOf("") }
-    Surface() {
+    Surface {
         Column(
             Modifier
                 .background(color = SDGColor.Neutral100)
