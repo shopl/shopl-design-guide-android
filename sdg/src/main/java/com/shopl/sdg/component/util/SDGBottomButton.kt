@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.bottom.SDGBottomButton
+import com.shopl.sdg.component.button.bottom.SDGBottomButtonSpec
 import com.shopl.sdg.component.button.bottom.SDGBottomButtonType
 
 /**
@@ -24,6 +25,7 @@ fun BoxScope.SDGBottomButton(
     align: Alignment,
     title: String,
     marginValues: PaddingValues = PaddingValues(),
+    spec: SDGBottomButtonSpec = SDGBottomButtonSpec.FULL,
     type: SDGBottomButtonType = SDGBottomButtonType.POSITIVE,
     enabled: Boolean = true,
     onClick: () -> Unit
@@ -32,6 +34,7 @@ fun BoxScope.SDGBottomButton(
         SDGBottomButton(
             title = title,
             marginValues = marginValues,
+            spec = spec,
             type = type,
             enabled = enabled,
             onClick = onClick,
@@ -47,6 +50,7 @@ fun RowScope.SDGBottomButton(
     weight: Float,
     title: String,
     marginValues: PaddingValues = PaddingValues(),
+    size: SDGBottomButtonSpec = SDGBottomButtonSpec.FULL,
     type: SDGBottomButtonType = SDGBottomButtonType.POSITIVE,
     enabled: Boolean = true,
     onClick: () -> Unit
@@ -55,6 +59,7 @@ fun RowScope.SDGBottomButton(
         SDGBottomButton(
             title = title,
             marginValues = marginValues,
+            spec = size,
             type = type,
             enabled = enabled,
             onClick = onClick,
