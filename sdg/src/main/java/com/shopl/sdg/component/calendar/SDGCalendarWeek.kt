@@ -56,6 +56,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import java.time.DayOfWeek
 import kotlin.math.abs
 
 sealed class SDGCalendarWeekSize(
@@ -69,11 +70,16 @@ sealed class SDGCalendarWeekSize(
 
 sealed class SDGCalendarWeekMode {
     data class Single(val selected: WeekDateTime? = null) : SDGCalendarWeekMode()
-    data class Period(val selected: Pair<WeekDateTime, WeekDateTime>? = null, val maxCount: Int = 0) : SDGCalendarWeekMode()
+    data class Period(
+        val selected: Pair<WeekDateTime, WeekDateTime>? = null,
+        val maxCount: Int = 0
+    ) : SDGCalendarWeekMode()
 }
 
-private val sizeComposableLocal = staticCompositionLocalOf<SDGCalendarWeekSize> { SDGCalendarWeekSize.Basic }
-private val modeComposableLocal = staticCompositionLocalOf<SDGCalendarWeekMode> { SDGCalendarWeekMode.Single() }
+private val sizeComposableLocal =
+    staticCompositionLocalOf<SDGCalendarWeekSize> { SDGCalendarWeekSize.Basic }
+private val modeComposableLocal =
+    staticCompositionLocalOf<SDGCalendarWeekMode> { SDGCalendarWeekMode.Single() }
 private val maxDateComposableLocal = staticCompositionLocalOf<DateTime?> { null }
 
 data class WeekDateTime(
@@ -115,8 +121,8 @@ fun SDGCalendarWeek(
     onMaxCountError: ((Int) -> Unit)? = null,
     onSelectDate: (List<WeekDateTime>) -> Unit
 ) {
-
-    var currentDate by remember { mutableStateOf(initDate) }
+    val initThursDay = remember(initDate) { initDate.withDayOfWeek(DayOfWeek.THURSDAY.value) }
+    var currentDate by remember { mutableStateOf(initThursDay) }
 
     val initialPage = Int.MAX_VALUE / 2
     val pagerState = rememberPagerState(
@@ -130,7 +136,7 @@ fun SDGCalendarWeek(
 
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect { index ->
-            currentDate = initDate.plusYears(index - initialPage)
+            currentDate = initThursDay.plusYears(index - initialPage)
         }
     }
 
@@ -171,7 +177,7 @@ fun SDGCalendarWeek(
                 },
             )
             SDGCalendarPager(
-                initDate = initDate,
+                initDate = initThursDay,
                 initialPage = initialPage,
                 pagerState = pagerState,
                 selectedList = selectedList.value,
@@ -262,10 +268,7 @@ private fun SDGCalendarPager(
             val year = initDate.plusYears(index - initialPage).year
             val days = mutableListOf<WeekDateTime>()
 
-            var firstWeek = DateTime().withYear(year).withWeekOfWeekyear(1)
-            if (firstWeek.dayOfYear > 7) {
-                firstWeek = firstWeek.minusDays(7)
-            }
+            val firstWeek = DateTime().withYear(year).withWeekOfWeekyear(1)
             repeat(firstWeek.weekOfWeekyear().maximumValue) { index ->
                 days.add(
                     WeekDateTime(
@@ -299,7 +302,8 @@ private fun SDGCalendarPager(
                             1 -> {
                                 val first = list[0].dateTime
                                 val selected = it.dateTime
-                                val count = abs((first.year * 52 + first.weekOfWeekyear) - (selected.year * 52 + selected.weekOfWeekyear)) + 1
+                                val count =
+                                    abs((first.year * 52 + first.weekOfWeekyear) - (selected.year * 52 + selected.weekOfWeekyear)) + 1
                                 if (mode.maxCount in 1..<count) {
                                     onMaxCountError?.invoke(mode.maxCount)
                                 } else {
