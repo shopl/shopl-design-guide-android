@@ -86,13 +86,29 @@ data class WeekDateTime(
     val dateTime: DateTime,
     val weekOfWeekYear: Int
 ) {
+    @Deprecated(
+        message = "WeekDateTime에서 주 시작 요일은 월요일로 고정됩니다.",
+        replaceWith = ReplaceWith("getWeekStartDateTime()")
+    )
     fun getWeekStartDateTime(weekStart: SDGDayOfWeek): DateTime {
-        val offset = getDayOfWeekStartOffset(date = dateTime, weekStart = weekStart)
+        return getWeekStartDateTime()
+    }
+
+    @Deprecated(
+        message = "WeekDateTime에서 주 시작 요일은 월요일로 고정됩니다.",
+        replaceWith = ReplaceWith("getWeekEndDateTime()")
+    )
+    fun getWeekEndDateTime(weekStart: SDGDayOfWeek): DateTime {
+        return getWeekEndDateTime()
+    }
+
+    fun getWeekStartDateTime(): DateTime {
+        val offset = getDayOfWeekStartOffset(date = dateTime, weekStart = SDGDayOfWeek.MONDAY)
         return dateTime.minusDays(offset)
     }
 
-    fun getWeekEndDateTime(weekStart: SDGDayOfWeek): DateTime {
-        return getWeekStartDateTime(weekStart).plusDays(6)
+    fun getWeekEndDateTime(): DateTime {
+        return getWeekStartDateTime().plusDays(6)
     }
 
     private fun getDayOfWeekStartOffset(date: DateTime, weekStart: SDGDayOfWeek): Int {
