@@ -124,6 +124,9 @@ data class WeekDateTime(
         }
         return result
     }
+
+    val thursDay: DateTime
+        get() = dateTime.withDayOfWeek(DayOfWeek.THURSDAY.value)
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -316,10 +319,20 @@ private fun SDGCalendarPager(
                             }
 
                             1 -> {
-                                val first = list[0].dateTime
-                                val selected = it.dateTime
-                                val count =
-                                    abs((first.year * 52 + first.weekOfWeekyear) - (selected.year * 52 + selected.weekOfWeekyear)) + 1
+                                val first = list[0].thursDay
+                                val selected = it.thursDay
+                                val count = if (first.year == selected.year) {
+                                    abs(first.weekOfWeekyear - selected.weekOfWeekyear) + 1
+                                } else {
+                                    val prevDate =
+                                        if (first.year < selected.year) first else selected
+                                    val nextDate =
+                                        if (first.year < selected.year) selected else first
+                                    val prevCount =
+                                        prevDate.weekOfWeekyear().maximumValue - prevDate.weekOfWeekyear + 1
+                                    val nextCount = nextDate.weekOfWeekyear
+                                    prevCount + nextCount
+                                }
                                 if (mode.maxCount in 1..<count) {
                                     onMaxCountError?.invoke(mode.maxCount)
                                 } else {
