@@ -36,6 +36,13 @@ import com.shopl.sdg_resource.R
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19210-2895&m=dev">Figma</a>
  */
+@Deprecated(
+    message = "새로운 디자인 가이드가 적용된 SDGBottomPopup을 사용하세요.",
+    replaceWith = ReplaceWith(
+        expression = "SDGBottomPopup(buttonOption, onDismissRequest, title, titleAlignment, skipModalPartiallyExpanded, body)",
+        imports = ["com.shopl.sdg.template.popup.bottom.SDGBottomPopup"]
+    )
+)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SDGBottomPopup(
