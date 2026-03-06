@@ -29,6 +29,8 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
+private const val MAX_SHEET_HEIGHT_RATIO = 0.7f
+
 /**
  * SDG - Template - Popup - Bottom Popup
  *
@@ -57,7 +59,7 @@ fun SDGBottomPopup(
     val containerSize = LocalWindowInfo.current.containerSize
     val density = LocalDensity.current.density
     val screenHeight = (containerSize.height / density).dp
-    val maxSheetHeight = screenHeight * 0.7f
+    val maxSheetHeight = screenHeight * MAX_SHEET_HEIGHT_RATIO
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
