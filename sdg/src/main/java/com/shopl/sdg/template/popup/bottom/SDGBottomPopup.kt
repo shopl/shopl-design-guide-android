@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -37,7 +38,8 @@ import com.shopl.sdg_common.ui.components.SDGText
  * @param onDismissRequest 외부 클릭이나 뒤로가기로 팝업이 닫힐 때 호출
  * @param title 팝업 타이틀 (Optional)
  * @param titleAlignment 타이틀의 정렬 방향 (기본: Left)
- * @param skipModalPartiallyExpanded 바텀시트가 절반만 펼쳐지는 상태를 건너뛸지 여부 (기본: false)
+ * @param sheetState 만약 중간 펼침(PartiallyExpanded) 상태가 필요하다면
+ *                   rememberModalBottomSheetState(skipPartiallyExpanded = true)으로 설정
  * @param body 팝업 본문 콘텐츠
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19210-2895&m=dev">Figma</a>
@@ -49,7 +51,7 @@ fun SDGBottomPopup(
     onDismissRequest: () -> Unit,
     title: String? = null,
     titleAlignment: TextAlign = TextAlign.Left,
-    skipModalPartiallyExpanded: Boolean = false,
+    sheetState: SheetState = rememberModalBottomSheetState(),
     body: @Composable (ColumnScope.() -> Unit),
 ) {
     val containerSize = LocalWindowInfo.current.containerSize
@@ -59,7 +61,7 @@ fun SDGBottomPopup(
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipModalPartiallyExpanded),
+        sheetState = sheetState,
         shape = RoundedCornerShape(
             topStart = SDGCornerRadius.Radius20,
             topEnd = SDGCornerRadius.Radius20
@@ -117,6 +119,7 @@ private fun PreviewSDGBottomPopup() {
             endLabel = "Label",
             onClickEnd = {},
         ),
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         onDismissRequest = {},
         body = {
             SDGText(
