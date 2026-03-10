@@ -39,6 +39,13 @@ import com.shopl.sdg_resource.R
  * Label과 함께 바디 영역을 다양한 요소로 구성하여 입력하는 템플릿
  *
  * @param label [String] Form 라벨
+ * @param body Form 본문 영역에 들어갈 컴포저블 슬롯
+ * @param type 라벨 강조 타입([SDGFormType.EMPHA], [SDGFormType.NORMAL])
+ * @param essential 필수 입력 여부 (`true`인 경우 label 뒤에 `*` 표시)
+ * @param iconResourceId 라벨 우측에 표시할 선택 아이콘 리소스 ID
+ * @param iconTint 라벨 우측 아이콘 tint 색상
+ * @param onClickIcon 라벨 우측 아이콘 클릭 콜백
+ * @param onClickRefresh 우측 리프레시 버튼 클릭 콜백, null인 경우 리프레시 아이콘 노출하지 않음
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=22259-1320&m=dev">Figma</a>
  */
@@ -73,6 +80,19 @@ fun SDGCustomForm(
     )
 }
 
+/**
+ * SDG Template - Form - SDGCustomForm (Annotated Label)
+ *
+ * 라벨을 [AnnotatedString] 형태로 전달받아 커스텀 스타일을 적용할 수 있는 Form 템플릿
+ *
+ * @param label [AnnotatedString] Form 라벨
+ * @param body Form 본문 영역에 들어갈 컴포저블 슬롯
+ * @param type 라벨 강조 타입([SDGFormType.EMPHA], [SDGFormType.NORMAL])
+ * @param iconResourceId 라벨 우측에 표시할 선택 아이콘 리소스 ID
+ * @param iconTint 라벨 우측 아이콘 tint 색상
+ * @param onClickIcon 라벨 우측 아이콘 클릭 콜백
+ * @param onClickRefresh 우측 리프레시 버튼 클릭 콜백, null인 경우 리프레시 아이콘 노출하지 않음
+ */
 @Composable
 fun SDGCustomForm(
     label: AnnotatedString,
