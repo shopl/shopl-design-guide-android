@@ -39,7 +39,7 @@ import kotlinx.collections.immutable.PersistentList
 @Composable
 fun SDGIconHeader(
     label: String,
-    iconType: IconType,
+    rightIconsType: IconType,
     rightIcons: PersistentList<SDGIconHeaderIcon>?,
     count: String? = null,
     onLeftIconClick: (() -> Unit)? = null,
@@ -60,7 +60,7 @@ fun SDGIconHeader(
         )
 
         Row(
-            modifier = if (iconType == IconType.WITH_BOX) {
+            modifier = if (rightIconsType == IconType.WITH_BOX) {
                 Modifier
                     .border(
                         width = 1.dp,
@@ -106,7 +106,7 @@ private fun PreviewSDGIconHeader(
     SDGIconHeader(
         label = param.label,
         count = param.count,
-        iconType = param.iconType,
+        rightIconsType = param.iconType,
         rightIcons = param.rightIcons,
         onLeftIconClick = param.onLeftIconClick,
     )
