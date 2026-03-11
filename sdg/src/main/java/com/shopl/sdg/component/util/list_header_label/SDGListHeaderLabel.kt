@@ -24,6 +24,7 @@ fun RowScope.SDGListHeaderLabel(
     weight: Float,
     title: String,
     count: String?,
+    dropdownIcon: Boolean,
     onIconClick: (() -> Unit)? = null,
 ) {
     Box(
@@ -32,6 +33,7 @@ fun RowScope.SDGListHeaderLabel(
         SDGListHeaderLabel(
             title = title,
             count = count,
+            dropdownIcon = dropdownIcon,
             onIconClick = onIconClick
         )
     }
@@ -44,7 +46,8 @@ private fun PreviewSDGListHeaderLabel() {
         SDGListHeaderLabel(
             weight = 1f,
             title = "Weighted 1",
-            count = "1"
+            count = "1",
+            dropdownIcon = true
         )
 
         SDGImage(

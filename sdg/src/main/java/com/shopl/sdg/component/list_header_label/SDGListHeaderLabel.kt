@@ -9,7 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.list_header_label.preview.SDGListHeaderLabelPreviewParameterProvider
+import com.shopl.sdg.component.list_header_label.preview.SDGListHeaderLabelPreviewParams
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
@@ -71,6 +74,12 @@ fun SDGListHeaderLabel(
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewSDGListHeaderLabel() {
-
+private fun PreviewSDGListHeaderLabel(
+    @PreviewParameter(SDGListHeaderLabelPreviewParameterProvider::class) params: SDGListHeaderLabelPreviewParams
+) {
+    SDGListHeaderLabel(
+        title = params.title,
+        count = params.count,
+        dropdownIcon = params.dropdownIcon,
+    )
 }
