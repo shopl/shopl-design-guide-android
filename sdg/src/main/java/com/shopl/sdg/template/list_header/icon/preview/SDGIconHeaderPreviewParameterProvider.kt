@@ -15,7 +15,8 @@ internal class SDGIconHeaderPreviewParameterProvider : PreviewParameterProvider<
         카운트_포함_헤더(),
         우측_단일아이콘_헤더(),
         우측_박스형_아이콘_헤더(),
-        우측_아이콘_없는_헤더()
+        우측_아이콘_없는_헤더(),
+        좌측_드롭다운_아이콘_헤더()
     )
 
     private fun 기본_헤더(): SDGIconHeaderPreviewParam {
@@ -71,6 +72,17 @@ internal class SDGIconHeaderPreviewParameterProvider : PreviewParameterProvider<
             iconType = IconType.WITH_BOX
         )
     }
+
+    private fun 좌측_드롭다운_아이콘_헤더(): SDGIconHeaderPreviewParam {
+        return SDGIconHeaderPreviewParam(
+            label = "드롭다운",
+            rightIcons = persistentListOf(
+                SDGIconHeaderIcon(R.drawable.ic_common_search, SDGColor.Neutral700)
+            ),
+            iconType = IconType.ONLY_ICON,
+            onLeftIconClick = {}
+        )
+    }
 }
 
 internal data class SDGIconHeaderPreviewParam(
@@ -78,5 +90,6 @@ internal data class SDGIconHeaderPreviewParam(
     val count: String? = null,
     val marginValues: PaddingValues = PaddingValues(),
     val iconType: IconType,
-    val rightIcons: PersistentList<SDGIconHeaderIcon>
+    val rightIcons: PersistentList<SDGIconHeaderIcon>?,
+    val onLeftIconClick: (() -> Unit)? = null,
 )

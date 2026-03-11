@@ -108,5 +108,6 @@ private fun PreviewSDGIconHeader(
         count = param.count,
         iconType = param.iconType,
         rightIcons = param.rightIcons,
+        onLeftIconClick = param.onLeftIconClick,
     )
 }
