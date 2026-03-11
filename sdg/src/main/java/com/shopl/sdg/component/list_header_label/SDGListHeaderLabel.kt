@@ -75,7 +75,8 @@ fun SDGListHeaderLabel(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSDGListHeaderLabel(
-    @PreviewParameter(SDGListHeaderLabelPreviewParameterProvider::class) params: SDGListHeaderLabelPreviewParams
+    @PreviewParameter(SDGListHeaderLabelPreviewParameterProvider::class)
+    params: SDGListHeaderLabelPreviewParams
 ) {
     SDGListHeaderLabel(
         title = params.title,
