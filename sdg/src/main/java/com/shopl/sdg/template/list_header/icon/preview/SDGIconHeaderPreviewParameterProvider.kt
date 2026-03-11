@@ -14,7 +14,8 @@ internal class SDGIconHeaderPreviewParameterProvider : PreviewParameterProvider<
         기본_헤더(),
         카운트_포함_헤더(),
         우측_단일아이콘_헤더(),
-        우측_박스형_아이콘_헤더()
+        우측_박스형_아이콘_헤더(),
+        우측_아이콘_없는_헤더()
     )
 
     private fun 기본_헤더(): SDGIconHeaderPreviewParam {
@@ -59,6 +60,14 @@ internal class SDGIconHeaderPreviewParameterProvider : PreviewParameterProvider<
                 SDGIconHeaderIcon(R.drawable.ic_common_company, SDGColor.Neutral700),
                 SDGIconHeaderIcon(R.drawable.ic_common_staff, SDGColor.Neutral700)
             ),
+            iconType = IconType.WITH_BOX
+        )
+    }
+
+    private fun 우측_아이콘_없는_헤더(): SDGIconHeaderPreviewParam {
+        return SDGIconHeaderPreviewParam(
+            label = "멀티 아이콘",
+            rightIcons = null,
             iconType = IconType.WITH_BOX
         )
     }

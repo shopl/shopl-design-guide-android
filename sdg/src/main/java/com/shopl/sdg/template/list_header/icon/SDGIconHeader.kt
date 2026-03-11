@@ -40,7 +40,7 @@ import kotlinx.collections.immutable.PersistentList
 fun SDGIconHeader(
     label: String,
     iconType: IconType,
-    rightIcons: PersistentList<SDGIconHeaderIcon>,
+    rightIcons: PersistentList<SDGIconHeaderIcon>?,
     count: String? = null,
     onLeftIconClick: (() -> Unit)? = null,
 ) {
@@ -55,6 +55,7 @@ fun SDGIconHeader(
             weight = 1f,
             title = label,
             count = count,
+            dropdownIcon = onLeftIconClick != null,
             onIconClick = onLeftIconClick
         )
 
@@ -74,7 +75,7 @@ fun SDGIconHeader(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Spacing8)
         ) {
-            rightIcons.forEachIndexed { index, (resId, color, onClick) ->
+            rightIcons?.forEachIndexed { index, (resId, color, onClick) ->
                 SDGImage(
                     modifier = Modifier
                         .size(20.dp)
