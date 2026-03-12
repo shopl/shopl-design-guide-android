@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.text_input.InputState
 import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInput
 import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputType
@@ -24,9 +22,8 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * @version 2.1.10
  *
- * @param guide 가이드 메시지 노출 여부
- * @param message 메시지 영역에 노출할 텍스트
- * @param messageColor 메시지 텍스트 컬러
+ * @param guide 가이드 메시지 노출: SDGGuideUiState.Show(message = 표기할 메시지, messageColor = 메시지 색상(Default: Neutral700))
+ *              가이드 메시지 비노출: SDGGuideUiState.Hide
  * @param marginValues 전체 컨테이너 외부 여백
  * @param contentArea 컨텐츠 영역에 배치할 컴포저블
  *
@@ -34,9 +31,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  */
 @Composable
 fun SDGGuideContainer(
-    message: String? = null,
-    messageColor: Color = SDGColor.Neutral700,
-    guide: Boolean = true,
+    guide: SDGGuideUiState = SDGGuideUiState.Hide,
     marginValues: PaddingValues = PaddingValues(),
     contentArea: @Composable () -> Unit,
 ) {
@@ -46,10 +41,10 @@ fun SDGGuideContainer(
     ) {
         contentArea()
 
-        if (guide && !message.isNullOrEmpty()) {
+        if (guide is SDGGuideUiState.Show) {
             SDGText(
-                text = message,
-                textColor = messageColor,
+                text = guide.message,
+                textColor = guide.messageColor,
                 typography = SDGTypography.Body3R,
             )
         }
@@ -60,7 +55,9 @@ fun SDGGuideContainer(
 @Composable
 private fun PreviewSDGGuideContainer() {
     SDGGuideContainer(
-        message = "PreviewSDGGuideContainer",
+        guide = SDGGuideUiState.Show(
+            message = "PreviewSDGGuideContainer"
+        ),
         contentArea = {
             SDGSimpleTextInput(
                 type = SDGSimpleTextInputType.BASIC,
