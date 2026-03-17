@@ -54,6 +54,13 @@ fun SDGFixedTab(
         containerColor = SDGColor.Transparent,
         selectedTabIndex = selectedTabIndex,
         indicator = indicator,
+        divider = {
+            SecondaryIndicator(
+                modifier = Modifier.fillMaxWidth(),
+                height = 1.dp,
+                color = SDGColor.Neutral200
+            )
+        },
     ) {
         tabTitleList.forEachIndexed { index, title ->
             Tab(
