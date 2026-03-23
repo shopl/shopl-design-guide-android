@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.text_input.InputState
@@ -42,6 +44,8 @@ import java.text.DecimalFormat
 
 /**
  * [SDGSimpleTextInput]
+ *
+ * @version 2.0.0
  *
  * @param onFocusChanged 입력 필드의 포커스 상태가 변경될 때 호출되는 콜백
  *
@@ -70,8 +74,11 @@ fun SDGSimpleTextInput(
     marginValues: PaddingValues = PaddingValues(),
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
     onFocusChanged: ((FocusState) -> Unit)? = null
 ) {
+    var isFocused by remember { mutableStateOf(false) }
+
     val inputBgColor = when (inputState) {
         InputState.Disable,
         InputState.Enable -> backgroundColor
@@ -102,9 +109,10 @@ fun SDGSimpleTextInput(
                 }
             )
             .then(
-                onFocusChanged?.let {
-                    Modifier.onFocusChanged { onFocusChanged(it) }
-                } ?: Modifier
+                Modifier.onFocusChanged {
+                    isFocused = it.isFocused
+                    onFocusChanged?.invoke(it)
+                }
             ),
         value = input,
         onValueChange = onInputChange,
@@ -149,7 +157,21 @@ fun SDGSimpleTextInput(
                             typography = SDGTypography.Body1R
                         )
                     }
-                    innerTextField()
+
+                    if (!isFocused && input.text.isNotEmpty() && maxLines == 1) {
+                        SDGText(
+                            text = input.text,
+                            textColor = if (inputState == InputState.Disable) SDGColor.Neutral300 else SDGColor.Neutral700,
+                            typography = SDGTypography.Body1R,
+                            maxLines = 1,
+                            overflow = overflow
+                        )
+                        Box(modifier = Modifier.alpha(0f)) {
+                            innerTextField()
+                        }
+                    } else {
+                        innerTextField()
+                    }
                 }
             }
         },
@@ -158,6 +180,8 @@ fun SDGSimpleTextInput(
 
 /**
  * [SDGSimpleTextInput]
+ *
+ * @version 2.0.0
  *
  * 숫자 입력에 대해 [DecimalFormat]을 통한 실시간 포맷팅 및 값의 최소/최대 범위 유효성 검사를 지원합니다.
  *
@@ -194,11 +218,14 @@ fun SDGSimpleTextInput(
     marginValues: PaddingValues = PaddingValues(),
     alignCenter: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
     onInputChange: (TextFieldValue) -> Unit,
     onFocusChanged: ((FocusState) -> Unit)? = null,
     minValue: Double? = null,
     maxValue: Double? = null,
 ) {
+    var isFocused by remember { mutableStateOf(false) }
+
     val inputBgColor = when (inputState) {
         InputState.Disable,
         InputState.Enable -> backgroundColor
@@ -253,9 +280,10 @@ fun SDGSimpleTextInput(
                 }
             )
             .then(
-                onFocusChanged?.let {
-                    Modifier.onFocusChanged { onFocusChanged(it) }
-                } ?: Modifier
+                Modifier.onFocusChanged {
+                    isFocused = it.isFocused
+                    onFocusChanged?.invoke(it)
+                }
             ),
         value = displayValue,
         onValueChange = { originValue ->
@@ -375,7 +403,29 @@ fun SDGSimpleTextInput(
                             } else TextAlign.Start
                         )
                     }
-                    innerTextField()
+
+                    if (!isFocused && displayValue.text.isNotEmpty() && maxLines == 1) {
+                        SDGText(
+                            modifier = Modifier.then(
+                                if (alignCenter) {
+                                    Modifier.align(Alignment.Center)
+                                } else Modifier
+                            ),
+                            text = displayValue.text,
+                            textColor = if (inputState == InputState.Disable) SDGColor.Neutral300 else SDGColor.Neutral700,
+                            typography = SDGTypography.Body1R,
+                            textAlign = if (alignCenter) {
+                                TextAlign.Center
+                            } else TextAlign.Start,
+                            maxLines = 1,
+                            overflow = overflow
+                        )
+                        Box(modifier = Modifier.alpha(0f)) {
+                            innerTextField()
+                        }
+                    } else {
+                        innerTextField()
+                    }
                 }
             }
         },
