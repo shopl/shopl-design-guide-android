@@ -24,7 +24,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 /**
  * SDG - Tab - Fixed Tab
  *
- * 영역 내에서 3개 이하로 나열되는 텝 컴포넌트
+ * 고정된 영역 내에서 3개 이하로 분할되며, 패이지 내 유사한 콘텐츠를 그룹화하여 섹션 간 이동 시 사용하는 탭 컴포넌트
  *
  * @version 2.1.15
  *
