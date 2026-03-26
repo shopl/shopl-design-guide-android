@@ -26,7 +26,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * 영역 내에서 3개 이하로 나열되는 텝 컴포넌트
  *
- * @version 2.0.0
+ * @version 2.1.15
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=20900-15091&m=dev">Figma</a>
  */
