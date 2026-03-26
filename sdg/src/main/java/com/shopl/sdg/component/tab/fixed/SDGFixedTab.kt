@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -34,11 +35,12 @@ import com.shopl.sdg_common.ui.components.SDGText
 fun SDGFixedTab(
     type: SDGFixedTabType,
     onTabClick: (Int) -> Unit,
-    selectedTabIndex: Int = 0,
+    unselectedTabUnderLineColor: Color,
+    selectedTabIndex: Int = 0
 ) {
     val tabTitleList by remember(type) {
         mutableStateOf(
-            when(type) {
+            when (type) {
                 is SDGFixedTabType.TwoOption -> listOf(type.firstTitle, type.secondTitle)
                 is SDGFixedTabType.ThreeOption -> listOf(type.firstTitle, type.secondTitle, type.thirdTitle)
             }
@@ -60,7 +62,7 @@ fun SDGFixedTab(
             SecondaryIndicator(
                 modifier = Modifier.fillMaxWidth(),
                 height = 1.dp,
-                color = SDGColor.Neutral200
+                color = unselectedTabUnderLineColor
             )
         },
     ) {
@@ -109,6 +111,7 @@ private fun PreviewSDGFixedTab(
             type = type,
             onTabClick = onTabClick,
             selectedTabIndex = selectedTabIndex,
+            unselectedTabUnderLineColor = SDGColor.Neutral100
         )
     }
 }
