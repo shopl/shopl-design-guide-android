@@ -247,7 +247,7 @@ fun SDGSimpleTextInput(
     }
 
     val displayValue = decimalFormat?.let { formatter ->
-        val numberValue = input.text.toDoubleOrNull()
+        val numberValue = input.text.toBigDecimalOrNull()
         if (numberValue == null ||
             (input.text.endsWith(formatter.decimalFormatSymbols.decimalSeparator)
                     && input.text.count { it == formatter.decimalFormatSymbols.decimalSeparator } == 1)
@@ -313,25 +313,32 @@ fun SDGSimpleTextInput(
                     ) {
                         onInputChange(value)
                     } else {
-                        val selection = if (parsedValue.toString().length != value.text.length) {
-                            TextRange(parsedValue.toString().length)
+                        val cleanText = value.text
+                            .replace(oldValue = groupingSeparator.toString(), newValue = "")
+                        val parsedBigDecimal = cleanText
+                            .removeSuffix(suffix = decimalSeparator.toString())
+                            .toBigDecimalOrNull()
+
+                        val selection = if (cleanText.length != value.text.length) {
+                            TextRange(cleanText.length)
                         } else {
                             value.selection
                         }
+
                         if (minValue != null && maxValue != null) {
-                            if (parsedValue.toDouble() in minValue..maxValue) {
+                            if (parsedBigDecimal != null && parsedBigDecimal in minValue.toBigDecimal()..maxValue.toBigDecimal()) {
                                 onInputChange(
                                     value.copy(
-                                        text = parsedValue.toString(),
-                                        selection = selection
+                                        text = cleanText,
+                                        selection = selection,
                                     )
                                 )
                             }
                         } else {
                             onInputChange(
                                 value.copy(
-                                    text = parsedValue.toString(),
-                                    selection = selection
+                                    text = cleanText,
+                                    selection = selection,
                                 )
                             )
                         }
