@@ -1,6 +1,5 @@
 package com.shopl.sdg.template.popup.bottom
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -72,36 +71,39 @@ fun SDGBottomPopup(
         scrimColor = SDGColor.Neutral900_a40,
         dragHandle = null,
     ) {
+        val bodyTopPadding = if (title.isNullOrBlank()) Spacing24 else Spacing12
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = maxSheetHeight)
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(space = Spacing12),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = Spacing24, start = Spacing24, end = Spacing24)
-            ) {
-                if (!title.isNullOrBlank()) {
-                    SDGText(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = title,
-                        typography = SDGTypography.Title2SB,
-                        textColor = SDGColor.Neutral700,
-                        textAlign = titleAlignment,
-                    )
-                }
-
-                Column(
+            if (!title.isNullOrBlank()) {
+                SDGText(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(weight = 1f, fill = false)
-                        .verticalScroll(state = rememberScrollState())
-                        .padding(top = Spacing4, bottom = Spacing28)
-                ) {
-                    body()
-                }
+                        .padding(top = Spacing24, start = Spacing24, end = Spacing24),
+                    text = title,
+                    typography = SDGTypography.Title2SB,
+                    textColor = SDGColor.Neutral700,
+                    textAlign = titleAlignment,
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(weight = 1f, fill = false)
+                    .padding(top = bodyTopPadding)
+                    .verticalScroll(state = rememberScrollState())
+                    .padding(
+                        top = Spacing4,
+                        start = Spacing24,
+                        end = Spacing24,
+                        bottom = Spacing28,
+                    )
+            ) {
+                body()
             }
 
             SDGBottomPopupButton(option = buttonOption)
