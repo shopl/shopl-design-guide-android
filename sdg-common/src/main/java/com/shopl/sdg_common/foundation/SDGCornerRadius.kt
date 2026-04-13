@@ -32,6 +32,7 @@ object SDGCornerRadius {
         /**
          * Special 예외 단위
          */
+        val Radius1 = RoundedCornerShape(1.dp)
         val Radius2 = RoundedCornerShape(2.dp)
         val Radius6 = RoundedCornerShape(6.dp)
         val Radius10 = RoundedCornerShape(10.dp)
