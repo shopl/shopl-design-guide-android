@@ -1,0 +1,222 @@
+name: Jira version PR -> Close
+
+on:
+  # version 브랜치 PR이 main에 merge되면 Jira를 Close 한다.
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  extract-issues:
+    if: ${{ github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'version/') }}
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has-issues: ${{ steps.set-matrix.outputs.has-issues }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract unique Jira issue keys from released commit range
+        id: set-matrix
+        run: |
+          set -euo pipefail
+
+          branch_name="${{ github.event.pull_request.head.ref }}"
+          current_release_sha="${{ github.event.pull_request.merge_commit_sha }}"
+          version_commit_pattern='([vV]?[0-9]+\.[0-9]+\.[0-9]+.*버전[[:space:]]?업데이트)|([vV]?[0-9]+\.[0-9]+\.[0-9]+.*버전업데이트)|(버전[[:space:]]?업데이트.*[vV]?[0-9]+\.[0-9]+\.[0-9]+)|(버전업.*[vV]?[0-9]+\.[0-9]+\.[0-9]+)|(update version to.*[vV]?[0-9]+\.[0-9]+\.[0-9]+)'
+
+          if ! [[ "$branch_name" =~ ^version/[^/]+/(patch|minor|major)-.+$ ]]; then
+            echo "Skip because branch '$branch_name' does not match the version PR naming rule"
+            echo "matrix=[]" >> "$GITHUB_OUTPUT"
+            echo "has-issues=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ -z "$current_release_sha" || "$current_release_sha" == "null" ]]; then
+            echo "Skip because merge_commit_sha is unavailable"
+            echo "matrix=[]" >> "$GITHUB_OUTPUT"
+            echo "has-issues=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! git cat-file -e "${current_release_sha}^{commit}" 2>/dev/null; then
+            echo "Skip because commit $current_release_sha is unavailable locally"
+            echo "matrix=[]" >> "$GITHUB_OUTPUT"
+            echo "has-issues=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # 현재 버전 PR 직전 시점부터 거슬러 올라가며 이전 버전 업데이트 커밋을 찾는다.
+          # 이 저장소는 squash merge를 쓰므로 merge commit이 아니라 버전 업데이트 squash commit 패턴을 본다.
+          previous_version_commit=$(
+            git log --first-parent --pretty=format:'%H%x09%s' "${current_release_sha}^1" \
+              | grep -Ei $'\t'"$version_commit_pattern" \
+              | head -n 1 \
+              | cut -f1 \
+              || true
+          )
+
+          if [[ -z "$previous_version_commit" ]]; then
+            echo "Skip because no previous version update commit was found"
+            echo "matrix=[]" >> "$GITHUB_OUTPUT"
+            echo "has-issues=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          range="$previous_version_commit..${current_release_sha}^1"
+
+          echo "Current version PR merge: $current_release_sha"
+          echo "Previous version update commit: $previous_version_commit"
+          echo "Using git log range: $range"
+
+          keys=$(git log "$range" --pretty=format:%B \
+            | grep -oE '[A-Z]+-[0-9]+' \
+            | sort -u || true)
+
+          if [[ -z "$keys" ]]; then
+            matrix='[]'
+            has_issues='false'
+          else
+            matrix=$(printf '%s\n' "$keys" \
+              | jq -R -s -c 'split("\n") | map(select(length > 0))')
+            has_issues='true'
+          fi
+
+          echo "Matrix: $matrix"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "has-issues=$has_issues" >> "$GITHUB_OUTPUT"
+
+  transition-to-close:
+    needs: extract-issues
+    if: ${{ needs.extract-issues.outputs.has-issues == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+      JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+      JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+    strategy:
+      fail-fast: false
+      matrix:
+        issue: ${{ fromJson(needs.extract-issues.outputs.matrix) }}
+    steps:
+      - name: Transition released issue to Close
+        run: |
+          set -euo pipefail
+
+          issue="${{ matrix.issue }}"
+          jira_api="$JIRA_BASE_URL/rest/api/3"
+
+          jira_get_issue_status() {
+            curl -fsS -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+              -H "Accept: application/json" \
+              "$jira_api/issue/$issue?fields=status" \
+              | jq -r '.fields.status.name'
+          }
+
+          jira_get_transitions() {
+            curl -fsS -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+              -H "Accept: application/json" \
+              "$jira_api/issue/$issue/transitions?expand=transitions.fields"
+          }
+
+          get_transition_id() {
+            local transitions="$1"
+            local transition_name="$2"
+
+            printf '%s' "$transitions" \
+              | jq -r --arg transition_name "$transition_name" \
+                '.transitions[] | select(.name == $transition_name) | .id' \
+              | head -n 1
+          }
+
+          get_close_resolution_id() {
+            local transitions="$1"
+
+            printf '%s' "$transitions" \
+              | jq -r '
+                  [.transitions[]
+                   | select(.name == "Close")
+                   | .fields.resolution.allowedValues[]?
+                   | select(.name == "완료됨")
+                   | .id][0]
+                  //
+                  [.transitions[]
+                   | select(.name == "Close")
+                   | .fields.resolution.allowedValues[]?
+                   | .id][0]
+                  //
+                  empty
+                '
+          }
+
+          apply_transition() {
+            local payload="$1"
+
+            curl -fsS -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+              -H "Accept: application/json" \
+              -H "Content-Type: application/json" \
+              -X POST \
+              "$jira_api/issue/$issue/transitions" \
+              --data "$payload" \
+              >/dev/null
+          }
+
+          for attempt in 1 2 3 4; do
+            current_status=$(jira_get_issue_status)
+            echo "Current status: $current_status"
+
+            if [[ "$current_status" == "Close" || "$current_status" == "CLOSE" ]]; then
+              echo "Transitioned $issue to Close"
+              exit 0
+            fi
+
+            transitions=$(jira_get_transitions)
+            close_transition_id=$(get_transition_id "$transitions" "Close")
+
+            if [[ -n "$close_transition_id" ]]; then
+              resolution_id=$(get_close_resolution_id "$transitions")
+
+              if [[ -z "$resolution_id" ]]; then
+                echo "Close transition requires a resolution, but no allowed value was found for $issue" >&2
+                echo "$transitions" | jq '.transitions[] | select(.name == "Close")'
+                exit 1
+              fi
+
+              payload=$(jq -cn \
+                --arg transition_id "$close_transition_id" \
+                --arg resolution_id "$resolution_id" \
+                '{transition: {id: $transition_id}, fields: {resolution: {id: $resolution_id}}}')
+
+              echo "Applying Close to $issue from '$current_status'"
+              apply_transition "$payload"
+              continue
+            fi
+
+            deploy_qa_transition_id=$(get_transition_id "$transitions" "Deploy QA")
+
+            if [[ -n "$deploy_qa_transition_id" ]]; then
+              payload=$(jq -cn --arg transition_id "$deploy_qa_transition_id" '{transition: {id: $transition_id}}')
+
+              echo "Applying Deploy QA to $issue from '$current_status'"
+              apply_transition "$payload"
+              continue
+            fi
+
+            echo "Neither 'Deploy QA' nor 'Close' transition is available from status '$current_status' for $issue" >&2
+            echo "$transitions" | jq '.transitions'
+            exit 1
+          done
+
+          final_status=$(jira_get_issue_status)
+          echo "Final status: $final_status"
+
+          if [[ "$final_status" != "Close" && "$final_status" != "CLOSE" ]]; then
+            echo "Failed to move $issue to Close. Final status: $final_status" >&2
+            exit 1
+          fi
+
+          echo "Transitioned $issue to Close"
