@@ -24,6 +24,8 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.toggle.style.SDGToggleColors
+import com.shopl.sdg.component.toggle.style.SDGToggleStyle
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 
@@ -62,46 +64,6 @@ fun SDGToggle(
         onClick = onClick,
     )
 }
-
-enum class SDGToggleStyle(
-    internal val colors: SDGToggleColors,
-) {
-    PRIMARY(
-        colors = SDGToggleColors(
-            onTrackColor = SDGColor.Primary300,
-            onThumbColor = SDGColor.Neutral0,
-            offTrackColor = SDGColor.Neutral300,
-            offThumbColor = SDGColor.Neutral0,
-            disabledOnTrackColor = SDGColor.Neutral200,
-            disabledOnThumbColor = SDGColor.Neutral0,
-            disabledOffTrackColor = SDGColor.Neutral200,
-            disabledOffThumbColor = SDGColor.Neutral0,
-        )
-    ),
-    NEUTRAL(
-        colors = SDGToggleColors(
-            onTrackColor = SDGColor.Neutral700,
-            onThumbColor = SDGColor.Neutral0,
-            offTrackColor = SDGColor.Neutral300,
-            offThumbColor = SDGColor.Neutral0,
-            disabledOnTrackColor = SDGColor.Neutral200,
-            disabledOnThumbColor = SDGColor.Neutral0,
-            disabledOffTrackColor = SDGColor.Neutral200,
-            disabledOffThumbColor = SDGColor.Neutral0,
-        )
-    )
-}
-
-internal data class SDGToggleColors(
-    val onTrackColor: Color,
-    val onThumbColor: Color,
-    val offTrackColor: Color,
-    val offThumbColor: Color,
-    val disabledOnTrackColor: Color,
-    val disabledOnThumbColor: Color,
-    val disabledOffTrackColor: Color,
-    val disabledOffThumbColor: Color,
-)
 
 @Composable
 private fun SDGToggleContent(
