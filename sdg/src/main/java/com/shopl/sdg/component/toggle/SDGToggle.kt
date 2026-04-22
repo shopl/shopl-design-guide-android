@@ -30,7 +30,7 @@ import com.shopl.sdg_common.foundation.SDGColor
  * ON/OFF 상태를 전환하기 위한 컴포넌트
  *
  * @version 2.1.18
- * 
+ *
  * @param isOn 토글 ON 여부
  * @param modifier Modifier
  * @param isEnabled 토글 활성 여부
