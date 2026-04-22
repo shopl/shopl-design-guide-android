@@ -18,6 +18,9 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.toggleableState
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -133,11 +136,6 @@ private fun SDGToggleContent(
 
     Canvas(
         modifier = modifier
-            .padding(clickPadding)
-            .size(
-                width = SDGToggleDefaults.WIDTH,
-                height = SDGToggleDefaults.HEIGHT
-            )
             .then(
                 if (onClick != null) {
                     Modifier.clickable(
@@ -148,6 +146,18 @@ private fun SDGToggleContent(
                 } else {
                     Modifier
                 }
+            )
+            .semantics {
+                toggleableState = if (isOn) {
+                    ToggleableState.On
+                } else {
+                    ToggleableState.Off
+                }
+            }
+            .padding(clickPadding)
+            .size(
+                width = SDGToggleDefaults.WIDTH,
+                height = SDGToggleDefaults.HEIGHT
             )
     ) {
         drawRoundRect(
