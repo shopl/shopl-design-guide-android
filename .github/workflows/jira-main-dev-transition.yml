@@ -1,0 +1,139 @@
+name: Jira main -> DEV
+
+on:
+  # main에 반영된 커밋 범위에서 Jira 이슈 키를 추출한다.
+  push:
+    branches:
+      - main
+
+jobs:
+  extract-issues:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has-issues: ${{ steps.set-matrix.outputs.has-issues }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract unique Jira issue keys
+        id: set-matrix
+        run: |
+          set -euo pipefail
+
+          before="${{ github.event.before }}"
+          sha="${{ github.sha }}"
+
+          # 브랜치 최초 push 같은 예외 케이스에서는 현재 sha 한 건만 본다.
+          if [[ "$before" =~ ^0+$ ]] || [[ "$before" == "$sha" ]]; then
+            range="$sha"
+          else
+            range="$before..$sha"
+          fi
+
+          echo "Using git log range: $range"
+
+          keys=$(git log "$range" --pretty=format:%B \
+            | grep -oE '[A-Z]+-[0-9]+' \
+            | sort -u || true)
+
+          if [[ -z "$keys" ]]; then
+            matrix='[]'
+            has_issues='false'
+          else
+            matrix=$(printf '%s\n' "$keys" \
+              | jq -R -s -c 'split("\n") | map(select(length > 0))')
+            has_issues='true'
+          fi
+
+          echo "Matrix: $matrix"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "has-issues=$has_issues" >> "$GITHUB_OUTPUT"
+
+  transition-to-dev:
+    needs: extract-issues
+    if: ${{ needs.extract-issues.outputs.has-issues == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+      JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+      JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+    strategy:
+      fail-fast: false
+      matrix:
+        issue: ${{ fromJson(needs.extract-issues.outputs.matrix) }}
+    steps:
+      - name: Transition issue to DEV when available
+        run: |
+          set -euo pipefail
+
+          issue="${{ matrix.issue }}"
+          jira_api="$JIRA_BASE_URL/rest/api/3"
+
+          jira_get_issue_status() {
+            curl -fsS -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+              -H "Accept: application/json" \
+              "$jira_api/issue/$issue?fields=status" \
+              | jq -r '.fields.status.name'
+          }
+
+          jira_get_transitions() {
+            curl -fsS -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+              -H "Accept: application/json" \
+              "$jira_api/issue/$issue/transitions"
+          }
+
+          get_transition_id() {
+            local transitions="$1"
+            local transition_name="$2"
+
+            printf '%s' "$transitions" \
+              | jq -r --arg transition_name "$transition_name" \
+                '.transitions[] | select(.name == $transition_name) | .id' \
+              | head -n 1
+          }
+
+          apply_transition() {
+            local payload="$1"
+
+            curl -fsS -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+              -H "Accept: application/json" \
+              -H "Content-Type: application/json" \
+              -X POST \
+              "$jira_api/issue/$issue/transitions" \
+              --data "$payload" \
+              >/dev/null
+          }
+
+          current_status=$(jira_get_issue_status)
+          echo "Current status: $current_status"
+
+          if [[ "$current_status" == "DEV" || "$current_status" == "QA" || "$current_status" == "Close" || "$current_status" == "CLOSE" ]]; then
+            echo "Skip $issue because it is already at or beyond DEV"
+            exit 0
+          fi
+
+          transitions=$(jira_get_transitions)
+          deploy_dev_transition_id=$(get_transition_id "$transitions" "Deploy DEV")
+
+          if [[ -z "$deploy_dev_transition_id" ]]; then
+            echo "Skip $issue because 'Deploy DEV' is unavailable from status '$current_status'"
+            echo "$transitions" | jq '.transitions'
+            exit 0
+          fi
+
+          payload=$(jq -cn --arg transition_id "$deploy_dev_transition_id" '{transition: {id: $transition_id}}')
+
+          echo "Applying Deploy DEV to $issue"
+          apply_transition "$payload"
+
+          final_status=$(jira_get_issue_status)
+          echo "Final status: $final_status"
+
+          if [[ "$final_status" != "DEV" ]]; then
+            echo "Failed to move $issue to DEV. Final status: $final_status" >&2
+            exit 1
+          fi
+
+          echo "Transitioned $issue to DEV"
