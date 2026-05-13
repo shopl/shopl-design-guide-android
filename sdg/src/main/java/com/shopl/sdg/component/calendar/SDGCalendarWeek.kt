@@ -80,6 +80,7 @@ private val sizeComposableLocal =
     staticCompositionLocalOf<SDGCalendarWeekSize> { SDGCalendarWeekSize.Basic }
 private val modeComposableLocal =
     staticCompositionLocalOf<SDGCalendarWeekMode> { SDGCalendarWeekMode.Single() }
+private val minDateComposableLocal = staticCompositionLocalOf<DateTime?> { null }
 private val maxDateComposableLocal = staticCompositionLocalOf<DateTime?> { null }
 
 data class WeekDateTime(
@@ -136,6 +137,7 @@ fun SDGCalendarWeek(
     size: SDGCalendarWeekSize = SDGCalendarWeekSize.Basic,
     mode: SDGCalendarWeekMode,
     initDate: DateTime,
+    minDate: DateTime? = null,
     maxDate: DateTime? = null,
     onMaxCountError: ((Int) -> Unit)? = null,
     onSelectDate: (List<WeekDateTime>) -> Unit
@@ -174,6 +176,7 @@ fun SDGCalendarWeek(
     CompositionLocalProvider(
         sizeComposableLocal provides size,
         modeComposableLocal provides mode,
+        minDateComposableLocal provides minDate,
         maxDateComposableLocal provides maxDate,
     ) {
         Column(
@@ -421,7 +424,8 @@ private fun SDGCalendarBodyRow(
                 SDGCalendarBodyCell(
                     weekDateTime = day,
                     isSelected = selectedList.firstOrNull { day.dateTime.equalYMD(it.dateTime) } != null,
-                    enable = maxDateComposableLocal.current?.isAfter(day.dateTime) ?: true,
+                    enable = (maxDateComposableLocal.current?.isAfter(day.dateTime) ?: true)
+                            && (minDateComposableLocal.current?.isBefore(day.dateTime) ?: true),
                     activate = true,
                     hasBeforePeriod = hasBeforePeriod,
                     hasAfterPeriod = hasAfterPeriod,

@@ -83,6 +83,7 @@ fun SDGMultiCalendarModal(
     weekStart: SDGDayOfWeek,
     initDate: DateTime,
     today: DateTime,
+    minDate: DateTime? = null,
     maxDate: DateTime? = null,
     types: List<SDGMultiCalendarModalType> = listOf(
         SDGMultiCalendarModalType.Day(),
@@ -165,6 +166,7 @@ fun SDGMultiCalendarModal(
                         weekStart = weekStart,
                         initDate = initDate,
                         today = today,
+                        minDate = minDate,
                         maxDate = maxDate,
                         startDay = startDay,
                         endDay = endDay,
@@ -247,6 +249,7 @@ fun SDGMultiCalendarModal(
                             weekStart = weekStart,
                             initDate = initDate,
                             today = today,
+                            minDate = minDate,
                             maxDate = maxDate,
                             startDay = startDay,
                             endDay = endDay,
@@ -367,6 +370,7 @@ private fun TypeCalendar(
     weekStart: SDGDayOfWeek,
     initDate: DateTime,
     today: DateTime,
+    minDate: DateTime? = null,
     maxDate: DateTime? = null,
     startDay: DateTime? = null,
     endDay: DateTime? = null,
@@ -392,6 +396,7 @@ private fun TypeCalendar(
                         weekStart = weekStart,
                         initDate = initDate,
                         today = today,
+                        minDate = minDate,
                         maxDate = maxDate,
                         startDay = startDay,
                         onSelectDate = onSelectDateDay,
@@ -403,6 +408,7 @@ private fun TypeCalendar(
                         weekStart = weekStart,
                         initDate = initDate,
                         today = today,
+                        minDate = minDate,
                         maxDate = maxDate,
                         type = type,
                         startDay = startDay,
@@ -419,6 +425,7 @@ private fun TypeCalendar(
                         modifier = Modifier
                             .height(320.dp),
                         initDate = initDate,
+                        minDate = minDate,
                         maxDate = maxDate,
                         startWeek = startWeek,
                         onSelectDate = onSelectDateWeek,
@@ -428,6 +435,7 @@ private fun TypeCalendar(
                         modifier = Modifier
                             .height(320.dp),
                         initDate = initDate,
+                        minDate = minDate,
                         maxDate = maxDate,
                         type = type,
                         startWeek = startWeek,
@@ -444,6 +452,7 @@ private fun TypeCalendar(
                         modifier = Modifier
                             .height(320.dp),
                         initDate = initDate,
+                        minDate = minDate,
                         maxDate = maxDate,
                         startMonth = startMonth,
                         onSelectDate = onSelectDateMonth,
@@ -453,6 +462,7 @@ private fun TypeCalendar(
                         modifier = Modifier
                             .height(320.dp),
                         initDate = initDate,
+                        minDate = minDate,
                         maxDate = maxDate,
                         type = type,
                         startMonth = startMonth,
@@ -472,6 +482,7 @@ private fun DayPeriodCalendar(
     weekStart: SDGDayOfWeek,
     initDate: DateTime,
     today: DateTime,
+    minDate: DateTime? = null,
     maxDate: DateTime? = null,
     type: SDGMultiCalendarModalType.Day,
     startDay: DateTime? = null,
@@ -484,6 +495,7 @@ private fun DayPeriodCalendar(
         weekStart = weekStart,
         initDate = initDate,
         today = today,
+        minDate = minDate,
         maxDate = maxDate,
         mode = SDGCalendarDayMode.Period(
             maxCount = type.maxCount,
@@ -528,6 +540,7 @@ private fun DaySingleCalendar(
     weekStart: SDGDayOfWeek,
     initDate: DateTime,
     today: DateTime,
+    minDate: DateTime? = null,
     maxDate: DateTime? = null,
     startDay: DateTime? = null,
     onSelectDate: (List<DateTime>) -> Unit,
@@ -537,6 +550,7 @@ private fun DaySingleCalendar(
         weekStart = weekStart,
         initDate = initDate,
         today = today,
+        minDate = minDate,
         maxDate = maxDate,
         mode = SDGCalendarDayMode.Single(
             selected = startDay
@@ -559,6 +573,7 @@ private fun DaySingleCalendar(
 private fun WeekPeriodCalendar(
     modifier: Modifier = Modifier,
     initDate: DateTime,
+    minDate: DateTime? = null,
     maxDate: DateTime? = null,
     type: SDGMultiCalendarModalType.Week,
     startWeek: WeekDateTime? = null,
@@ -569,6 +584,7 @@ private fun WeekPeriodCalendar(
     SDGCalendarWeek(
         modifier = modifier,
         initDate = initDate,
+        minDate = minDate,
         mode = SDGCalendarWeekMode.Period(
             maxCount = type.maxCount,
             selected = if (startWeek != null && endWeek != null) {
@@ -610,6 +626,7 @@ private fun WeekPeriodCalendar(
 private fun WeekSingleCalendar(
     modifier: Modifier = Modifier,
     initDate: DateTime,
+    minDate: DateTime? = null,
     maxDate: DateTime? = null,
     startWeek: WeekDateTime? = null,
     onSelectDate: (List<WeekDateTime>) -> Unit,
@@ -620,6 +637,7 @@ private fun WeekSingleCalendar(
         mode = SDGCalendarWeekMode.Single(
             selected = startWeek
         ),
+        minDate = minDate,
         maxDate = maxDate,
         onSelectDate = onSelectDate,
     )
@@ -641,6 +659,7 @@ private fun WeekSingleCalendar(
 private fun MonthSingleCalendar(
     modifier: Modifier = Modifier,
     initDate: DateTime,
+    minDate: DateTime? = null,
     maxDate: DateTime? = null,
     startMonth: DateTime? = null,
     onSelectDate: (List<DateTime>) -> Unit,
@@ -651,6 +670,7 @@ private fun MonthSingleCalendar(
         mode = SDGCalendarMonthMode.Single(
             selected = startMonth
         ),
+        minDate = minDate,
         maxDate = maxDate,
         onSelectDate = onSelectDate,
     )
@@ -673,6 +693,7 @@ private fun MonthSingleCalendar(
 private fun MonthPeriodCalendar(
     modifier: Modifier = Modifier,
     initDate: DateTime,
+    minDate: DateTime? = null,
     maxDate: DateTime? = null,
     type: SDGMultiCalendarModalType.Month,
     startMonth: DateTime? = null,
@@ -689,6 +710,7 @@ private fun MonthPeriodCalendar(
                 startMonth to endMonth
             } else null
         ),
+        minDate = minDate,
         maxDate = maxDate,
         onMaxCountError = {
             onMaxCountError?.invoke(type)
