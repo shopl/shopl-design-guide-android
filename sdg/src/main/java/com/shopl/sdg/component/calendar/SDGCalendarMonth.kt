@@ -80,6 +80,7 @@ private val sizeComposableLocal =
     staticCompositionLocalOf<SDGCalendarMonthSize> { SDGCalendarMonthSize.Basic }
 private val modeComposableLocal =
     staticCompositionLocalOf<SDGCalendarMonthMode> { SDGCalendarMonthMode.Single() }
+private val minDateComposableLocal = staticCompositionLocalOf<DateTime?> { null }
 private val maxDateComposableLocal = staticCompositionLocalOf<DateTime?> { null }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -89,6 +90,7 @@ fun SDGCalendarMonth(
     size: SDGCalendarMonthSize = SDGCalendarMonthSize.Basic,
     mode: SDGCalendarMonthMode,
     initDate: DateTime,
+    minDate: DateTime? = null,
     maxDate: DateTime? = null,
     onMaxCountError: ((Int) -> Unit)? = null,
     onSelectDate: (List<DateTime>) -> Unit
@@ -126,6 +128,7 @@ fun SDGCalendarMonth(
     CompositionLocalProvider(
         sizeComposableLocal provides size,
         modeComposableLocal provides mode,
+        minDateComposableLocal provides minDate,
         maxDateComposableLocal provides maxDate,
     ) {
         Column(
@@ -351,7 +354,8 @@ private fun SDGCalendarBodyRow(
             SDGCalendarBodyCell(
                 day = day,
                 isSelected = selectedList.firstOrNull { day.equalYM(it) } != null,
-                enable = maxDateComposableLocal.current?.isAfter(day) ?: true,
+                enable = (maxDateComposableLocal.current?.isAfter(day) ?: true)
+                        && (minDateComposableLocal.current?.isBefore(day) ?: true),
                 activate = true,
                 hasBeforePeriod = hasBeforePeriod,
                 hasAfterPeriod = hasAfterPeriod,
