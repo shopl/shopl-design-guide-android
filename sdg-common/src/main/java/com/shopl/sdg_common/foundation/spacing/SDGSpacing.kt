@@ -23,6 +23,7 @@ object SDGSpacing {
     val Spacing40 = 40.dp
 
     /** Special: 화면 구성의 예외 단위 **/
+    val Spacing1 = 1.dp
     val Spacing3 = 3.dp
     val Spacing5 = 5.dp
     val Spacing11 = 11.dp
