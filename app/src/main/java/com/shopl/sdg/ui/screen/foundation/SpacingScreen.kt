@@ -65,6 +65,7 @@ private val commonSpacings = persistentListOf(
 )
 
 private val specialSpacings = persistentListOf(
+    SDGSpacing.Spacing1.toSpacingUiModel(displayLabel = "1"),
     SDGSpacing.Spacing3.toSpacingUiModel(displayLabel = "3"),
     SDGSpacing.Spacing5.toSpacingUiModel(displayLabel = "5"),
     SDGSpacing.Spacing11.toSpacingUiModel(displayLabel = "11"),
