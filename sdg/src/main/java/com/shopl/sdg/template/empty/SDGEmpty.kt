@@ -58,7 +58,6 @@ fun SDGEmpty(
     onClickButton: () -> Unit = {},
 ) {
     val hasText = !title.isNullOrBlank() || !bodyText.isNullOrBlank()
-    val hasButton = !buttonLabel.isNullOrBlank()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -76,7 +75,7 @@ fun SDGEmpty(
             color = null,
         )
 
-        if (hasText || hasButton) {
+        if (hasText || !buttonLabel.isNullOrBlank()) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -91,7 +90,7 @@ fun SDGEmpty(
                     )
                 }
 
-                if (hasButton) {
+                if (!buttonLabel.isNullOrBlank()) {
                     SDGCapsuleButton(
                         size = SDGCapsuleButtonSize.Medium,
                         type = SDGCapsuleButtonType.Line(lineColor = SDGColor.Neutral600),
