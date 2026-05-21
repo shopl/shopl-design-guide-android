@@ -49,7 +49,7 @@ private val EMPTY_ILLUSTRATION_SIZE = 140.dp
  */
 @Composable
 fun SDGEmpty(
-    @DrawableRes illustrationResId: Int = R.drawable.empty_detail_payment,
+    @DrawableRes illustrationResId: Int,
     illustrationBackgroundColor: SDGEmptyIllustrationBackgroundColor = SDGEmptyIllustrationBackgroundColor.PRIMARY_300_A10,
     title: String? = null,
     bodyText: String? = null,
@@ -147,6 +147,7 @@ private fun PreviewSDGEmpty(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         SDGEmpty(
+            illustrationResId = R.drawable.empty_detail_payment,
             illustrationBackgroundColor = parameter.illustrationBackgroundColor,
             title = parameter.title,
             bodyText = parameter.bodyText,
