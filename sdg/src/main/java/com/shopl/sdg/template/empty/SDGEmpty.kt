@@ -35,6 +35,8 @@ private val EMPTY_ILLUSTRATION_SIZE = 140.dp
 /**
  * SDG - Template - Empty
  *
+ * @version 2.0.0
+ *
  * 표시할 컨텐츠가 없는 최초 상태에서 안내 일러스트, 텍스트, 선택 액션을 조합해 보여주는 템플릿
  *
  * @param illustrationResId 원형 배경 위에 표시할 Empty 일러스트 이미지 리소스 ID
