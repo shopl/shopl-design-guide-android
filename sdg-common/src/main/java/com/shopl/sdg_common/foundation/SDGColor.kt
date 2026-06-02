@@ -25,6 +25,9 @@ object SDGColor {
     val Neutral900_a40 = Color(0x66000000)
 
     @Stable
+    val Neutral900_a50 = Color(0x80000000)
+
+    @Stable
     val Neutral900_a70 = Color(0xB3000000)
 
     @Stable
