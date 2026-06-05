@@ -158,7 +158,8 @@ private fun SDGBoxButtonIcon(
     SDGImage(
         modifier = Modifier.size(size),
         resId = iconResId,
-        color = if (enable) iconTint else iconTint?.copy(alpha = 0.3f)
+        color = iconTint,
+        alpha = if (enable) 1f else 0.3f
     )
 }
 
