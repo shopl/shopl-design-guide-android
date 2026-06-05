@@ -113,7 +113,7 @@ fun SDGBoxButton(
         ) {
             val iconSize = size.iconSize - if (iconDownSize) 2.dp else 0.dp
 
-            if (leftIcon != null && leftIconTint != null) {
+            if (leftIcon != null) {
                 SDGBoxButtonIcon(
                     size = iconSize,
                     iconResId = leftIcon,
@@ -135,7 +135,7 @@ fun SDGBoxButton(
                 overflow = TextOverflow.Ellipsis
             )
 
-            if (rightIcon != null && rightIconTint != null) {
+            if (rightIcon != null) {
                 Spacer(modifier = Modifier.width(size.iconGap))
                 SDGBoxButtonIcon(
                     size = iconSize,
@@ -152,13 +152,14 @@ fun SDGBoxButton(
 private fun SDGBoxButtonIcon(
     size: Dp,
     @DrawableRes iconResId: Int,
-    iconTint: Color,
+    iconTint: Color?,
     enable: Boolean
 ) {
     SDGImage(
         modifier = Modifier.size(size),
         resId = iconResId,
-        color = if (enable) iconTint else iconTint.copy(alpha = 0.3f)
+        color = iconTint,
+        alpha = if (enable) 1f else 0.3f
     )
 }
 
