@@ -163,14 +163,21 @@ private fun Modifier.tabItemStyle(
     type: SDGScrollTabType,
     isSelected: Boolean
 ): Modifier {
-    if (type != SDGScrollTabType.Line) return this
+    return when (type) {
+        SDGScrollTabType.Line -> {
+            this
+                .bottomBorder(
+                    strokeWidth = if (isSelected) 2.dp else 1.dp,
+                    color = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral200
+                )
+                .padding(bottom = Spacing6)
+        }
 
-    return this
-        .bottomBorder(
-            strokeWidth = if (isSelected) 2.dp else 1.dp,
-            color = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral200
-        )
-        .padding(bottom = Spacing6)
+        SDGScrollTabType.Text -> {
+            this
+                .padding(bottom = Spacing6)
+        }
+    }
 }
 
 /**
