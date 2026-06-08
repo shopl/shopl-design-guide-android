@@ -37,6 +37,8 @@ import kotlinx.collections.immutable.PersistentList
 /**
  * SDG - Tab - Scroll Tab
  *
+ * @version 2.0.2
+ *
  * 제한없이 나열되는 탭 컴포넌트
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=8213-5076&m=dev">Figma</a>
