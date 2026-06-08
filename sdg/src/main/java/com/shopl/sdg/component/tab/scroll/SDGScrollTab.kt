@@ -37,6 +37,8 @@ import kotlinx.collections.immutable.PersistentList
 /**
  * SDG - Tab - Scroll Tab
  *
+ * @version 2.0.2
+ *
  * 제한없이 나열되는 탭 컴포넌트
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=8213-5076&m=dev">Figma</a>
@@ -163,14 +165,21 @@ private fun Modifier.tabItemStyle(
     type: SDGScrollTabType,
     isSelected: Boolean
 ): Modifier {
-    if (type != SDGScrollTabType.Line) return this
+    return when (type) {
+        SDGScrollTabType.Line -> {
+            this
+                .bottomBorder(
+                    strokeWidth = if (isSelected) 2.dp else 1.dp,
+                    color = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral200
+                )
+                .padding(bottom = Spacing6)
+        }
 
-    return this
-        .bottomBorder(
-            strokeWidth = if (isSelected) 2.dp else 1.dp,
-            color = if (isSelected) SDGColor.Neutral700 else SDGColor.Neutral200
-        )
-        .padding(bottom = Spacing6)
+        SDGScrollTabType.Text -> {
+            this
+                .padding(bottom = Spacing6)
+        }
+    }
 }
 
 /**
