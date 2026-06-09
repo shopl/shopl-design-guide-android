@@ -123,6 +123,7 @@ private fun SDGIconLabelContent(
 ) {
     var isTextMultiline by remember { mutableStateOf(false) }
     val iconAlignment = if (isTextMultiline) Alignment.Top else Alignment.CenterVertically
+    val iconTopPadding = if (isTextMultiline) Modifier.padding(top = Spacing1) else Modifier
     val typography = getIconLabelTypography(type = type, size = size)
 
     Row(
@@ -140,7 +141,7 @@ private fun SDGIconLabelContent(
                 modifier = Modifier
                     .align(iconAlignment)
                     .size(14.dp)
-                    .padding(top = Spacing1)
+                    .then(iconTopPadding)
                     .then(
                         if (onClickLeftIcon != null) {
                             Modifier.clickable(hasRipple = false) { onClickLeftIcon() }
@@ -168,6 +169,7 @@ private fun SDGIconLabelContent(
                 modifier = Modifier
                     .align(iconAlignment)
                     .size(14.dp)
+                    .then(iconTopPadding)
                     .then(
                         if (onClickRightIcon != null) {
                             Modifier.clickable(hasRipple = false) { onClickRightIcon() }
