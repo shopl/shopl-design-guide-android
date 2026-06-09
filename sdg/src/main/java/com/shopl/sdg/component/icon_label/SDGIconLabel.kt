@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,16 +15,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing1
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
-import com.shopl.sdg_common.util.textCenterAlignment
 
 /**
  * SDG - Icon Label
@@ -121,11 +121,8 @@ private fun SDGIconLabelContent(
     maxLines: Int = Int.MAX_VALUE,
     isFillMaxWidth: Boolean = true,
 ) {
-    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
-    val alignment = remember(textLayoutResult) {
-        textCenterAlignment(textLayoutResult)
-    }
-
+    var isTextMultiline by remember { mutableStateOf(false) }
+    val iconAlignment = if (isTextMultiline) Alignment.Top else Alignment.CenterVertically
     val typography = getIconLabelTypography(type = type, size = size)
 
     Row(
@@ -141,8 +138,9 @@ private fun SDGIconLabelContent(
         if (leftIconResId != null) {
             SDGImage(
                 modifier = Modifier
-                    .align(alignment)
+                    .align(iconAlignment)
                     .size(14.dp)
+                    .padding(top = Spacing1)
                     .then(
                         if (onClickLeftIcon != null) {
                             Modifier.clickable(hasRipple = false) { onClickLeftIcon() }
@@ -163,12 +161,12 @@ private fun SDGIconLabelContent(
             typography = typography,
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
-            onTextLayout = { textLayoutResult = it }
+            onTextLayout = { isTextMultiline = it.lineCount > 1 }
         )
         if (rightIconResId != null) {
             SDGImage(
                 modifier = Modifier
-                    .align(alignment)
+                    .align(iconAlignment)
                     .size(14.dp)
                     .then(
                         if (onClickRightIcon != null) {
