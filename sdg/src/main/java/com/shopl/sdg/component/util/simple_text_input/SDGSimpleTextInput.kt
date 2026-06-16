@@ -225,6 +225,8 @@ fun SDGSimpleTextInput(
     maxValue: Double? = null,
 ) {
     var isFocused by remember { mutableStateOf(false) }
+    val minBigDecimal = remember(minValue) { minValue?.toBigDecimal() }
+    val maxBigDecimal = remember(maxValue) { maxValue?.toBigDecimal() }
 
     val inputBgColor = when (inputState) {
         InputState.Disable,
@@ -248,10 +250,11 @@ fun SDGSimpleTextInput(
 
     val displayValue = decimalFormat?.let { formatter ->
         val numberValue = input.text.toBigDecimalOrNull()
-        if (numberValue == null ||
-            (input.text.endsWith(formatter.decimalFormatSymbols.decimalSeparator)
-                    && input.text.count { it == formatter.decimalFormatSymbols.decimalSeparator } == 1)
-        ) {
+        val shouldKeepInput = numberValue == null ||
+                input.text.isTypingDecimalSeparator(formatter) ||
+                input.text.shouldKeepFractionInput(formatter)
+
+        if (shouldKeepInput) {
             input
         } else {
             val originValueLength = input.text.length
@@ -325,16 +328,14 @@ fun SDGSimpleTextInput(
                             value.selection
                         }
 
-                        if (minValue != null && maxValue != null) {
-                            if (parsedBigDecimal != null && parsedBigDecimal in minValue.toBigDecimal()..maxValue.toBigDecimal()) {
-                                onInputChange(
-                                    value.copy(
-                                        text = cleanText,
-                                        selection = selection,
-                                    )
-                                )
-                            }
-                        } else {
+                        if (parsedBigDecimal == null) {
+                            return@onSuccess
+                        }
+
+                        val isInRange = (minBigDecimal == null || parsedBigDecimal >= minBigDecimal) &&
+                                (maxBigDecimal == null || parsedBigDecimal <= maxBigDecimal)
+
+                        if (isInRange) {
                             onInputChange(
                                 value.copy(
                                     text = cleanText,
@@ -439,6 +440,21 @@ fun SDGSimpleTextInput(
     )
 }
 
+private fun String.isTypingDecimalSeparator(formatter: DecimalFormat): Boolean {
+    val decimalSeparator = formatter.decimalFormatSymbols.decimalSeparator
+    return endsWith(decimalSeparator) && count { it == decimalSeparator } == 1
+}
+
+private fun String.shouldKeepFractionInput(formatter: DecimalFormat): Boolean {
+    val decimalSeparator = formatter.decimalFormatSymbols.decimalSeparator
+    if (formatter.maximumFractionDigits <= 0 || !contains(decimalSeparator)) return false
+
+    val fraction = substringAfter(decimalSeparator)
+    return fraction.isNotEmpty() &&
+            fraction.length <= formatter.maximumFractionDigits &&
+            fraction.last() == '0'
+}
+
 @Preview
 @Composable
 private fun PreviewSDGSimpleTextInput() {
@@ -460,10 +476,10 @@ private fun PreviewSDGSimpleTextInput() {
             input = numberInput,
             hint = "금액을 입력하세요",
             inputState = InputState.Enable,
-            decimalFormat = DecimalFormat("#,###"),
-            minValue = 1000.0,
-            maxValue = 1000000.0,
-            onInputChange = { numberInput = it }
+            decimalFormat = DecimalFormat("###,###.###"),
+            maxValue = 100000.0,
+            onInputChange = { numberInput = it },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
     }
 }
