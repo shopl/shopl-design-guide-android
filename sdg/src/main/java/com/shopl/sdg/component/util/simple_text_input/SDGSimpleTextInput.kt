@@ -225,6 +225,8 @@ fun SDGSimpleTextInput(
     maxValue: Double? = null,
 ) {
     var isFocused by remember { mutableStateOf(false) }
+    val minBigDecimal = remember(minValue) { minValue?.toBigDecimal() }
+    val maxBigDecimal = remember(maxValue) { maxValue?.toBigDecimal() }
 
     val inputBgColor = when (inputState) {
         InputState.Disable,
@@ -330,8 +332,8 @@ fun SDGSimpleTextInput(
                             return@onSuccess
                         }
 
-                        val isInRange = (minValue == null || parsedBigDecimal >= minValue.toBigDecimal()) &&
-                                (maxValue == null || parsedBigDecimal <= maxValue.toBigDecimal())
+                        val isInRange = (minBigDecimal == null || parsedBigDecimal >= minBigDecimal) &&
+                                (maxBigDecimal == null || parsedBigDecimal <= maxBigDecimal)
 
                         if (isInRange) {
                             onInputChange(
