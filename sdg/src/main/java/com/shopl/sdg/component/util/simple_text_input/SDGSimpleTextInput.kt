@@ -475,9 +475,21 @@ private fun String.formatPartialDecimalValue(formatter: DecimalFormat): String? 
     val decimalSeparator = formatter.decimalFormatSymbols.decimalSeparator
     val integer = substringBefore(".")
     val fraction = substringAfter(".")
-    val integerValue = integer.toBigDecimalOrNull() ?: return null
+    val isNegative = integer.startsWith("-")
+    val integerValue = if (integer.isEmpty() || integer == "-") {
+        0.toBigDecimal()
+    } else {
+        integer.toBigDecimalOrNull() ?: return null
+    }
 
-    return formatter.format(integerValue) + decimalSeparator + fraction
+    val formattedInteger = formatter.format(integerValue)
+    val displayInteger = if (isNegative && !formattedInteger.startsWith("-")) {
+        "-$formattedInteger"
+    } else {
+        formattedInteger
+    }
+
+    return displayInteger + decimalSeparator + fraction
 }
 
 private fun String.isTypingNormalizedDecimalSeparator(): Boolean {
