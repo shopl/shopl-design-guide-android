@@ -41,6 +41,8 @@ import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 /**
  * [SDGSimpleTextInput]
@@ -249,13 +251,19 @@ fun SDGSimpleTextInput(
     }
 
     val displayValue = decimalFormat?.let { formatter ->
-        val numberValue = input.text.toBigDecimalOrNull()
-        val shouldKeepInput = numberValue == null ||
-                input.text.isTypingDecimalSeparator(formatter) ||
-                input.text.shouldKeepFractionInput(formatter)
+        val numberValue = input.text.removeSuffix(".").toBigDecimalOrNull()
+        val partialDecimalValue = input.text.formatPartialDecimalValue(formatter)
+        val shouldKeepInput = numberValue == null
 
         if (shouldKeepInput) {
             input
+        } else if (partialDecimalValue != null) {
+            val originValueLength = input.text.length
+            val displayValueLength = partialDecimalValue.length
+            input.copy(
+                text = partialDecimalValue,
+                selection = TextRange(input.selection.end + (displayValueLength - originValueLength))
+            )
         } else {
             val originValueLength = input.text.length
             val formattedValue = formatter.format(numberValue)
@@ -310,20 +318,28 @@ fun SDGSimpleTextInput(
                     }
                     formatter.parse(valueText)
                 }.onSuccess { parsedValue ->
+                    val normalizedText = value.text.toNormalizedNumberText(formatter)
+                    if (!normalizedText.isValidFractionLength(formatter)) {
+                        return@onSuccess
+                    }
+
                     if (parsedValue == null
                         || (value.text.endsWith(decimalSeparator)
                                 && value.text.count { it == decimalSeparator } == 1)
                     ) {
-                        onInputChange(value)
+                        onInputChange(
+                            value.copy(
+                                text = normalizedText,
+                                selection = TextRange(normalizedText.length),
+                            )
+                        )
                     } else {
-                        val cleanText = value.text
-                            .replace(oldValue = groupingSeparator.toString(), newValue = "")
-                        val parsedBigDecimal = cleanText
-                            .removeSuffix(suffix = decimalSeparator.toString())
+                        val parsedBigDecimal = normalizedText
+                            .removeSuffix(suffix = ".")
                             .toBigDecimalOrNull()
 
-                        val selection = if (cleanText.length != value.text.length) {
-                            TextRange(cleanText.length)
+                        val selection = if (normalizedText.length != value.text.length) {
+                            TextRange(normalizedText.length)
                         } else {
                             value.selection
                         }
@@ -332,13 +348,14 @@ fun SDGSimpleTextInput(
                             return@onSuccess
                         }
 
-                        val isInRange = (minBigDecimal == null || parsedBigDecimal >= minBigDecimal) &&
-                                (maxBigDecimal == null || parsedBigDecimal <= maxBigDecimal)
+                        val isInRange =
+                            (minBigDecimal == null || parsedBigDecimal >= minBigDecimal) &&
+                                    (maxBigDecimal == null || parsedBigDecimal <= maxBigDecimal)
 
                         if (isInRange) {
                             onInputChange(
                                 value.copy(
-                                    text = cleanText,
+                                    text = normalizedText,
                                     selection = selection,
                                 )
                             )
@@ -346,7 +363,8 @@ fun SDGSimpleTextInput(
                     }
                 }
                     .onFailure {
-                        val isFilteredValueEmpty = value.text.none { it.isDigit() || it == decimalSeparator || it == '-' }
+                        val isFilteredValueEmpty =
+                            value.text.none { it.isDigit() || it == decimalSeparator || it == '-' }
                         if (isFilteredValueEmpty) {
                             onInputChange(value.copy(text = ""))
                         } else {
@@ -445,11 +463,38 @@ private fun String.isTypingDecimalSeparator(formatter: DecimalFormat): Boolean {
     return endsWith(decimalSeparator) && count { it == decimalSeparator } == 1
 }
 
-private fun String.shouldKeepFractionInput(formatter: DecimalFormat): Boolean {
-    val decimalSeparator = formatter.decimalFormatSymbols.decimalSeparator
-    if (formatter.maximumFractionDigits <= 0 || !contains(decimalSeparator)) return false
+private fun String.toNormalizedNumberText(formatter: DecimalFormat) = replace(
+    oldValue = formatter.decimalFormatSymbols.groupingSeparator.toString(),
+    newValue = ""
+)
+    .replace(oldValue = formatter.decimalFormatSymbols.decimalSeparator.toString(), newValue = ".")
 
-    val fraction = substringAfter(decimalSeparator)
+private fun String.formatPartialDecimalValue(formatter: DecimalFormat): String? {
+    if (!isTypingNormalizedDecimalSeparator() && !shouldKeepNormalizedFractionInput(formatter)) return null
+
+    val decimalSeparator = formatter.decimalFormatSymbols.decimalSeparator
+    val integer = substringBefore(".")
+    val fraction = substringAfter(".")
+    val integerValue = integer.toBigDecimalOrNull() ?: return null
+
+    return formatter.format(integerValue) + decimalSeparator + fraction
+}
+
+private fun String.isTypingNormalizedDecimalSeparator(): Boolean {
+    return endsWith(".") && count { it == '.' } == 1
+}
+
+private fun String.isValidFractionLength(formatter: DecimalFormat): Boolean {
+    if (!contains(".")) return true
+
+    val fraction = substringAfter(".")
+    return fraction.length <= formatter.maximumFractionDigits
+}
+
+private fun String.shouldKeepNormalizedFractionInput(formatter: DecimalFormat): Boolean {
+    if (formatter.maximumFractionDigits <= 0 || !contains(".")) return false
+
+    val fraction = substringAfter(".")
     return fraction.isNotEmpty() &&
             fraction.length <= formatter.maximumFractionDigits &&
             fraction.last() == '0'
@@ -470,16 +515,46 @@ private fun PreviewSDGSimpleTextInput() {
             onInputChange = { input = it }
         )
 
+
+        val defaultDecimalFormat = DecimalFormat(
+            "###,###.###",
+        )
         var numberInput by remember { mutableStateOf(TextFieldValue("")) }
         SDGSimpleTextInput(
             type = SDGSimpleTextInputType.LINE,
             input = numberInput,
-            hint = "금액을 입력하세요",
+            hint = "금액을 입력하세요(Default Decimal Format)",
             inputState = InputState.Enable,
-            decimalFormat = DecimalFormat("###,###.###"),
+            decimalFormat = defaultDecimalFormat,
             maxValue = 100000.0,
             onInputChange = { numberInput = it },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+        SDGText(
+            text = "Origin Value : ${numberInput.text}",
+            textColor = SDGColor.Neutral700,
+            typography = SDGTypography.Body3R
+        )
+
+        val indonesiaDecimalFormat = DecimalFormat(
+            "###,###.###",
+            DecimalFormatSymbols.getInstance(Locale("id", "ID"))
+        )
+        var indonesiaNumberInput by remember { mutableStateOf(TextFieldValue("")) }
+        SDGSimpleTextInput(
+            type = SDGSimpleTextInputType.LINE,
+            input = indonesiaNumberInput,
+            hint = "금액을 입력하세요(Indonesia Decimal Format)",
+            inputState = InputState.Enable,
+            decimalFormat = indonesiaDecimalFormat,
+            maxValue = 100000.0,
+            onInputChange = { indonesiaNumberInput = it },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+        SDGText(
+            text = "Origin Value : ${indonesiaNumberInput.text}",
+            textColor = SDGColor.Neutral700,
+            typography = SDGTypography.Body3R
         )
     }
 }
