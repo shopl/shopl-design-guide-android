@@ -498,6 +498,7 @@ private fun String.isTypingNormalizedDecimalSeparator(): Boolean {
 
 private fun String.isValidFractionLength(formatter: DecimalFormat): Boolean {
     if (!contains(".")) return true
+    if (formatter.maximumFractionDigits <= 0) return false
 
     val fraction = substringAfter(".")
     return fraction.length <= formatter.maximumFractionDigits
