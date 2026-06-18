@@ -35,10 +35,10 @@ sealed class SDGBoxButtonSize(
     data object Small : SDGBoxButtonSize(
         height = 32.dp,
         horizontalSpacing = Spacing10,
-        iconGap = 2.dp,
+        iconGap = 3.dp,
         iconSize = 14.dp,
         shape = SDGCornerRadius.BoxRadius.Radius8,
-        typography = SDGTypography.Body3R,
+        typography = SDGTypography.Body2R,
     ) {
         override val sizeName = "Small"
     }

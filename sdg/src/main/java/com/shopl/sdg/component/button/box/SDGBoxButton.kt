@@ -25,6 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.button.box.preview.SDGBoxButtonPreviewParameter
+import com.shopl.sdg.component.button.box.preview.SDGBoxButtonPreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.SDGImage
@@ -32,6 +34,8 @@ import com.shopl.sdg_common.ui.components.SDGText
 
 /**
  * SDG - Button - Box Button
+ *
+ * @version 2.1.35
  *
  * 화면의 내용 영역에 배치하여 사용하는 일반적인 사각 형태의 버튼 컴포넌트
  *
