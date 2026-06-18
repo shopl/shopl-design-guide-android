@@ -7,6 +7,9 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing10
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing3
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing6
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 
@@ -24,7 +27,7 @@ sealed class SDGBoxButtonSize(
     data object Medium : SDGBoxButtonSize(
         height = 42.dp,
         horizontalSpacing = Spacing16,
-        iconGap = 4.dp,
+        iconGap = Spacing4,
         iconSize = 16.dp,
         shape = SDGCornerRadius.BoxRadius.Radius12,
         typography = SDGTypography.Body2R,
@@ -35,7 +38,7 @@ sealed class SDGBoxButtonSize(
     data object Small : SDGBoxButtonSize(
         height = 32.dp,
         horizontalSpacing = Spacing10,
-        iconGap = 3.dp,
+        iconGap = Spacing3,
         iconSize = 14.dp,
         shape = SDGCornerRadius.BoxRadius.Radius8,
         typography = SDGTypography.Body2R,
@@ -46,7 +49,7 @@ sealed class SDGBoxButtonSize(
     data object XSmall : SDGBoxButtonSize(
         height = 20.dp,
         horizontalSpacing = Spacing6,
-        iconGap = 2.dp,
+        iconGap = Spacing2,
         iconSize = 14.dp,
         shape = SDGCornerRadius.BoxRadius.Radius6,
         typography = SDGTypography.Body3R,
