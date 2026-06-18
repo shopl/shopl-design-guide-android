@@ -28,10 +28,12 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
-private const val MAX_SHEET_HEIGHT_RATIO = 0.7f
+private const val MAX_SHEET_HEIGHT_RATIO = 0.8f
 
 /**
  * SDG - Template - Popup - Bottom Popup
+ *
+ * @version 2.1.34
  *
  * 앱 콘텐츠 앞 하단에 표시되며, 태스크 수행을 위한 콘텐츠를 포함하는 모달형 템플릿
  *
@@ -127,7 +129,7 @@ private fun PreviewSDGBottomPopup() {
         onDismissRequest = {},
         body = {
             SDGText(
-                text = "본문 영역입니다. 70% 높이까지 확장 후 스크롤됩니다.",
+                text = "본문 영역입니다. 80% 높이까지 확장 후 스크롤됩니다.",
                 typography = SDGTypography.Body1R,
                 textColor = SDGColor.Neutral600
             )
