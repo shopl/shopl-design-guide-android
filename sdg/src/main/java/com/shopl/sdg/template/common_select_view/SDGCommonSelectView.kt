@@ -133,12 +133,19 @@ fun SDGCommonSelectView(
                 }
 
                 is SDGCommonSelectViewState.NoResult -> {
-                    SDGBasicEmpty(
-                        iconResId = state.iconResId,
-                        description = state.description,
-                        marginTop = SDGSpacing.Spacing60
-
-                    )
+                    if(state.descriptionResId != null) {
+                        SDGBasicEmpty(
+                            iconResId = state.iconResId,
+                            descResId = state.descriptionResId,
+                            marginTop = SDGSpacing.Spacing60
+                        )
+                    } else {
+                        SDGBasicEmpty(
+                            iconResId = state.iconResId,
+                            description = state.description,
+                            marginTop = SDGSpacing.Spacing60
+                        )
+                    }
                 }
             }
         }
