@@ -54,7 +54,7 @@ import kotlinx.collections.immutable.persistentListOf
  * 네비게이션, 검색, 선택 아이템 바디로 구성된 일반 Select View.
  * 가운데 아이템 영역 전체는 [content] 슬롯으로 외부에서 주입한다.
  *
- * @param title 네비게이션 타이틀
+ * @param navigationTitle 네비게이션 타이틀
  * @param searchInput 검색어 입력값
  * @param searchHint 검색어 힌트
  * @param state 상태(기본 / 데이터 없음)
@@ -67,7 +67,7 @@ import kotlinx.collections.immutable.persistentListOf
  */
 @Composable
 fun SDGCommonSelectView(
-    title: String,
+    navigationTitle: String,
     searchInput: String,
     searchHint: String,
     state: SDGCommonSelectViewState = SDGCommonSelectViewState.Default,
@@ -80,7 +80,7 @@ fun SDGCommonSelectView(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             SDGBasicNavi(
-                title = title,
+                title = navigationTitle,
                 backgroundColor = SDGColor.Neutral100,
                 leftIcon = null,
                 rightIcons = persistentListOf(
@@ -133,7 +133,7 @@ fun SDGCommonSelectView(
                 }
 
                 is SDGCommonSelectViewState.NoResult -> {
-                    if(state.descriptionResId != null) {
+                    if (state.descriptionResId != null) {
                         SDGBasicEmpty(
                             iconResId = state.iconResId,
                             descResId = state.descriptionResId,
@@ -186,7 +186,7 @@ private fun PreviewSDGCommonSelectView(
     var searchInput by remember { mutableStateOf(params.searchInput) }
 
     SDGCommonSelectView(
-        title = params.title,
+        navigationTitle = params.title,
         searchInput = searchInput,
         searchHint = "검색",
         state = params.state,
