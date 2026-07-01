@@ -45,6 +45,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
@@ -293,7 +294,7 @@ private fun SDGPopupContent(
             .widthIn(max = (LocalConfiguration.current.screenWidthDp - 40).dp)
             .background(
                 color = SDGColor.Neutral0,
-                shape = RoundedCornerShape(20.dp)
+                shape = RoundedCornerShape(SDGCornerRadius.Radius20)
             )
     ) {
         Box(
