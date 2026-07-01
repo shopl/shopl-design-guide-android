@@ -79,7 +79,7 @@ fun SDGCenterPopup(
 
         val containerSize = LocalWindowInfo.current.containerSize
         val density = LocalDensity.current.density
-        val screenHeight = containerSize.height.dp / density
+        val screenHeight = (containerSize.height / density).dp
 
         SDGCenterPopupContent(
             buttonOption = buttonOption,
