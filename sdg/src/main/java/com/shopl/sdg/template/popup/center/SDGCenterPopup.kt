@@ -83,7 +83,7 @@ fun SDGCenterPopup(
 
         SDGCenterPopupContent(
             buttonOption = buttonOption,
-            maxHeight = screenHeight - 160.dp,
+            maxHeight = (screenHeight - 160.dp).coerceAtLeast(0.dp),
             title = title,
             titleAlignment = titleAlignment,
             body = body
