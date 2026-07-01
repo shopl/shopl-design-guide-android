@@ -1,5 +1,6 @@
 package com.shopl.sdg.template.popup.list.anatomy
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,14 +20,18 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.shopl.sdg.template.util.list_popup_item_ui_state.SDGListPopupItemUiState
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.util.SDGPopupPreviewContainer
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -46,11 +51,21 @@ fun SDGListBottomSheet(
         skipPartiallyExpanded = true
     )
 ) {
+    if (LocalInspectionMode.current) {
+        SDGListBottomSheetInspectionPreview(
+            items = items,
+            onSelected = onSelected,
+            onDismissRequest = onDismissRequest,
+        )
+        return
+    }
+
     val windowInfo = LocalWindowInfo.current
     val density = LocalDensity.current
     val maxHeight = with(density) {
         (windowInfo.containerSize.height * 0.7f).toDp()
     }
+
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
@@ -64,21 +79,33 @@ fun SDGListBottomSheet(
         dragHandle = null,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(
+        SDGListBottomSheetContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = maxHeight)
-                .navigationBarsPadding()
-        ) {
-            SDGSelectableTextList(
-                items = items,
-                onSelected = onSelected,
-                onDismissRequest = onDismissRequest
-            )
-        }
+                .navigationBarsPadding(),
+            items = items,
+            onSelected = onSelected,
+            onDismissRequest = onDismissRequest,
+        )
     }
 }
 
+@Composable
+private fun SDGListBottomSheetContent(
+    modifier: Modifier,
+    items: PersistentList<SDGListPopupItemUiState>,
+    onSelected: (SDGListPopupItemUiState) -> Unit,
+    onDismissRequest: () -> Unit,
+) {
+    Column(modifier = modifier) {
+        SDGSelectableTextList(
+            items = items,
+            onSelected = onSelected,
+            onDismissRequest = onDismissRequest
+        )
+    }
+}
 
 @Composable
 private fun SDGSelectableTextList(
@@ -109,6 +136,45 @@ private fun SDGSelectableTextList(
                 )
             }
         }
+    }
+}
+
+/**
+ * Compose Preview에서 ModalBottomSheet 대신 List Bottom Sheet 콘텐츠를 인라인으로 렌더링합니다.
+ */
+@Composable
+private fun SDGListBottomSheetInspectionPreview(
+    items: PersistentList<SDGListPopupItemUiState>,
+    onSelected: (SDGListPopupItemUiState) -> Unit,
+    onDismissRequest: () -> Unit,
+) {
+    val windowInfo = LocalWindowInfo.current
+    val density = LocalDensity.current
+    val previewMaxHeight = with(density) {
+        if (windowInfo.containerSize.height == 0) {
+            448.dp
+        } else {
+            (windowInfo.containerSize.height * 0.7f).toDp()
+        }
+    }
+
+    SDGPopupPreviewContainer(contentAlignment = Alignment.BottomCenter) {
+        SDGListBottomSheetContent(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = previewMaxHeight)
+                .navigationBarsPadding()
+                .background(
+                    color = SDGColor.Neutral0,
+                    shape = RoundedCornerShape(
+                        topStart = SDGCornerRadius.Radius20,
+                        topEnd = SDGCornerRadius.Radius20
+                    )
+                ),
+            items = items,
+            onSelected = onSelected,
+            onDismissRequest = onDismissRequest,
+        )
     }
 }
 

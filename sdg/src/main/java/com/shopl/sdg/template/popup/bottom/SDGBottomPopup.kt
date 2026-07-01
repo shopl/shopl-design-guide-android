@@ -1,5 +1,6 @@
 package com.shopl.sdg.template.popup.bottom
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,8 +14,10 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +30,7 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing28
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+import com.shopl.sdg_common.util.SDGPopupPreviewContainer
 
 private const val MAX_SHEET_HEIGHT_RATIO = 0.8f
 
@@ -57,6 +61,16 @@ fun SDGBottomPopup(
     sheetState: SheetState = rememberModalBottomSheetState(),
     body: @Composable (ColumnScope.() -> Unit),
 ) {
+    if (LocalInspectionMode.current) {
+        SDGBottomPopupInspectionPreview(
+            buttonOption = buttonOption,
+            title = title,
+            titleAlignment = titleAlignment,
+            body = body,
+        )
+        return
+    }
+
     val containerSize = LocalWindowInfo.current.containerSize
     val density = LocalDensity.current.density
     val screenHeight = (containerSize.height / density).dp
@@ -73,43 +87,97 @@ fun SDGBottomPopup(
         scrimColor = SDGColor.Neutral900_a40,
         dragHandle = null,
     ) {
-        val bodyTopPadding = if (title.isNullOrBlank()) Spacing24 else Spacing12
+        SDGBottomPopupContent(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = maxSheetHeight),
+            buttonOption = buttonOption,
+            title = title,
+            titleAlignment = titleAlignment,
+            body = body,
+        )
+    }
+}
+
+@Composable
+private fun SDGBottomPopupContent(
+    modifier: Modifier,
+    buttonOption: SDGBottomPopupButtonOption,
+    title: String?,
+    titleAlignment: TextAlign,
+    body: @Composable (ColumnScope.() -> Unit),
+) {
+    val bodyTopPadding = if (title.isNullOrBlank()) Spacing24 else Spacing12
+
+    Column(modifier = modifier) {
+        if (!title.isNullOrBlank()) {
+            SDGText(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = Spacing24, start = Spacing24, end = Spacing24),
+                text = title,
+                typography = SDGTypography.Title2SB,
+                textColor = SDGColor.Neutral700,
+                textAlign = titleAlignment,
+            )
+        }
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(max = maxSheetHeight)
-        ) {
-            if (!title.isNullOrBlank()) {
-                SDGText(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = Spacing24, start = Spacing24, end = Spacing24),
-                    text = title,
-                    typography = SDGTypography.Title2SB,
-                    textColor = SDGColor.Neutral700,
-                    textAlign = titleAlignment,
+                .weight(weight = 1f, fill = false)
+                .padding(top = bodyTopPadding)
+                .verticalScroll(state = rememberScrollState())
+                .padding(
+                    top = Spacing4,
+                    start = Spacing24,
+                    end = Spacing24,
+                    bottom = Spacing28,
                 )
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(weight = 1f, fill = false)
-                    .padding(top = bodyTopPadding)
-                    .verticalScroll(state = rememberScrollState())
-                    .padding(
-                        top = Spacing4,
-                        start = Spacing24,
-                        end = Spacing24,
-                        bottom = Spacing28,
-                    )
-            ) {
-                body()
-            }
-
-            SDGBottomPopupButton(option = buttonOption)
+        ) {
+            body()
         }
+
+        SDGBottomPopupButton(option = buttonOption)
+    }
+}
+
+/**
+ * Compose Preview에서 ModalBottomSheet 대신 Bottom Popup 콘텐츠를 인라인으로 렌더링합니다.
+ */
+@Composable
+private fun SDGBottomPopupInspectionPreview(
+    buttonOption: SDGBottomPopupButtonOption,
+    title: String? = null,
+    titleAlignment: TextAlign = TextAlign.Left,
+    body: @Composable (ColumnScope.() -> Unit),
+) {
+    val containerSize = LocalWindowInfo.current.containerSize
+    val density = LocalDensity.current.density
+    val previewScreenHeight = if (containerSize.height == 0) {
+        640.dp
+    } else {
+        (containerSize.height / density).dp
+    }
+    val previewMaxSheetHeight = previewScreenHeight * MAX_SHEET_HEIGHT_RATIO
+
+    SDGPopupPreviewContainer(contentAlignment = Alignment.BottomCenter) {
+        SDGBottomPopupContent(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = previewMaxSheetHeight)
+                .background(
+                    color = SDGColor.Neutral0,
+                    shape = RoundedCornerShape(
+                        topStart = SDGCornerRadius.Radius20,
+                        topEnd = SDGCornerRadius.Radius20
+                    )
+                ),
+            buttonOption = buttonOption,
+            title = title,
+            titleAlignment = titleAlignment,
+            body = body,
+        )
     }
 }
 

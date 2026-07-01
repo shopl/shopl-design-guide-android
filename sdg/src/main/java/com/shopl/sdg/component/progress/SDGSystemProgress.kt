@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -46,23 +47,41 @@ fun SDGSystemProgress(
 
 @Composable
 fun SDGSystemProgressPopup() {
+    if (LocalInspectionMode.current) {
+        SDGSystemProgressPopupInspectionPreview()
+        return
+    }
+
     Dialog(
         onDismissRequest = { },
         DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
     ) {
         (LocalView.current.parent as? DialogWindowProvider)?.window?.setDimAmount(0f)
 
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(SDGColor.Neutral0_a60)
-        ) {
-            SDGSystemProgress(
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
+        SDGSystemProgressPopupContent()
     }
+}
+
+@Composable
+private fun SDGSystemProgressPopupContent() {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(SDGColor.Neutral0_a60)
+    ) {
+        SDGSystemProgress(
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+/**
+ * Compose Preview에서 Dialog 대신 System Progress Popup 콘텐츠를 인라인으로 렌더링합니다.
+ */
+@Composable
+private fun SDGSystemProgressPopupInspectionPreview() {
+    SDGSystemProgressPopupContent()
 }
 
 @Preview(name = "interactive mode로 확인")
