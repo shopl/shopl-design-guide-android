@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -44,10 +45,12 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
 import com.shopl.sdg_common.ui.components.SDGText
+import com.shopl.sdg_common.util.SDGPopupPreviewContainer
 import com.shopl.sdg_common.util.textCenterAlignment
 import com.shopl.sdg_resource.R
 
@@ -220,6 +223,22 @@ fun SDGPopup(
     contentPadding: PaddingValues = PaddingValues(horizontal = 28.dp, vertical = 32.dp),
     content: @Composable () -> Unit,
 ) {
+    if (LocalInspectionMode.current) {
+        SDGPopupInspectionPreview(
+            modifier = modifier,
+            singleButton = singleButton,
+            isConfirmEnable = isConfirmEnable,
+            confirmLabelColor = confirmLabelColor,
+            cancelLabel = cancelLabel,
+            confirmLabel = confirmLabel,
+            onClickCancel = onClickCancel,
+            onClickConfirm = onClickConfirm,
+            contentPadding = contentPadding,
+            content = content,
+        )
+        return
+    }
+
     Dialog(
         onDismissRequest = {
             onDismissRequest?.let {
@@ -240,33 +259,60 @@ fun SDGPopup(
     ) {
         (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0.4f)
 
-        Column(
-            modifier = modifier
-                .padding(horizontal = 20.dp)
-                .heightIn(max = (LocalConfiguration.current.screenHeightDp - 120).dp)
-                .widthIn(max = (LocalConfiguration.current.screenWidthDp - 40).dp)
-                .background(
-                    color = SDGColor.Neutral0,
-                    shape = RoundedCornerShape(20.dp)
-                )
-        ) {
-            Box(
-                modifier = Modifier
-                    .weight(1f, false)
-                    .padding(contentPadding)
-            ) {
-                content.invoke()
-            }
-            SDGPopupBottomButton(
-                singleButton = singleButton,
-                cancelLabel = cancelLabel,
-                confirmLabel = confirmLabel,
-                onClickCancel = onClickCancel,
-                onClickConfirm = onClickConfirm,
-                isConfirmEnable = isConfirmEnable,
-                confirmLabelColor = confirmLabelColor
+        SDGPopupContent(
+            modifier = modifier,
+            singleButton = singleButton,
+            isConfirmEnable = isConfirmEnable,
+            confirmLabelColor = confirmLabelColor,
+            cancelLabel = cancelLabel,
+            confirmLabel = confirmLabel,
+            onClickCancel = onClickCancel,
+            onClickConfirm = onClickConfirm,
+            contentPadding = contentPadding,
+            content = content,
+        )
+    }
+}
+
+@Composable
+private fun SDGPopupContent(
+    modifier: Modifier = Modifier,
+    singleButton: Boolean,
+    isConfirmEnable: Boolean,
+    confirmLabelColor: Color,
+    cancelLabel: String,
+    confirmLabel: String,
+    onClickCancel: (() -> Unit)?,
+    onClickConfirm: () -> Unit,
+    contentPadding: PaddingValues,
+    content: @Composable () -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .padding(horizontal = 20.dp)
+            .heightIn(max = (LocalConfiguration.current.screenHeightDp - 120).dp)
+            .widthIn(max = (LocalConfiguration.current.screenWidthDp - 40).dp)
+            .background(
+                color = SDGColor.Neutral0,
+                shape = RoundedCornerShape(SDGCornerRadius.Radius20)
             )
+    ) {
+        Box(
+            modifier = Modifier
+                .weight(1f, false)
+                .padding(contentPadding)
+        ) {
+            content.invoke()
         }
+        SDGPopupBottomButton(
+            singleButton = singleButton,
+            cancelLabel = cancelLabel,
+            confirmLabel = confirmLabel,
+            onClickCancel = onClickCancel,
+            onClickConfirm = onClickConfirm,
+            isConfirmEnable = isConfirmEnable,
+            confirmLabelColor = confirmLabelColor
+        )
     }
 }
 
@@ -427,6 +473,38 @@ fun SDGPopupBodyBullet(
             fontSize = fontSize,
             typeface = typeface,
             onTextLayout = { textLayoutResult = it }
+        )
+    }
+}
+
+/**
+ * Compose Preview에서 Dialog 대신 Popup 콘텐츠를 인라인으로 렌더링합니다.
+ */
+@Composable
+private fun SDGPopupInspectionPreview(
+    modifier: Modifier = Modifier,
+    singleButton: Boolean,
+    isConfirmEnable: Boolean,
+    confirmLabelColor: Color,
+    cancelLabel: String,
+    confirmLabel: String,
+    onClickCancel: (() -> Unit)?,
+    onClickConfirm: () -> Unit,
+    contentPadding: PaddingValues,
+    content: @Composable () -> Unit,
+) {
+    SDGPopupPreviewContainer(contentAlignment = Alignment.Center) {
+        SDGPopupContent(
+            modifier = modifier,
+            singleButton = singleButton,
+            isConfirmEnable = isConfirmEnable,
+            confirmLabelColor = confirmLabelColor,
+            cancelLabel = cancelLabel,
+            confirmLabel = confirmLabel,
+            onClickCancel = onClickCancel,
+            onClickConfirm = onClickConfirm,
+            contentPadding = contentPadding,
+            content = content,
         )
     }
 }

@@ -11,8 +11,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.style.TextAlign
@@ -34,6 +36,7 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing24
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+import com.shopl.sdg_common.util.SDGPopupPreviewContainer
 
 /**
  * SDG - Popup - Center Popup
@@ -56,6 +59,17 @@ fun SDGCenterPopup(
     titleAlignment: TextAlign = TextAlign.Left,
     body: (LazyListScope.() -> Unit)?,
 ) {
+    if (LocalInspectionMode.current) {
+        SDGCenterPopupInspectionPreview(
+            buttonOption = buttonOption,
+            itemSpacing = itemSpacing,
+            title = title,
+            titleAlignment = titleAlignment,
+            body = body,
+        )
+        return
+    }
+
     Dialog(
         onDismissRequest = {
             when (buttonOption) {
@@ -79,45 +93,64 @@ fun SDGCenterPopup(
 
         val containerSize = LocalWindowInfo.current.containerSize
         val density = LocalDensity.current.density
-        val screenHeight = containerSize.height.dp / density
+        val screenHeight = (containerSize.height / density).dp
 
-        Column(
-            modifier = Modifier
-                .padding(horizontal = SDGSpacing.Spacing20)
-                .heightIn(max = screenHeight - 160.dp)
-                .background(
-                    color = SDGColor.Neutral0,
-                    shape = RoundedCornerShape(SDGCornerRadius.Radius20)
-                )
-                .padding(top = Spacing24)
-        ) {
-            if (!title.isNullOrBlank()) {
-                SDGCenterPopupTitle(
-                    modifier = Modifier
-                        .padding(horizontal = Spacing24)
-                        .padding(bottom = if (body == null) Spacing24 else Spacing12),
-                    title = title,
-                    titleAlignment = titleAlignment
-                )
-            }
+        SDGCenterPopupContent(
+            buttonOption = buttonOption,
+            itemSpacing = itemSpacing,
+            maxHeight = (screenHeight - 160.dp).coerceAtLeast(0.dp),
+            title = title,
+            titleAlignment = titleAlignment,
+            body = body,
+        )
+    }
+}
 
-            body?.let {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(itemSpacing),
-                    modifier = Modifier
-                        .padding(horizontal = Spacing24)
-                        .weight(1f, false),
-                    contentPadding = PaddingValues(
-                        top = SDGSpacing.Spacing4,
-                        bottom = SDGSpacing.Spacing28
-                    )
-                ) {
-                    it()
-                }
-            }
-
-            SDGCenterPopupButton(buttonOption)
+@Composable
+private fun SDGCenterPopupContent(
+    buttonOption: SDGCenterPopupButtonOption,
+    itemSpacing: Dp,
+    maxHeight: Dp,
+    title: String? = null,
+    titleAlignment: TextAlign = TextAlign.Left,
+    body: (LazyListScope.() -> Unit)?,
+) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = SDGSpacing.Spacing20)
+            .heightIn(max = maxHeight)
+            .background(
+                color = SDGColor.Neutral0,
+                shape = RoundedCornerShape(SDGCornerRadius.Radius20)
+            )
+            .padding(top = Spacing24)
+    ) {
+        if (!title.isNullOrBlank()) {
+            SDGCenterPopupTitle(
+                modifier = Modifier
+                    .padding(horizontal = Spacing24)
+                    .padding(bottom = if (body == null) Spacing24 else Spacing12),
+                title = title,
+                titleAlignment = titleAlignment
+            )
         }
+
+        body?.let {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(itemSpacing),
+                modifier = Modifier
+                    .padding(horizontal = Spacing24)
+                    .weight(1f, false),
+                contentPadding = PaddingValues(
+                    top = SDGSpacing.Spacing4,
+                    bottom = SDGSpacing.Spacing28
+                )
+            ) {
+                it()
+            }
+        }
+
+        SDGCenterPopupButton(buttonOption)
     }
 }
 
@@ -134,6 +167,37 @@ private fun SDGCenterPopupTitle(
         textColor = SDGColor.Neutral700,
         textAlign = titleAlignment
     )
+}
+
+/**
+ * Compose Preview에서 Dialog 대신 Lazy 기반 Center Popup 콘텐츠를 인라인으로 렌더링합니다.
+ */
+@Composable
+private fun SDGCenterPopupInspectionPreview(
+    buttonOption: SDGCenterPopupButtonOption,
+    itemSpacing: Dp,
+    title: String? = null,
+    titleAlignment: TextAlign = TextAlign.Left,
+    body: (LazyListScope.() -> Unit)?,
+) {
+    val containerSize = LocalWindowInfo.current.containerSize
+    val density = LocalDensity.current.density
+    val screenHeight = if (containerSize.height == 0) {
+        640.dp
+    } else {
+        containerSize.height.dp / density
+    }
+
+    SDGPopupPreviewContainer(contentAlignment = Alignment.Center) {
+        SDGCenterPopupContent(
+            buttonOption = buttonOption,
+            itemSpacing = itemSpacing,
+            maxHeight = (screenHeight - 160.dp).coerceAtLeast(0.dp),
+            title = title,
+            titleAlignment = titleAlignment,
+            body = body,
+        )
+    }
 }
 
 @Preview

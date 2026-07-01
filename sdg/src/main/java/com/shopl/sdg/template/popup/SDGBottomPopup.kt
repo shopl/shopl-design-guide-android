@@ -1,5 +1,6 @@
 package com.shopl.sdg.template.popup
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,9 +14,11 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg_common.foundation.SDGColor
@@ -23,6 +26,7 @@ import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+import com.shopl.sdg_common.util.SDGPopupPreviewContainer
 import com.shopl.sdg_resource.R
 
 /**
@@ -59,6 +63,21 @@ fun SDGBottomPopup(
     isConfirmEnable: Boolean = true,
     confirmLabelColor: Color = SDGColor.Neutral700,
 ) {
+    if (LocalInspectionMode.current) {
+        SDGBottomPopupInspectionPreview(
+            singleButton = singleButton,
+            onClickConfirm = onClickConfirm,
+            content = content,
+            containerColor = containerColor,
+            cancelLabel = cancelLabel,
+            confirmLabel = confirmLabel,
+            onClickCancel = onClickCancel,
+            isConfirmEnable = isConfirmEnable,
+            confirmLabelColor = confirmLabelColor,
+        )
+        return
+    }
+
     ModalBottomSheet(
         onDismissRequest = onClickCancel ?: onClickConfirm,
         modifier = modifier,
@@ -72,34 +91,96 @@ fun SDGBottomPopup(
         scrimColor = SDGColor.Neutral900_a40,
         dragHandle = null,
     ) {
-        Column(
+        SDGBottomPopupContent(
+            modifier = Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding(),
+            singleButton = singleButton,
+            onClickConfirm = onClickConfirm,
+            content = content,
+            cancelLabel = cancelLabel,
+            confirmLabel = confirmLabel,
+            onClickCancel = onClickCancel,
+            isConfirmEnable = isConfirmEnable,
+            confirmLabelColor = confirmLabelColor,
+        )
+    }
+}
+
+@Composable
+private fun SDGBottomPopupContent(
+    modifier: Modifier,
+    singleButton: Boolean,
+    onClickConfirm: () -> Unit,
+    content: @Composable () -> Unit,
+    cancelLabel: String,
+    confirmLabel: String,
+    onClickCancel: (() -> Unit)?,
+    isConfirmEnable: Boolean,
+    confirmLabelColor: Color,
+) {
+    Column(modifier = modifier) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = SDGSpacing.Spacing24,
+                    top = SDGSpacing.Spacing24,
+                    end = SDGSpacing.Spacing24,
+                    bottom = SDGSpacing.Spacing28
+                ),
+        ) {
+            content()
+        }
+        SDGPopupBottomButton(
+            singleButton = singleButton,
+            cancelLabel = cancelLabel,
+            confirmLabel = confirmLabel,
+            onClickCancel = onClickCancel,
+            onClickConfirm = onClickConfirm,
+            isConfirmEnable = isConfirmEnable,
+            confirmLabelColor = confirmLabelColor,
+            isBottomDialog = true
+        )
+    }
+}
+
+/**
+ * Compose Preview에서 ModalBottomSheet 대신 Bottom Popup 콘텐츠를 인라인으로 렌더링합니다.
+ */
+@Composable
+private fun SDGBottomPopupInspectionPreview(
+    singleButton: Boolean,
+    onClickConfirm: () -> Unit,
+    content: @Composable () -> Unit,
+    containerColor: Color,
+    cancelLabel: String,
+    confirmLabel: String,
+    onClickCancel: (() -> Unit)?,
+    isConfirmEnable: Boolean,
+    confirmLabelColor: Color,
+) {
+    SDGPopupPreviewContainer(contentAlignment = Alignment.BottomCenter) {
+        SDGBottomPopupContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .navigationBarsPadding()
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = SDGSpacing.Spacing24,
-                        top = SDGSpacing.Spacing24,
-                        end = SDGSpacing.Spacing24,
-                        bottom = SDGSpacing.Spacing28
-                    ),
-            ) {
-                content()
-            }
-            SDGPopupBottomButton(
-                singleButton = singleButton,
-                cancelLabel = cancelLabel,
-                confirmLabel = confirmLabel,
-                onClickCancel = onClickCancel,
-                onClickConfirm = onClickConfirm,
-                isConfirmEnable = isConfirmEnable,
-                confirmLabelColor = confirmLabelColor,
-                isBottomDialog = true
-            )
-        }
+                .background(
+                    color = containerColor,
+                    shape = RoundedCornerShape(
+                        topStart = SDGCornerRadius.Radius20,
+                        topEnd = SDGCornerRadius.Radius20
+                    )
+                ),
+            singleButton = singleButton,
+            onClickConfirm = onClickConfirm,
+            content = content,
+            cancelLabel = cancelLabel,
+            confirmLabel = confirmLabel,
+            onClickCancel = onClickCancel,
+            isConfirmEnable = isConfirmEnable,
+            confirmLabelColor = confirmLabelColor,
+        )
     }
 }
 
