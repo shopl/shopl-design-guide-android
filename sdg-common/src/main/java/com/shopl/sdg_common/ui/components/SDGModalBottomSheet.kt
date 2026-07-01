@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.unit.dp
+import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.util.SDGPopupPreviewContainer
 
@@ -42,7 +42,10 @@ fun SDGModalBottomSheet(
         onDismissRequest = onDismissRequest,
         modifier = modifier,
         sheetState = sheetState,
-        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        shape = RoundedCornerShape(
+            topStart = SDGCornerRadius.Radius20,
+            topEnd = SDGCornerRadius.Radius20
+        ),
         containerColor = containerColor,
         contentColor = contentColor,
         scrimColor = SDGColor.Neutral900_a40,
@@ -83,7 +86,10 @@ private fun SDGModalBottomSheetInspectionPreview(
                 .navigationBarsPadding()
                 .background(
                     color = containerColor,
-                    shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+                    shape = RoundedCornerShape(
+                        topStart = SDGCornerRadius.Radius20,
+                        topEnd = SDGCornerRadius.Radius20
+                    )
                 ),
             content = content,
         )
