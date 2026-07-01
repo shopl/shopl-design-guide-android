@@ -20,15 +20,15 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
 /**
- * Compose Preview에서 팝업 콘텐츠를 인라인으로 렌더링하기 위한 host입니다.
+ * Compose Preview에서 팝업 콘텐츠를 인라인으로 렌더링하기 위한 container입니다.
  *
  * Preview에서는 [androidx.compose.ui.window.Dialog]나
  * Material BottomSheet가 별도 window/sheet로 표시되지 않아 콘텐츠를 확인하기 어렵습니다.
- * 이 host는 preview 전용 fallback으로 dim 배경과 정렬 위치만 제공하고,
+ * 이 container는 preview 전용 fallback으로 dim 배경과 정렬 위치만 제공하고,
  * 실제 팝업의 runtime window 동작은 대체하지 않습니다.
  */
 @Composable
-fun SDGPopupPreviewHost(
+fun SDGPopupPreviewContainer(
     contentAlignment: Alignment,
     modifier: Modifier = Modifier,
     withDim: Boolean = true,
@@ -51,8 +51,8 @@ fun SDGPopupPreviewHost(
 
 @Preview(name = "SDGModalBottomSheet", widthDp = 360, heightDp = 640)
 @Composable
-private fun PreviewSDGPopupPreviewHost() {
-    SDGPopupPreviewHost(contentAlignment = Alignment.BottomCenter) {
+private fun PreviewSDGPopupPreviewContainer() {
+    SDGPopupPreviewContainer(contentAlignment = Alignment.BottomCenter) {
         val items = listOf(1, 2, 3, 4, 5)
         Column(
             modifier = Modifier
