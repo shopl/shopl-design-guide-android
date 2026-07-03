@@ -9,15 +9,11 @@
       android:fillColor="#555555"
       android:fillType="evenOdd"/>
   <path
-      android:pathData="M5.99961 6.0001V10.0001H9.99961V6.0001H5.99961Z"
+      android:pathData="M13.9996 6.0001H14.9996V18.0001H13.9996V6.0001Z"
       android:fillColor="#555555"
       android:fillType="nonZero"/>
   <path
-      android:pathData="M5.99963 12V16H9.99963V12H5.99963Z"
-      android:fillColor="#555555"
-      android:fillType="nonZero"/>
-  <path
-      android:pathData="M11.9996 6V10H15.9996V6H11.9996Z"
+      android:pathData="M4.99961 7.0001V9.0001H7.99961V17.0001H9.99961V9.0001H12.9996V7.0001H4.99961Z"
       android:fillColor="#555555"
       android:fillType="nonZero"/>
 </vector>
