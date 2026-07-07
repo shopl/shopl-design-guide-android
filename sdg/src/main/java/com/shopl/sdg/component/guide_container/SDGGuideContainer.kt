@@ -27,7 +27,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  * @version 2.1.10
  *
  * @param guide 가이드 메시지 노출/비노출 상태.
- *              Show: message, messageColor(Default: Neutral700), messageAlign(Default: Start)
+ *              Show: message, messageColor(Default: Neutral700), messageAlignment(Default: LEFT)
  *              Hide: 비노출
  * @param marginValues 전체 컨테이너 외부 여백
  * @param contentArea 컨텐츠 영역에 배치할 컴포저블
@@ -52,7 +52,7 @@ fun SDGGuideContainer(
                 text = guide.message,
                 textColor = guide.messageColor,
                 typography = SDGTypography.Body3R,
-                textAlign = guide.messageAlign,
+                textAlign = guide.messageAlignment.textAlign,
             )
         }
     }

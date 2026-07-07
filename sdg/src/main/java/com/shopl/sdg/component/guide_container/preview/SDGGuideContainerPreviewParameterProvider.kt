@@ -1,7 +1,7 @@
 package com.shopl.sdg.component.guide_container.preview
 
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.shopl.sdg.component.guide_container.SDGGuideTextAlignment
 import com.shopl.sdg.component.guide_container.SDGGuideUiState
 
 internal class SDGGuideContainerPreviewParameterProvider :
@@ -15,14 +15,14 @@ internal class SDGGuideContainerPreviewParameterProvider :
     private fun 좌측_정렬() = SDGGuideContainerPreviewParams(
         guide = SDGGuideUiState.Show(
             message = "Guide message",
-            messageAlign = TextAlign.Start,
+            messageAlignment = SDGGuideTextAlignment.LEFT,
         ),
     )
 
     private fun 우측_정렬() = SDGGuideContainerPreviewParams(
         guide = SDGGuideUiState.Show(
             message = "Guide message",
-            messageAlign = TextAlign.End,
+            messageAlignment = SDGGuideTextAlignment.RIGHT,
         ),
     )
 }
