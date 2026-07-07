@@ -3,10 +3,14 @@ package com.shopl.sdg.component.guide_container
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.shopl.sdg.component.guide_container.preview.SDGGuideContainerPreviewParameterProvider
+import com.shopl.sdg.component.guide_container.preview.SDGGuideContainerPreviewParams
 import com.shopl.sdg.component.text_input.InputState
 import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInput
 import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputType
@@ -22,8 +26,9 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * @version 2.1.10
  *
- * @param guide 가이드 메시지 노출: SDGGuideUiState.Show(message = 표기할 메시지, messageColor = 메시지 색상(Default: Neutral700))
- *              가이드 메시지 비노출: SDGGuideUiState.Hide
+ * @param guide 가이드 메시지 노출/비노출 상태.
+ *              Show: message, messageColor(Default: Neutral700), messageAlign(Default: Start)
+ *              Hide: 비노출
  * @param marginValues 전체 컨테이너 외부 여백
  * @param contentArea 컨텐츠 영역에 배치할 컴포저블
  *
@@ -43,9 +48,11 @@ fun SDGGuideContainer(
 
         if (guide is SDGGuideUiState.Show) {
             SDGText(
+                modifier = Modifier.fillMaxWidth(),
                 text = guide.message,
                 textColor = guide.messageColor,
                 typography = SDGTypography.Body3R,
+                textAlign = guide.messageAlign,
             )
         }
     }
@@ -53,11 +60,12 @@ fun SDGGuideContainer(
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewSDGGuideContainer() {
+private fun PreviewSDGGuideContainer(
+    @PreviewParameter(SDGGuideContainerPreviewParameterProvider::class)
+    params: SDGGuideContainerPreviewParams
+) {
     SDGGuideContainer(
-        guide = SDGGuideUiState.Show(
-            message = "PreviewSDGGuideContainer"
-        ),
+        guide = params.guide,
         contentArea = {
             SDGSimpleTextInput(
                 type = SDGSimpleTextInputType.BASIC,
