@@ -26,7 +26,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * @version 2.1.10
  *
- * @param guide 가이드 텍스트 노출/비노출 상태.
+ * @param showText 가이드 텍스트 노출/비노출 상태.
  *              True: text, textAlignment, textColor
  *              False: 비노출
  * @param marginValues 전체 컨테이너 외부 여백
@@ -36,7 +36,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  */
 @Composable
 fun SDGGuideContainer(
-    guide: SDGGuideUiState,
+    showText: ShowText,
     marginValues: PaddingValues = PaddingValues(),
     contentArea: @Composable () -> Unit,
 ) {
@@ -46,13 +46,13 @@ fun SDGGuideContainer(
     ) {
         contentArea()
 
-        if (guide is SDGGuideUiState.True) {
+        if (showText is ShowText.True) {
             SDGText(
                 modifier = Modifier.fillMaxWidth(),
-                text = guide.text,
-                textColor = guide.textColor,
+                text = showText.text,
+                textColor = showText.textColor,
                 typography = SDGTypography.Body3R,
-                textAlign = guide.textAlignment.textAlign,
+                textAlign = showText.textAlignment.textAlign,
             )
         }
     }
@@ -65,7 +65,7 @@ private fun PreviewSDGGuideContainer(
     params: SDGGuideContainerPreviewParams
 ) {
     SDGGuideContainer(
-        guide = params.guide,
+        showText = params.showText,
         contentArea = {
             SDGSimpleTextInput(
                 type = SDGSimpleTextInputType.BASIC,

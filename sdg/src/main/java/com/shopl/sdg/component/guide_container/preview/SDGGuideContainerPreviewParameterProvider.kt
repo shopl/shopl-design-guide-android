@@ -2,7 +2,7 @@ package com.shopl.sdg.component.guide_container.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.shopl.sdg.component.guide_container.SDGGuideTextAlignment
-import com.shopl.sdg.component.guide_container.SDGGuideUiState
+import com.shopl.sdg.component.guide_container.ShowText
 import com.shopl.sdg_common.foundation.SDGColor
 
 internal class SDGGuideContainerPreviewParameterProvider :
@@ -15,7 +15,7 @@ internal class SDGGuideContainerPreviewParameterProvider :
     )
 
     private fun 텍스트_노출_좌측_정렬() = SDGGuideContainerPreviewParams(
-        guide = SDGGuideUiState.True(
+        showText = ShowText.True(
             text = "Guide message",
             textAlignment = SDGGuideTextAlignment.LEFT,
             textColor = SDGColor.Neutral700,
@@ -23,7 +23,7 @@ internal class SDGGuideContainerPreviewParameterProvider :
     )
 
     private fun 텍스트_노출_우측_정렬() = SDGGuideContainerPreviewParams(
-        guide = SDGGuideUiState.True(
+        showText = ShowText.True(
             text = "Guide message",
             textAlignment = SDGGuideTextAlignment.RIGHT,
             textColor = SDGColor.Neutral700,
@@ -31,6 +31,6 @@ internal class SDGGuideContainerPreviewParameterProvider :
     )
 
     private fun 텍스트_비노출() = SDGGuideContainerPreviewParams(
-        guide = SDGGuideUiState.False,
+        showText = ShowText.False,
     )
 }

@@ -4,12 +4,12 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 
 @Stable
-sealed interface SDGGuideUiState {
+sealed interface ShowText {
     data class True(
         val text: String,
         val textAlignment: SDGGuideTextAlignment,
         val textColor: Color,
-    ) : SDGGuideUiState
+    ) : ShowText
 
-    data object False : SDGGuideUiState
+    data object False : ShowText
 }

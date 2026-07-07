@@ -1,7 +1,7 @@
 package com.shopl.sdg.component.guide_container.preview
 
-import com.shopl.sdg.component.guide_container.SDGGuideUiState
+import com.shopl.sdg.component.guide_container.ShowText
 
 internal data class SDGGuideContainerPreviewParams(
-    val guide: SDGGuideUiState,
+    val showText: ShowText,
 )
