@@ -22,9 +22,9 @@ import com.shopl.sdg_common.ui.components.SDGText
 /**
  * SDG - Guide Container
  *
- * 특정 콘텐츠 영역 하단에 정보성이나 경고성 문구를 선택적으로 보여주는 템플릿
+ * 특정 콘텐츠 영역 하단에 가이드 문구를 선택적으로 보여주는 템플릿
  *
- * @version 2.1.10
+ * @version 2.3.27
  *
  * @param showText 가이드 텍스트 노출/비노출 상태.
  *              True: text, textAlignment, textColor
