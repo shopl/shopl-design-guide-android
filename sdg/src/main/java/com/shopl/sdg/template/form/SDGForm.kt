@@ -43,6 +43,8 @@ import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputField
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputState
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputStyle
 import com.shopl.sdg.component.time_select_input.SDGTimeSelectInput
+import com.shopl.sdg.component.time_select_input.SDGTimeSelectInputState
+import com.shopl.sdg_common.enums.OutlineType
 import com.shopl.sdg_common.ext.bounceClickable
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
@@ -971,8 +973,12 @@ fun SDGTimeSelectedForm(
         SDGTimeSelectInput(
             startTime = startTime,
             endTime = endTime,
-            backgroundColor = SDGColor.Neutral50,
-            onClick = onTimeSelectClick
+            state = if (startTime.isNullOrEmpty() && endTime.isNullOrEmpty()) {
+                SDGTimeSelectInputState.Default
+            } else {
+                SDGTimeSelectInputState.Selected
+            },
+            onClick = onTimeSelectClick,
         )
     }
 }
