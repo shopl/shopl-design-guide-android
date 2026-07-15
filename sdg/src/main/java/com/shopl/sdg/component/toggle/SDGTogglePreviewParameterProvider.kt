@@ -4,7 +4,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.shopl.sdg.component.toggle.spec.SDGToggleSpec
 import com.shopl.sdg.component.toggle.style.SDGToggleStyle
 
-internal class SDGCapsulePreviewParameterProvider :
+internal class SDGTogglePreviewParameterProvider :
     PreviewParameterProvider<SDGTogglePreviewParameter> {
     override val values: Sequence<SDGTogglePreviewParameter> = sequenceOf(
         off_PRIMARY_MEDIUM(),

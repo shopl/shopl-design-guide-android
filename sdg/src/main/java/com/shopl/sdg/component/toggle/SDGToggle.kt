@@ -216,7 +216,7 @@ fun SDGToggle(
 @Preview
 @Composable
 private fun PreviewSDGToggle(
-    @PreviewParameter(SDGCapsulePreviewParameterProvider::class) parameter: SDGTogglePreviewParameter,
+    @PreviewParameter(SDGTogglePreviewParameterProvider::class) parameter: SDGTogglePreviewParameter,
 ) {
     SDGToggle(
         isOn = parameter.isOn,
