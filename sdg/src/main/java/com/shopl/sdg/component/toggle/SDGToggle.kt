@@ -40,7 +40,7 @@ import com.shopl.sdg_common.foundation.SDGColor
  * @param modifier Modifier
  * @param isEnabled 토글 활성 여부
  * @param style 토글 스타일 [SDGToggleStyle.Primary|SDGToggleStyle.NEUTRAL]
- * @param style 토글 사이즈 스펙 [SDGToggleSpec.MEDIUM|SDGToggleSpec.SMALL]
+ * @param spec 토글 사이즈 스펙 [SDGToggleSpec.MEDIUM|SDGToggleSpec.SMALL]
  * @param clickPadding 터치 영역 확장용 패딩
  * @param onClick 클릭 이벤트
  *
@@ -207,7 +207,7 @@ fun SDGToggle(
             disabledOffTrackColor = uncheckedTrackColor.copy(alpha = SDGToggleDefaults.LEGACY_DISABLED_ALPHA),
             disabledOffThumbColor = thumbColor.copy(alpha = SDGToggleDefaults.LEGACY_DISABLED_ALPHA),
         ),
-        size = SDGToggleSpec.MEDIUM.size,
+        size = SDGToggleSpec.MEDIUM.size.copy(thumbGap = gapBetweenThumbAndTrackEdge),
         clickPadding = clickPadding,
         onClick = onCheckedChange,
     )
