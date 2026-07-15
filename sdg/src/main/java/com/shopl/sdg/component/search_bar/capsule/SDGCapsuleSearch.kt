@@ -47,7 +47,9 @@ import com.shopl.sdg_resource.R
 /**
  * SDG - Search Bar - Capsule Search
  *
- * 일반적인 캡슐 형태의 검색 컴포넌트
+ * 캡슐 형태의 일반 검색 컴포넌트
+ *
+ * @version 2.1.21
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7069-15110&m=dev">Figma</a>
  */
@@ -59,6 +61,7 @@ fun SDGCapsuleSearch(
     enabled: Boolean,
     onInputChange: (String) -> Unit,
     onDeleteClick: () -> Unit,
+    backgroundColor: SDGCapsuleSearchBackgroundColor = SDGCapsuleSearchBackgroundColor.WHITE,
     marginValues: PaddingValues = PaddingValues(),
     useStartRequester: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -101,7 +104,7 @@ fun SDGCapsuleSearch(
                     .height(40.dp)
                     .clip(RoundedCornerShape(SDGCornerRadius.Radius20))
                     .background(
-                        color = if (enabled) SDGColor.Neutral0 else SDGColor.Neutral50,
+                        color = backgroundColor.color,
                     )
                     .border(
                         width = 1.dp,
@@ -153,16 +156,16 @@ fun SDGCapsuleSearch(
 @Preview
 @Composable
 private fun PreviewSDGCapsuleSearch(
-    @PreviewParameter(SDGCapsulePreviewParameterProvider::class) parameter: SDGCapsulePreviewParameter
+    @PreviewParameter(SDGCapsuleSearchPreviewParameterProvider::class)
+    parameter: SDGCapsuleSearchPreviewParameter
 ) {
-    var text by remember { mutableStateOf(parameter.input) }
-
-        SDGCapsuleSearch(
-            type = parameter.type,
-            input = text,
-            hint = "Search",
-            enabled = parameter.enabled,
-            onInputChange = { text = it },
-            onDeleteClick = { text = "" }
-        )
+    SDGCapsuleSearch(
+        type = parameter.type,
+        input = parameter.input,
+        hint = "Search",
+        enabled = parameter.enabled,
+        backgroundColor = parameter.backgroundColor,
+        onInputChange = { },
+        onDeleteClick = { }
+    )
 }
