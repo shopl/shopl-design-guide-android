@@ -13,6 +13,7 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.SDGButtonFontWeight
@@ -25,6 +26,8 @@ private val SDGBottomPopupButtonHeight = 58.dp
 
 /**
  * SDG - Template - Popup - bottom popup button
+ *
+ * @version 2.3.32
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19270-15961&m=dev">Figma</a>
  */
@@ -47,6 +50,7 @@ fun SDGBottomPopupButton(option: SDGBottomPopupButtonOption) {
                 is SDGBottomPopupButtonOption.OneOption -> {
                     SDGOneOptionBottomPopupButton(
                         label = option.label,
+                        labelColor = option.labelColor,
                         onClick = option.onClick,
                     )
                 }
@@ -54,8 +58,10 @@ fun SDGBottomPopupButton(option: SDGBottomPopupButtonOption) {
                 is SDGBottomPopupButtonOption.TwoOption -> {
                     SDGTwoOptionBottomPopupButton(
                         startLabel = option.startLabel,
+                        startLabelColor = option.startLabelColor,
                         onClickStart = option.onClickStart,
                         endLabel = option.endLabel,
+                        endLabelColor = option.endLabelColor,
                         onClickEnd = option.onClickEnd,
                     )
                 }
@@ -67,13 +73,14 @@ fun SDGBottomPopupButton(option: SDGBottomPopupButtonOption) {
 @Composable
 private fun RowScope.SDGOneOptionBottomPopupButton(
     label: String,
+    labelColor: Color,
     onClick: () -> Unit,
 ) {
     SDGGhostButton(
         weight = 1f,
         size = SDGGhostButtonSize.Large,
         label = label,
-        labelColor = SDGColor.Neutral700,
+        labelColor = labelColor,
         onClick = onClick,
         labelWeight = SDGButtonFontWeight.SB,
         marginValues = PaddingValues(vertical = SDGSpacing.Spacing8)
@@ -83,15 +90,17 @@ private fun RowScope.SDGOneOptionBottomPopupButton(
 @Composable
 private fun RowScope.SDGTwoOptionBottomPopupButton(
     startLabel: String,
+    startLabelColor: Color,
     onClickStart: () -> Unit,
     endLabel: String,
+    endLabelColor: Color,
     onClickEnd: () -> Unit,
 ) {
     SDGGhostButton(
         weight = 1f,
         size = SDGGhostButtonSize.Large,
         label = startLabel,
-        labelColor = SDGColor.Neutral700,
+        labelColor = startLabelColor,
         onClick = onClickStart,
         labelWeight = SDGButtonFontWeight.R,
         marginValues = PaddingValues(vertical = SDGSpacing.Spacing8)
@@ -106,7 +115,7 @@ private fun RowScope.SDGTwoOptionBottomPopupButton(
         weight = 1f,
         size = SDGGhostButtonSize.Large,
         label = endLabel,
-        labelColor = SDGColor.Neutral700,
+        labelColor = endLabelColor,
         onClick = onClickEnd,
         labelWeight = SDGButtonFontWeight.SB,
         marginValues = PaddingValues(vertical = SDGSpacing.Spacing8)
@@ -119,6 +128,7 @@ private fun PreviewSDGOneOptionBottomPopupButton() {
     Row {
         SDGOneOptionBottomPopupButton(
             label = "Label",
+            labelColor = SDGColor.Neutral700,
             onClick = {},
         )
     }
@@ -130,8 +140,10 @@ private fun PreviewSDGTwoOptionBottomPopupButton() {
     Row {
         SDGTwoOptionBottomPopupButton(
             startLabel = "Label",
+            startLabelColor = SDGColor.Red300,
             onClickStart = {},
             endLabel = "Label",
+            endLabelColor = SDGColor.Neutral700,
             onClickEnd = {},
         )
     }
