@@ -37,7 +37,7 @@ private const val MAX_SHEET_HEIGHT_RATIO = 0.8f
 /**
  * SDG - Template - Popup - Bottom Popup
  *
- * @version 2.1.34
+ * @version 2.3.32
  *
  * 앱 콘텐츠 앞 하단에 표시되며, 태스크 수행을 위한 콘텐츠를 포함하는 모달형 템플릿
  *
