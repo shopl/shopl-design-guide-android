@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -22,8 +19,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.toggleableState
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.toggle.spec.SDGToggleSize
+import com.shopl.sdg.component.toggle.spec.SDGToggleSpec
 import com.shopl.sdg.component.toggle.style.SDGToggleColors
 import com.shopl.sdg.component.toggle.style.SDGToggleStyle
 import com.shopl.sdg_common.ext.clickable
@@ -40,6 +40,7 @@ import com.shopl.sdg_common.foundation.SDGColor
  * @param modifier Modifier
  * @param isEnabled 토글 활성 여부
  * @param style 토글 스타일 [SDGToggleStyle.Primary|SDGToggleStyle.NEUTRAL]
+ * @param style 토글 사이즈 스펙 [SDGToggleSpec.MEDIUM|SDGToggleSpec.SMALL]
  * @param clickPadding 터치 영역 확장용 패딩
  * @param onClick 클릭 이벤트
  *
@@ -51,6 +52,7 @@ fun SDGToggle(
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     style: SDGToggleStyle = SDGToggleStyle.PRIMARY,
+    spec: SDGToggleSpec = SDGToggleSpec.MEDIUM,
     clickPadding: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
 ) {
@@ -59,7 +61,7 @@ fun SDGToggle(
         isEnabled = isEnabled,
         modifier = modifier,
         colors = style.colors,
-        thumbGap = SDGToggleDefaults.THUMB_GAP,
+        size = spec.size,
         clickPadding = clickPadding,
         onClick = onClick,
     )
@@ -71,7 +73,7 @@ private fun SDGToggleContent(
     isEnabled: Boolean,
     modifier: Modifier,
     colors: SDGToggleColors,
-    thumbGap: Dp,
+    size: SDGToggleSize,
     clickPadding: PaddingValues,
     onClick: (() -> Unit)?,
 ) {
@@ -85,12 +87,12 @@ private fun SDGToggleContent(
         animationSpec = SDGToggleDefaults.COLOR_ANIMATION_SPEC,
         label = "thumbColor"
     )
-    val thumbRadius = (SDGToggleDefaults.HEIGHT / 2) - thumbGap
+    val thumbRadius = (size.height / 2) - size.thumbGap
     val thumbCenterX by animateDpAsState(
         targetValue = if (isOn) {
-            SDGToggleDefaults.WIDTH - thumbRadius - thumbGap
+            size.width - thumbRadius - size.thumbGap
         } else {
-            thumbRadius + thumbGap
+            thumbRadius + size.thumbGap
         },
         animationSpec = SDGToggleDefaults.DP_ANIMATION_SPEC,
         label = "thumbCenterX"
@@ -118,15 +120,15 @@ private fun SDGToggleContent(
             }
             .padding(clickPadding)
             .size(
-                width = SDGToggleDefaults.WIDTH,
-                height = SDGToggleDefaults.HEIGHT
+                width = size.width,
+                height = size.height
             )
     ) {
         drawRoundRect(
             color = trackColor,
             cornerRadius = CornerRadius(
-                x = SDGToggleDefaults.TRACK_RADIUS.toPx(),
-                y = SDGToggleDefaults.TRACK_RADIUS.toPx()
+                x = size.trackRadius.toPx(),
+                y = size.trackRadius.toPx()
             )
         )
         drawCircle(
@@ -134,7 +136,7 @@ private fun SDGToggleContent(
             radius = thumbRadius.toPx(),
             center = Offset(
                 x = thumbCenterX.toPx(),
-                y = size.height / 2
+                y = this.size.height / 2
             )
         )
     }
@@ -161,10 +163,6 @@ private fun SDGToggleColors.thumbColor(
 }
 
 private object SDGToggleDefaults {
-    val WIDTH = 40.dp
-    val HEIGHT = 22.dp
-    val TRACK_RADIUS = 100.dp
-    val THUMB_GAP = 2.dp
     const val LEGACY_DISABLED_ALPHA = 0.3f
     private const val ANIMATION_DURATION_MILLIS = 300
 
@@ -209,34 +207,21 @@ fun SDGToggle(
             disabledOffTrackColor = uncheckedTrackColor.copy(alpha = SDGToggleDefaults.LEGACY_DISABLED_ALPHA),
             disabledOffThumbColor = thumbColor.copy(alpha = SDGToggleDefaults.LEGACY_DISABLED_ALPHA),
         ),
-        thumbGap = gapBetweenThumbAndTrackEdge,
+        size = SDGToggleSpec.MEDIUM.size,
         clickPadding = clickPadding,
         onClick = onCheckedChange,
     )
 }
 
-@Preview(name = "Primary", showBackground = true)
+@Preview
 @Composable
-private fun PreviewSDGTogglePrimary() {
-    var isOn by remember { mutableStateOf(false) }
-
+private fun PreviewSDGToggle(
+    @PreviewParameter(SDGCapsulePreviewParameterProvider::class) parameter: SDGTogglePreviewParameter,
+) {
     SDGToggle(
-        isOn = isOn,
-        style = SDGToggleStyle.PRIMARY,
-        clickPadding = PaddingValues(20.dp),
-        onClick = { isOn = !isOn }
-    )
-}
-
-@Preview(name = "Neutral", showBackground = true)
-@Composable
-private fun PreviewSDGToggleNeutral() {
-    var isOn by remember { mutableStateOf(false) }
-
-    SDGToggle(
-        isOn = isOn,
-        style = SDGToggleStyle.NEUTRAL,
-        clickPadding = PaddingValues(20.dp),
-        onClick = { isOn = !isOn }
+        isOn = parameter.isOn,
+        style = parameter.style,
+        spec = parameter.spec,
+        isEnabled = parameter.isEnabled
     )
 }
