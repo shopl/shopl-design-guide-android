@@ -207,7 +207,7 @@ fun SDGToggle(
             disabledOffTrackColor = uncheckedTrackColor.copy(alpha = SDGToggleDefaults.LEGACY_DISABLED_ALPHA),
             disabledOffThumbColor = thumbColor.copy(alpha = SDGToggleDefaults.LEGACY_DISABLED_ALPHA),
         ),
-        size = SDGToggleSpec.MEDIUM.size,
+        size = SDGToggleSpec.MEDIUM.size.copy(thumbGap = gapBetweenThumbAndTrackEdge),
         clickPadding = clickPadding,
         onClick = onCheckedChange,
     )
