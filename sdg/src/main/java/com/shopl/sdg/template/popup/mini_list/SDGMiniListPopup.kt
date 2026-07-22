@@ -39,8 +39,8 @@ fun SDGMiniListPopup(
     Column(
         modifier = Modifier
             .width(POPUP_WIDTH)
-            .clip(SDGCornerRadius.BoxRadius.Radius20)
-            .background(SDGColor.Neutral0)
+            .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
+            .background(color = SDGColor.Neutral0)
     ) {
         items.forEachIndexed { index, item ->
             SDGMiniListPopupBodyItem(
