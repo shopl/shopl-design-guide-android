@@ -12,11 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -83,13 +81,7 @@ fun SDGGhostButton(
                 .height(size.height)
                 .then(
                     if (enable) {
-                        Modifier
-                            .clip(RoundedCornerShape(size.rippleRadius))
-                            .clickable(
-                                hasRipple = true,
-                                rippleColor = SDGColor.Neutral350,
-                                onClick = onClick,
-                            )
+                        Modifier.clickable(onClick = onClick)
                     } else {
                         Modifier
                     }
@@ -102,7 +94,6 @@ fun SDGGhostButton(
                 SDGImage(
                     modifier = Modifier.size(iconSize.size),
                     resId = leftIcon,
-                    contentDescription = null,
                     color = if (enable) leftIconTint else leftIconTint.copy(alpha = 0.3f)
                 )
                 Spacer(modifier = Modifier.width(size.gap))
@@ -120,7 +111,6 @@ fun SDGGhostButton(
                 SDGImage(
                     modifier = Modifier.size(iconSize.size),
                     resId = rightIcon,
-                    contentDescription = null,
                     color = if (enable) rightIconTint else rightIconTint.copy(alpha = 0.3f)
                 )
             }

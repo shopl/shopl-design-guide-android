@@ -17,7 +17,6 @@ sealed class SDGGhostButtonSize(
     val horizontalPadding: Dp,
     val gap: Dp,
     val typography: SDGTypography,
-    val rippleRadius: Dp,
 ) {
     abstract val sizeName: String
 
@@ -26,7 +25,6 @@ sealed class SDGGhostButtonSize(
         horizontalPadding = Spacing16,
         gap = Spacing6,
         typography = SDGTypography.Body1R,
-        rippleRadius = 14.dp,
     ) {
         override val sizeName = "Large"
     }
@@ -36,7 +34,6 @@ sealed class SDGGhostButtonSize(
         horizontalPadding = Spacing10,
         gap = Spacing4,
         typography = SDGTypography.Body2R,
-        rippleRadius = 12.dp,
     ) {
         override val sizeName = "Medium"
     }
@@ -46,7 +43,6 @@ sealed class SDGGhostButtonSize(
         horizontalPadding = Spacing8,
         gap = Spacing2,
         typography = SDGTypography.Body3R,
-        rippleRadius = 9.dp,
     ) {
         override val sizeName = "Small"
     }
