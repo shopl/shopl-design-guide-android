@@ -32,4 +32,5 @@ object SDGSpacing {
     val Spacing32 = 32.dp
     val Spacing60 = 60.dp
     val Spacing100 = 100.dp
+    val Spacing104 = 104.dp
 }
