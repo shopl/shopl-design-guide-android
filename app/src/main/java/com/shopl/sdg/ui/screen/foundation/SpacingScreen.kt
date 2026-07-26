@@ -74,7 +74,6 @@ private val specialSpacings = persistentListOf(
     SDGSpacing.Spacing32.toSpacingUiModel(displayLabel = "32"),
     SDGSpacing.Spacing60.toSpacingUiModel(displayLabel = "60"),
     SDGSpacing.Spacing100.toSpacingUiModel(displayLabel = "100"),
-    SDGSpacing.Spacing104.toSpacingUiModel(displayLabel = "104"),
 )
 
 @Composable

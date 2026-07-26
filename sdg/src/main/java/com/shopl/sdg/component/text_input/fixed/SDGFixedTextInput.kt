@@ -1,5 +1,6 @@
 package com.shopl.sdg.component.text_input.fixed
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -17,9 +18,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
@@ -39,6 +44,11 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing20
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_common.util.keyboardAsState
+
+private val SDGFixedTextInputHeight = 104.dp
+private val SDGFixedTextInputBorderWidth = 1.dp
+private val SDGFixedTextInputScrollbarWidth = 4.dp
+private val SDGFixedTextInputScrollbarMinHeight = 16.dp
 
 /**
  * SDG - Text Input - Fixed Text Input
@@ -79,13 +89,10 @@ fun SDGFixedTextInput(
         inputField == SDGFixedTextInputField.LightGray -> SDGColor.Neutral50
         else -> SDGColor.Neutral0
     }
-    val borderColor = when {
-        state == SDGFixedTextInputState.Error && style == SDGFixedTextInputStyle.Outlined -> {
-            SDGColor.Red300
-        }
-
-        style == SDGFixedTextInputStyle.Outlined -> SDGColor.Neutral200
-        else -> null
+    val outlinedBorderColor = if (state == SDGFixedTextInputState.Error) {
+        SDGColor.Red300
+    } else {
+        SDGColor.Neutral200
     }
     val textColor = when (state) {
         SDGFixedTextInputState.Disabled -> SDGColor.Neutral300
@@ -96,25 +103,25 @@ fun SDGFixedTextInput(
         modifier = Modifier
             .padding(marginValues)
             .fillMaxWidth()
-            .height(SDGSpacing.Spacing104)
+            .height(SDGFixedTextInputHeight)
             .background(
                 color = backgroundColor,
                 shape = SDGCornerRadius.BoxRadius.Radius12,
             )
             .then(
-                if (borderColor != null) {
-                    Modifier.border(
-                        width = 1.dp,
-                        color = borderColor,
+                when (style) {
+                    SDGFixedTextInputStyle.Solid -> Modifier
+                    SDGFixedTextInputStyle.Outlined -> Modifier.border(
+                        width = SDGFixedTextInputBorderWidth,
+                        color = outlinedBorderColor,
                         shape = SDGCornerRadius.BoxRadius.Radius12,
                     )
-                } else {
-                    Modifier
                 }
             )
             .focusRequester(resolvedFocusRequester)
             .onFocusChanged { isFocused = it.isFocused }
             .padding(SDGSpacing.Spacing12)
+            .fixedTextInputScrollbar(scrollState)
             .verticalScroll(scrollState),
         value = text,
         onValueChange = {
@@ -160,6 +167,54 @@ fun SDGFixedTextInput(
 }
 
 /**
+ * Fixed Text Input의 콘텐츠가 입력 영역을 초과할 때 우측에 세로 스크롤바를 표시합니다.
+ *
+ * Thumb 높이는 viewport와 전체 콘텐츠 높이의 비율에 따라 가변하며 최소 높이를 보장합니다.
+ * 스크롤바 위치는 [ScrollState.value]에 따라 갱신되고, overflow가 없으면 표시하지 않습니다.
+ *
+ * @param scrollState 텍스트 영역의 스크롤 범위와 현재 위치를 제공하는 상태
+ */
+private fun Modifier.fixedTextInputScrollbar(scrollState: ScrollState): Modifier {
+    return drawWithContent {
+        drawContent()
+
+        val viewportSize = scrollState.viewportSize
+        val maxScrollValue = scrollState.maxValue
+        if (viewportSize <= 0 || maxScrollValue <= 0) {
+            return@drawWithContent
+        }
+
+        val viewportHeight = size.height
+        val contentHeight = viewportSize.toFloat() + maxScrollValue
+        val minThumbHeight = minOf(
+            SDGFixedTextInputScrollbarMinHeight.toPx(),
+            viewportHeight,
+        )
+        val thumbHeight = (viewportHeight * viewportSize / contentHeight)
+            .coerceIn(minThumbHeight, viewportHeight)
+        val scrollFraction = scrollState.value.toFloat() / maxScrollValue
+        val thumbOffsetY = (viewportHeight - thumbHeight) * scrollFraction
+        val scrollbarWidth = SDGFixedTextInputScrollbarWidth.toPx()
+
+        drawRoundRect(
+            color = SDGColor.Neutral300,
+            topLeft = Offset(
+                x = size.width - scrollbarWidth,
+                y = thumbOffsetY,
+            ),
+            size = Size(
+                width = scrollbarWidth,
+                height = thumbHeight,
+            ),
+            cornerRadius = CornerRadius(
+                x = scrollbarWidth / 2,
+                y = scrollbarWidth / 2,
+            ),
+        )
+    }
+}
+
+/**
  * 신규 Fixed Text Input API와의 하위 호환성을 위한 레거시 API입니다.
  */
 @Deprecated(
@@ -172,7 +227,7 @@ fun SDGFixedTextInput(
     hint: String,
     inputState: InputState,
     onInputChange: (String) -> Unit,
-    height: Dp = SDGSpacing.Spacing104,
+    height: Dp = SDGFixedTextInputHeight,
     focusRequester: FocusRequester? = null,
     backgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),

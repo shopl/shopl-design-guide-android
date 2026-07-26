@@ -12,6 +12,7 @@ internal class SDGFixedTextInputPreviewParameterProvider :
         Solid_LightGray_기본(),
         Solid_LightGray_포커스(),
         Solid_LightGray_입력완료(),
+        Solid_LightGray_오버플로우(),
         Solid_LightGray_비활성(),
         Solid_LightGray_오류(),
         Outlined_White_입력완료(),
@@ -35,6 +36,17 @@ internal class SDGFixedTextInputPreviewParameterProvider :
     private fun Solid_LightGray_입력완료(): SDGFixedTextInputPreviewParameter {
         return SDGFixedTextInputPreviewParameter(
             state = SDGFixedTextInputState.Completed,
+        )
+    }
+
+    private fun Solid_LightGray_오버플로우(): SDGFixedTextInputPreviewParameter {
+        return SDGFixedTextInputPreviewParameter(
+            state = SDGFixedTextInputState.Completed,
+            text = """
+                가슴속에 못 시인의 나의 별이 봅니다. 어머님, 멀리 별 이런 나는 추억과 남은 걱정도
+                쓸쓸함과 있습니다. 다하지 딴은 나의 한 둘 언덕 이름과 별 까닭입니다.
+                별을 하나에 소학교 이름과, 봅니다. 하늘에는 별이 계속 이어집니다.
+            """.trimIndent(),
         )
     }
 
