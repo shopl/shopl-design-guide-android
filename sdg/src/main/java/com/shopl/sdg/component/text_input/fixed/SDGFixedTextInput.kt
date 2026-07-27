@@ -13,6 +13,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +29,8 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
@@ -79,6 +82,15 @@ fun SDGFixedTextInput(
     val focusManager = LocalFocusManager.current
     val isKeyboardOpen by keyboardAsState()
     var isFocused by remember { mutableStateOf(false) }
+    var textFieldValueState by remember {
+        mutableStateOf(
+            TextFieldValue(
+                text = text,
+                selection = TextRange(text.length),
+            ),
+        )
+    }
+    val textFieldValue = textFieldValueState.copy(text = text)
 
     val backgroundColor = when {
         state == SDGFixedTextInputState.Error && style == SDGFixedTextInputStyle.Solid -> {
@@ -119,14 +131,26 @@ fun SDGFixedTextInput(
                 }
             )
             .focusRequester(resolvedFocusRequester)
-            .onFocusChanged { isFocused = it.isFocused }
+            .onFocusChanged { focusState ->
+                val gainedFocus = focusState.isFocused && !isFocused
+                isFocused = focusState.isFocused
+                if (gainedFocus) {
+                    textFieldValueState = textFieldValueState.copy(
+                        text = text,
+                        selection = TextRange(text.length),
+                    )
+                }
+            }
             .padding(SDGSpacing.Spacing12)
             .fixedTextInputScrollbar(scrollState)
             .verticalScroll(scrollState),
-        value = text,
-        onValueChange = {
-            if (it.length <= maxLength) {
-                onTextChange(it)
+        value = textFieldValue,
+        onValueChange = { newValue ->
+            if (newValue.text.length <= maxLength) {
+                textFieldValueState = newValue
+                if (newValue.text != text) {
+                    onTextChange(newValue.text)
+                }
             }
         },
         enabled = state != SDGFixedTextInputState.Disabled,
@@ -157,12 +181,25 @@ fun SDGFixedTextInput(
 
     LaunchedEffect(state, resolvedFocusRequester) {
         if (state == SDGFixedTextInputState.Focused) {
+            textFieldValueState = textFieldValueState.copy(
+                text = text,
+                selection = TextRange(text.length),
+            )
             resolvedFocusRequester.requestFocus()
         }
     }
 
     LaunchedEffect(scrollState.maxValue) {
         scrollState.animateScrollTo(scrollState.maxValue)
+    }
+
+    SideEffect {
+        if (
+            textFieldValue.selection != textFieldValueState.selection ||
+            textFieldValue.composition != textFieldValueState.composition
+        ) {
+            textFieldValueState = textFieldValue
+        }
     }
 }
 
