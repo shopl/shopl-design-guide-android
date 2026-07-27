@@ -577,68 +577,6 @@ private fun String.shouldKeepNormalizedFractionInput(formatter: DecimalFormat): 
             fraction.last() == '0'
 }
 
-@Preview
-@Composable
-private fun PreviewSDGSimpleTextInput() {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        var input by remember { mutableStateOf(TextFieldValue("")) }
-        SDGSimpleTextInput(
-            input = input,
-            hint = "이름을 입력하세요",
-            state = SDGSimpleTextInputState.Default,
-            inputField = SDGSimpleTextInputField.White,
-            style = SDGSimpleTextInputStyle.Outlined,
-            onInputChange = { input = it },
-        )
-
-
-        val defaultDecimalFormat = DecimalFormat(
-            "###,###.###",
-        )
-        var numberInput by remember { mutableStateOf(TextFieldValue("")) }
-        SDGSimpleTextInput(
-            input = numberInput,
-            hint = "금액을 입력하세요(Default Decimal Format)",
-            state = SDGSimpleTextInputState.Default,
-            inputField = SDGSimpleTextInputField.White,
-            style = SDGSimpleTextInputStyle.Outlined,
-            decimalFormat = defaultDecimalFormat,
-            maxValue = 100000.0,
-            onInputChange = { numberInput = it },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        )
-        SDGText(
-            text = "Origin Value : ${numberInput.text}",
-            textColor = SDGColor.Neutral700,
-            typography = SDGTypography.Body3R
-        )
-
-        val indonesiaDecimalFormat = DecimalFormat(
-            "###,###.###",
-            DecimalFormatSymbols.getInstance(Locale("id", "ID"))
-        )
-        var indonesiaNumberInput by remember { mutableStateOf(TextFieldValue("")) }
-        SDGSimpleTextInput(
-            input = indonesiaNumberInput,
-            hint = "금액을 입력하세요(Indonesia Decimal Format)",
-            state = SDGSimpleTextInputState.Default,
-            inputField = SDGSimpleTextInputField.White,
-            style = SDGSimpleTextInputStyle.Outlined,
-            decimalFormat = indonesiaDecimalFormat,
-            maxValue = 100000.0,
-            onInputChange = { indonesiaNumberInput = it },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        )
-        SDGText(
-            text = "Origin Value : ${indonesiaNumberInput.text}",
-            textColor = SDGColor.Neutral700,
-            typography = SDGTypography.Body3R
-        )
-    }
-}
-
 /** Simple Text Input의 공통 modifier를 적용합니다. */
 private fun Modifier.simpleTextInputModifier(
     marginValues: PaddingValues,
@@ -745,5 +683,67 @@ private fun SDGSimpleTextInputType.toSimpleTextInputStyle(): SDGSimpleTextInputS
     return when (this) {
         SDGSimpleTextInputType.BASIC -> SDGSimpleTextInputStyle.Solid
         SDGSimpleTextInputType.LINE -> SDGSimpleTextInputStyle.Outlined
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewSDGSimpleTextInput() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        var input by remember { mutableStateOf(TextFieldValue("")) }
+        SDGSimpleTextInput(
+            input = input,
+            hint = "이름을 입력하세요",
+            state = SDGSimpleTextInputState.Default,
+            inputField = SDGSimpleTextInputField.White,
+            style = SDGSimpleTextInputStyle.Outlined,
+            onInputChange = { input = it },
+        )
+
+
+        val defaultDecimalFormat = DecimalFormat(
+            "###,###.###",
+        )
+        var numberInput by remember { mutableStateOf(TextFieldValue("")) }
+        SDGSimpleTextInput(
+            input = numberInput,
+            hint = "금액을 입력하세요(Default Decimal Format)",
+            state = SDGSimpleTextInputState.Default,
+            inputField = SDGSimpleTextInputField.White,
+            style = SDGSimpleTextInputStyle.Outlined,
+            decimalFormat = defaultDecimalFormat,
+            maxValue = 100000.0,
+            onInputChange = { numberInput = it },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+        SDGText(
+            text = "Origin Value : ${numberInput.text}",
+            textColor = SDGColor.Neutral700,
+            typography = SDGTypography.Body3R
+        )
+
+        val indonesiaDecimalFormat = DecimalFormat(
+            "###,###.###",
+            DecimalFormatSymbols.getInstance(Locale("id", "ID"))
+        )
+        var indonesiaNumberInput by remember { mutableStateOf(TextFieldValue("")) }
+        SDGSimpleTextInput(
+            input = indonesiaNumberInput,
+            hint = "금액을 입력하세요(Indonesia Decimal Format)",
+            state = SDGSimpleTextInputState.Default,
+            inputField = SDGSimpleTextInputField.White,
+            style = SDGSimpleTextInputStyle.Outlined,
+            decimalFormat = indonesiaDecimalFormat,
+            maxValue = 100000.0,
+            onInputChange = { indonesiaNumberInput = it },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+        SDGText(
+            text = "Origin Value : ${indonesiaNumberInput.text}",
+            textColor = SDGColor.Neutral700,
+            typography = SDGTypography.Body3R
+        )
     }
 }
