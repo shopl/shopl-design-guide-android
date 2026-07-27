@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +32,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
@@ -52,6 +54,7 @@ private val SDGFixedTextInputHeight = 104.dp
 private val SDGFixedTextInputBorderWidth = 1.dp
 private val SDGFixedTextInputScrollbarWidth = 4.dp
 private val SDGFixedTextInputScrollbarMinHeight = 16.dp
+private const val SDGFixedTextInputMinLength = 50
 
 /**
  * SDG - Text Input - Fixed Text Input
@@ -73,12 +76,14 @@ fun SDGFixedTextInput(
     focusRequester: FocusRequester? = null,
     marginValues: PaddingValues = PaddingValues(),
     maxLength: Int = Int.MAX_VALUE,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
-    require(maxLength >= 0) { "maxLength는 0 이상이어야 합니다." }
+    require(maxLength >= SDGFixedTextInputMinLength) {
+        "maxLength는 $SDGFixedTextInputMinLength 이상이어야 합니다."
+    }
 
     val scrollState = rememberScrollState()
-    val defaultFocusRequester = remember { FocusRequester() }
-    val resolvedFocusRequester = focusRequester ?: defaultFocusRequester
     val focusManager = LocalFocusManager.current
     val isKeyboardOpen by keyboardAsState()
     var isFocused by remember { mutableStateOf(false) }
@@ -130,7 +135,13 @@ fun SDGFixedTextInput(
                     )
                 }
             )
-            .focusRequester(resolvedFocusRequester)
+            .then(
+                if (focusRequester != null) {
+                    Modifier.focusRequester(focusRequester)
+                } else {
+                    Modifier
+                },
+            )
             .onFocusChanged { focusState ->
                 val gainedFocus = focusState.isFocused && !isFocused
                 isFocused = focusState.isFocused
@@ -153,6 +164,8 @@ fun SDGFixedTextInput(
                 }
             }
         },
+        keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
         enabled = state != SDGFixedTextInputState.Disabled,
         textStyle = SDGTypography.Body1R.style.copy(color = textColor),
         cursorBrush = SolidColor(SDGColor.Neutral700),
