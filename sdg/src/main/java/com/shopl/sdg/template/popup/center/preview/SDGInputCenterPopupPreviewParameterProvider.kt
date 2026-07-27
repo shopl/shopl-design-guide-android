@@ -7,7 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.shopl.sdg.component.text_input.InputState
+import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputState
 
 internal class SDGInputCenterPopupParameterProvider : PreviewParameterProvider<SDGInputCenterPopupPreviewData> {
     override val values: Sequence<SDGInputCenterPopupPreviewData> = sequenceOf(
@@ -18,7 +18,7 @@ internal class SDGInputCenterPopupParameterProvider : PreviewParameterProvider<S
             inputLabel = "입력 라벨",
             initialInput = "",
             hint = "힌트 문구",
-            inputState = InputState.Enable
+            state = SDGFixedTextInputState.Default
         ),
         SDGInputCenterPopupPreviewData(
             title = "팝업 타이틀",
@@ -27,7 +27,7 @@ internal class SDGInputCenterPopupParameterProvider : PreviewParameterProvider<S
             inputLabel = "입력 라벨",
             initialInput = "",
             hint = "힌트 문구",
-            inputState = InputState.Enable
+            state = SDGFixedTextInputState.Default
         ),
         SDGInputCenterPopupPreviewData(
             title = "팝업 타이틀",
@@ -36,7 +36,7 @@ internal class SDGInputCenterPopupParameterProvider : PreviewParameterProvider<S
             inputLabel = "입력 라벨",
             initialInput = "잘못된 입력",
             hint = "힌트 문구",
-            inputState = InputState.Error("에러 메시지")
+            state = SDGFixedTextInputState.Error
         ),
         SDGInputCenterPopupPreviewData(
             title = "팝업 타이틀",
@@ -45,7 +45,7 @@ internal class SDGInputCenterPopupParameterProvider : PreviewParameterProvider<S
             inputLabel = "입력 라벨",
             initialInput = "올바른 입력",
             hint = "힌트 문구",
-            inputState = InputState.Disable
+            state = SDGFixedTextInputState.Disabled
         ),
         SDGInputCenterPopupPreviewData(
             title = "팝업 타이틀",
@@ -54,7 +54,7 @@ internal class SDGInputCenterPopupParameterProvider : PreviewParameterProvider<S
             inputLabel = "입력 라벨",
             initialInput = "",
             hint = "힌트 문구",
-            inputState = InputState.Enable,
+            state = SDGFixedTextInputState.Default,
             enabled = false
         )
     )
@@ -72,7 +72,7 @@ internal fun SDGInputCenterPopupPreviewBody(data: SDGInputCenterPopupPreviewData
         inputLabel = data.inputLabel,
         inputContent = inputContent,
         hint = data.hint,
-        inputState = data.inputState,
+        state = data.state,
         onInputChange = { inputContent = it },
         enabled = data.enabled,
         titleAlignment = data.titleAlignment
@@ -86,7 +86,7 @@ internal data class SDGInputCenterPopupPreviewData(
     val inputLabel: String,
     val initialInput: String,
     val hint: String,
-    val inputState: InputState,
+    val state: SDGFixedTextInputState,
     val enabled: Boolean = true,
     val titleAlignment: TextAlign = TextAlign.Left,
 )

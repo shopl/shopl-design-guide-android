@@ -32,10 +32,11 @@ import com.shopl.sdg.component.dropdown.SDGDropdown
 import com.shopl.sdg.component.dropdown.SDGDropdownState
 import com.shopl.sdg.component.select_input.SDGSelectInput
 import com.shopl.sdg.component.select_input.SDGSelectInputState
-import com.shopl.sdg.component.text_input.InputState
+import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputField
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInput
+import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputState
+import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputStyle
 import com.shopl.sdg.component.time_select_input.SDGTimeSelectInput
-import com.shopl.sdg_common.enums.OutlineType
 import com.shopl.sdg_common.ext.bounceClickable
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
@@ -459,12 +460,16 @@ fun SDGFixedInputForm(
             }
         }
         SDGFixedTextInput(
-            outlineType = OutlineType.BASIC,
-            input = value,
-            hint = hint ?: stringResource(id = R.string.text_hint_study_place),
-            inputState = InputState.Enable,
-            onInputChange = onValueChange,
-            backgroundColor = SDGColor.Neutral50,
+            text = value.orEmpty(),
+            placeholder = hint ?: stringResource(id = R.string.text_hint_study_place),
+            state = if (value.isNullOrEmpty()) {
+                SDGFixedTextInputState.Default
+            } else {
+                SDGFixedTextInputState.Completed
+            },
+            inputField = SDGFixedTextInputField.LightGray,
+            style = SDGFixedTextInputStyle.Solid,
+            onTextChange = onValueChange,
         )
     }
 }
@@ -479,7 +484,7 @@ fun SDGFixedInputForm(
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
-    inputBackgroundColor: Color = SDGColor.Neutral0,
+    inputField: SDGFixedTextInputField = SDGFixedTextInputField.White,
     marginValues: PaddingValues = PaddingValues(),
 ) {
     Column(
@@ -529,14 +534,57 @@ fun SDGFixedInputForm(
             }
         }
         SDGFixedTextInput(
-            outlineType = OutlineType.BASIC,
-            input = value,
-            hint = hint ?: stringResource(id = R.string.text_hint_study_place),
-            backgroundColor = inputBackgroundColor,
-            inputState = InputState.Enable,
-            onInputChange = onValueChange,
+            text = value.orEmpty(),
+            placeholder = hint ?: stringResource(id = R.string.text_hint_study_place),
+            state = if (value.isNullOrEmpty()) {
+                SDGFixedTextInputState.Default
+            } else {
+                SDGFixedTextInputState.Completed
+            },
+            inputField = inputField,
+            style = SDGFixedTextInputStyle.Solid,
+            onTextChange = onValueChange,
         )
     }
+}
+
+/**
+ * 신규 Fixed Input Form API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+@kotlin.internal.LowPriorityInOverloadResolution
+@Deprecated(
+    message = "inputBackgroundColor 대신 inputField를 사용하는 SDGFixedInputForm을 사용하세요.",
+)
+@Composable
+fun SDGFixedInputForm(
+    type: SDGFormType,
+    title: String,
+    value: String?,
+    onValueChange: (String) -> Unit,
+    hint: String? = null,
+    @DrawableRes iconResId: Int? = null,
+    iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
+    inputBackgroundColor: Color = SDGColor.Neutral0,
+    marginValues: PaddingValues = PaddingValues(),
+) {
+    SDGFixedInputForm(
+        type = type,
+        title = title,
+        value = value,
+        onValueChange = onValueChange,
+        hint = hint,
+        iconResId = iconResId,
+        iconTint = iconTint,
+        onClickIcon = onClickIcon,
+        inputField = if (inputBackgroundColor == SDGColor.Neutral50) {
+            SDGFixedTextInputField.LightGray
+        } else {
+            SDGFixedTextInputField.White
+        },
+        marginValues = marginValues,
+    )
 }
 
 @Composable

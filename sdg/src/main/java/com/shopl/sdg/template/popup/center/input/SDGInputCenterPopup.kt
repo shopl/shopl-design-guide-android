@@ -11,12 +11,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.shopl.sdg.component.text_input.InputState
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInput
+import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputField
+import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputState
+import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputStyle
 import com.shopl.sdg.template.popup.center.SDGCenterPopup
 import com.shopl.sdg.template.popup.center.SDGCenterPopupButtonOption
 import com.shopl.sdg.template.popup.center.preview.SDGInputCenterPopupParameterProvider
 import com.shopl.sdg.template.popup.center.preview.SDGInputCenterPopupPreviewBody
 import com.shopl.sdg.template.popup.center.preview.SDGInputCenterPopupPreviewData
-import com.shopl.sdg_common.enums.OutlineType
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
@@ -39,12 +41,11 @@ fun SDGInputCenterPopup(
     inputLabel: String,
     inputContent: String,
     hint: String,
-    inputState: InputState,
+    state: SDGFixedTextInputState,
     onInputChange: (String) -> Unit,
     focusRequester: FocusRequester? = null,
-    inputBackgroundColor: Color = SDGColor.Neutral50,
+    inputField: SDGFixedTextInputField = SDGFixedTextInputField.LightGray,
     inputMaxLength: Int = Int.MAX_VALUE,
-    enableOnError: Boolean = false,
     confirmLabelColor: Color = SDGColor.Neutral700,
     titleAlignment: TextAlign = TextAlign.Left,
     enabled: Boolean = true,
@@ -69,14 +70,73 @@ fun SDGInputCenterPopup(
             inputLabel = inputLabel,
             inputContent = inputContent,
             hint = hint,
-            inputState = inputState,
+            state = state,
             onInputChange = onInputChange,
             focusRequester = focusRequester,
-            inputBackgroundColor = inputBackgroundColor,
+            inputField = inputField,
             inputMaxLength = inputMaxLength,
-            enableOnError = enableOnError
         )
     }
+}
+
+/**
+ * 신규 Input Center Popup API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Deprecated(
+    message = "inputState 대신 state를 사용하는 SDGInputCenterPopup을 사용하세요.",
+)
+@Composable
+fun SDGInputCenterPopup(
+    title: String?,
+    description: String?,
+    confirmLabel: String,
+    onClickConfirm: () -> Unit,
+    inputLabel: String,
+    inputContent: String,
+    hint: String,
+    inputState: InputState,
+    onInputChange: (String) -> Unit,
+    focusRequester: FocusRequester? = null,
+    inputBackgroundColor: Color = SDGColor.Neutral50,
+    inputMaxLength: Int = Int.MAX_VALUE,
+    enableOnError: Boolean = false,
+    confirmLabelColor: Color = SDGColor.Neutral700,
+    titleAlignment: TextAlign = TextAlign.Left,
+    enabled: Boolean = true,
+) {
+    val state = when (inputState) {
+        InputState.Enable -> if (inputContent.isEmpty()) {
+            SDGFixedTextInputState.Default
+        } else {
+            SDGFixedTextInputState.Completed
+        }
+
+        InputState.Disable -> SDGFixedTextInputState.Disabled
+        is InputState.Error -> SDGFixedTextInputState.Error
+    }
+    val canChangeInput = inputState !is InputState.Error || enableOnError
+
+    SDGInputCenterPopup(
+        title = title,
+        description = description,
+        confirmLabel = confirmLabel,
+        onClickConfirm = onClickConfirm,
+        inputLabel = inputLabel,
+        inputContent = inputContent,
+        hint = hint,
+        state = state,
+        onInputChange = if (canChangeInput) onInputChange else { _ -> },
+        focusRequester = focusRequester,
+        inputField = if (inputBackgroundColor == SDGColor.Neutral50) {
+            SDGFixedTextInputField.LightGray
+        } else {
+            SDGFixedTextInputField.White
+        },
+        inputMaxLength = inputMaxLength,
+        confirmLabelColor = confirmLabelColor,
+        titleAlignment = titleAlignment,
+        enabled = enabled,
+    )
 }
 
 @Composable
@@ -95,11 +155,10 @@ private fun InputPopupBody(
     inputLabel: String,
     inputContent: String,
     hint: String,
-    inputState: InputState,
+    state: SDGFixedTextInputState,
     onInputChange: (String) -> Unit,
-    inputBackgroundColor: Color,
+    inputField: SDGFixedTextInputField,
     inputMaxLength: Int,
-    enableOnError: Boolean,
     focusRequester: FocusRequester? = null
 ) {
     SDGText(
@@ -111,15 +170,14 @@ private fun InputPopupBody(
     Spacer(modifier = Modifier.height(Spacing8))
 
     SDGFixedTextInput(
-        outlineType = OutlineType.BASIC,
-        input = inputContent,
-        hint = hint,
-        inputState = inputState,
-        onInputChange = onInputChange,
+        text = inputContent,
+        placeholder = hint,
+        state = state,
+        inputField = inputField,
+        style = SDGFixedTextInputStyle.Solid,
+        onTextChange = onInputChange,
         focusRequester = focusRequester,
-        backgroundColor = inputBackgroundColor,
         maxLength = inputMaxLength,
-        enableOnError = enableOnError
     )
 }
 
