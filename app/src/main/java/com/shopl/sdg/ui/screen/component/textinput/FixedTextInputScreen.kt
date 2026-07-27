@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInput
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputField
@@ -21,13 +22,13 @@ import com.shopl.sdg.scene.ComponentScene
 import com.shopl.sdg.ui.base.SDGSampleBaseComponentScaffold
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_resource.R
 import kotlinx.collections.immutable.persistentListOf
 
 private const val FIXED_TEXT_INPUT_SAMPLE_TEXT =
     "가슴속에 못 시인의 나의 별이 봅니다. 어머님, 멀리 별 이런 나는 추억과 남은 걱정도 " +
         "쓸쓸함과 있습니다. 다하지 딴은 나의 한 둘 언덕 이름과 별 까닭입니다. " +
         "별을 하나에 소학교 이름과, 봅니다. 하늘에는 별이 계속 이어집니다."
-private const val FIXED_TEXT_INPUT_PLACEHOLDER = "Placeholder"
 
 /**
  * SDG Sample App - Component - Text Input - FixedTextInput
@@ -106,7 +107,7 @@ private fun ComponentContent(
     ) {
         SDGFixedTextInput(
             text = text,
-            placeholder = FIXED_TEXT_INPUT_PLACEHOLDER,
+            placeholder = stringResource(id = R.string.text_hint_study_place),
             state = state,
             inputField = inputField,
             style = style,
