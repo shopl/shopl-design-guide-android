@@ -54,6 +54,7 @@ private val SDGFixedTextInputHeight = 104.dp
 private val SDGFixedTextInputBorderWidth = 1.dp
 private val SDGFixedTextInputScrollbarWidth = 4.dp
 private val SDGFixedTextInputScrollbarMinHeight = 16.dp
+private const val SDGFixedTextInputMinLength = 50
 
 /**
  * SDG - Text Input - Fixed Text Input
@@ -78,7 +79,9 @@ fun SDGFixedTextInput(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
-    require(maxLength >= 0) { "maxLength는 0 이상이어야 합니다." }
+    require(maxLength >= SDGFixedTextInputMinLength) {
+        "maxLength는 $SDGFixedTextInputMinLength 이상이어야 합니다."
+    }
 
     val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current
