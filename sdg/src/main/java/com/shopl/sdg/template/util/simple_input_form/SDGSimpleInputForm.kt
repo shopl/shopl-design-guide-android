@@ -29,8 +29,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.text_input.InputState
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputField
 import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputState
-import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputType
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputStyle
 import com.shopl.sdg.component.util.simple_text_input.SDGSimpleTextInput
 import com.shopl.sdg.template.form.SDGFormType
 import com.shopl.sdg_common.ext.clickable
@@ -71,12 +72,6 @@ fun SDGSimpleInputForm(
     minValue: Double? = null,
     maxValue: Double? = null,
 ) {
-    val inputState = when (state) {
-        SDGSimpleTextInputState.Default,
-        SDGSimpleTextInputState.Completed -> InputState.Enable
-        SDGSimpleTextInputState.Disabled -> InputState.Disable
-        SDGSimpleTextInputState.Error -> InputState.Error(message = "")
-    }
     val titleAnnotatedString = if (essential) {
         title.plus("*").withColor(SDGColor.Red300, "*")
     } else {
@@ -138,11 +133,11 @@ fun SDGSimpleInputForm(
             }
         }
         SDGSimpleTextInput(
-            type = SDGSimpleTextInputType.BASIC,
             input = value,
             hint = hint ?: stringResource(id = R.string.text_hint_study_place),
-            inputState = inputState,
-            backgroundColor = SDGColor.Neutral50,
+            state = state,
+            inputField = SDGSimpleTextInputField.LightGray,
+            style = SDGSimpleTextInputStyle.Solid,
             onInputChange = onValueChange,
             decimalFormat = decimalFormat,
             minValue = minValue,
