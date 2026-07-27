@@ -4,6 +4,13 @@ import androidx.compose.runtime.Stable
 
 @Stable
 sealed interface SDGFixedTextInputStyle {
-    data object Solid : SDGFixedTextInputStyle
-    data object Outlined : SDGFixedTextInputStyle
+    val styleName: String
+
+    data object Solid : SDGFixedTextInputStyle {
+        override val styleName = "Solid"
+    }
+
+    data object Outlined : SDGFixedTextInputStyle {
+        override val styleName = "Outlined"
+    }
 }

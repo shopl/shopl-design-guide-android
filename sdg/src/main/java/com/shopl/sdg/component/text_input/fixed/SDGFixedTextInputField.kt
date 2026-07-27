@@ -4,6 +4,13 @@ import androidx.compose.runtime.Stable
 
 @Stable
 sealed interface SDGFixedTextInputField {
-    data object LightGray : SDGFixedTextInputField
-    data object White : SDGFixedTextInputField
+    val fieldName: String
+
+    data object LightGray : SDGFixedTextInputField {
+        override val fieldName = "LightGray"
+    }
+
+    data object White : SDGFixedTextInputField {
+        override val fieldName = "White"
+    }
 }
