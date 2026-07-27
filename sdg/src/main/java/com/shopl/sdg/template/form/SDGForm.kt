@@ -31,7 +31,11 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.dropdown.SDGDropdown
 import com.shopl.sdg.component.dropdown.SDGDropdownState
 import com.shopl.sdg.component.select_input.SDGSelectInput
+import com.shopl.sdg.component.select_input.SDGSelectInputField
+import com.shopl.sdg.component.select_input.SDGSelectInputImage
+import com.shopl.sdg.component.select_input.SDGSelectInputImageSize
 import com.shopl.sdg.component.select_input.SDGSelectInputState
+import com.shopl.sdg.component.select_input.SDGSelectInputType
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputField
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInput
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputState
@@ -232,7 +236,7 @@ fun SDGSelectedInputForm(
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
-    inputStartIcon: @Composable (() -> Unit)? = null,
+    inputStartImage: SDGSelectInputImage? = null,
     inputTextOverflow: TextOverflow = TextOverflow.Ellipsis,
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
@@ -300,13 +304,13 @@ fun SDGSelectedInputForm(
             }
         }
         SDGSelectInput(
-            backgroundColor = SDGColor.Neutral50,
-            state = selectedInputState,
+            inputField = SDGSelectInputField.LightGray,
+            state = selectedInputState.toSelectInputState(value),
             text = value,
             placeholder = hint ?: stringResource(id = R.string.select),
+            type = selectInputType(selectedElementImage = inputStartImage),
             onClick = onInputClick,
-            icon = inputStartIcon,
-            overflow = inputTextOverflow
+            overflow = inputTextOverflow,
         )
     }
 }
@@ -322,7 +326,7 @@ fun SDGSelectedInputForm(
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
-    inputStartIcon: @Composable (() -> Unit)? = null,
+    inputStartImage: SDGSelectInputImage? = null,
     inputTextOverflow: TextOverflow = TextOverflow.Ellipsis,
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
@@ -390,13 +394,36 @@ fun SDGSelectedInputForm(
             }
         }
         SDGSelectInput(
-            backgroundColor = SDGColor.Neutral50,
-            state = selectedInputState,
+            inputField = SDGSelectInputField.LightGray,
+            state = selectedInputState.toSelectInputState(value),
             text = value,
             placeholder = hint ?: stringResource(id = R.string.select),
+            type = selectInputType(selectedElementImage = inputStartImage),
             onClick = onInputClick,
-            icon = inputStartIcon,
-            overflow = inputTextOverflow
+            overflow = inputTextOverflow,
+        )
+    }
+}
+
+private fun SDGSelectInputState.toSelectInputState(
+    value: String?,
+): SDGSelectInputState {
+    return when {
+        this != SDGSelectInputState.Default -> this
+        value.isNullOrEmpty() -> SDGSelectInputState.Default
+        else -> SDGSelectInputState.Selected
+    }
+}
+
+private fun selectInputType(
+    selectedElementImage: SDGSelectInputImage?,
+): SDGSelectInputType {
+    return if (selectedElementImage == null) {
+        SDGSelectInputType.Text
+    } else {
+        SDGSelectInputType.OneImage(
+            selectedElementImage = selectedElementImage,
+            imageSize = SDGSelectInputImageSize.Normal2,
         )
     }
 }
@@ -734,13 +761,9 @@ private fun PrevForm(
                 iconTint = null,
                 onInputClick = {},
                 onResetClick = {},
-                inputStartIcon = {
-                    Box(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .background(SDGColor.Neutral400)
-                    )
-                }
+                inputStartImage = SDGSelectInputImage.Resource(
+                    resId = R.drawable.ic_common_photo,
+                ),
             )
             SDGFixedInputForm(
                 type = SDGFormType.NORMAL,
