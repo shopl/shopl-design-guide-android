@@ -64,7 +64,7 @@ internal fun SimpleTextInputScreen(
         types = types,
         specs = specs,
         guideLineDescriptions = persistentListOf(
-            "입력 가능한 최대 글자 수는 50자입니다.",
+            "Completed → Focused 상태로 변경했을 경우 커서는 텍스트의 마지막에 위치합니다."
         ),
         componentContent = { currentType, currentSpec, currentStatus ->
             if (currentType != null && currentSpec != null) {
