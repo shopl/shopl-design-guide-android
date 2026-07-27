@@ -11,10 +11,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.shopl.sdg.component.guide_container.preview.SDGGuideContainerPreviewParameterProvider
 import com.shopl.sdg.component.guide_container.preview.SDGGuideContainerPreviewParams
-import com.shopl.sdg.component.text_input.InputState
 import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInput
-import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputType
-import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputField
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputState
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputStyle
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
@@ -68,12 +68,12 @@ private fun PreviewSDGGuideContainer(
         showText = params.showText,
         contentArea = {
             SDGSimpleTextInput(
-                type = SDGSimpleTextInputType.BASIC,
-                input = "",
-                hint = "placeholder",
-                inputState = InputState.Enable,
-                backgroundColor = SDGColor.Neutral50,
-                onInputChange = {},
+                text = "",
+                placeholder = "placeholder",
+                state = SDGSimpleTextInputState.Default,
+                inputField = SDGSimpleTextInputField.LightGray,
+                style = SDGSimpleTextInputStyle.Solid,
+                onTextChange = {},
             )
         }
     )
