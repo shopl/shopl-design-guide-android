@@ -29,7 +29,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.text_input.InputState
-import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputType
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputField
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputState
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputStyle
 import com.shopl.sdg.component.util.simple_text_input.SDGSimpleTextInput
 import com.shopl.sdg.template.form.SDGFormType
 import com.shopl.sdg_common.ext.clickable
@@ -49,7 +51,7 @@ import java.util.Locale
  *
  * 숫자만 입력 받는 경우 사용
  *
- * @param inputState SimpeInput 에서 사용되는 state, Error인 경우 현재 message 별도 출력하지 않음
+ * @param state SimpleInput에서 사용하는 상태
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=9965-10563&m=dev">Figma</a>
  */
@@ -66,7 +68,7 @@ fun SDGSimpleInputForm(
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
-    inputState: InputState = InputState.Enable,
+    state: SDGSimpleTextInputState,
     minValue: Double? = null,
     maxValue: Double? = null,
 ) {
@@ -131,11 +133,11 @@ fun SDGSimpleInputForm(
             }
         }
         SDGSimpleTextInput(
-            type = SDGSimpleTextInputType.BASIC,
             input = value,
             hint = hint ?: stringResource(id = R.string.text_hint_study_place),
-            inputState = inputState,
-            backgroundColor = SDGColor.Neutral50,
+            state = state,
+            inputField = SDGSimpleTextInputField.LightGray,
+            style = SDGSimpleTextInputStyle.Solid,
             onInputChange = onValueChange,
             decimalFormat = decimalFormat,
             minValue = minValue,
@@ -146,6 +148,58 @@ fun SDGSimpleInputForm(
             )
         )
     }
+}
+
+/**
+ * 신규 Simple Input Form API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Deprecated(
+    message = "SDGSimpleInputForm의 state 기반 API를 사용하세요.",
+)
+@Composable
+fun SDGSimpleInputForm(
+    type: SDGFormType,
+    title: String,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+    decimalFormat: DecimalFormat? = null,
+    essential: Boolean = false,
+    hint: String? = null,
+    @DrawableRes iconResId: Int? = null,
+    iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
+    marginValues: PaddingValues = PaddingValues(),
+    inputState: InputState = InputState.Enable,
+    minValue: Double? = null,
+    maxValue: Double? = null,
+) {
+    val state = when (inputState) {
+        InputState.Enable -> if (value.text.isEmpty()) {
+            SDGSimpleTextInputState.Default
+        } else {
+            SDGSimpleTextInputState.Completed
+        }
+
+        InputState.Disable -> SDGSimpleTextInputState.Disabled
+        is InputState.Error -> SDGSimpleTextInputState.Error
+    }
+
+    SDGSimpleInputForm(
+        type = type,
+        title = title,
+        value = value,
+        onValueChange = onValueChange,
+        decimalFormat = decimalFormat,
+        essential = essential,
+        hint = hint,
+        iconResId = iconResId,
+        iconTint = iconTint,
+        onClickIcon = onClickIcon,
+        marginValues = marginValues,
+        state = state,
+        minValue = minValue,
+        maxValue = maxValue,
+    )
 }
 
 @Preview
@@ -172,6 +226,7 @@ fun PreviewSDGSimpleInputForm() {
             essential = true,
             iconResId = R.drawable.ic_clip,
             iconTint = SDGColor.Neutral700,
+            state = SDGSimpleTextInputState.Default,
             onValueChange = {
                 value = it
             }

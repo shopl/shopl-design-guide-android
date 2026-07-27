@@ -22,8 +22,10 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.text_input.InputState
-import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputType
 import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInput
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputField
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputState
+import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputStyle
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ext.withColor
 import com.shopl.sdg_common.foundation.SDGColor
@@ -37,7 +39,7 @@ import com.shopl.sdg_resource.R
  *
  * 타이틀과 Simple input으로 구성된 템플릿
  *
- * @param inputState SimpeInput 에서 사용되는 state, Error인 경우 현재 message 별도 출력하지 않음
+ * @param state SimpleInput에서 사용하는 상태
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=9965-10563&m=dev">Figma</a>
  */
@@ -53,7 +55,7 @@ fun SDGSimpleInputForm(
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
-    inputState: InputState = InputState.Enable,
+    state: SDGSimpleTextInputState,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     val titleAnnotatedString = if (essential) {
@@ -117,15 +119,67 @@ fun SDGSimpleInputForm(
             }
         }
         SDGSimpleTextInput(
-            type = SDGSimpleTextInputType.BASIC,
-            input = value.orEmpty(),
-            hint = hint ?: stringResource(id = R.string.text_hint_study_place),
-            inputState = inputState,
-            backgroundColor = SDGColor.Neutral50,
-            onInputChange = onValueChange,
-            keyboardOptions = keyboardOptions
+            text = value.orEmpty(),
+            placeholder = hint ?: stringResource(id = R.string.text_hint_study_place),
+            state = if (state == SDGSimpleTextInputState.Default && !value.isNullOrEmpty()) {
+                SDGSimpleTextInputState.Completed
+            } else {
+                state
+            },
+            inputField = SDGSimpleTextInputField.LightGray,
+            style = SDGSimpleTextInputStyle.Solid,
+            onTextChange = onValueChange,
+            keyboardOptions = keyboardOptions,
         )
     }
+}
+
+/**
+ * 신규 Simple Input Form API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Deprecated(
+    message = "SDGSimpleInputForm의 state 기반 API를 사용하세요.",
+)
+@Composable
+fun SDGSimpleInputForm(
+    type: SDGFormType,
+    title: String,
+    value: String?,
+    onValueChange: (String) -> Unit,
+    essential: Boolean = false,
+    hint: String? = null,
+    @DrawableRes iconResId: Int? = null,
+    iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
+    marginValues: PaddingValues = PaddingValues(),
+    inputState: InputState = InputState.Enable,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+) {
+    val state = when (inputState) {
+        InputState.Enable -> if (value.isNullOrEmpty()) {
+            SDGSimpleTextInputState.Default
+        } else {
+            SDGSimpleTextInputState.Completed
+        }
+
+        InputState.Disable -> SDGSimpleTextInputState.Disabled
+        is InputState.Error -> SDGSimpleTextInputState.Error
+    }
+
+    SDGSimpleInputForm(
+        type = type,
+        title = title,
+        value = value,
+        onValueChange = onValueChange,
+        essential = essential,
+        hint = hint,
+        iconResId = iconResId,
+        iconTint = iconTint,
+        onClickIcon = onClickIcon,
+        marginValues = marginValues,
+        state = state,
+        keyboardOptions = keyboardOptions,
+    )
 }
 
 @Preview
@@ -149,6 +203,7 @@ fun PreviewSDGSimpleInputForm() {
             essential = true,
             iconResId = R.drawable.ic_clip,
             iconTint = SDGColor.Neutral700,
+            state = SDGSimpleTextInputState.Completed,
             onValueChange = {}
         )
         SDGSimpleInputForm(
@@ -158,7 +213,7 @@ fun PreviewSDGSimpleInputForm() {
             essential = true,
             iconResId = R.drawable.ic_clip,
             iconTint = SDGColor.Neutral700,
-            inputState = InputState.Error(""),
+            state = SDGSimpleTextInputState.Error,
             onValueChange = {}
         )
         SDGSimpleInputForm(
@@ -166,6 +221,7 @@ fun PreviewSDGSimpleInputForm() {
             title = "SDGSimpleInputForm",
             value = "",
             hint = "This is NORMAL type",
+            state = SDGSimpleTextInputState.Default,
             onValueChange = {}
         )
     }
