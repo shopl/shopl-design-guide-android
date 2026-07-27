@@ -170,22 +170,9 @@ fun SDGFixedTextInput(
         },
     )
 
-    LaunchedEffect(isKeyboardOpen, state) {
-        if (
-            isKeyboardOpen == Keyboard.Closed &&
-            state != SDGFixedTextInputState.Focused
-        ) {
+    LaunchedEffect(isKeyboardOpen) {
+        if (isKeyboardOpen == Keyboard.Closed) {
             focusManager.clearFocus()
-        }
-    }
-
-    LaunchedEffect(state, resolvedFocusRequester) {
-        if (state == SDGFixedTextInputState.Focused) {
-            textFieldValueState = textFieldValueState.copy(
-                text = text,
-                selection = TextRange(text.length),
-            )
-            resolvedFocusRequester.requestFocus()
         }
     }
 

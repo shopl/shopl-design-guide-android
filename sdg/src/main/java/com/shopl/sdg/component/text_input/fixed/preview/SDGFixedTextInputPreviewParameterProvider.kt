@@ -10,13 +10,11 @@ internal class SDGFixedTextInputPreviewParameterProvider :
 
     override val values: Sequence<SDGFixedTextInputPreviewParameter> = sequenceOf(
         Solid_LightGray_기본(),
-        Solid_LightGray_포커스(),
         Solid_LightGray_입력완료(),
         Solid_LightGray_오버플로우(),
         Solid_LightGray_비활성(),
         Solid_LightGray_오류(),
         Outlined_White_입력완료(),
-        Solid_White_포커스(),
         Outlined_White_오류(),
     )
 
@@ -24,12 +22,6 @@ internal class SDGFixedTextInputPreviewParameterProvider :
         return SDGFixedTextInputPreviewParameter(
             state = SDGFixedTextInputState.Default,
             text = "",
-        )
-    }
-
-    private fun Solid_LightGray_포커스(): SDGFixedTextInputPreviewParameter {
-        return SDGFixedTextInputPreviewParameter(
-            state = SDGFixedTextInputState.Focused,
         )
     }
 
@@ -67,13 +59,6 @@ internal class SDGFixedTextInputPreviewParameterProvider :
             state = SDGFixedTextInputState.Completed,
             inputField = SDGFixedTextInputField.White,
             style = SDGFixedTextInputStyle.Outlined,
-        )
-    }
-
-    private fun Solid_White_포커스(): SDGFixedTextInputPreviewParameter {
-        return SDGFixedTextInputPreviewParameter(
-            state = SDGFixedTextInputState.Focused,
-            inputField = SDGFixedTextInputField.White,
         )
     }
 
