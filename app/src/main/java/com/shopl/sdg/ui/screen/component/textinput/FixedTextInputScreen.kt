@@ -27,6 +27,7 @@ private const val FIXED_TEXT_INPUT_SAMPLE_TEXT =
     "가슴속에 못 시인의 나의 별이 봅니다. 어머님, 멀리 별 이런 나는 추억과 남은 걱정도 " +
         "쓸쓸함과 있습니다. 다하지 딴은 나의 한 둘 언덕 이름과 별 까닭입니다. " +
         "별을 하나에 소학교 이름과, 봅니다. 하늘에는 별이 계속 이어집니다."
+private const val FIXED_TEXT_INPUT_PLACEHOLDER = "Placeholder"
 
 /**
  * SDG Sample App - Component - Text Input - FixedTextInput
@@ -65,8 +66,7 @@ internal fun FixedTextInputScreen(
         types = types,
         specs = specs,
         guideLineDescriptions = persistentListOf(
-            "입력 영역을 초과한 텍스트는 세로로 스크롤할 수 있습니다.",
-            "스크롤바는 입력된 텍스트 길이에 따라 가변합니다.",
+            "Completed → Focused 상태로 변경했을 경우 커서는 텍스트의 마지막에 위치합니다."
         ),
         componentContent = { currentType, currentSpec, currentStatus ->
             if (currentType != null && currentSpec != null) {
@@ -106,7 +106,7 @@ private fun ComponentContent(
     ) {
         SDGFixedTextInput(
             text = text,
-            placeholder = "Placeholder",
+            placeholder = FIXED_TEXT_INPUT_PLACEHOLDER,
             state = state,
             inputField = inputField,
             style = style,
