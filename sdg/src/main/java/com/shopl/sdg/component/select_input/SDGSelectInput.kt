@@ -37,6 +37,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
 private val SDGSelectInputDefaultHeight = 40.dp
+private val SDGSelectInputTwoImageHeight = 80.dp
 private val SDGSelectInputChevronSize = 24.dp
 private const val SDGSelectInputDisabledAlpha = 0.3f
 
@@ -79,6 +80,14 @@ fun SDGSelectInput(
         SDGSelectInputState.Error,
             -> SDGColor.Neutral700
     }
+    val fieldHeight = if (
+        state != SDGSelectInputState.Default &&
+        type is SDGSelectInputType.TwoImage
+    ) {
+        SDGSelectInputTwoImageHeight
+    } else {
+        SDGSelectInputDefaultHeight
+    }
     val backgroundColor = when (state) {
         SDGSelectInputState.Error -> SDGColor.Red300_a10
         SDGSelectInputState.Default,
@@ -97,6 +106,7 @@ fun SDGSelectInput(
     Row(
         modifier = Modifier
             .padding(marginValues)
+            .height(fieldHeight)
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
             .background(color = backgroundColor)
             .then(
