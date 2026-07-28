@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.dp
 /**
  * [SDGSelectInputType.OneImage]와 [SDGSelectInputType.TwoImage]의 이미지 영역 규격입니다.
  */
-enum class SDGSelectInputImageSize(
+enum class SDGSelectInputImageType(
     val width: Dp,
     val height: Dp,
 ) {

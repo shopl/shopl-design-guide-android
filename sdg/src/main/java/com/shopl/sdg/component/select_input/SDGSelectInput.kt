@@ -257,7 +257,7 @@ private fun SelectedElement(
                 text = text,
                 textColor = textColor,
                 image = type.selectedElementImage,
-                imageSize = SDGSelectInputImageSize.Normal1,
+                imageSize = SDGSelectInputImageType.Normal1,
                 clipImageToCircle = true,
                 overflow = overflow,
             )
@@ -268,8 +268,8 @@ private fun SelectedElement(
                 modifier = modifier,
                 text = text,
                 textColor = textColor,
-                image = type.selectedElementImage,
-                imageSize = type.imageSize,
+                image = type.image,
+                imageSize = type.type,
                 overflow = overflow,
             )
         }
@@ -283,13 +283,13 @@ private fun SelectedElement(
                     modifier = Modifier.fillMaxWidth(),
                     text = text,
                     textColor = textColor,
-                    image = type.selectedElementImage,
+                    image = type.image,
                     imageSize = type.imageSize,
                     overflow = overflow,
                 )
                 SelectedElementRow(
                     modifier = Modifier.fillMaxWidth(),
-                    text = type.secondSelectedElementText,
+                    text = type.secondText,
                     textColor = textColor,
                     image = type.secondSelectedElementImage,
                     imageSize = type.imageSize,
@@ -305,7 +305,7 @@ private fun SelectedElementRow(
     text: String,
     textColor: Color,
     image: SDGSelectInputImage,
-    imageSize: SDGSelectInputImageSize,
+    imageSize: SDGSelectInputImageType,
     modifier: Modifier = Modifier,
     clipImageToCircle: Boolean = false,
     overflow: TextOverflow = TextOverflow.Ellipsis,
@@ -331,7 +331,7 @@ private fun SelectedElementRow(
 
 @Composable
 private fun SelectedElementImage(
-    imageSize: SDGSelectInputImageSize,
+    imageSize: SDGSelectInputImageType,
     image: SDGSelectInputImage,
     clipToCircle: Boolean = false,
 ) {
@@ -450,32 +450,32 @@ private fun SDGSelectInputPreviewType.toSelectInputType(): SDGSelectInputType {
         )
 
         SDGSelectInputPreviewType.OneImageNormal1 -> SDGSelectInputType.OneImage(
-            selectedElementImage = SDGSelectInputImage.Resource(
+            image = SDGSelectInputImage.Resource(
                 resId = R.drawable.ic_common_photo,
             ),
-            imageSize = SDGSelectInputImageSize.Normal1,
+            type = SDGSelectInputImageType.Normal1,
         )
 
         SDGSelectInputPreviewType.OneImageNormal2 -> SDGSelectInputType.OneImage(
-            selectedElementImage = SDGSelectInputImage.Url(
+            image = SDGSelectInputImage.Url(
                 url = "https://example.com/image.png",
                 failureImageResId = R.drawable.ic_common_photo,
             ),
-            imageSize = SDGSelectInputImageSize.Normal2,
+            type = SDGSelectInputImageType.Normal2,
         )
 
         SDGSelectInputPreviewType.OneImageSpecial1 -> SDGSelectInputType.OneImage(
-            selectedElementImage = SDGSelectInputImage.Resource(
+            image = SDGSelectInputImage.Resource(
                 resId = R.drawable.ic_common_photo,
             ),
-            imageSize = SDGSelectInputImageSize.Special1,
+            type = SDGSelectInputImageType.Special1,
         )
 
         SDGSelectInputPreviewType.TwoImage -> SDGSelectInputType.TwoImage(
-            selectedElementImage = SDGSelectInputImage.Resource(
+            image = SDGSelectInputImage.Resource(
                 resId = R.drawable.ic_common_photo,
             ),
-            secondSelectedElementText = "Second Selected Text",
+            secondText = "Second Selected Text",
             secondSelectedElementImage = SDGSelectInputImage.Resource(
                 resId = R.drawable.ic_common_photo,
             ),

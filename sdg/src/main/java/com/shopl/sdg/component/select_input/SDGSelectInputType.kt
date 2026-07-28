@@ -20,17 +20,17 @@ sealed class SDGSelectInputType {
     }
 
     data class OneImage(
-        val selectedElementImage: SDGSelectInputImage,
-        val imageSize: SDGSelectInputImageSize = SDGSelectInputImageSize.Normal1,
+        val image: SDGSelectInputImage,
+        val type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
     ) : SDGSelectInputType() {
         override val typeName: String = "1 Image"
     }
 
     data class TwoImage(
-        val selectedElementImage: SDGSelectInputImage,
-        val secondSelectedElementText: String,
+        val image: SDGSelectInputImage,
+        val secondText: String,
         val secondSelectedElementImage: SDGSelectInputImage,
-        val imageSize: SDGSelectInputImageSize = SDGSelectInputImageSize.Normal1,
+        val imageSize: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
     ) : SDGSelectInputType() {
         override val typeName: String = "2 Image"
     }

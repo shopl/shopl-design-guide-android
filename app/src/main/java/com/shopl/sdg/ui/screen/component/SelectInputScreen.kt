@@ -40,15 +40,15 @@ internal fun SelectInputScreen(
         ),
     )
     val oneImageType = SDGSelectInputType.OneImage(
-        selectedElementImage = SDGSelectInputImage.Resource(
+        image = SDGSelectInputImage.Resource(
             resId = R.drawable.ic_common_photo,
         ),
     )
     val twoImageType = SDGSelectInputType.TwoImage(
-        selectedElementImage = SDGSelectInputImage.Resource(
+        image = SDGSelectInputImage.Resource(
             resId = R.drawable.ic_common_photo,
         ),
-        secondSelectedElementText = "Second Selected Text",
+        secondText = "Second Selected Text",
         secondSelectedElementImage = SDGSelectInputImage.Resource(
             resId = R.drawable.ic_common_photo,
         ),

@@ -33,7 +33,7 @@ import com.shopl.sdg.component.dropdown.SDGDropdownState
 import com.shopl.sdg.component.select_input.SDGSelectInput
 import com.shopl.sdg.component.select_input.SDGSelectInputField
 import com.shopl.sdg.component.select_input.SDGSelectInputImage
-import com.shopl.sdg.component.select_input.SDGSelectInputImageSize
+import com.shopl.sdg.component.select_input.SDGSelectInputImageType
 import com.shopl.sdg.component.select_input.SDGSelectInputState
 import com.shopl.sdg.component.select_input.SDGSelectInputType
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInput
@@ -591,8 +591,8 @@ private fun selectInputType(
         SDGSelectInputType.Text
     } else {
         SDGSelectInputType.OneImage(
-            selectedElementImage = selectedElementImage,
-            imageSize = SDGSelectInputImageSize.Normal2,
+            image = selectedElementImage,
+            type = SDGSelectInputImageType.Normal2,
         )
     }
 }
