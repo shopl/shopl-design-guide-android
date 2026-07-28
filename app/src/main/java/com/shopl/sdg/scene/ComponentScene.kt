@@ -7,6 +7,7 @@ import com.shopl.sdg.ui.screen.component.button.BoxButtonScreen
 import com.shopl.sdg.ui.screen.component.button.CapsuleButtonScreen
 import com.shopl.sdg.ui.screen.component.button.FloatingButtonScreen
 import com.shopl.sdg.ui.screen.component.button.GhostButtonScreen
+import com.shopl.sdg.ui.screen.component.SelectInputScreen
 import com.shopl.sdg.ui.screen.component.textinput.FixedTextInputScreen
 import com.shopl.sdg.ui.screen.component.textinput.SimpleTextInputScreen
 
@@ -384,11 +385,16 @@ internal sealed class ComponentScene(
 
     data object SelectInput : ComponentScene(
         displayLabel = "Select Input",
-        implemented = false
+        implemented = true
     ) {
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-            throw IllegalStateException("Not implemented")
+            SelectInputScreen(
+                onClickBack = backToScene,
+                onClickMenu = {
+                    moveToScene(Menu)
+                }
+            )
         }
     }
 

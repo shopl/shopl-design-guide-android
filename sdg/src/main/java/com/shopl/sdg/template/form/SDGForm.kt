@@ -31,9 +31,14 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.dropdown.SDGDropdown
 import com.shopl.sdg.component.dropdown.SDGDropdownState
 import com.shopl.sdg.component.select_input.SDGSelectInput
+import com.shopl.sdg.component.select_input.SDGSelectInputField
+import com.shopl.sdg.component.select_input.SDGSelectInputImage
+import com.shopl.sdg.component.select_input.SDGSelectInputImageType
 import com.shopl.sdg.component.select_input.SDGSelectInputState
-import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputField
+import com.shopl.sdg.component.select_input.SDGSelectInputText
+import com.shopl.sdg.component.select_input.SDGSelectInputType
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInput
+import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputField
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputState
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputStyle
 import com.shopl.sdg.component.time_select_input.SDGTimeSelectInput
@@ -83,7 +88,7 @@ fun SDGDropdownForm(
                 SDGText(
                     text = title,
                     textColor = SDGColor.Neutral700,
-                    typography = when(type) {
+                    typography = when (type) {
                         SDGFormType.EMPHA -> SDGTypography.Body1SB
                         SDGFormType.NORMAL -> SDGTypography.Body1R
                     },
@@ -232,8 +237,7 @@ fun SDGSelectedInputForm(
     @DrawableRes iconResId: Int? = null,
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
-    inputStartIcon: @Composable (() -> Unit)? = null,
-    inputTextOverflow: TextOverflow = TextOverflow.Ellipsis,
+    inputStartImage: SDGSelectInputImage?,
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
 ) {
@@ -255,7 +259,7 @@ fun SDGSelectedInputForm(
                 SDGText(
                     text = title,
                     textColor = SDGColor.Neutral700,
-                    typography = when(type) {
+                    typography = when (type) {
                         SDGFormType.EMPHA -> SDGTypography.Body1SB
                         SDGFormType.NORMAL -> SDGTypography.Body1R
                     },
@@ -300,17 +304,153 @@ fun SDGSelectedInputForm(
             }
         }
         SDGSelectInput(
-            backgroundColor = SDGColor.Neutral50,
-            state = selectedInputState,
-            text = value,
+            inputField = SDGSelectInputField.LightGray,
+            state = selectedInputState.toSelectInputState(value),
             placeholder = hint ?: stringResource(id = R.string.select),
+            type = selectInputType(
+                text = value.orEmpty(),
+                selectedElementImage = inputStartImage,
+            ),
             onClick = onInputClick,
-            icon = inputStartIcon,
-            overflow = inputTextOverflow
         )
     }
 }
 
+@Composable
+fun SDGSelectedInputForm(
+    type: SDGFormType,
+    title: AnnotatedString,
+    value: String?,
+    onInputClick: () -> Unit,
+    hint: String? = null,
+    selectedInputState: SDGSelectInputState = SDGSelectInputState.Default,
+    @DrawableRes iconResId: Int? = null,
+    iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
+    inputStartImage: SDGSelectInputImage?,
+    marginValues: PaddingValues = PaddingValues(),
+    onResetClick: (() -> Unit)? = null,
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(marginValues)
+                .fillMaxWidth()
+                .heightIn(min = 28.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                SDGText(
+                    text = title,
+                    textColor = SDGColor.Neutral700,
+                    typography = when (type) {
+                        SDGFormType.EMPHA -> SDGTypography.Body1SB
+                        SDGFormType.NORMAL -> SDGTypography.Body1R
+                    },
+                )
+                iconResId?.let {
+                    Box(
+                        modifier = Modifier
+                            .clickable(hasRipple = false) {
+                                onClickIcon?.invoke()
+                            }
+                            .width(26.dp)
+                            .height(20.dp)
+                            .padding(
+                                start = 4.dp,
+                                top = 3.dp,
+                                end = 8.dp,
+                                bottom = 3.dp
+                            )
+                    ) {
+                        SDGImage(
+                            resId = it,
+                            color = iconTint,
+                        )
+                    }
+                }
+            }
+
+            if (value != null && onResetClick != null) {
+                Image(
+                    modifier = Modifier
+                        .bounceClickable { onResetClick() }
+                        .background(
+                            color = SDGColor.Neutral50,
+                            shape = CircleShape,
+                        )
+                        .padding(2.dp)
+                        .size(24.dp),
+                    painter = painterResource(id = R.drawable.ic_common_refresh),
+                    colorFilter = ColorFilter.tint(SDGColor.Neutral400),
+                    contentDescription = null
+                )
+            }
+        }
+        SDGSelectInput(
+            inputField = SDGSelectInputField.LightGray,
+            state = selectedInputState.toSelectInputState(value),
+            placeholder = hint ?: stringResource(id = R.string.select),
+            type = selectInputType(
+                text = value.orEmpty(),
+                selectedElementImage = inputStartImage,
+            ),
+            onClick = onInputClick,
+        )
+    }
+}
+
+/**
+ * 신규 Selected Input Form API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Deprecated(
+    message = "inputStartIcon 대신 inputStartImage를 사용하는 SDGSelectedInputForm을 사용하세요.",
+)
+@Composable
+fun SDGSelectedInputForm(
+    type: SDGFormType,
+    title: String,
+    value: String?,
+    onInputClick: () -> Unit,
+    hint: String? = null,
+    selectedInputState: SDGSelectInputState = SDGSelectInputState.Default,
+    @DrawableRes iconResId: Int? = null,
+    iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
+    inputStartIcon: @Composable (() -> Unit)? = null,
+    inputTextOverflow: TextOverflow = TextOverflow.Ellipsis,
+    marginValues: PaddingValues = PaddingValues(),
+    onResetClick: (() -> Unit)? = null,
+) {
+    LegacySDGSelectedInputForm(
+        type = type,
+        title = AnnotatedString(text = title),
+        value = value,
+        onInputClick = onInputClick,
+        hint = hint,
+        selectedInputState = selectedInputState,
+        iconResId = iconResId,
+        iconTint = iconTint,
+        onClickIcon = onClickIcon,
+        inputStartIcon = inputStartIcon,
+        inputTextOverflow = inputTextOverflow,
+        marginValues = marginValues,
+        onResetClick = onResetClick,
+    )
+}
+
+/**
+ * 신규 Selected Input Form API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Deprecated(
+    message = "inputStartIcon 대신 inputStartImage를 사용하는 SDGSelectedInputForm을 사용하세요.",
+)
 @Composable
 fun SDGSelectedInputForm(
     type: SDGFormType,
@@ -327,6 +467,40 @@ fun SDGSelectedInputForm(
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
 ) {
+    LegacySDGSelectedInputForm(
+        type = type,
+        title = title,
+        value = value,
+        onInputClick = onInputClick,
+        hint = hint,
+        selectedInputState = selectedInputState,
+        iconResId = iconResId,
+        iconTint = iconTint,
+        onClickIcon = onClickIcon,
+        inputStartIcon = inputStartIcon,
+        inputTextOverflow = inputTextOverflow,
+        marginValues = marginValues,
+        onResetClick = onResetClick,
+    )
+}
+
+@Suppress("DEPRECATION")
+@Composable
+private fun LegacySDGSelectedInputForm(
+    type: SDGFormType,
+    title: AnnotatedString,
+    value: String?,
+    onInputClick: () -> Unit,
+    hint: String?,
+    selectedInputState: SDGSelectInputState,
+    @DrawableRes iconResId: Int?,
+    iconTint: Color?,
+    onClickIcon: (() -> Unit)?,
+    inputStartIcon: @Composable (() -> Unit)?,
+    inputTextOverflow: TextOverflow,
+    marginValues: PaddingValues,
+    onResetClick: (() -> Unit)?,
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -336,7 +510,7 @@ fun SDGSelectedInputForm(
                 .padding(marginValues)
                 .fillMaxWidth()
                 .heightIn(min = 28.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 modifier = Modifier.weight(1f),
@@ -345,7 +519,7 @@ fun SDGSelectedInputForm(
                 SDGText(
                     text = title,
                     textColor = SDGColor.Neutral700,
-                    typography = when(type) {
+                    typography = when (type) {
                         SDGFormType.EMPHA -> SDGTypography.Body1SB
                         SDGFormType.NORMAL -> SDGTypography.Body1R
                     },
@@ -362,8 +536,8 @@ fun SDGSelectedInputForm(
                                 start = 4.dp,
                                 top = 3.dp,
                                 end = 8.dp,
-                                bottom = 3.dp
-                            )
+                                bottom = 3.dp,
+                            ),
                     ) {
                         SDGImage(
                             resId = it,
@@ -385,7 +559,7 @@ fun SDGSelectedInputForm(
                         .size(24.dp),
                     painter = painterResource(id = R.drawable.ic_common_refresh),
                     colorFilter = ColorFilter.tint(SDGColor.Neutral400),
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
         }
@@ -396,7 +570,34 @@ fun SDGSelectedInputForm(
             placeholder = hint ?: stringResource(id = R.string.select),
             onClick = onInputClick,
             icon = inputStartIcon,
-            overflow = inputTextOverflow
+            overflow = inputTextOverflow,
+        )
+    }
+}
+
+private fun SDGSelectInputState.toSelectInputState(
+    value: String?,
+): SDGSelectInputState {
+    return when {
+        this != SDGSelectInputState.Default -> this
+        value.isNullOrEmpty() -> SDGSelectInputState.Default
+        else -> SDGSelectInputState.Selected
+    }
+}
+
+private fun selectInputType(
+    text: String,
+    selectedElementImage: SDGSelectInputImage?,
+): SDGSelectInputType {
+    return if (selectedElementImage == null) {
+        SDGSelectInputType.Text(
+            text = SDGSelectInputText.Single(value = text),
+        )
+    } else {
+        SDGSelectInputType.OneImage(
+            text = SDGSelectInputText.Single(value = text),
+            image = selectedElementImage,
+            type = SDGSelectInputImageType.Normal2,
         )
     }
 }
@@ -431,7 +632,7 @@ fun SDGFixedInputForm(
                 SDGText(
                     text = title,
                     textColor = SDGColor.Neutral700,
-                    typography = when(type) {
+                    typography = when (type) {
                         SDGFormType.EMPHA -> SDGTypography.Body1SB
                         SDGFormType.NORMAL -> SDGTypography.Body1R
                     },
@@ -505,7 +706,7 @@ fun SDGFixedInputForm(
                 SDGText(
                     text = title,
                     textColor = SDGColor.Neutral700,
-                    typography = when(type) {
+                    typography = when (type) {
                         SDGFormType.EMPHA -> SDGTypography.Body1SB
                         SDGFormType.NORMAL -> SDGTypography.Body1R
                     },
@@ -643,7 +844,7 @@ fun SDGTimeSelectedForm(
                 SDGText(
                     text = title,
                     textColor = SDGColor.Neutral700,
-                    typography = when(type) {
+                    typography = when (type) {
                         SDGFormType.EMPHA -> SDGTypography.Body1SB
                         SDGFormType.NORMAL -> SDGTypography.Body1R
                     },
@@ -724,6 +925,7 @@ private fun PrevForm(
                 iconTint = null,
                 onInputClick = {},
                 onResetClick = {},
+                inputStartImage = null,
             )
             SDGSelectedInputForm(
                 type = SDGFormType.NORMAL,
@@ -734,13 +936,9 @@ private fun PrevForm(
                 iconTint = null,
                 onInputClick = {},
                 onResetClick = {},
-                inputStartIcon = {
-                    Box(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .background(SDGColor.Neutral400)
-                    )
-                }
+                inputStartImage = SDGSelectInputImage.Resource(
+                    resId = R.drawable.ic_common_photo,
+                ),
             )
             SDGFixedInputForm(
                 type = SDGFormType.NORMAL,

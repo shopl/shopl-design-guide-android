@@ -32,8 +32,8 @@ import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+import com.shopl.sdg_common.util.emptyPersistentList
 import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
 
 /**
  * SDG Component 샘플 페이지 Base Scaffold
@@ -54,7 +54,7 @@ internal fun <TYPE, SPEC> SDGSampleBaseComponentScaffold(
     types: PersistentList<SDGSampleBaseTabItem<TYPE>>? = null,
     specs: PersistentList<SDGSampleBaseTabItem<SPEC>>? = null,
     componentContent: @Composable (type: TYPE?, spec: SPEC?, status: SDGSampleStatus) -> Unit,
-    guideLineDescriptions: PersistentList<String> = persistentListOf()
+    guideLineDescriptions: PersistentList<String> = emptyPersistentList()
 ) {
     SDGSampleBaseScaffold(
         name = componentName,
