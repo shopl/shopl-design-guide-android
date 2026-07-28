@@ -13,6 +13,7 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    api(libs.kotlinx.immutable)
 
     implementation(libs.joda)
 

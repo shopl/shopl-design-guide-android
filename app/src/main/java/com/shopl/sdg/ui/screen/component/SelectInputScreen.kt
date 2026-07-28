@@ -19,6 +19,7 @@ import com.shopl.sdg.scene.ComponentScene
 import com.shopl.sdg.ui.base.SDGSampleBaseComponentScaffold
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.util.emptyPersistentList
 import com.shopl.sdg_resource.R
 import kotlinx.collections.immutable.persistentListOf
 
@@ -86,11 +87,7 @@ internal fun SelectInputScreen(
         componentDescription = "특정 타겟을 선택하는 인풋 컴포넌트",
         types = types,
         specs = specs,
-        guideLineDescriptions = persistentListOf(
-            "Selected Element는 Text / Avatar / 1 Image / 2 Image 4가지 유형으로 구성됩니다.",
-            "1 Image / 2 Image의 이미지 영역은 Normal 1 / Normal 2 / Special 1 규격을 지원합니다.",
-            "단일 선택은 끝 말줄임표, 다중 선택은 중간 말줄임표를 사용합니다.",
-        ),
+        guideLineDescriptions = emptyPersistentList(),
         componentContent = { currentType, currentSpec, currentStatus ->
             if (currentType != null && currentSpec != null) {
                 SelectInputContent(
