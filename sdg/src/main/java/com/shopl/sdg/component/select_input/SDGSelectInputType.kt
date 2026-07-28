@@ -16,13 +16,6 @@ sealed class SDGSelectInputType {
         override val text: SDGSelectInputText,
     ) : SDGSelectInputType() {
         override val typeName: String = "Text"
-
-        @Deprecated(
-            message = "String 대신 SDGSelectInputText를 사용하세요.",
-        )
-        constructor(text: String) : this(
-            text = SDGSelectInputText.Single(value = text),
-        )
     }
 
     data class Avatar(
@@ -30,17 +23,6 @@ sealed class SDGSelectInputType {
         val selectedElementImage: SDGSelectInputImage,
     ) : SDGSelectInputType() {
         override val typeName: String = "Avatar"
-
-        @Deprecated(
-            message = "String 대신 SDGSelectInputText를 사용하세요.",
-        )
-        constructor(
-            text: String,
-            selectedElementImage: SDGSelectInputImage,
-        ) : this(
-            text = SDGSelectInputText.Single(value = text),
-            selectedElementImage = selectedElementImage,
-        )
     }
 
     data class OneImage(
@@ -49,19 +31,6 @@ sealed class SDGSelectInputType {
         val type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
     ) : SDGSelectInputType() {
         override val typeName: String = "1 Image"
-
-        @Deprecated(
-            message = "String 대신 SDGSelectInputText를 사용하세요.",
-        )
-        constructor(
-            text: String,
-            image: SDGSelectInputImage,
-            type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
-        ) : this(
-            text = SDGSelectInputText.Single(value = text),
-            image = image,
-            type = type,
-        )
     }
 
     data class TwoImage(
@@ -72,28 +41,6 @@ sealed class SDGSelectInputType {
             get() = first.text
 
         override val typeName: String = "2 Image"
-
-        @Deprecated(
-            message = "first와 second에 SDGSelectInputImageElement를 사용하세요.",
-        )
-        constructor(
-            text: String,
-            image: SDGSelectInputImage,
-            secondText: String,
-            secondImage: SDGSelectInputImage,
-            imageSize: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
-        ) : this(
-            first = SDGSelectInputImageElement(
-                text = SDGSelectInputText.Single(value = text),
-                image = image,
-                type = imageSize,
-            ),
-            second = SDGSelectInputImageElement(
-                text = SDGSelectInputText.Single(value = secondText),
-                image = secondImage,
-                type = imageSize,
-            ),
-        )
     }
 }
 

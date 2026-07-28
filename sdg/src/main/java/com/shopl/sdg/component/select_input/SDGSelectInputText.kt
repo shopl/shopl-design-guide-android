@@ -31,10 +31,4 @@ sealed class SDGSelectInputText {
         override val displayText: String = "$value+$additionalCount"
         override val overflow: TextOverflow = TextOverflow.MiddleEllipsis
     }
-
-    /** 레거시 API의 텍스트와 말줄임 설정을 보존합니다. */
-    internal data class Legacy(
-        override val displayText: String,
-        override val overflow: TextOverflow,
-    ) : SDGSelectInputText()
 }
