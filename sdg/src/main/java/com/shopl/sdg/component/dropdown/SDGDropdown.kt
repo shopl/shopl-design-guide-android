@@ -2,14 +2,12 @@ package com.shopl.sdg.component.dropdown
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -123,22 +121,15 @@ fun SDGDropdown(
     val dropdownText = text.orEmpty()
     val dropdownState = state.resolveDropdownState(text = dropdownText)
     val inputField = backgroundColor.toDropdownInputField()
-    val widthModifier = if (width != null) {
-        Modifier.width(width)
-    } else {
-        Modifier
-    }
 
-    Box(modifier = widthModifier) {
-        SDGDropdown(
-            text = dropdownText,
-            state = dropdownState,
-            placeholder = placeholder,
-            inputField = inputField,
-            marginValues = marginValues,
-            onClick = { onClick?.invoke() },
-        )
-    }
+    SDGDropdown(
+        text = dropdownText,
+        state = dropdownState,
+        placeholder = placeholder,
+        inputField = inputField,
+        marginValues = marginValues,
+        onClick = { onClick?.invoke() },
+    )
 }
 
 /** 상태와 Input Field에 맞는 배경색을 반환합니다. */
