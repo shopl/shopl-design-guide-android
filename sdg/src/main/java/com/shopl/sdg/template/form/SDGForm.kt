@@ -306,9 +306,11 @@ fun SDGSelectedInputForm(
         SDGSelectInput(
             inputField = SDGSelectInputField.LightGray,
             state = selectedInputState.toSelectInputState(value),
-            text = value,
             placeholder = hint ?: stringResource(id = R.string.select),
-            type = selectInputType(selectedElementImage = inputStartImage),
+            type = selectInputType(
+                text = value.orEmpty(),
+                selectedElementImage = inputStartImage,
+            ),
             onClick = onInputClick,
             overflow = inputTextOverflow,
         )
@@ -396,9 +398,11 @@ fun SDGSelectedInputForm(
         SDGSelectInput(
             inputField = SDGSelectInputField.LightGray,
             state = selectedInputState.toSelectInputState(value),
-            text = value,
             placeholder = hint ?: stringResource(id = R.string.select),
-            type = selectInputType(selectedElementImage = inputStartImage),
+            type = selectInputType(
+                text = value.orEmpty(),
+                selectedElementImage = inputStartImage,
+            ),
             onClick = onInputClick,
             overflow = inputTextOverflow,
         )
@@ -585,12 +589,14 @@ private fun SDGSelectInputState.toSelectInputState(
 }
 
 private fun selectInputType(
+    text: String,
     selectedElementImage: SDGSelectInputImage?,
 ): SDGSelectInputType {
     return if (selectedElementImage == null) {
-        SDGSelectInputType.Text
+        SDGSelectInputType.Text(text = text)
     } else {
         SDGSelectInputType.OneImage(
+            text = text,
             image = selectedElementImage,
             type = SDGSelectInputImageType.Normal2,
         )

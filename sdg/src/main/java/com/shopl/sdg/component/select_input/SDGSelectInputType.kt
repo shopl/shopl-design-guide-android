@@ -7,19 +7,25 @@ import androidx.compose.runtime.Immutable
  */
 @Immutable
 sealed class SDGSelectInputType {
+    abstract val text: String
+
     abstract val typeName: String
 
-    data object Text : SDGSelectInputType() {
+    data class Text(
+        override val text: String,
+    ) : SDGSelectInputType() {
         override val typeName: String = "Text"
     }
 
     data class Avatar(
+        override val text: String,
         val selectedElementImage: SDGSelectInputImage,
     ) : SDGSelectInputType() {
         override val typeName: String = "Avatar"
     }
 
     data class OneImage(
+        override val text: String,
         val image: SDGSelectInputImage,
         val type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
     ) : SDGSelectInputType() {
@@ -27,9 +33,10 @@ sealed class SDGSelectInputType {
     }
 
     data class TwoImage(
+        override val text: String,
         val image: SDGSelectInputImage,
         val secondText: String,
-        val secondSelectedElementImage: SDGSelectInputImage,
+        val secondImage: SDGSelectInputImage,
         val imageSize: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
     ) : SDGSelectInputType() {
         override val typeName: String = "2 Image"

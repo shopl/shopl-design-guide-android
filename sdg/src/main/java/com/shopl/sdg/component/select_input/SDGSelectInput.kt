@@ -48,11 +48,10 @@ private const val SDGSelectInputDisabledAlpha = 0.3f
  *
  * @version 2.3.39
  *
- * @param text 첫 번째 선택 항목 텍스트
  * @param placeholder 선택값이 없을 때 표시할 안내 문구
  * @param state 인풋 상태
  * @param inputField 인풋 필드 배경 유형
- * @param type Selected Element 유형
+ * @param type Selected Element 유형과 선택 텍스트
  * @param marginValues 컴포넌트 외부 여백
  * @param onClick Input Field 클릭 이벤트
  * @param overflow 단일 선택은 [TextOverflow.Ellipsis], 다중 선택은 [TextOverflow.MiddleEllipsis] 사용
@@ -61,7 +60,6 @@ private const val SDGSelectInputDisabledAlpha = 0.3f
  */
 @Composable
 fun SDGSelectInput(
-    text: String?,
     placeholder: String,
     state: SDGSelectInputState,
     inputField: SDGSelectInputField,
@@ -73,7 +71,7 @@ fun SDGSelectInput(
     val displayText = if (state == SDGSelectInputState.Default) {
         placeholder
     } else {
-        text ?: placeholder
+        type.text.ifEmpty { placeholder }
     }
     val textColor = when (state) {
         SDGSelectInputState.Default -> SDGColor.Neutral350
@@ -163,6 +161,34 @@ fun SDGSelectInput(
 }
 
 /**
+ * [SDGSelectInputType]에 텍스트를 전달하는 신규 API와의 하위 호환성을 위한 API입니다.
+ */
+@Deprecated(
+    message = "text 대신 SDGSelectInputType의 text를 사용하세요.",
+)
+@Composable
+fun SDGSelectInput(
+    text: String?,
+    placeholder: String,
+    state: SDGSelectInputState,
+    inputField: SDGSelectInputField,
+    type: SDGSelectInputType,
+    marginValues: PaddingValues = PaddingValues(),
+    onClick: (() -> Unit)? = null,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
+) {
+    SDGSelectInput(
+        placeholder = placeholder,
+        state = state,
+        inputField = inputField,
+        type = type.withText(text ?: placeholder),
+        marginValues = marginValues,
+        onClick = onClick,
+        overflow = overflow,
+    )
+}
+
+/**
  * 신규 Select Input API와의 하위 호환성을 위한 레거시 API입니다.
  */
 @Deprecated(
@@ -242,7 +268,7 @@ private fun SelectedElement(
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
     when (type) {
-        SDGSelectInputType.Text -> {
+        is SDGSelectInputType.Text -> {
             SelectInputText(
                 modifier = modifier,
                 text = text,
@@ -291,7 +317,7 @@ private fun SelectedElement(
                     modifier = Modifier.fillMaxWidth(),
                     text = type.secondText,
                     textColor = textColor,
-                    image = type.secondSelectedElementImage,
+                    image = type.secondImage,
                     imageSize = type.imageSize,
                     overflow = overflow,
                 )
@@ -426,10 +452,9 @@ private fun PreviewSDGSelectInput(
     parameter: SDGSelectInputPreviewParameter,
 ) {
     with(parameter) {
-        val selectedElementType = type.toSelectInputType()
+        val selectedElementType = type.toSelectInputType(text = text.orEmpty())
 
         SDGSelectInput(
-            text = text,
             placeholder = placeholder,
             state = state,
             inputField = inputField,
@@ -440,16 +465,20 @@ private fun PreviewSDGSelectInput(
     }
 }
 
-private fun SDGSelectInputPreviewType.toSelectInputType(): SDGSelectInputType {
+private fun SDGSelectInputPreviewType.toSelectInputType(
+    text: String,
+): SDGSelectInputType {
     return when (this) {
-        SDGSelectInputPreviewType.Text -> SDGSelectInputType.Text
+        SDGSelectInputPreviewType.Text -> SDGSelectInputType.Text(text = text)
         SDGSelectInputPreviewType.Avatar -> SDGSelectInputType.Avatar(
+            text = text,
             selectedElementImage = SDGSelectInputImage.Resource(
                 resId = R.drawable.profile_small,
             ),
         )
 
         SDGSelectInputPreviewType.OneImageNormal1 -> SDGSelectInputType.OneImage(
+            text = text,
             image = SDGSelectInputImage.Resource(
                 resId = R.drawable.ic_common_photo,
             ),
@@ -457,6 +486,7 @@ private fun SDGSelectInputPreviewType.toSelectInputType(): SDGSelectInputType {
         )
 
         SDGSelectInputPreviewType.OneImageNormal2 -> SDGSelectInputType.OneImage(
+            text = text,
             image = SDGSelectInputImage.Url(
                 url = "https://example.com/image.png",
                 failureImageResId = R.drawable.ic_common_photo,
@@ -465,6 +495,7 @@ private fun SDGSelectInputPreviewType.toSelectInputType(): SDGSelectInputType {
         )
 
         SDGSelectInputPreviewType.OneImageSpecial1 -> SDGSelectInputType.OneImage(
+            text = text,
             image = SDGSelectInputImage.Resource(
                 resId = R.drawable.ic_common_photo,
             ),
@@ -472,13 +503,26 @@ private fun SDGSelectInputPreviewType.toSelectInputType(): SDGSelectInputType {
         )
 
         SDGSelectInputPreviewType.TwoImage -> SDGSelectInputType.TwoImage(
+            text = text,
             image = SDGSelectInputImage.Resource(
                 resId = R.drawable.ic_common_photo,
             ),
             secondText = "Second Selected Text",
-            secondSelectedElementImage = SDGSelectInputImage.Resource(
+            secondImage = SDGSelectInputImage.Resource(
                 resId = R.drawable.ic_common_photo,
             ),
         )
+    }
+}
+
+/** 레거시 API의 텍스트를 [SDGSelectInputType]에 반영합니다. */
+private fun SDGSelectInputType.withText(
+    text: String,
+): SDGSelectInputType {
+    return when (this) {
+        is SDGSelectInputType.Text -> copy(text = text)
+        is SDGSelectInputType.Avatar -> copy(text = text)
+        is SDGSelectInputType.OneImage -> copy(text = text)
+        is SDGSelectInputType.TwoImage -> copy(text = text)
     }
 }

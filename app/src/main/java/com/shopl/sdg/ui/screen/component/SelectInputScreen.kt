@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.select_input.SDGSelectInput
@@ -33,23 +34,29 @@ internal fun SelectInputScreen(
     onClickBack: () -> Unit,
     onClickMenu: () -> Unit,
 ) {
-    val textType = SDGSelectInputType.Text
+    val selectedText = "Selected Text가 길어지면 마지막에 말줄임표가 표시됩니다."
+    val textType = SDGSelectInputType.Text(
+        text = selectedText,
+    )
     val avatarType = SDGSelectInputType.Avatar(
+        text = selectedText,
         selectedElementImage = SDGSelectInputImage.Resource(
             resId = R.drawable.profile_small,
         ),
     )
     val oneImageType = SDGSelectInputType.OneImage(
+        text = selectedText,
         image = SDGSelectInputImage.Resource(
             resId = R.drawable.ic_common_photo,
         ),
     )
     val twoImageType = SDGSelectInputType.TwoImage(
+        text = selectedText,
         image = SDGSelectInputImage.Resource(
             resId = R.drawable.ic_common_photo,
         ),
         secondText = "Second Selected Text",
-        secondSelectedElementImage = SDGSelectInputImage.Resource(
+        secondImage = SDGSelectInputImage.Resource(
             resId = R.drawable.ic_common_photo,
         ),
     )
@@ -118,7 +125,7 @@ private fun SelectInputContent(
         contentAlignment = Alignment.Center,
     ) {
         SDGSelectInput(
-            text = "Selected Text가 길어지면 마지막에 말줄임표가 표시됩니다.",
+            placeholder = stringResource(id = R.string.select),
             state = if (status == SDGSampleStatus.DISABLED) {
                 SDGSelectInputState.Disabled
             } else {
