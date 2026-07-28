@@ -316,6 +316,44 @@ fun SDGSelectedInputForm(
     }
 }
 
+/**
+ * 선택 텍스트 정책을 [SDGSelectInputType]에서 관리하는 API와의 하위 호환성을 위한 API입니다.
+ */
+@Deprecated(
+    message = "inputTextOverflow 대신 SDGSelectInputType의 text를 사용하세요.",
+)
+@Composable
+fun SDGSelectedInputForm(
+    type: SDGFormType,
+    title: String,
+    value: String?,
+    onInputClick: () -> Unit,
+    hint: String? = null,
+    selectedInputState: SDGSelectInputState = SDGSelectInputState.Default,
+    @DrawableRes iconResId: Int? = null,
+    iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
+    inputStartImage: SDGSelectInputImage?,
+    inputTextOverflow: TextOverflow,
+    marginValues: PaddingValues = PaddingValues(),
+    onResetClick: (() -> Unit)? = null,
+) {
+    SDGSelectedInputForm(
+        type = type,
+        title = title,
+        value = value,
+        onInputClick = onInputClick,
+        hint = hint,
+        selectedInputState = selectedInputState,
+        iconResId = iconResId,
+        iconTint = iconTint,
+        onClickIcon = onClickIcon,
+        inputStartImage = inputStartImage,
+        marginValues = marginValues,
+        onResetClick = onResetClick,
+    )
+}
+
 @Composable
 fun SDGSelectedInputForm(
     type: SDGFormType,
@@ -404,6 +442,44 @@ fun SDGSelectedInputForm(
             onClick = onInputClick,
         )
     }
+}
+
+/**
+ * 선택 텍스트 정책을 [SDGSelectInputType]에서 관리하는 API와의 하위 호환성을 위한 API입니다.
+ */
+@Deprecated(
+    message = "inputTextOverflow 대신 SDGSelectInputType의 text를 사용하세요.",
+)
+@Composable
+fun SDGSelectedInputForm(
+    type: SDGFormType,
+    title: AnnotatedString,
+    value: String?,
+    onInputClick: () -> Unit,
+    hint: String? = null,
+    selectedInputState: SDGSelectInputState = SDGSelectInputState.Default,
+    @DrawableRes iconResId: Int? = null,
+    iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
+    inputStartImage: SDGSelectInputImage?,
+    inputTextOverflow: TextOverflow,
+    marginValues: PaddingValues = PaddingValues(),
+    onResetClick: (() -> Unit)? = null,
+) {
+    SDGSelectedInputForm(
+        type = type,
+        title = title,
+        value = value,
+        onInputClick = onInputClick,
+        hint = hint,
+        selectedInputState = selectedInputState,
+        iconResId = iconResId,
+        iconTint = iconTint,
+        onClickIcon = onClickIcon,
+        inputStartImage = inputStartImage,
+        marginValues = marginValues,
+        onResetClick = onResetClick,
+    )
 }
 
 /**
