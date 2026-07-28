@@ -61,12 +61,12 @@ private const val SDGSelectInputDisabledAlpha = 0.3f
  */
 @Composable
 fun SDGSelectInput(
-    text: String? = null,
-    placeholder: String = stringResource(id = R.string.select),
-    state: SDGSelectInputState = SDGSelectInputState.Default,
-    inputField: SDGSelectInputField = SDGSelectInputField.LightGray,
-    type: SDGSelectInputType = SDGSelectInputType.Text,
-    marginValues: PaddingValues = PaddingValues(0.dp),
+    text: String?,
+    placeholder: String,
+    state: SDGSelectInputState,
+    inputField: SDGSelectInputField,
+    type: SDGSelectInputType,
+    marginValues: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
@@ -162,6 +162,77 @@ fun SDGSelectInput(
     }
 }
 
+/**
+ * 신규 Select Input API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Deprecated(
+    message = "SDGSelectInput의 state, inputField, type 기반 API를 사용하세요.",
+)
+@Composable
+fun SDGSelectInput(
+    text: String? = null,
+    placeholder: String = stringResource(id = R.string.select),
+    state: SDGSelectInputState = SDGSelectInputState.Default,
+    marginValues: PaddingValues = PaddingValues(0.dp),
+    icon: @Composable (() -> Unit)? = null,
+    backgroundColor: Color = SDGColor.Neutral0,
+    onClick: (() -> Unit)? = null,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
+) {
+    val background = if (state == SDGSelectInputState.Error) {
+        SDGColor.Red300_a10
+    } else {
+        backgroundColor
+    }
+    val textColor = when {
+        state == SDGSelectInputState.Disabled -> SDGColor.Neutral300
+        !text.isNullOrEmpty() -> SDGColor.Neutral700
+        else -> SDGColor.Neutral300
+    }
+    val chevronColor = if (state == SDGSelectInputState.Disabled) {
+        SDGColor.Neutral300
+    } else {
+        SDGColor.Neutral700
+    }
+
+    Row(
+        modifier = Modifier
+            .padding(marginValues)
+            .height(SDGSelectInputDefaultHeight)
+            .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
+            .background(color = background)
+            .clickable(
+                hasRipple = true,
+                rippleColor = SDGColor.Neutral350,
+                onClick = {
+                    if (state != SDGSelectInputState.Disabled) {
+                        onClick?.invoke()
+                    }
+                },
+            )
+            .padding(
+                horizontal = SDGSpacing.Spacing12,
+                vertical = SDGSpacing.Spacing4,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
+    ) {
+        icon?.invoke()
+        SDGText(
+            modifier = Modifier.weight(1f),
+            text = if (!text.isNullOrEmpty()) text else placeholder,
+            textColor = textColor,
+            typography = SDGTypography.Body1R,
+            overflow = overflow,
+            maxLines = 1,
+        )
+        SDGImage(
+            resId = R.drawable.ic_common_next,
+            color = chevronColor,
+        )
+    }
+}
+
 @Composable
 private fun SelectedElement(
     text: String,
@@ -235,8 +306,8 @@ private fun SelectedElementRow(
     textColor: Color,
     image: SDGSelectInputImage,
     imageSize: SDGSelectInputImageSize,
-    clipImageToCircle: Boolean = false,
     modifier: Modifier = Modifier,
+    clipImageToCircle: Boolean = false,
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
     Row(
