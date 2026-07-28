@@ -101,11 +101,7 @@ fun SDGSelectInput(
             .background(color = backgroundColor)
             .then(
                 if (state != SDGSelectInputState.Disabled && onClick != null) {
-                    Modifier.clickable(
-                        hasRipple = true,
-                        rippleColor = SDGColor.Neutral350,
-                        onClick = onClick,
-                    )
+                    Modifier.clickable(onClick = onClick)
                 } else {
                     Modifier
                 },
