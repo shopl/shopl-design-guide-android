@@ -55,7 +55,7 @@ internal fun DropdownScreen(
 
     SDGSampleBaseComponentScaffold(
         componentName = ComponentScene.Dropdown.displayLabel,
-        componentDescription = "여러 옵션 중 하나를 선택하는 드롭다운 컴포넌트",
+        componentDescription = "여러 개의 리스트 옵션 중 하나의 옵션을 선택하기 위한 컴포넌트",
         types = states,
         specs = inputFields,
         componentContent = { state, inputField, status ->
@@ -70,6 +70,7 @@ internal fun DropdownScreen(
                 )
             }
         },
+        guideLineDescriptions = persistentListOf("선택 항목은 List Popup으로 제공합니다."),
         onClickBack = onClickBack,
         onClickMenu = onClickMenu,
     )
