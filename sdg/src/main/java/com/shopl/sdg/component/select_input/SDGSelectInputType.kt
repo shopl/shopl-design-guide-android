@@ -86,12 +86,12 @@ sealed class SDGSelectInputType {
             first = SDGSelectInputImageElement(
                 text = SDGSelectInputText.Single(value = text),
                 image = image,
-                imageSize = imageSize,
+                type = imageSize,
             ),
             second = SDGSelectInputImageElement(
                 text = SDGSelectInputText.Single(value = secondText),
                 image = secondImage,
-                imageSize = imageSize,
+                type = imageSize,
             ),
         )
     }
@@ -102,6 +102,6 @@ sealed class SDGSelectInputType {
 data class SDGSelectInputImageElement(
     val text: SDGSelectInputText,
     val image: SDGSelectInputImage,
-    val imageSize: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
+    val type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
     val state: SDGSelectInputState? = null,
 )

@@ -530,7 +530,7 @@ private fun SDGSelectInputImageElement.toOneImageType(): SDGSelectInputType.OneI
     return SDGSelectInputType.OneImage(
         text = text,
         image = image,
-        type = imageSize,
+        type = type,
     )
 }
 
