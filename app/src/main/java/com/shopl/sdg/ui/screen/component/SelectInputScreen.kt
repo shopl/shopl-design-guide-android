@@ -7,12 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.select_input.SDGSelectInput
 import com.shopl.sdg.component.select_input.SDGSelectInputField
 import com.shopl.sdg.component.select_input.SDGSelectInputImage
 import com.shopl.sdg.component.select_input.SDGSelectInputState
+import com.shopl.sdg.component.select_input.SDGSelectInputText
 import com.shopl.sdg.component.select_input.SDGSelectInputType
 import com.shopl.sdg.enums.SDGSampleStatus
 import com.shopl.sdg.model.SDGSampleBaseTabItem
@@ -36,26 +36,26 @@ internal fun SelectInputScreen(
 ) {
     val selectedText = "Selected Text가 길어지면 마지막에 말줄임표가 표시됩니다."
     val textType = SDGSelectInputType.Text(
-        text = selectedText,
+        text = SDGSelectInputText.Single(value = selectedText),
     )
     val avatarType = SDGSelectInputType.Avatar(
-        text = selectedText,
+        text = SDGSelectInputText.Single(value = selectedText),
         selectedElementImage = SDGSelectInputImage.Resource(
             resId = R.drawable.profile_small,
         ),
     )
     val oneImageType = SDGSelectInputType.OneImage(
-        text = selectedText,
+        text = SDGSelectInputText.Single(value = selectedText),
         image = SDGSelectInputImage.Resource(
             resId = R.drawable.ic_common_photo,
         ),
     )
     val twoImageType = SDGSelectInputType.TwoImage(
-        text = selectedText,
+        text = SDGSelectInputText.Single(value = selectedText),
         image = SDGSelectInputImage.Resource(
             resId = R.drawable.ic_common_photo,
         ),
-        secondText = "Second Selected Text",
+        secondText = SDGSelectInputText.Single(value = "Second Selected Text"),
         secondImage = SDGSelectInputImage.Resource(
             resId = R.drawable.ic_common_photo,
         ),
@@ -134,7 +134,6 @@ private fun SelectInputContent(
             inputField = inputField,
             type = type,
             onClick = {},
-            overflow = TextOverflow.Ellipsis,
         )
     }
 }

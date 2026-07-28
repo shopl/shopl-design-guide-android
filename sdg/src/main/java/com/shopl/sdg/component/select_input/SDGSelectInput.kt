@@ -54,7 +54,6 @@ private const val SDGSelectInputDisabledAlpha = 0.3f
  * @param type Selected Element 유형과 선택 텍스트
  * @param marginValues 컴포넌트 외부 여백
  * @param onClick Input Field 클릭 이벤트
- * @param overflow 단일 선택은 [TextOverflow.Ellipsis], 다중 선택은 [TextOverflow.MiddleEllipsis] 사용
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=27047-2318&m=dev">Figma</a>
  */
@@ -66,12 +65,30 @@ fun SDGSelectInput(
     type: SDGSelectInputType,
     marginValues: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
-    overflow: TextOverflow = TextOverflow.Ellipsis,
+) {
+    SelectInputField(
+        modifier = Modifier.padding(marginValues),
+        placeholder = placeholder,
+        state = state,
+        inputField = inputField,
+        type = type,
+        onClick = onClick,
+    )
+}
+
+@Composable
+private fun SelectInputField(
+    placeholder: String,
+    state: SDGSelectInputState,
+    inputField: SDGSelectInputField,
+    type: SDGSelectInputType,
+    onClick: (() -> Unit)?,
+    modifier: Modifier = Modifier,
 ) {
     val displayText = if (state == SDGSelectInputState.Default) {
         placeholder
     } else {
-        type.text.ifEmpty { placeholder }
+        type.text.displayText.ifEmpty { placeholder }
     }
     val textColor = when (state) {
         SDGSelectInputState.Default -> SDGColor.Neutral350
@@ -104,8 +121,7 @@ fun SDGSelectInput(
     }
 
     Row(
-        modifier = Modifier
-            .padding(marginValues)
+        modifier = modifier
             .height(fieldHeight)
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
             .background(color = backgroundColor)
@@ -144,7 +160,6 @@ fun SDGSelectInput(
                 text = displayText,
                 textColor = textColor,
                 type = type,
-                overflow = overflow,
             )
         }
 
@@ -177,10 +192,12 @@ fun SDGSelectInput(
         placeholder = placeholder,
         state = state,
         inputField = inputField,
-        type = type.withText(text ?: placeholder),
+        type = type.withText(
+            text = text ?: placeholder,
+            overflow = overflow,
+        ),
         marginValues = marginValues,
         onClick = onClick,
-        overflow = overflow,
     )
 }
 
@@ -261,7 +278,6 @@ private fun SelectedElement(
     textColor: Color,
     type: SDGSelectInputType,
     modifier: Modifier = Modifier,
-    overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
     when (type) {
         is SDGSelectInputType.Text -> {
@@ -269,7 +285,7 @@ private fun SelectedElement(
                 modifier = modifier,
                 text = text,
                 textColor = textColor,
-                overflow = overflow,
+                overflow = type.text.overflow,
             )
         }
 
@@ -281,7 +297,7 @@ private fun SelectedElement(
                 image = type.selectedElementImage,
                 imageSize = SDGSelectInputImageType.Normal1,
                 clipImageToCircle = true,
-                overflow = overflow,
+                overflow = type.text.overflow,
             )
         }
 
@@ -292,7 +308,7 @@ private fun SelectedElement(
                 textColor = textColor,
                 image = type.image,
                 imageSize = type.type,
-                overflow = overflow,
+                overflow = type.text.overflow,
             )
         }
 
@@ -307,15 +323,15 @@ private fun SelectedElement(
                     textColor = textColor,
                     image = type.image,
                     imageSize = type.imageSize,
-                    overflow = overflow,
+                    overflow = type.text.overflow,
                 )
                 SelectedElementRow(
                     modifier = Modifier.fillMaxWidth(),
-                    text = type.secondText,
+                    text = type.secondText.displayText,
                     textColor = textColor,
                     image = type.secondImage,
                     imageSize = type.imageSize,
-                    overflow = overflow,
+                    overflow = type.secondText.overflow,
                 )
             }
         }
@@ -448,7 +464,7 @@ private fun PreviewSDGSelectInput(
     parameter: SDGSelectInputPreviewParameter,
 ) {
     with(parameter) {
-        val selectedElementType = type.toSelectInputType(text = text.orEmpty())
+        val selectedElementType = type.toSelectInputType(text = text)
 
         SDGSelectInput(
             placeholder = placeholder,
@@ -456,13 +472,12 @@ private fun PreviewSDGSelectInput(
             inputField = inputField,
             type = selectedElementType,
             marginValues = PaddingValues(SDGSpacing.Spacing20),
-            overflow = overflow,
         )
     }
 }
 
 private fun SDGSelectInputPreviewType.toSelectInputType(
-    text: String,
+    text: SDGSelectInputText,
 ): SDGSelectInputType {
     return when (this) {
         SDGSelectInputPreviewType.Text -> SDGSelectInputType.Text(text = text)
@@ -503,7 +518,7 @@ private fun SDGSelectInputPreviewType.toSelectInputType(
             image = SDGSelectInputImage.Resource(
                 resId = R.drawable.ic_common_photo,
             ),
-            secondText = "Second Selected Text",
+            secondText = SDGSelectInputText.Single(value = "Second Selected Text"),
             secondImage = SDGSelectInputImage.Resource(
                 resId = R.drawable.ic_common_photo,
             ),
@@ -514,11 +529,17 @@ private fun SDGSelectInputPreviewType.toSelectInputType(
 /** 레거시 API의 텍스트를 [SDGSelectInputType]에 반영합니다. */
 private fun SDGSelectInputType.withText(
     text: String,
+    overflow: TextOverflow,
 ): SDGSelectInputType {
+    val legacyText = SDGSelectInputText.Legacy(
+        displayText = text,
+        overflow = overflow,
+    )
+
     return when (this) {
-        is SDGSelectInputType.Text -> copy(text = text)
-        is SDGSelectInputType.Avatar -> copy(text = text)
-        is SDGSelectInputType.OneImage -> copy(text = text)
-        is SDGSelectInputType.TwoImage -> copy(text = text)
+        is SDGSelectInputType.Text -> copy(text = legacyText)
+        is SDGSelectInputType.Avatar -> copy(text = legacyText)
+        is SDGSelectInputType.OneImage -> copy(text = legacyText)
+        is SDGSelectInputType.TwoImage -> copy(text = legacyText)
     }
 }

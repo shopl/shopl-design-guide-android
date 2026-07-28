@@ -35,6 +35,7 @@ import com.shopl.sdg.component.select_input.SDGSelectInputField
 import com.shopl.sdg.component.select_input.SDGSelectInputImage
 import com.shopl.sdg.component.select_input.SDGSelectInputImageType
 import com.shopl.sdg.component.select_input.SDGSelectInputState
+import com.shopl.sdg.component.select_input.SDGSelectInputText
 import com.shopl.sdg.component.select_input.SDGSelectInputType
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInput
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputField
@@ -237,7 +238,6 @@ fun SDGSelectedInputForm(
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
     inputStartImage: SDGSelectInputImage?,
-    inputTextOverflow: TextOverflow = TextOverflow.Ellipsis,
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
 ) {
@@ -312,9 +312,46 @@ fun SDGSelectedInputForm(
                 selectedElementImage = inputStartImage,
             ),
             onClick = onInputClick,
-            overflow = inputTextOverflow,
         )
     }
+}
+
+/**
+ * 선택 텍스트 정책을 [SDGSelectInputType]에서 관리하는 API와의 하위 호환성을 위한 API입니다.
+ */
+@Deprecated(
+    message = "inputTextOverflow 대신 SDGSelectInputType의 text를 사용하세요.",
+)
+@Composable
+fun SDGSelectedInputForm(
+    type: SDGFormType,
+    title: String,
+    value: String?,
+    onInputClick: () -> Unit,
+    hint: String? = null,
+    selectedInputState: SDGSelectInputState = SDGSelectInputState.Default,
+    @DrawableRes iconResId: Int? = null,
+    iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
+    inputStartImage: SDGSelectInputImage?,
+    inputTextOverflow: TextOverflow,
+    marginValues: PaddingValues = PaddingValues(),
+    onResetClick: (() -> Unit)? = null,
+) {
+    SDGSelectedInputForm(
+        type = type,
+        title = title,
+        value = value,
+        onInputClick = onInputClick,
+        hint = hint,
+        selectedInputState = selectedInputState,
+        iconResId = iconResId,
+        iconTint = iconTint,
+        onClickIcon = onClickIcon,
+        inputStartImage = inputStartImage,
+        marginValues = marginValues,
+        onResetClick = onResetClick,
+    )
 }
 
 @Composable
@@ -329,7 +366,6 @@ fun SDGSelectedInputForm(
     iconTint: Color? = null,
     onClickIcon: (() -> Unit)? = null,
     inputStartImage: SDGSelectInputImage?,
-    inputTextOverflow: TextOverflow = TextOverflow.Ellipsis,
     marginValues: PaddingValues = PaddingValues(),
     onResetClick: (() -> Unit)? = null,
 ) {
@@ -404,9 +440,46 @@ fun SDGSelectedInputForm(
                 selectedElementImage = inputStartImage,
             ),
             onClick = onInputClick,
-            overflow = inputTextOverflow,
         )
     }
+}
+
+/**
+ * 선택 텍스트 정책을 [SDGSelectInputType]에서 관리하는 API와의 하위 호환성을 위한 API입니다.
+ */
+@Deprecated(
+    message = "inputTextOverflow 대신 SDGSelectInputType의 text를 사용하세요.",
+)
+@Composable
+fun SDGSelectedInputForm(
+    type: SDGFormType,
+    title: AnnotatedString,
+    value: String?,
+    onInputClick: () -> Unit,
+    hint: String? = null,
+    selectedInputState: SDGSelectInputState = SDGSelectInputState.Default,
+    @DrawableRes iconResId: Int? = null,
+    iconTint: Color? = null,
+    onClickIcon: (() -> Unit)? = null,
+    inputStartImage: SDGSelectInputImage?,
+    inputTextOverflow: TextOverflow,
+    marginValues: PaddingValues = PaddingValues(),
+    onResetClick: (() -> Unit)? = null,
+) {
+    SDGSelectedInputForm(
+        type = type,
+        title = title,
+        value = value,
+        onInputClick = onInputClick,
+        hint = hint,
+        selectedInputState = selectedInputState,
+        iconResId = iconResId,
+        iconTint = iconTint,
+        onClickIcon = onClickIcon,
+        inputStartImage = inputStartImage,
+        marginValues = marginValues,
+        onResetClick = onResetClick,
+    )
 }
 
 /**
@@ -593,10 +666,12 @@ private fun selectInputType(
     selectedElementImage: SDGSelectInputImage?,
 ): SDGSelectInputType {
     return if (selectedElementImage == null) {
-        SDGSelectInputType.Text(text = text)
+        SDGSelectInputType.Text(
+            text = SDGSelectInputText.Single(value = text),
+        )
     } else {
         SDGSelectInputType.OneImage(
-            text = text,
+            text = SDGSelectInputText.Single(value = text),
             image = selectedElementImage,
             type = SDGSelectInputImageType.Normal2,
         )
