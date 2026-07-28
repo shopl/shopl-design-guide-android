@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.select_input.SDGSelectInput
 import com.shopl.sdg.component.select_input.SDGSelectInputField
 import com.shopl.sdg.component.select_input.SDGSelectInputImage
+import com.shopl.sdg.component.select_input.SDGSelectInputImageElement
 import com.shopl.sdg.component.select_input.SDGSelectInputState
 import com.shopl.sdg.component.select_input.SDGSelectInputText
 import com.shopl.sdg.component.select_input.SDGSelectInputType
@@ -51,13 +52,17 @@ internal fun SelectInputScreen(
         ),
     )
     val twoImageType = SDGSelectInputType.TwoImage(
-        text = SDGSelectInputText.Single(value = selectedText),
-        image = SDGSelectInputImage.Resource(
-            resId = R.drawable.ic_common_photo,
+        first = SDGSelectInputImageElement(
+            text = SDGSelectInputText.Single(value = selectedText),
+            image = SDGSelectInputImage.Resource(
+                resId = R.drawable.ic_common_photo,
+            ),
         ),
-        secondText = SDGSelectInputText.Single(value = "Second Selected Text"),
-        secondImage = SDGSelectInputImage.Resource(
-            resId = R.drawable.ic_common_photo,
+        second = SDGSelectInputImageElement(
+            text = SDGSelectInputText.Single(value = "Second Selected Text"),
+            image = SDGSelectInputImage.Resource(
+                resId = R.drawable.ic_common_photo,
+            ),
         ),
     )
     val types = persistentListOf<SDGSampleBaseTabItem<SDGSelectInputType>>(

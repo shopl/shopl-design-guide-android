@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -37,7 +36,6 @@ import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
 private val SDGSelectInputDefaultHeight = 40.dp
-private val SDGSelectInputTwoImageHeight = 80.dp
 private val SDGSelectInputChevronSize = 24.dp
 private const val SDGSelectInputDisabledAlpha = 0.3f
 
@@ -66,14 +64,36 @@ fun SDGSelectInput(
     marginValues: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
 ) {
-    SelectInputField(
-        modifier = Modifier.padding(marginValues),
-        placeholder = placeholder,
-        state = state,
-        inputField = inputField,
-        type = type,
-        onClick = onClick,
-    )
+    if (type is SDGSelectInputType.TwoImage) {
+        Column(
+            modifier = Modifier.padding(marginValues),
+            verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
+        ) {
+            SelectInputField(
+                placeholder = placeholder,
+                state = type.first.state ?: state,
+                inputField = inputField,
+                type = type.first.toOneImageType(),
+                onClick = onClick,
+            )
+            SelectInputField(
+                placeholder = placeholder,
+                state = type.second.state ?: state,
+                inputField = inputField,
+                type = type.second.toOneImageType(),
+                onClick = onClick,
+            )
+        }
+    } else {
+        SelectInputField(
+            modifier = Modifier.padding(marginValues),
+            placeholder = placeholder,
+            state = state,
+            inputField = inputField,
+            type = type,
+            onClick = onClick,
+        )
+    }
 }
 
 @Composable
@@ -97,14 +117,6 @@ private fun SelectInputField(
         SDGSelectInputState.Error,
             -> SDGColor.Neutral700
     }
-    val fieldHeight = if (
-        state != SDGSelectInputState.Default &&
-        type is SDGSelectInputType.TwoImage
-    ) {
-        SDGSelectInputTwoImageHeight
-    } else {
-        SDGSelectInputDefaultHeight
-    }
     val backgroundColor = when (state) {
         SDGSelectInputState.Error -> SDGColor.Red300_a10
         SDGSelectInputState.Default,
@@ -122,7 +134,6 @@ private fun SelectInputField(
 
     Row(
         modifier = modifier
-            .height(fieldHeight)
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
             .background(color = backgroundColor)
             .then(
@@ -313,27 +324,7 @@ private fun SelectedElement(
         }
 
         is SDGSelectInputType.TwoImage -> {
-            Column(
-                modifier = modifier,
-                verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
-            ) {
-                SelectedElementRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = text,
-                    textColor = textColor,
-                    image = type.image,
-                    imageSize = type.imageSize,
-                    overflow = type.text.overflow,
-                )
-                SelectedElementRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = type.secondText.displayText,
-                    textColor = textColor,
-                    image = type.secondImage,
-                    imageSize = type.imageSize,
-                    overflow = type.secondText.overflow,
-                )
-            }
+            error("TwoImage는 독립적인 One Image Input으로 렌더링되어야 합니다.")
         }
     }
 }
@@ -514,16 +505,33 @@ private fun SDGSelectInputPreviewType.toSelectInputType(
         )
 
         SDGSelectInputPreviewType.TwoImage -> SDGSelectInputType.TwoImage(
-            text = text,
-            image = SDGSelectInputImage.Resource(
-                resId = R.drawable.ic_common_photo,
+            first = SDGSelectInputImageElement(
+                text = text,
+                image = SDGSelectInputImage.Resource(
+                    resId = R.drawable.ic_common_photo,
+                ),
+                state = SDGSelectInputState.Selected,
             ),
-            secondText = SDGSelectInputText.Single(value = "Second Selected Text"),
-            secondImage = SDGSelectInputImage.Resource(
-                resId = R.drawable.ic_common_photo,
+            second = SDGSelectInputImageElement(
+                text = SDGSelectInputText.Single(
+                    value = "Second Selected Text",
+                ),
+                image = SDGSelectInputImage.Resource(
+                    resId = R.drawable.ic_common_photo,
+                ),
+                state = SDGSelectInputState.Error,
             ),
         )
     }
+}
+
+/** [SDGSelectInputImageElement]를 독립적인 One Image Input 유형으로 변환합니다. */
+private fun SDGSelectInputImageElement.toOneImageType(): SDGSelectInputType.OneImage {
+    return SDGSelectInputType.OneImage(
+        text = text,
+        image = image,
+        type = imageSize,
+    )
 }
 
 /** 레거시 API의 텍스트를 [SDGSelectInputType]에 반영합니다. */
@@ -540,6 +548,8 @@ private fun SDGSelectInputType.withText(
         is SDGSelectInputType.Text -> copy(text = legacyText)
         is SDGSelectInputType.Avatar -> copy(text = legacyText)
         is SDGSelectInputType.OneImage -> copy(text = legacyText)
-        is SDGSelectInputType.TwoImage -> copy(text = legacyText)
+        is SDGSelectInputType.TwoImage -> copy(
+            first = first.copy(text = legacyText),
+        )
     }
 }

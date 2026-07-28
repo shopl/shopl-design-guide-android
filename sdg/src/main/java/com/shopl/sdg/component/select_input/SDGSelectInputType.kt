@@ -65,16 +65,16 @@ sealed class SDGSelectInputType {
     }
 
     data class TwoImage(
-        override val text: SDGSelectInputText,
-        val image: SDGSelectInputImage,
-        val secondText: SDGSelectInputText,
-        val secondImage: SDGSelectInputImage,
-        val imageSize: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
+        val first: SDGSelectInputImageElement,
+        val second: SDGSelectInputImageElement,
     ) : SDGSelectInputType() {
+        override val text: SDGSelectInputText
+            get() = first.text
+
         override val typeName: String = "2 Image"
 
         @Deprecated(
-            message = "String 대신 SDGSelectInputText를 사용하세요.",
+            message = "first와 second에 SDGSelectInputImageElement를 사용하세요.",
         )
         constructor(
             text: String,
@@ -83,11 +83,25 @@ sealed class SDGSelectInputType {
             secondImage: SDGSelectInputImage,
             imageSize: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
         ) : this(
-            text = SDGSelectInputText.Single(value = text),
-            image = image,
-            secondText = SDGSelectInputText.Single(value = secondText),
-            secondImage = secondImage,
-            imageSize = imageSize,
+            first = SDGSelectInputImageElement(
+                text = SDGSelectInputText.Single(value = text),
+                image = image,
+                imageSize = imageSize,
+            ),
+            second = SDGSelectInputImageElement(
+                text = SDGSelectInputText.Single(value = secondText),
+                image = secondImage,
+                imageSize = imageSize,
+            ),
         )
     }
 }
+
+/** Two Image를 구성하는 독립적인 One Image Input 항목입니다. */
+@Immutable
+data class SDGSelectInputImageElement(
+    val text: SDGSelectInputText,
+    val image: SDGSelectInputImage,
+    val imageSize: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
+    val state: SDGSelectInputState? = null,
+)
