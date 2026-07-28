@@ -2,8 +2,13 @@ package com.shopl.sdg.component.select_input.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.shopl.sdg.component.select_input.SDGSelectInputField
+import com.shopl.sdg.component.select_input.SDGSelectInputImage
+import com.shopl.sdg.component.select_input.SDGSelectInputImageElement
+import com.shopl.sdg.component.select_input.SDGSelectInputImageType
 import com.shopl.sdg.component.select_input.SDGSelectInputState
 import com.shopl.sdg.component.select_input.SDGSelectInputText
+import com.shopl.sdg.component.select_input.SDGSelectInputType
+import com.shopl.sdg_resource.R
 
 internal class SDGSelectInputPreviewParameterProvider :
     PreviewParameterProvider<SDGSelectInputPreviewParameter> {
@@ -98,4 +103,61 @@ internal enum class SDGSelectInputPreviewType {
     OneImageNormal2,
     OneImageSpecial1,
     TwoImage,
+}
+
+/** Preview Parameter를 [SDGSelectInputType]으로 변환합니다. */
+internal fun SDGSelectInputPreviewParameter.toSelectInputType(): SDGSelectInputType {
+    return when (type) {
+        SDGSelectInputPreviewType.Text -> SDGSelectInputType.Text(text = text)
+        SDGSelectInputPreviewType.Avatar -> SDGSelectInputType.Avatar(
+            text = text,
+            selectedElementImage = SDGSelectInputImage.Resource(
+                resId = R.drawable.profile_small,
+            ),
+        )
+
+        SDGSelectInputPreviewType.OneImageNormal1 -> SDGSelectInputType.OneImage(
+            text = text,
+            image = SDGSelectInputImage.Resource(
+                resId = R.drawable.ic_common_photo,
+            ),
+            type = SDGSelectInputImageType.Normal1,
+        )
+
+        SDGSelectInputPreviewType.OneImageNormal2 -> SDGSelectInputType.OneImage(
+            text = text,
+            image = SDGSelectInputImage.Url(
+                url = "https://example.com/image.png",
+                failureImageResId = R.drawable.ic_common_photo,
+            ),
+            type = SDGSelectInputImageType.Normal2,
+        )
+
+        SDGSelectInputPreviewType.OneImageSpecial1 -> SDGSelectInputType.OneImage(
+            text = text,
+            image = SDGSelectInputImage.Resource(
+                resId = R.drawable.ic_common_photo,
+            ),
+            type = SDGSelectInputImageType.Special1,
+        )
+
+        SDGSelectInputPreviewType.TwoImage -> SDGSelectInputType.TwoImage(
+            first = SDGSelectInputImageElement(
+                text = text,
+                image = SDGSelectInputImage.Resource(
+                    resId = R.drawable.ic_common_photo,
+                ),
+                state = SDGSelectInputState.Selected,
+            ),
+            second = SDGSelectInputImageElement(
+                text = SDGSelectInputText.Single(
+                    value = "Second Selected Text",
+                ),
+                image = SDGSelectInputImage.Resource(
+                    resId = R.drawable.ic_common_photo,
+                ),
+                state = SDGSelectInputState.Error,
+            ),
+        )
+    }
 }

@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable
 
 /**
- * [SDGSelectInput]에 표시할 이미지 소스입니다.
+ * [SDGSelectInput]에 표시할 이미지 소스
  */
 @Immutable
 sealed interface SDGSelectInputImage {

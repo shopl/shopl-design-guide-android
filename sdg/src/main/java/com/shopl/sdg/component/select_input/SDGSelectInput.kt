@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.select_input.preview.SDGSelectInputPreviewParameter
 import com.shopl.sdg.component.select_input.preview.SDGSelectInputPreviewParameterProvider
-import com.shopl.sdg.component.select_input.preview.SDGSelectInputPreviewType
+import com.shopl.sdg.component.select_input.preview.toSelectInputType
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
@@ -455,7 +455,7 @@ private fun PreviewSDGSelectInput(
     parameter: SDGSelectInputPreviewParameter,
 ) {
     with(parameter) {
-        val selectedElementType = type.toSelectInputType(text = text)
+        val selectedElementType = parameter.toSelectInputType()
 
         SDGSelectInput(
             placeholder = placeholder,
@@ -463,64 +463,6 @@ private fun PreviewSDGSelectInput(
             inputField = inputField,
             type = selectedElementType,
             marginValues = PaddingValues(SDGSpacing.Spacing20),
-        )
-    }
-}
-
-private fun SDGSelectInputPreviewType.toSelectInputType(
-    text: SDGSelectInputText,
-): SDGSelectInputType {
-    return when (this) {
-        SDGSelectInputPreviewType.Text -> SDGSelectInputType.Text(text = text)
-        SDGSelectInputPreviewType.Avatar -> SDGSelectInputType.Avatar(
-            text = text,
-            selectedElementImage = SDGSelectInputImage.Resource(
-                resId = R.drawable.profile_small,
-            ),
-        )
-
-        SDGSelectInputPreviewType.OneImageNormal1 -> SDGSelectInputType.OneImage(
-            text = text,
-            image = SDGSelectInputImage.Resource(
-                resId = R.drawable.ic_common_photo,
-            ),
-            type = SDGSelectInputImageType.Normal1,
-        )
-
-        SDGSelectInputPreviewType.OneImageNormal2 -> SDGSelectInputType.OneImage(
-            text = text,
-            image = SDGSelectInputImage.Url(
-                url = "https://example.com/image.png",
-                failureImageResId = R.drawable.ic_common_photo,
-            ),
-            type = SDGSelectInputImageType.Normal2,
-        )
-
-        SDGSelectInputPreviewType.OneImageSpecial1 -> SDGSelectInputType.OneImage(
-            text = text,
-            image = SDGSelectInputImage.Resource(
-                resId = R.drawable.ic_common_photo,
-            ),
-            type = SDGSelectInputImageType.Special1,
-        )
-
-        SDGSelectInputPreviewType.TwoImage -> SDGSelectInputType.TwoImage(
-            first = SDGSelectInputImageElement(
-                text = text,
-                image = SDGSelectInputImage.Resource(
-                    resId = R.drawable.ic_common_photo,
-                ),
-                state = SDGSelectInputState.Selected,
-            ),
-            second = SDGSelectInputImageElement(
-                text = SDGSelectInputText.Single(
-                    value = "Second Selected Text",
-                ),
-                image = SDGSelectInputImage.Resource(
-                    resId = R.drawable.ic_common_photo,
-                ),
-                state = SDGSelectInputState.Error,
-            ),
         )
     }
 }
