@@ -45,15 +45,14 @@ private const val SDGDropdownDisabledAlpha = 0.3f
  * @param placeholder [SDGDropdownState.Default] 상태에서 표시할 안내 문구
  * @param state 드롭다운 상태
  * @param inputField 인풋 필드 배경 유형
- * @param onClick 드롭다운 클릭 콜백
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=27309-517&m=dev">Figma</a>
  */
 @Composable
 fun SDGDropdown(
     text: String,
-    state: SDGDropdownState,
     placeholder: String,
+    state: SDGDropdownState,
     inputField: SDGDropdownInputField,
     onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
