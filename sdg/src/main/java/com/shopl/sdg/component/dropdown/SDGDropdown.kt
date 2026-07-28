@@ -2,6 +2,7 @@ package com.shopl.sdg.component.dropdown
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -59,86 +60,23 @@ fun SDGDropdown(
     onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
 ) {
-    DropdownContent(
-        text = text,
+    val backgroundColor = resolveDropdownBackgroundColor(
         state = state,
-        placeholder = placeholder,
-        backgroundColor = resolveDropdownBackgroundColor(
-            state = state,
-            inputField = inputField,
-        ),
-        modifier = Modifier
-            .padding(marginValues)
-            .fillMaxWidth(),
-        onClick = onClick,
+        inputField = inputField,
     )
-}
-
-/**
- * 신규 Dropdown API와의 하위 호환성을 위한 레거시 API입니다.
- */
-@Deprecated(
-    message = "SDGDropdown의 state와 inputField 기반 API를 사용하세요.",
-)
-@Composable
-fun SDGDropdown(
-    text: String? = null,
-    placeholder: String = stringResource(id = R.string.select),
-    state: SDGDropdownState = SDGDropdownState.Default,
-    backgroundColor: Color = SDGColor.Neutral0,
-    width: Dp? = null,
-    marginValues: PaddingValues = PaddingValues(),
-    onClick: (() -> Unit)? = null,
-) {
-    val dropdownText = text.orEmpty()
-    val dropdownState = state.resolveDropdownState(text = dropdownText)
-
-    DropdownContent(
-        text = dropdownText,
-        state = dropdownState,
-        placeholder = placeholder,
-        backgroundColor = resolveDropdownBackgroundColor(
-            state = dropdownState,
-            backgroundColor = backgroundColor,
-        ),
-        modifier = Modifier
-            .padding(marginValues)
-            .then(
-                if (width != null) {
-                    Modifier.width(width)
-                } else {
-                    Modifier
-                },
-            ),
-        onClick = onClick,
-    )
-}
-
-@Composable
-private fun DropdownContent(
-    text: String,
-    state: SDGDropdownState,
-    placeholder: String,
-    backgroundColor: Color,
-    modifier: Modifier,
-    onClick: (() -> Unit)?,
-) {
-    val isEnabled = state != SDGDropdownState.Disabled
     val showPlaceholder = state == SDGDropdownState.Default && text.isEmpty()
     val textColor = resolveDropdownTextColor(state)
 
     Row(
-        modifier = modifier
+        modifier = Modifier
+            .padding(marginValues)
+            .fillMaxWidth()
             .height(SDGDropdownHeight)
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
             .background(color = backgroundColor)
             .then(
-                if (isEnabled && onClick != null) {
-                    Modifier.clickable(
-                        hasRipple = true,
-                        rippleColor = SDGColor.Neutral350,
-                        onClick = onClick,
-                    )
+                if (state != SDGDropdownState.Disabled) {
+                    Modifier.clickable(onClick = onClick)
                 } else {
                     Modifier
                 }
@@ -162,6 +100,43 @@ private fun DropdownContent(
             modifier = Modifier.size(SDGDropdownIconSize),
             resId = R.drawable.ic_common_dropdown,
             color = resolveDropdownIconColor(state),
+        )
+    }
+}
+
+/**
+ * 신규 Dropdown API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Deprecated(
+    message = "SDGDropdown의 state와 inputField 기반 API를 사용하세요.",
+)
+@Composable
+fun SDGDropdown(
+    text: String? = null,
+    placeholder: String = stringResource(id = R.string.select),
+    state: SDGDropdownState = SDGDropdownState.Default,
+    backgroundColor: Color = SDGColor.Neutral0,
+    width: Dp? = null,
+    marginValues: PaddingValues = PaddingValues(),
+    onClick: (() -> Unit)? = null,
+) {
+    val dropdownText = text.orEmpty()
+    val dropdownState = state.resolveDropdownState(text = dropdownText)
+    val inputField = backgroundColor.toDropdownInputField()
+    val widthModifier = if (width != null) {
+        Modifier.width(width)
+    } else {
+        Modifier
+    }
+
+    Box(modifier = widthModifier) {
+        SDGDropdown(
+            text = dropdownText,
+            state = dropdownState,
+            placeholder = placeholder,
+            inputField = inputField,
+            marginValues = marginValues,
+            onClick = { onClick?.invoke() },
         )
     }
 }
@@ -206,6 +181,14 @@ private fun resolveDropdownIconColor(state: SDGDropdownState): Color {
         SDGColor.Neutral700
     }
 }
+
+/** 레거시 배경색을 Figma Input Field 유형으로 변환합니다. */
+private fun Color.toDropdownInputField(): SDGDropdownInputField =
+    if (this == SDGColor.Neutral50) {
+        SDGDropdownInputField.LightGray
+    } else {
+        SDGDropdownInputField.White
+    }
 
 /** 레거시 기본 상태와 텍스트에 따라 실제 표시 상태를 반환합니다. */
 private fun SDGDropdownState.resolveDropdownState(text: String): SDGDropdownState =
