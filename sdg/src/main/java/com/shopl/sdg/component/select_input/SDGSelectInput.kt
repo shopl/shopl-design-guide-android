@@ -183,6 +183,36 @@ private fun SelectInputField(
 }
 
 /**
+ * [SDGSelectInputType]에 텍스트를 전달하는 신규 API와의 하위 호환성을 위한 API입니다.
+ */
+@Deprecated(
+    message = "text 대신 SDGSelectInputType의 text를 사용하세요.",
+)
+@Composable
+fun SDGSelectInput(
+    text: String?,
+    placeholder: String,
+    state: SDGSelectInputState,
+    inputField: SDGSelectInputField,
+    type: SDGSelectInputType,
+    marginValues: PaddingValues = PaddingValues(),
+    onClick: (() -> Unit)? = null,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
+) {
+    SDGSelectInput(
+        placeholder = placeholder,
+        state = state,
+        inputField = inputField,
+        type = type.withText(
+            text = text ?: placeholder,
+            overflow = overflow,
+        ),
+        marginValues = marginValues,
+        onClick = onClick,
+    )
+}
+
+/**
  * 신규 Select Input API와의 하위 호환성을 위한 레거시 API입니다.
  */
 @Deprecated(
@@ -444,4 +474,24 @@ private fun SDGSelectInputImageElement.toOneImageType(): SDGSelectInputType.OneI
         image = image,
         type = type,
     )
+}
+
+/** 레거시 API의 텍스트를 [SDGSelectInputType]에 반영합니다. */
+private fun SDGSelectInputType.withText(
+    text: String,
+    overflow: TextOverflow,
+): SDGSelectInputType {
+    val legacyText = SDGSelectInputText.Legacy(
+        displayText = text,
+        overflow = overflow,
+    )
+
+    return when (this) {
+        is SDGSelectInputType.Text -> copy(text = legacyText)
+        is SDGSelectInputType.Avatar -> copy(text = legacyText)
+        is SDGSelectInputType.OneImage -> copy(text = legacyText)
+        is SDGSelectInputType.TwoImage -> copy(
+            first = first.copy(text = legacyText),
+        )
+    }
 }
