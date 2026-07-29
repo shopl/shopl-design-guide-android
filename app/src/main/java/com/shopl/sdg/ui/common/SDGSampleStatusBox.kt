@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.shopl.sdg.component.radio.SDGRadioColor
 import com.shopl.sdg.enums.SDGSampleStatus
 import com.shopl.sdg.template.radio_label.SDGRadioLabel
-import com.shopl.sdg.template.radio_label.SDGRadioLabelStatus
+import com.shopl.sdg.template.radio_label.SDGRadioLabelSelectType
+import com.shopl.sdg.template.radio_label.SDGRadioLabelState
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
@@ -55,20 +55,20 @@ internal fun SDGSampleStatusBox(
             Box(modifier = Modifier.weight(1F)) {
                 SDGRadioLabel(
                     label = SDGSampleStatus.DEFAULT.displayLabel,
-                    status = if(currentStatus == SDGSampleStatus.DEFAULT) {
-                        SDGRadioLabelStatus.SELECTED
-                    } else SDGRadioLabelStatus.DEFAULT,
-                    radioColor = SDGRadioColor.SPECIAL,
+                    state = if (currentStatus == SDGSampleStatus.DEFAULT) {
+                        SDGRadioLabelState.Selected
+                    } else SDGRadioLabelState.Default,
+                    selectType = SDGRadioLabelSelectType.Neutral,
                     onClick = { onClickStatus(SDGSampleStatus.DEFAULT) },
                 )
             }
             Box(modifier = Modifier.weight(1F)) {
                 SDGRadioLabel(
                     label = SDGSampleStatus.DISABLED.displayLabel,
-                    status = if(currentStatus == SDGSampleStatus.DISABLED) {
-                        SDGRadioLabelStatus.SELECTED
-                    } else SDGRadioLabelStatus.DEFAULT,
-                    radioColor = SDGRadioColor.SPECIAL,
+                    state = if (currentStatus == SDGSampleStatus.DISABLED) {
+                        SDGRadioLabelState.Selected
+                    } else SDGRadioLabelState.Default,
+                    selectType = SDGRadioLabelSelectType.Neutral,
                     onClick = { onClickStatus(SDGSampleStatus.DISABLED) },
                 )
             }
