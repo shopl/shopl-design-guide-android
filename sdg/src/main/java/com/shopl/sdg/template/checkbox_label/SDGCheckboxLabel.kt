@@ -39,15 +39,15 @@ import com.shopl.sdg_common.ui.components.SDGText
 fun SDGCheckboxLabel(
     label: String,
     state: SDGCheckboxLabelState,
-    selectType: SDGCheckboxLabelSelectType = SDGCheckboxLabelSelectType.Normal,
+    selectType: SDGCheckboxLabelSelectType,
+    onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
-    onClick: (() -> Unit)? = null,
 ) {
     Row(
         modifier = Modifier
             .padding(marginValues)
             .then(
-                if (onClick != null && state.isEnabled) {
+                if (state.isEnabled) {
                     Modifier.clickable(onClick = onClick)
                 } else {
                     Modifier
@@ -128,5 +128,6 @@ private fun PreviewSDGCheckboxLabel(
         label = params.label,
         state = params.state,
         selectType = params.selectType,
+        onClick = {},
     )
 }

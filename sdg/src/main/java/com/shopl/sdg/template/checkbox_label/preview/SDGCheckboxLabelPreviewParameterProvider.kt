@@ -7,7 +7,7 @@ import com.shopl.sdg.template.checkbox_label.SDGCheckboxLabelState
 internal class SDGCheckboxLabelPreviewParameterProvider :
     PreviewParameterProvider<SDGCheckboxLabelPreviewParams> {
 
-    override val values = sequenceOf(
+    override val values: Sequence<SDGCheckboxLabelPreviewParams> = sequenceOf(
         기본_상태(),
         선택_상태_NORMAL(),
         선택_상태_COLOR(),
@@ -49,6 +49,6 @@ internal class SDGCheckboxLabelPreviewParameterProvider :
     private fun 긴_라벨_선택_상태() = SDGCheckboxLabelPreviewParams(
         state = SDGCheckboxLabelState.Selected,
         selectType = SDGCheckboxLabelSelectType.Normal,
-        label = "여러 줄로 표시되는 긴 체크박스 라벨입니다.",
+        label = "옵션명이 길어지면 아이콘과 상단 정렬되고 사용 가능한 영역에서 줄바꿈으로 전체 내용을 노출합니다.",
     )
 }
