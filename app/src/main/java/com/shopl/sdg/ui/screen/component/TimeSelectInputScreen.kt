@@ -67,7 +67,8 @@ private fun TimeSelectInputContent(
             SDGSampleStatus.DEFAULT -> SDGTimeSelectInputState.Selected
             SDGSampleStatus.DISABLED -> SDGTimeSelectInputState.Disabled
         },
-        placeholder = stringResource(id = R.string.select),
+        startTimePlaceholder = stringResource(id = R.string.dialog_date_picker_start),
+        endTimePlaceholder = stringResource(id = R.string.dialog_date_picker_end),
         inputField = inputField,
         marginValues = PaddingValues(
             horizontal = SDGSpacing.Spacing16,

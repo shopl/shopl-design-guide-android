@@ -980,7 +980,8 @@ fun SDGTimeSelectedForm(
             } else {
                 SDGTimeSelectInputState.Selected
             },
-            placeholder = stringResource(id = R.string.select),
+            startTimePlaceholder = stringResource(id = R.string.dialog_date_picker_start),
+            endTimePlaceholder = stringResource(id = R.string.dialog_date_picker_end),
             inputField = SDGTimeSelectInputField.LightGray,
             marginValues = PaddingValues(),
             onClick = { target ->

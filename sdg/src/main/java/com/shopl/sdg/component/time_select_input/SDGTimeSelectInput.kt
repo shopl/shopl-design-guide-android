@@ -49,7 +49,8 @@ private val SDGTimeSelectInputDividerWidth = 12.dp
  * @param startTime 선택된 시작 시간
  * @param endTime 선택된 종료 시간
  * @param state 시간 선택 인풋 상태
- * @param placeholder 시작 및 종료 시간에 공통으로 표시할 안내 문구
+ * @param startTimePlaceholder 시작 시간에 표시할 안내 문구
+ * @param endTimePlaceholder 종료 시간에 표시할 안내 문구
  * @param inputField 인풋 필드 배경 타입
  * @param marginValues 컴포넌트 외부 여백
  * @param onClick 시작 또는 종료 시간 클릭 이벤트
@@ -61,7 +62,8 @@ fun SDGTimeSelectInput(
     startTime: String?,
     endTime: String?,
     state: SDGTimeSelectInputState,
-    placeholder: String,
+    startTimePlaceholder: String,
+    endTimePlaceholder: String,
     inputField: SDGTimeSelectInputField,
     marginValues: PaddingValues = PaddingValues(),
     onClick: (target: SDGTimeSelectInputTarget) -> Unit,
@@ -88,7 +90,11 @@ fun SDGTimeSelectInput(
                     onClick = { onClick(SDGTimeSelectInputTarget.StartTime) },
                 )
                 .wrapContentHeight(align = Alignment.CenterVertically),
-            text = if (state.isPlaceholderVisible(startTime)) placeholder else startTime.orEmpty(),
+            text = if (state.isPlaceholderVisible(startTime)) {
+                startTimePlaceholder
+            } else {
+                startTime.orEmpty()
+            },
             textColor = state.textColor,
             typography = SDGTypography.Body1R,
             textAlign = TextAlign.Center,
@@ -119,7 +125,11 @@ fun SDGTimeSelectInput(
                     onClick = { onClick(SDGTimeSelectInputTarget.EndTime) },
                 )
                 .wrapContentHeight(align = Alignment.CenterVertically),
-            text = if (state.isPlaceholderVisible(endTime)) placeholder else endTime.orEmpty(),
+            text = if (state.isPlaceholderVisible(endTime)) {
+                endTimePlaceholder
+            } else {
+                endTime.orEmpty()
+            },
             textColor = state.textColor,
             typography = SDGTypography.Body1R,
             textAlign = TextAlign.Center,
@@ -130,10 +140,38 @@ fun SDGTimeSelectInput(
 }
 
 /**
+ * 신규 Time Select Input API와의 하위 호환성을 위한 단일 Placeholder API입니다.
+ */
+@Deprecated(
+    message = "placeholder 대신 startTimePlaceholder와 endTimePlaceholder를 사용하세요.",
+)
+@Composable
+fun SDGTimeSelectInput(
+    startTime: String?,
+    endTime: String?,
+    state: SDGTimeSelectInputState,
+    placeholder: String,
+    inputField: SDGTimeSelectInputField,
+    marginValues: PaddingValues = PaddingValues(),
+    onClick: (target: SDGTimeSelectInputTarget) -> Unit,
+) {
+    SDGTimeSelectInput(
+        startTime = startTime,
+        endTime = endTime,
+        state = state,
+        startTimePlaceholder = placeholder,
+        endTimePlaceholder = placeholder,
+        inputField = inputField,
+        marginValues = marginValues,
+        onClick = onClick,
+    )
+}
+
+/**
  * 신규 Time Select Input API와의 하위 호환성을 위한 레거시 API입니다.
  */
 @Deprecated(
-    message = "SDGTimeSelectInput의 placeholder와 inputField 기반 API를 사용하세요.",
+    message = "SDGTimeSelectInput의 startTimePlaceholder, endTimePlaceholder, inputField 기반 API를 사용하세요.",
 )
 @Composable
 fun SDGTimeSelectInput(
@@ -150,17 +188,13 @@ fun SDGTimeSelectInput(
         startTime = startTime,
         endTime = endTime,
     )
-    val placeholder = if (!startTime.isNullOrEmpty() && endTime.isNullOrEmpty()) {
-        endTimePlaceholder
-    } else {
-        startTimePlaceholder
-    }
 
     SDGTimeSelectInput(
         startTime = startTime,
         endTime = endTime,
         state = timeSelectInputState,
-        placeholder = placeholder,
+        startTimePlaceholder = startTimePlaceholder,
+        endTimePlaceholder = endTimePlaceholder,
         inputField = SDGTimeSelectInputField.fromLegacyBackgroundColor(
             backgroundColor = backgroundColor,
         ),
@@ -181,7 +215,8 @@ private fun PreviewSDGTimeSelectInput(
         startTime = params.startTime,
         endTime = params.endTime,
         state = params.state,
-        placeholder = params.placeholder,
+        startTimePlaceholder = params.startTimePlaceholder,
+        endTimePlaceholder = params.endTimePlaceholder,
         inputField = params.inputField,
         marginValues = PaddingValues(Spacing20),
         onClick = {},
