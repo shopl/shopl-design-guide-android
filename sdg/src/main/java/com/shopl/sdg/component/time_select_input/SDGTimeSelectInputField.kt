@@ -3,11 +3,6 @@ package com.shopl.sdg.component.time_select_input
 import androidx.compose.ui.graphics.Color
 import com.shopl.sdg_common.foundation.SDGColor
 
-/**
- * Time Select Input의 Figma Input Field 배경 유형입니다.
- *
- * @property fieldName 필드 이름
- */
 enum class SDGTimeSelectInputField(
     val fieldName: String,
     internal val backgroundColor: Color,
