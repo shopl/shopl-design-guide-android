@@ -18,7 +18,7 @@ internal class SDGTimeSelectInputPreviewParameterProvider :
 
     private fun 기본_상태() = SDGTimeSelectInputPreviewParams(
         state = SDGTimeSelectInputState.Default,
-        inputField = SDGTimeSelectInputField.LIGHT_GRAY,
+        inputField = SDGTimeSelectInputField.LightGray,
         placeholder = "Placeholder",
         startTime = null,
         endTime = null,
@@ -26,7 +26,7 @@ internal class SDGTimeSelectInputPreviewParameterProvider :
 
     private fun 선택_상태() = SDGTimeSelectInputPreviewParams(
         state = SDGTimeSelectInputState.Selected,
-        inputField = SDGTimeSelectInputField.LIGHT_GRAY,
+        inputField = SDGTimeSelectInputField.LightGray,
         placeholder = "Placeholder",
         startTime = "09:00",
         endTime = "18:00",
@@ -34,7 +34,7 @@ internal class SDGTimeSelectInputPreviewParameterProvider :
 
     private fun 부분_선택_상태() = SDGTimeSelectInputPreviewParams(
         state = SDGTimeSelectInputState.Selected,
-        inputField = SDGTimeSelectInputField.LIGHT_GRAY,
+        inputField = SDGTimeSelectInputField.LightGray,
         placeholder = "Placeholder",
         startTime = "09:00",
         endTime = null,
@@ -42,7 +42,7 @@ internal class SDGTimeSelectInputPreviewParameterProvider :
 
     private fun 흰색_필드_상태() = SDGTimeSelectInputPreviewParams(
         state = SDGTimeSelectInputState.Selected,
-        inputField = SDGTimeSelectInputField.WHITE,
+        inputField = SDGTimeSelectInputField.White,
         placeholder = "Placeholder",
         startTime = "09:00",
         endTime = "18:00",
@@ -50,7 +50,7 @@ internal class SDGTimeSelectInputPreviewParameterProvider :
 
     private fun 비활성_상태() = SDGTimeSelectInputPreviewParams(
         state = SDGTimeSelectInputState.Disabled,
-        inputField = SDGTimeSelectInputField.LIGHT_GRAY,
+        inputField = SDGTimeSelectInputField.LightGray,
         placeholder = "Placeholder",
         startTime = "09:00",
         endTime = "18:00",
@@ -58,7 +58,7 @@ internal class SDGTimeSelectInputPreviewParameterProvider :
 
     private fun 오류_상태() = SDGTimeSelectInputPreviewParams(
         state = SDGTimeSelectInputState.Error,
-        inputField = SDGTimeSelectInputField.WHITE,
+        inputField = SDGTimeSelectInputField.White,
         placeholder = "Placeholder",
         startTime = "09:00",
         endTime = "18:00",

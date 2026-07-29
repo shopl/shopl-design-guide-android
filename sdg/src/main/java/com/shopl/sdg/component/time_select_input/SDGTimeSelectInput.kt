@@ -15,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,9 +30,9 @@ import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+import com.shopl.sdg_resource.R
 
 private const val SDGTimeSelectInputPeriodDivider = "~"
-private const val SDGTimeSelectInputDisabledAlpha = 0.3f
 private val SDGTimeSelectInputHeight = 40.dp
 private val SDGTimeSelectInputDividerWidth = 12.dp
 
@@ -61,26 +63,7 @@ fun SDGTimeSelectInput(
     marginValues: PaddingValues,
     onClick: (isStart: Boolean) -> Unit,
 ) {
-    val isEnabled = state != SDGTimeSelectInputState.Disabled
-    val isStartPlaceholderVisible =
-        state == SDGTimeSelectInputState.Default || startTime.isNullOrEmpty()
-    val isEndPlaceholderVisible =
-        state == SDGTimeSelectInputState.Default || endTime.isNullOrEmpty()
-    val textColor = if (state == SDGTimeSelectInputState.Default) {
-        SDGColor.Neutral350
-    } else {
-        SDGColor.Neutral700
-    }
-    val contentAlpha = if (state == SDGTimeSelectInputState.Disabled) {
-        SDGTimeSelectInputDisabledAlpha
-    } else {
-        1f
-    }
-    val backgroundColor = if (state == SDGTimeSelectInputState.Error) {
-        SDGColor.Red300_a10
-    } else {
-        inputField.backgroundColor
-    }
+    val backgroundColor = state.backgroundColor(inputField)
 
     Row(
         modifier = Modifier
@@ -96,15 +79,14 @@ fun SDGTimeSelectInput(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
-                .alpha(alpha = contentAlpha)
+                .alpha(alpha = state.contentAlpha)
                 .clickable(
-                    hasRipple = false,
-                    enabled = isEnabled,
+                    enabled = state.isEnabled,
                     onClick = { onClick(true) },
                 )
                 .wrapContentHeight(align = Alignment.CenterVertically),
-            text = if (isStartPlaceholderVisible) placeholder else startTime.orEmpty(),
-            textColor = textColor,
+            text = if (state.isPlaceholderVisible(startTime)) placeholder else startTime.orEmpty(),
+            textColor = state.textColor,
             typography = SDGTypography.Body1R,
             textAlign = TextAlign.Center,
             maxLines = 1,
@@ -115,7 +97,7 @@ fun SDGTimeSelectInput(
             modifier = Modifier
                 .width(SDGTimeSelectInputDividerWidth)
                 .fillMaxHeight()
-                .alpha(alpha = contentAlpha)
+                .alpha(alpha = state.contentAlpha)
                 .wrapContentHeight(align = Alignment.CenterVertically),
             text = SDGTimeSelectInputPeriodDivider,
             textColor = SDGColor.Neutral700,
@@ -127,21 +109,61 @@ fun SDGTimeSelectInput(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
-                .alpha(alpha = contentAlpha)
+                .alpha(alpha = state.contentAlpha)
                 .clickable(
                     hasRipple = false,
-                    enabled = isEnabled,
+                    enabled = state.isEnabled,
                     onClick = { onClick(false) },
                 )
                 .wrapContentHeight(align = Alignment.CenterVertically),
-            text = if (isEndPlaceholderVisible) placeholder else endTime.orEmpty(),
-            textColor = textColor,
+            text = if (state.isPlaceholderVisible(endTime)) placeholder else endTime.orEmpty(),
+            textColor = state.textColor,
             typography = SDGTypography.Body1R,
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
     }
+}
+
+/**
+ * 신규 Time Select Input API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Deprecated(
+    message = "SDGTimeSelectInput의 placeholder와 inputField 기반 API를 사용하세요.",
+)
+@Composable
+fun SDGTimeSelectInput(
+    startTime: String?,
+    endTime: String?,
+    startTimePlaceholder: String = stringResource(id = R.string.dialog_date_picker_start),
+    endTimePlaceholder: String = stringResource(id = R.string.dialog_date_picker_end),
+    state: SDGTimeSelectInputState = SDGTimeSelectInputState.Default,
+    marginValues: PaddingValues = PaddingValues(),
+    backgroundColor: Color = SDGColor.Neutral50,
+    onClick: (isStart: Boolean) -> Unit = { },
+) {
+    val timeSelectInputState = state.resolveForTime(
+        startTime = startTime,
+        endTime = endTime,
+    )
+    val placeholder = if (!startTime.isNullOrEmpty() && endTime.isNullOrEmpty()) {
+        endTimePlaceholder
+    } else {
+        startTimePlaceholder
+    }
+
+    SDGTimeSelectInput(
+        startTime = startTime,
+        endTime = endTime,
+        state = timeSelectInputState,
+        placeholder = placeholder,
+        inputField = SDGTimeSelectInputField.fromLegacyBackgroundColor(
+            backgroundColor = backgroundColor,
+        ),
+        marginValues = marginValues,
+        onClick = onClick,
+    )
 }
 
 @Preview(showBackground = true)

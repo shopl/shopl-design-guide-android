@@ -4,20 +4,52 @@ import androidx.compose.ui.graphics.Color
 import com.shopl.sdg_common.foundation.SDGColor
 
 /**
- * Time Select Input의 인풋 필드 배경 타입입니다.
+ * Time Select Input의 Figma Input Field 배경 유형입니다.
  *
- * @property typeName 타입 이름
+ * @property fieldName 필드 이름
  */
 enum class SDGTimeSelectInputField(
-    val typeName: String,
+    val fieldName: String,
     internal val backgroundColor: Color,
 ) {
-    LIGHT_GRAY(
-        typeName = "LightGray",
+    LightGray(
+        fieldName = "LightGray",
         backgroundColor = SDGColor.Neutral50,
     ),
-    WHITE(
-        typeName = "White",
+    White(
+        fieldName = "White",
         backgroundColor = SDGColor.Neutral0,
     ),
+    ;
+
+    @Deprecated(
+        message = "typeName 대신 fieldName을 사용하세요.",
+        replaceWith = ReplaceWith("fieldName"),
+    )
+    val typeName: String
+        get() = fieldName
+
+    companion object {
+        @Deprecated(
+            message = "LIGHT_GRAY 대신 LightGray를 사용하세요.",
+            replaceWith = ReplaceWith("LightGray"),
+        )
+        @Suppress("PropertyName")
+        val LIGHT_GRAY: SDGTimeSelectInputField = LightGray
+
+        @Deprecated(
+            message = "WHITE 대신 White를 사용하세요.",
+            replaceWith = ReplaceWith("White"),
+        )
+        @Suppress("PropertyName")
+        val WHITE: SDGTimeSelectInputField = White
+
+        /** 레거시 Time Select Input의 배경색을 Input Field 유형으로 변환합니다. */
+        internal fun fromLegacyBackgroundColor(backgroundColor: Color): SDGTimeSelectInputField =
+            if (backgroundColor == SDGColor.Neutral0) {
+                White
+            } else {
+                LightGray
+            }
+    }
 }

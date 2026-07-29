@@ -980,7 +980,7 @@ fun SDGTimeSelectedForm(
                 SDGTimeSelectInputState.Selected
             },
             placeholder = stringResource(id = R.string.select),
-            inputField = SDGTimeSelectInputField.LIGHT_GRAY,
+            inputField = SDGTimeSelectInputField.LightGray,
             marginValues = PaddingValues(),
             onClick = onTimeSelectClick,
         )

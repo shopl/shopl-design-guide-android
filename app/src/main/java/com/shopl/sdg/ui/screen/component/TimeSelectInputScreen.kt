@@ -28,12 +28,12 @@ internal fun TimeSelectInputScreen(
 ) {
     val types = persistentListOf(
         SDGSampleBaseTabItem(
-            title = SDGTimeSelectInputField.LIGHT_GRAY.typeName,
-            item = SDGTimeSelectInputField.LIGHT_GRAY,
+            title = SDGTimeSelectInputField.LightGray.fieldName,
+            item = SDGTimeSelectInputField.LightGray,
         ),
         SDGSampleBaseTabItem(
-            title = SDGTimeSelectInputField.WHITE.typeName,
-            item = SDGTimeSelectInputField.WHITE,
+            title = SDGTimeSelectInputField.White.fieldName,
+            item = SDGTimeSelectInputField.White,
         ),
     )
 
