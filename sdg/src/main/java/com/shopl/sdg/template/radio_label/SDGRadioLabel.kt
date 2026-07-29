@@ -17,6 +17,7 @@ import com.shopl.sdg.component.radio.SDGRadioSize
 import com.shopl.sdg.template.radio_label.preview.SDGRadioLabelPreviewParameterProvider
 import com.shopl.sdg.template.radio_label.preview.SDGRadioLabelPreviewParams
 import com.shopl.sdg_common.ext.clickable
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
@@ -61,7 +62,7 @@ fun SDGRadioLabel(
             ),
     ) {
         Box(
-            contentAlignment = Alignment.Center
+            modifier = Modifier.padding(vertical = Spacing2),
         ) {
             SDGRadio(
                 status = state.radioStatus,
