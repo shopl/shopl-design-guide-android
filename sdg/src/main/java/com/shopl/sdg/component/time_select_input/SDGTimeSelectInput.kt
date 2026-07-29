@@ -27,7 +27,10 @@ import com.shopl.sdg.component.time_select_input.preview.SDGTimeSelectInputPrevi
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
-import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing10
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing20
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
@@ -60,7 +63,7 @@ fun SDGTimeSelectInput(
     state: SDGTimeSelectInputState,
     placeholder: String,
     inputField: SDGTimeSelectInputField,
-    marginValues: PaddingValues,
+    marginValues: PaddingValues = PaddingValues(),
     onClick: (target: SDGTimeSelectInputTarget) -> Unit,
 ) {
     val backgroundColor = state.backgroundColor(inputField)
@@ -72,8 +75,8 @@ fun SDGTimeSelectInput(
             .height(SDGTimeSelectInputHeight)
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
             .background(color = backgroundColor)
-            .padding(horizontal = SDGSpacing.Spacing12),
-        horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing8),
+            .padding(vertical = Spacing10, horizontal = Spacing12),
+        horizontalArrangement = Arrangement.spacedBy(Spacing8),
     ) {
         SDGText(
             modifier = Modifier
@@ -180,7 +183,7 @@ private fun PreviewSDGTimeSelectInput(
         state = params.state,
         placeholder = params.placeholder,
         inputField = params.inputField,
-        marginValues = PaddingValues(SDGSpacing.Spacing20),
+        marginValues = PaddingValues(Spacing20),
         onClick = {},
     )
 }
