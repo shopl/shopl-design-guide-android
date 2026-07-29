@@ -4,7 +4,6 @@ import androidx.compose.ui.graphics.Color
 import com.shopl.sdg.component.radio.SDGRadioStatus
 import com.shopl.sdg_common.foundation.SDGColor
 
-/** Radio Label의 상태입니다. */
 enum class SDGRadioLabelState(
     internal val radioStatus: SDGRadioStatus,
     internal val isEnabled: Boolean = true,

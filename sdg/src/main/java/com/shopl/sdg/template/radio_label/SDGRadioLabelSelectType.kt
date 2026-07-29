@@ -4,7 +4,6 @@ import androidx.compose.ui.graphics.Color
 import com.shopl.sdg.component.radio.SDGRadioColor
 import com.shopl.sdg_common.foundation.SDGColor
 
-/** 선택된 Radio Label의 색상 유형입니다. */
 enum class SDGRadioLabelSelectType(
     internal val labelColor: Color,
     internal val radioColor: SDGRadioColor,

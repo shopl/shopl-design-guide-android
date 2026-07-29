@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.shopl.sdg.component.radio.SDGRadio
@@ -50,10 +49,7 @@ fun SDGRadioLabel(
             .padding(marginValues)
             .then(
                 if (state.isEnabled) {
-                    Modifier.clickable(
-                        role = Role.RadioButton,
-                        onClick = onClick,
-                    )
+                    Modifier.clickable(onClick = onClick)
                 } else {
                     Modifier
                 }
