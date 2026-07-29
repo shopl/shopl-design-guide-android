@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,7 +28,6 @@ import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
-import com.shopl.sdg_resource.R
 
 private const val SDGTimeSelectInputPeriodDivider = "~"
 private const val SDGTimeSelectInputDisabledAlpha = 0.3f
@@ -57,11 +55,11 @@ private val SDGTimeSelectInputDividerWidth = 12.dp
 fun SDGTimeSelectInput(
     startTime: String?,
     endTime: String?,
-    state: SDGTimeSelectInputState = SDGTimeSelectInputState.Default,
-    placeholder: String = stringResource(id = R.string.select),
-    inputField: SDGTimeSelectInputField = SDGTimeSelectInputField.LIGHT_GRAY,
-    marginValues: PaddingValues = PaddingValues(),
-    onClick: (isStart: Boolean) -> Unit = { },
+    state: SDGTimeSelectInputState,
+    placeholder: String,
+    inputField: SDGTimeSelectInputField,
+    marginValues: PaddingValues,
+    onClick: (isStart: Boolean) -> Unit,
 ) {
     val isEnabled = state != SDGTimeSelectInputState.Disabled
     val isStartPlaceholderVisible =
@@ -159,5 +157,6 @@ private fun PreviewSDGTimeSelectInput(
         placeholder = params.placeholder,
         inputField = params.inputField,
         marginValues = PaddingValues(SDGSpacing.Spacing20),
+        onClick = {},
     )
 }

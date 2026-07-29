@@ -2,6 +2,7 @@ package com.shopl.sdg.ui.screen.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.time_select_input.SDGTimeSelectInput
 import com.shopl.sdg.component.time_select_input.SDGTimeSelectInputField
@@ -12,6 +13,7 @@ import com.shopl.sdg.scene.ComponentScene
 import com.shopl.sdg.ui.base.SDGSampleBaseComponentScaffold
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_resource.R
 import kotlinx.collections.immutable.persistentListOf
 
 /**
@@ -69,11 +71,13 @@ private fun TimeSelectInputContent(
             SDGSampleStatus.DEFAULT -> SDGTimeSelectInputState.Selected
             SDGSampleStatus.DISABLED -> SDGTimeSelectInputState.Disabled
         },
+        placeholder = stringResource(id = R.string.select),
         inputField = inputField,
         marginValues = PaddingValues(
             horizontal = SDGSpacing.Spacing16,
             vertical = SDGSpacing.Spacing40,
         ),
+        onClick = {},
     )
 }
 
