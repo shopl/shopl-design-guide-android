@@ -120,7 +120,6 @@ fun SDGTimeSelectInput(
                 .fillMaxHeight()
                 .alpha(alpha = state.contentAlpha)
                 .clickable(
-                    hasRipple = false,
                     enabled = state.isEnabled,
                     onClick = { onClick(SDGTimeSelectInputTarget.EndTime) },
                 )
