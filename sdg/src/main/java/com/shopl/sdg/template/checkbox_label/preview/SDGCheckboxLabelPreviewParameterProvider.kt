@@ -1,73 +1,54 @@
 package com.shopl.sdg.template.checkbox_label.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.shopl.sdg.template.checkbox_label.SDGCheckboxLabelType
-import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg.template.checkbox_label.SDGCheckboxLabelSelectType
+import com.shopl.sdg.template.checkbox_label.SDGCheckboxLabelState
 
 internal class SDGCheckboxLabelPreviewParameterProvider :
     PreviewParameterProvider<SDGCheckboxLabelPreviewParams> {
 
     override val values = sequenceOf(
-        // Label Top Alignment
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.NORMAL,
-            label = "Label\nLabel",
-            isChecked = false,
-        ),
+        기본_상태(),
+        선택_상태_NORMAL(),
+        선택_상태_COLOR(),
+        선택_상태_NEUTRAL(),
+        비활성_상태(),
+        긴_라벨_선택_상태(),
+    )
 
-        // Default - Normal
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.NORMAL,
-            label = "Label",
-            isChecked = false,
-        ),
-        // Default - Empha
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.EMPHA,
-            label = "Label",
-            isChecked = false,
-        ),
+    private fun 기본_상태() = SDGCheckboxLabelPreviewParams(
+        state = SDGCheckboxLabelState.Default,
+        selectType = SDGCheckboxLabelSelectType.Normal,
+        label = "옵션명",
+    )
 
-        // Selected - Normal - Neutral700
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.NORMAL,
-            label = "Label",
-            isChecked = true,
-        ),
-        // Selected - Empha - Neutral700
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.EMPHA,
-            label = "Label",
-            isChecked = true,
-        ),
-        // Selected - Normal - Primary300
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.NORMAL,
-            label = "Label",
-            checkTextColor = SDGColor.Primary300,
-            isChecked = true,
-        ),
-        // Selected - Empha - Neutral700
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.EMPHA,
-            label = "Label",
-            checkTextColor = SDGColor.Primary300,
-            isChecked = true,
-        ),
+    private fun 선택_상태_NORMAL() = SDGCheckboxLabelPreviewParams(
+        state = SDGCheckboxLabelState.Selected,
+        selectType = SDGCheckboxLabelSelectType.Normal,
+        label = "옵션명",
+    )
 
-        // Disabled - Normal
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.NORMAL,
-            label = "Label",
-            isChecked = false,
-            enabled = false
-        ),
-        // Disabled - Empha
-        SDGCheckboxLabelPreviewParams(
-            type = SDGCheckboxLabelType.EMPHA,
-            label = "Label",
-            isChecked = true,
-            enabled = false
-        ),
+    private fun 선택_상태_COLOR() = SDGCheckboxLabelPreviewParams(
+        state = SDGCheckboxLabelState.Selected,
+        selectType = SDGCheckboxLabelSelectType.Color,
+        label = "옵션명",
+    )
+
+    private fun 선택_상태_NEUTRAL() = SDGCheckboxLabelPreviewParams(
+        state = SDGCheckboxLabelState.Selected,
+        selectType = SDGCheckboxLabelSelectType.Neutral,
+        label = "옵션명",
+    )
+
+    private fun 비활성_상태() = SDGCheckboxLabelPreviewParams(
+        state = SDGCheckboxLabelState.Disabled,
+        selectType = SDGCheckboxLabelSelectType.Normal,
+        label = "옵션명",
+    )
+
+    private fun 긴_라벨_선택_상태() = SDGCheckboxLabelPreviewParams(
+        state = SDGCheckboxLabelState.Selected,
+        selectType = SDGCheckboxLabelSelectType.Normal,
+        label = "여러 줄로 표시되는 긴 체크박스 라벨입니다.",
     )
 }

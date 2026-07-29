@@ -43,10 +43,11 @@ fun SDGCheckBox(
     onClick: (() -> Unit)? = null,
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (isChecked && enabled)
-            checkedBackgroundColor
-        else
-            SDGColor.Neutral200,
+        targetValue = when {
+            isChecked && enabled -> checkedBackgroundColor
+            enabled -> SDGColor.Neutral250
+            else -> SDGColor.Neutral200
+        },
         animationSpec = tween(
             durationMillis = 300,
             easing = FastOutSlowInEasing
