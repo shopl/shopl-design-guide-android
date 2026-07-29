@@ -39,13 +39,9 @@ internal fun TimeSelectInputScreen(
 
     SDGSampleBaseComponentScaffold<SDGTimeSelectInputField, Unit>(
         componentName = ComponentScene.TimeSelectInput.displayLabel,
-        componentDescription = "시작 시간과 종료 시간을 지정하여 시간 범위를 선택하는 컴포넌트",
+        componentDescription = "시작 시간과 종료 시간을 지정하여 특정 시간(기간)의 범위를 선택하는 컴포넌",
         types = types,
-        guideLineDescriptions = persistentListOf(
-            "Input Field는 LightGray / White 2가지 유형으로 구성됩니다.",
-            "Error 상태에서는 Input Field 유형과 관계없이 Error 배경을 사용합니다.",
-            "Disabled 상태에서는 모든 터치 액션을 차단합니다.",
-        ),
+        guideLineDescriptions = persistentListOf("시간 선택 템플릿 사용할 땐 시작/끝 시간은 한 번에 입력합니다."),
         componentContent = { currentType, _, currentStatus ->
             currentType?.let { inputField ->
                 TimeSelectInputContent(
