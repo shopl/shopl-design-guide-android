@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.dropdown.SDGDropdown
+import com.shopl.sdg.component.dropdown.SDGDropdownInputField
 import com.shopl.sdg.component.dropdown.SDGDropdownState
 import com.shopl.sdg.component.select_input.SDGSelectInput
 import com.shopl.sdg.component.select_input.SDGSelectInputField
@@ -132,10 +133,12 @@ fun SDGDropdownForm(
             }
         }
         SDGDropdown(
-            backgroundColor = SDGColor.Neutral50,
-            state = dropdownState,
-            text = value,
+            state = dropdownState.takeUnless {
+                it == SDGDropdownState.Default && !value.isNullOrEmpty()
+            } ?: SDGDropdownState.Selected,
+            text = value.orEmpty(),
             placeholder = hint ?: stringResource(id = R.string.select),
+            inputField = SDGDropdownInputField.LightGray,
             onClick = onDropdownClick,
         )
     }
@@ -217,10 +220,12 @@ fun SDGDropdownForm(
             }
         }
         SDGDropdown(
-            backgroundColor = SDGColor.Neutral50,
-            state = dropdownState,
-            text = value,
+            state = dropdownState.takeUnless {
+                it == SDGDropdownState.Default && !value.isNullOrEmpty()
+            } ?: SDGDropdownState.Selected,
+            text = value.orEmpty(),
             placeholder = hint ?: stringResource(id = R.string.select),
+            inputField = SDGDropdownInputField.LightGray,
             onClick = onDropdownClick,
         )
     }

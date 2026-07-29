@@ -2,6 +2,7 @@ package com.shopl.sdg.scene
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import com.shopl.sdg.ui.screen.component.DropdownScreen
 import com.shopl.sdg.ui.screen.component.button.BottomButtonScreen
 import com.shopl.sdg.ui.screen.component.button.BoxButtonScreen
 import com.shopl.sdg.ui.screen.component.button.CapsuleButtonScreen
@@ -191,11 +192,16 @@ internal sealed class ComponentScene(
 
     data object Dropdown : ComponentScene(
         displayLabel = "Dropdown",
-        implemented = false
+        implemented = true,
     ) {
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-            throw IllegalStateException("Not implemented")
+            DropdownScreen(
+                onClickBack = backToScene,
+                onClickMenu = {
+                    moveToScene(Menu)
+                },
+            )
         }
     }
 
