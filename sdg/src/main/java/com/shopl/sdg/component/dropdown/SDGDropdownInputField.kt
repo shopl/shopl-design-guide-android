@@ -16,4 +16,15 @@ enum class SDGDropdownInputField(
         fieldName = "White",
         backgroundColor = SDGColor.Neutral0,
     ),
+    ;
+
+    internal companion object {
+        /** 레거시 Dropdown의 배경색을 Input Field 유형으로 변환합니다. */
+        fun fromLegacyBackgroundColor(backgroundColor: Color): SDGDropdownInputField =
+            if (backgroundColor == SDGColor.Neutral50) {
+                LightGray
+            } else {
+                White
+            }
+    }
 }

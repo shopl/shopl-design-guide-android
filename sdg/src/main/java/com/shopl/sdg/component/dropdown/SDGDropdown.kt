@@ -32,7 +32,6 @@ import com.shopl.sdg_resource.R
 
 private val SDGDropdownHeight = 40.dp
 private val SDGDropdownIconSize = 20.dp
-private const val SDGDropdownDisabledAlpha = 0.3f
 
 /**
  * SDG - Component - Dropdown
@@ -45,6 +44,8 @@ private const val SDGDropdownDisabledAlpha = 0.3f
  * @param placeholder [SDGDropdownState.Default] 상태에서 표시할 안내 문구
  * @param state 드롭다운 상태
  * @param inputField 인풋 필드 배경 유형
+ * @param onClick 드롭다운 클릭 콜백
+ * @param marginValues 컴포넌트 외부 여백
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=27309-517&m=dev">Figma</a>
  */
@@ -57,12 +58,8 @@ fun SDGDropdown(
     onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
 ) {
-    val backgroundColor = resolveDropdownBackgroundColor(
-        state = state,
-        inputField = inputField,
-    )
-    val showPlaceholder = state == SDGDropdownState.Default && text.isEmpty()
-    val textColor = resolveDropdownTextColor(state)
+    val backgroundColor = state.backgroundColor(inputField)
+    val showPlaceholder = state.isPlaceholderVisible(text)
 
     Row(
         modifier = Modifier
@@ -72,7 +69,7 @@ fun SDGDropdown(
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
             .background(color = backgroundColor)
             .then(
-                if (state != SDGDropdownState.Disabled) {
+                if (state.isEnabled) {
                     Modifier.clickable(onClick = onClick)
                 } else {
                     Modifier
@@ -88,7 +85,7 @@ fun SDGDropdown(
         SDGText(
             modifier = Modifier.weight(1f),
             text = if (showPlaceholder) placeholder else text,
-            textColor = textColor,
+            textColor = state.textColor,
             typography = SDGTypography.Body1R,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
@@ -96,7 +93,7 @@ fun SDGDropdown(
         SDGImage(
             modifier = Modifier.size(SDGDropdownIconSize),
             resId = R.drawable.ic_common_dropdown,
-            color = resolveDropdownIconColor(state),
+            color = state.iconColor,
         )
     }
 }
@@ -118,75 +115,17 @@ fun SDGDropdown(
     onClick: (() -> Unit)? = null,
 ) {
     val dropdownText = text.orEmpty()
-    val dropdownState = state.resolveDropdownState(text = dropdownText)
-    val inputField = backgroundColor.toDropdownInputField()
+    val dropdownState = state.resolveForText(text = dropdownText)
 
     SDGDropdown(
         text = dropdownText,
         state = dropdownState,
         placeholder = placeholder,
-        inputField = inputField,
+        inputField = SDGDropdownInputField.fromLegacyBackgroundColor(backgroundColor),
         marginValues = marginValues,
         onClick = { onClick?.invoke() },
     )
 }
-
-/** 상태와 Input Field에 맞는 배경색을 반환합니다. */
-private fun resolveDropdownBackgroundColor(
-    state: SDGDropdownState,
-    inputField: SDGDropdownInputField,
-): Color = resolveDropdownBackgroundColor(
-        state = state,
-        backgroundColor = inputField.backgroundColor,
-    )
-
-/** 상태에 맞는 Dropdown 배경색을 반환합니다. */
-private fun resolveDropdownBackgroundColor(
-    state: SDGDropdownState,
-    backgroundColor: Color,
-): Color {
-    return if (state == SDGDropdownState.Error) {
-        SDGColor.Red300_a10
-    } else {
-        backgroundColor
-    }
-}
-
-/** 상태에 맞는 텍스트 색상을 반환합니다. */
-private fun resolveDropdownTextColor(state: SDGDropdownState): Color {
-    return when (state) {
-        SDGDropdownState.Default -> SDGColor.Neutral350
-        SDGDropdownState.Disabled -> SDGColor.Neutral700.copy(
-            alpha = SDGDropdownDisabledAlpha,
-        )
-        else -> SDGColor.Neutral700
-    }
-}
-
-/** 상태에 맞는 아이콘 색상을 반환합니다. */
-private fun resolveDropdownIconColor(state: SDGDropdownState): Color {
-    return if (state == SDGDropdownState.Disabled) {
-        SDGColor.Neutral300
-    } else {
-        SDGColor.Neutral700
-    }
-}
-
-/** 레거시 배경색을 Figma Input Field 유형으로 변환합니다. */
-private fun Color.toDropdownInputField(): SDGDropdownInputField =
-    if (this == SDGColor.Neutral50) {
-        SDGDropdownInputField.LightGray
-    } else {
-        SDGDropdownInputField.White
-    }
-
-/** 레거시 기본 상태와 텍스트에 따라 실제 표시 상태를 반환합니다. */
-private fun SDGDropdownState.resolveDropdownState(text: String): SDGDropdownState =
-    if (this == SDGDropdownState.Default && text.isNotEmpty()) {
-        SDGDropdownState.Selected
-    } else {
-        this
-    }
 
 @Preview(showBackground = true)
 @Composable
