@@ -7,11 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
@@ -20,19 +15,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
-import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing1
-import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 
 /**
  * SDG - Icon Label
  *
+ * 아이콘과 텍스트를 조합하여 보여주는 컴포넌트
+ *
+ * @version 2.1.29
+ *
  * @param size [SDGIconLabelSize] 내부 텍스트 Size, LineHeight 조절
  * @param type [SDGIconLabelType] 내부 텍스트 Weight 조절
  * @param spacing [SDGIconLabelSpacing] 아이콘과 텍스트 사이 간격
  *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=10507-19136&m=dev">Figma</a>
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=10507-19135&m=dev">Figma</a>
  */
 @Composable
 fun SDGIconLabel(
@@ -65,7 +62,7 @@ fun SDGIconLabel(
         rightIconTint = rightIconTint,
         onClickRightIcon = onClickRightIcon,
         maxLines = maxLines,
-        isFillMaxWidth = isFillMaxWidth
+        isFillMaxWidth = isFillMaxWidth,
     )
 }
 
@@ -121,10 +118,7 @@ private fun SDGIconLabelContent(
     maxLines: Int = Int.MAX_VALUE,
     isFillMaxWidth: Boolean = true,
 ) {
-    var isTextMultiline by remember { mutableStateOf(false) }
-    val iconAlignment = if (isTextMultiline) Alignment.Top else Alignment.CenterVertically
-    val iconTopPadding = if (isTextMultiline) Modifier.padding(top = Spacing1) else Modifier
-    val typography = getIconLabelTypography(type = type, size = size)
+    val typography = type.typography(size)
 
     Row(
         modifier = modifier.then(
@@ -134,14 +128,13 @@ private fun SDGIconLabelContent(
                 Modifier
             }
         ),
-        horizontalArrangement = Arrangement.spacedBy(spacing.value)
+        horizontalArrangement = Arrangement.spacedBy(spacing.value),
     ) {
         if (leftIconResId != null) {
             SDGImage(
                 modifier = Modifier
-                    .align(iconAlignment)
-                    .size(14.dp)
-                    .then(iconTopPadding)
+                    .padding(vertical = size.iconVerticalPadding)
+                    .size(SDGIconLabelIconSize)
                     .then(
                         if (onClickLeftIcon != null) {
                             Modifier.clickable(hasRipple = false) { onClickLeftIcon() }
@@ -150,26 +143,26 @@ private fun SDGIconLabelContent(
                         }
                     ),
                 resId = leftIconResId,
-                color = leftIconTint
+                color = leftIconTint,
             )
         }
         SDGText(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .weight(1f, isFillMaxWidth),
+            modifier = if (isFillMaxWidth) {
+                Modifier.weight(1f)
+            } else {
+                Modifier
+            },
             text = text,
             textColor = textColor,
             typography = typography,
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
-            onTextLayout = { isTextMultiline = it.lineCount > 1 }
         )
         if (rightIconResId != null) {
             SDGImage(
                 modifier = Modifier
-                    .align(iconAlignment)
-                    .size(14.dp)
-                    .then(iconTopPadding)
+                    .padding(vertical = size.iconVerticalPadding)
+                    .size(SDGIconLabelIconSize)
                     .then(
                         if (onClickRightIcon != null) {
                             Modifier.clickable(hasRipple = false) { onClickRightIcon() }
@@ -178,39 +171,19 @@ private fun SDGIconLabelContent(
                         }
                     ),
                 resId = rightIconResId,
-                color = rightIconTint
+                color = rightIconTint,
             )
         }
     }
 }
 
-/**
- * [SDGIconLabelType]과 [SDGIconLabelSize]에 맞는 Typography 반환
- */
-private fun getIconLabelTypography(
-    type: SDGIconLabelType,
-    size: SDGIconLabelSize
-): SDGTypography {
-    return when (type) {
-        SDGIconLabelType.Basic -> when (size) {
-            SDGIconLabelSize.Size12 -> SDGTypography.Body3R
-            SDGIconLabelSize.Size14 -> SDGTypography.Body2R
-            SDGIconLabelSize.Size16 -> SDGTypography.Body1R
-        }
-
-        SDGIconLabelType.Empha -> when (size) {
-            SDGIconLabelSize.Size12 -> SDGTypography.Body3SB
-            SDGIconLabelSize.Size14 -> SDGTypography.Body2SB
-            SDGIconLabelSize.Size16 -> SDGTypography.Body1SB
-        }
-    }
-}
+private val SDGIconLabelIconSize = 14.dp
 
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSDGIconLabel(
     @PreviewParameter(SDGIconLabelPreviewParameterProvider::class)
-    param: SDGIconLabelPreviewParam
+    param: SDGIconLabelPreviewParam,
 ) {
     with(param) {
         SDGIconLabel(
@@ -226,7 +199,7 @@ private fun PreviewSDGIconLabel(
             rightIconTint = rightIconTint,
             onClickRightIcon = null,
             maxLines = maxLines,
-            isFillMaxWidth = isFillMaxWidth
+            isFillMaxWidth = isFillMaxWidth,
         )
     }
 }
