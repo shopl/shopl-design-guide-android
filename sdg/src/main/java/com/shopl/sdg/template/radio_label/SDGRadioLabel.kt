@@ -32,8 +32,6 @@ import com.shopl.sdg_common.ui.components.SDGText
  * @param label 라디오 옆에 표시되는 텍스트 라벨
  * @param state 라디오 라벨 상태
  * @param selectType 선택된 라디오와 라벨의 색상 타입
- * @param marginValues 컴포넌트 외부 여백
- * @param onClick 라디오 라벨 클릭 시 호출되는 콜백
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=27325-39477&m=dev">Figma</a>
  */
