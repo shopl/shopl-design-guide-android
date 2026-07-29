@@ -61,7 +61,7 @@ fun SDGTimeSelectInput(
     placeholder: String,
     inputField: SDGTimeSelectInputField,
     marginValues: PaddingValues,
-    onClick: (isStart: Boolean) -> Unit,
+    onClick: (target: SDGTimeSelectInputTarget) -> Unit,
 ) {
     val backgroundColor = state.backgroundColor(inputField)
 
@@ -82,7 +82,7 @@ fun SDGTimeSelectInput(
                 .alpha(alpha = state.contentAlpha)
                 .clickable(
                     enabled = state.isEnabled,
-                    onClick = { onClick(true) },
+                    onClick = { onClick(SDGTimeSelectInputTarget.StartTime) },
                 )
                 .wrapContentHeight(align = Alignment.CenterVertically),
             text = if (state.isPlaceholderVisible(startTime)) placeholder else startTime.orEmpty(),
@@ -113,7 +113,7 @@ fun SDGTimeSelectInput(
                 .clickable(
                     hasRipple = false,
                     enabled = state.isEnabled,
-                    onClick = { onClick(false) },
+                    onClick = { onClick(SDGTimeSelectInputTarget.EndTime) },
                 )
                 .wrapContentHeight(align = Alignment.CenterVertically),
             text = if (state.isPlaceholderVisible(endTime)) placeholder else endTime.orEmpty(),
@@ -162,7 +162,9 @@ fun SDGTimeSelectInput(
             backgroundColor = backgroundColor,
         ),
         marginValues = marginValues,
-        onClick = onClick,
+        onClick = { target ->
+            onClick(target == SDGTimeSelectInputTarget.StartTime)
+        },
     )
 }
 
