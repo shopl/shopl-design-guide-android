@@ -46,7 +46,6 @@ import com.shopl.sdg.component.time_select_input.SDGTimeSelectInput
 import com.shopl.sdg.component.time_select_input.SDGTimeSelectInputField
 import com.shopl.sdg.component.time_select_input.SDGTimeSelectInputState
 import com.shopl.sdg.component.time_select_input.SDGTimeSelectInputTarget
-import com.shopl.sdg_common.enums.OutlineType
 import com.shopl.sdg_common.ext.bounceClickable
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
@@ -983,7 +982,6 @@ fun SDGTimeSelectedForm(
             startTimePlaceholder = stringResource(id = R.string.dialog_date_picker_start),
             endTimePlaceholder = stringResource(id = R.string.dialog_date_picker_end),
             inputField = SDGTimeSelectInputField.LightGray,
-            marginValues = PaddingValues(),
             onClick = { target ->
                 onTimeSelectClick(target == SDGTimeSelectInputTarget.StartTime)
             },
