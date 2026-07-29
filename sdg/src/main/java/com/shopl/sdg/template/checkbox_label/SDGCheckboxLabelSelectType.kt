@@ -3,7 +3,6 @@ package com.shopl.sdg.template.checkbox_label
 import androidx.compose.ui.graphics.Color
 import com.shopl.sdg_common.foundation.SDGColor
 
-/** 선택된 Checkbox Label의 색상 유형입니다. */
 enum class SDGCheckboxLabelSelectType(
     internal val labelColor: Color,
     internal val checkedBackgroundColor: Color,

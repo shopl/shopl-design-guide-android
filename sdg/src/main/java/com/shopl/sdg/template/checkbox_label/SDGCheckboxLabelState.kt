@@ -3,7 +3,6 @@ package com.shopl.sdg.template.checkbox_label
 import androidx.compose.ui.graphics.Color
 import com.shopl.sdg_common.foundation.SDGColor
 
-/** Checkbox Label의 상태입니다. */
 enum class SDGCheckboxLabelState(
     internal val isChecked: Boolean = false,
     internal val isEnabled: Boolean = true,
