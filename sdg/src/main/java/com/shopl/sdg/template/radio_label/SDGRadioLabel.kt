@@ -4,12 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -46,10 +44,6 @@ fun SDGRadioLabel(
     onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
 ) {
-    val typography = SDGTypography.Body1R
-    val density = LocalDensity.current
-    val lineHeightDp = with(receiver = density) { typography.style.lineHeight.toDp() }
-
     Row(
         horizontalArrangement = Arrangement.spacedBy(space = Spacing8),
         verticalAlignment = Alignment.Top,
@@ -67,7 +61,6 @@ fun SDGRadioLabel(
             ),
     ) {
         Box(
-            modifier = Modifier.height(height = lineHeightDp),
             contentAlignment = Alignment.Center
         ) {
             SDGRadio(
@@ -80,7 +73,7 @@ fun SDGRadioLabel(
         SDGText(
             text = label,
             textColor = state.labelColor(selectType),
-            typography = typography,
+            typography = SDGTypography.Body1R,
         )
     }
 }
