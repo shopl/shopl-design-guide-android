@@ -53,7 +53,7 @@ fun SDGIconLabel(
             )
             .then(
                 if (onClick != null) {
-                    Modifier.clickable(hasRipple = false) { onClick() }
+                    Modifier.clickable { onClick() }
                 } else {
                     Modifier
                 },
