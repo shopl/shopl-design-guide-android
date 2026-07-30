@@ -113,6 +113,7 @@ private fun IconLabelSection(
                 tint = SDGColor.Neutral700,
             ),
             onClick = null,
+            labelOverflow = SDGIconLabelOverflow.SingleLineEllipsis
         )
 
         SDGIconLabel(
@@ -126,6 +127,7 @@ private fun IconLabelSection(
                 tint = SDGColor.Primary400,
             ),
             onClick = null,
+            labelOverflow = SDGIconLabelOverflow.SingleLineEllipsis
         )
     }
 }

@@ -120,61 +120,29 @@ fun SDGIconLabel(
     maxLines: Int = Int.MAX_VALUE,
     isFillMaxWidth: Boolean = true,
 ) {
-    val labelOverflow = SDGIconLabelOverflow.fromMaxLines(maxLines)
-    val onClick = onClickLeftIcon ?: onClickRightIcon
-
-    Row(
-        modifier = modifier
-            .then(
-                if (isFillMaxWidth) {
-                    Modifier.fillMaxWidth()
-                } else {
-                    Modifier
-                },
+    SDGIconLabel(
+        label = text,
+        labelColor = textColor,
+        size = size,
+        fontWeight = type.fontWeight,
+        gap = spacing.gap,
+        onClick = onClickLeftIcon ?: onClickRightIcon,
+        labelOverflow = SDGIconLabelOverflow.fromMaxLines(maxLines),
+        modifier = modifier,
+        leftIc = leftIconResId?.let { resId ->
+            SDGIconLabelIcon(
+                resId = resId,
+                tint = leftIconTint,
             )
-            .then(
-                if (onClick != null) {
-                    Modifier.clickable(hasRipple = false) { onClick() }
-                } else {
-                    Modifier
-                },
-            ),
-        horizontalArrangement = Arrangement.spacedBy(spacing.gap.value),
-        verticalAlignment = Alignment.Top,
-    ) {
-        if (leftIconResId != null) {
-            SDGImage(
-                modifier = Modifier
-                    .padding(vertical = size.iconVerticalPadding)
-                    .size(SDGIconLabelIconSize),
-                resId = leftIconResId,
-                color = leftIconTint,
+        },
+        rightIc = rightIconResId?.let { resId ->
+            SDGIconLabelIcon(
+                resId = resId,
+                tint = rightIconTint,
             )
-        }
-
-        SDGText(
-            modifier = if (isFillMaxWidth) {
-                Modifier.weight(1f)
-            } else {
-                Modifier
-            },
-            text = text,
-            textColor = textColor,
-            typography = type.fontWeight.typography(size),
-            maxLines = labelOverflow.maxLines,
-            overflow = labelOverflow.textOverflow,
-        )
-
-        if (rightIconResId != null) {
-            SDGImage(
-                modifier = Modifier
-                    .padding(vertical = size.iconVerticalPadding)
-                    .size(SDGIconLabelIconSize),
-                resId = rightIconResId,
-                color = rightIconTint,
-            )
-        }
-    }
+        },
+        isFillMaxWidth = isFillMaxWidth,
+    )
 }
 
 private val SDGIconLabelIconSize = 14.dp
