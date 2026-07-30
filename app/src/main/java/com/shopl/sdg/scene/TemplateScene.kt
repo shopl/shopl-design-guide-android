@@ -2,6 +2,7 @@ package com.shopl.sdg.scene
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import com.shopl.sdg.ui.screen.template.CheckboxLabelScreen
 
 /**
  * SDG - Template
@@ -26,11 +27,14 @@ internal sealed class TemplateScene(
 
     data object CheckboxLabel : TemplateScene(
         displayLabel = "Checkbox Label",
-        implemented = false
+        implemented = true
     ) {
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-            throw IllegalStateException("Not implemented")
+            CheckboxLabelScreen(
+                onClickBack = backToScene,
+                onClickMenu = { moveToScene(Menu) },
+            )
         }
     }
 

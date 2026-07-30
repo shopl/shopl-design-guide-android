@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -14,23 +15,68 @@ import com.shopl.sdg.template.checkbox_label.preview.SDGCheckboxLabelPreviewPara
 import com.shopl.sdg.template.checkbox_label.preview.SDGCheckboxLabelPreviewParams
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
+import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
 /**
- * SDG - Checkbox Label
+ * SDG - Template - Checkbox Label
  *
- * 여러개의 옵션 중 다중 선택을 위한 Checkbox와 Label이 조합된 템플릿
+ * 여러 옵션 중 하나 이상을 자유롭게 복수 선택할 수 있도록 체크박스 버튼과 데이터 텍스트(Label)를 결합한 템플릿
  *
- * @param type [SDGCheckboxLabelType] 체크박스 라벨 타입
- * @param isChecked [Boolean] 체크박스 체크 여부
- * @param label [String] 체크박스 라벨
+ * @version 2.3.41
  *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19174-10597&p=f&m=dev">Figma</a>
+ * @param label 체크박스 옆에 표시되는 텍스트 라벨
+ * @param state 체크박스 라벨 상태
+ * @param selectType 선택된 체크박스와 라벨의 색상 타입
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=27349-43543&m=dev">Figma</a>
  */
-
 @Composable
+fun SDGCheckboxLabel(
+    label: String,
+    state: SDGCheckboxLabelState,
+    selectType: SDGCheckboxLabelSelectType,
+    onClick: () -> Unit,
+    marginValues: PaddingValues = PaddingValues(),
+) {
+    Row(
+        modifier = Modifier
+            .padding(marginValues)
+            .then(
+                if (state.isEnabled) {
+                    Modifier.clickable(onClick = onClick)
+                } else {
+                    Modifier
+                }
+            ),
+        horizontalArrangement = Arrangement.spacedBy(space = Spacing8),
+        verticalAlignment = Alignment.Top,
+    ) {
+        SDGCheckBox(
+            isChecked = state.isChecked,
+            enabled = state.isEnabled,
+            checkedBackgroundColor = selectType.checkedBackgroundColor,
+            clickPadding = PaddingValues(vertical = Spacing2),
+        )
+
+        SDGText(
+            text = label,
+            textColor = state.labelColor(selectType),
+            typography = SDGTypography.Body1R,
+        )
+    }
+}
+
+/**
+ * 신규 Checkbox Label API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Deprecated(
+    message = "SDGCheckboxLabel의 state와 selectType 기반 API를 사용하세요.",
+)
+@Composable
+@Suppress("DEPRECATION")
 fun SDGCheckboxLabel(
     type: SDGCheckboxLabelType,
     label: String,
@@ -43,19 +89,26 @@ fun SDGCheckboxLabel(
     onClick: (() -> Unit)? = null,
 ) {
     Row(
-        modifier = Modifier.padding(paddingValues = marginValues),
+        modifier = Modifier
+            .padding(marginValues)
+            .then(
+                if (onClick != null && enabled) {
+                    Modifier.clickable(onClick = onClick)
+                } else {
+                    Modifier
+                }
+            ),
         horizontalArrangement = Arrangement.spacedBy(space = Spacing8),
+        verticalAlignment = Alignment.Top,
     ) {
         SDGCheckBox(
             isChecked = isChecked,
             enabled = enabled,
             checkedBackgroundColor = checkedBackgroundColor ?: SDGColor.Primary300,
-            onClick = { if (enabled) onClick?.invoke() },
-            clickPadding = PaddingValues(vertical = SDGSpacing.Spacing2),
+            clickPadding = PaddingValues(vertical = Spacing2),
         )
 
         SDGText(
-            modifier = Modifier.then(other = if (enabled) Modifier.clickable { onClick?.invoke() } else Modifier),
             text = label,
             textColor = if (enabled) checkedLabelColor ?: defaultLabelColor else SDGColor.Neutral300,
             typography = type.typography,
@@ -70,10 +123,9 @@ private fun PreviewSDGCheckboxLabel(
     params: SDGCheckboxLabelPreviewParams
 ) {
     SDGCheckboxLabel(
-        type = params.type,
         label = params.label,
-        isChecked = params.isChecked,
-        enabled = params.enabled,
-        checkedLabelColor = params.checkTextColor
+        state = params.state,
+        selectType = params.selectType,
+        onClick = {},
     )
 }
