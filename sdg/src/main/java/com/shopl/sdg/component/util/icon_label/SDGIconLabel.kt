@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.icon_label
+package com.shopl.sdg.component.util.icon_label
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
@@ -10,34 +10,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.icon_label.SDGIconLabelFontWeight
+import com.shopl.sdg.component.icon_label.SDGIconLabelGap
+import com.shopl.sdg.component.icon_label.SDGIconLabelOverflow
+import com.shopl.sdg.component.icon_label.SDGIconLabelSize
+import com.shopl.sdg.component.icon_label.SDGIconLabelSpacing
+import com.shopl.sdg.component.icon_label.SDGIconLabelType
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 
 /**
- * SDG - Icon Label
- *
- * 아이콘과 텍스트를 조합하여 보여주는 컴포넌트
- *
- * @version 2.1.29
- *
- * @param label Label 텍스트
- * @param labelColor Label 색상
- * @param size Label 크기
- * @param fontWeight Label 굵기
- * @param gap 아이콘과 Label 사이 간격
- * @param leftIc 왼쪽 아이콘 리소스
- * @param rightIc 오른쪽 아이콘 리소스
- * @param labelOverflow Label이 길어지는 경우 노출 방식
- *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=10507-19135&m=dev">Figma</a>
+ * AnnotatedString을 사용하는 Icon Label입니다.
  */
 @Composable
 fun SDGIconLabel(
-    label: String,
+    label: AnnotatedString,
     labelColor: Color,
     size: SDGIconLabelSize,
     fontWeight: SDGIconLabelFontWeight,
@@ -121,7 +111,7 @@ fun SDGIconLabel(
 @Composable
 @Suppress("DEPRECATION")
 fun SDGIconLabel(
-    text: String,
+    text: AnnotatedString,
     textColor: Color,
     size: SDGIconLabelSize,
     type: SDGIconLabelType,
@@ -199,28 +189,3 @@ fun SDGIconLabel(
 }
 
 private val SDGIconLabelIconSize = 14.dp
-
-@Preview(showBackground = true)
-@Composable
-private fun PreviewSDGIconLabel(
-    @PreviewParameter(SDGIconLabelPreviewParameterProvider::class)
-    param: SDGIconLabelPreviewParam,
-) {
-    with(param) {
-        SDGIconLabel(
-            label = label,
-            labelColor = labelColor,
-            size = size,
-            fontWeight = fontWeight,
-            gap = gap,
-            leftIc = leftIc,
-            leftIcTint = leftIcTint,
-            onClickLeftIc = null,
-            rightIc = rightIc,
-            rightIcTint = rightIcTint,
-            onClickRightIc = null,
-            labelOverflow = labelOverflow,
-            isFillMaxWidth = isFillMaxWidth,
-        )
-    }
-}

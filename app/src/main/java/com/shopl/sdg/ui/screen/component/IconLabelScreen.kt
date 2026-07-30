@@ -8,9 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.icon_label.SDGIconLabel
+import com.shopl.sdg.component.icon_label.SDGIconLabelFontWeight
+import com.shopl.sdg.component.icon_label.SDGIconLabelGap
+import com.shopl.sdg.component.icon_label.SDGIconLabelOverflow
 import com.shopl.sdg.component.icon_label.SDGIconLabelSize
-import com.shopl.sdg.component.icon_label.SDGIconLabelSpacing
-import com.shopl.sdg.component.icon_label.SDGIconLabelType
 import com.shopl.sdg.scene.ComponentScene
 import com.shopl.sdg.ui.base.SDGSampleBaseGuideLinesContent
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
@@ -97,25 +98,25 @@ private fun IconLabelSection(
         )
 
         SDGIconLabel(
-            text = "Normal / Spacing4",
-            textColor = SDGColor.Neutral700,
+            label = "Normal / Spacing4",
+            labelColor = SDGColor.Neutral700,
             size = size,
-            type = SDGIconLabelType.Normal,
-            spacing = SDGIconLabelSpacing.Spacing4,
-            leftIconResId = R.drawable.ic_common_help,
-            leftIconTint = SDGColor.Primary400,
-            rightIconResId = R.drawable.ic_common_next_s,
-            rightIconTint = SDGColor.Neutral700,
+            fontWeight = SDGIconLabelFontWeight.Normal,
+            gap = SDGIconLabelGap.Spacing4,
+            leftIc = R.drawable.ic_common_help,
+            leftIcTint = SDGColor.Primary400,
+            rightIc = R.drawable.ic_common_next_s,
+            rightIcTint = SDGColor.Neutral700,
         )
 
         SDGIconLabel(
-            text = "Bold / Spacing2",
-            textColor = SDGColor.Neutral700,
+            label = "Bold / Spacing2",
+            labelColor = SDGColor.Neutral700,
             size = size,
-            type = SDGIconLabelType.Bold,
-            spacing = SDGIconLabelSpacing.Spacing2,
-            leftIconResId = R.drawable.ic_common_help,
-            leftIconTint = SDGColor.Primary400,
+            fontWeight = SDGIconLabelFontWeight.Bold,
+            gap = SDGIconLabelGap.Spacing2,
+            leftIc = R.drawable.ic_common_help,
+            leftIcTint = SDGColor.Primary400,
         )
     }
 }
@@ -133,14 +134,14 @@ private fun IconLabelOverflowContent() {
         )
 
         SDGIconLabel(
-            text = "아주 긴 텍스트가 들어가는 경우 가용 범위 내에서 말줄임표로 표시됩니다.",
-            textColor = SDGColor.Neutral700,
+            label = "아주 긴 텍스트가 들어가는 경우 가용 범위 내에서 말줄임표로 표시됩니다.",
+            labelColor = SDGColor.Neutral700,
             size = SDGIconLabelSize.Small,
-            type = SDGIconLabelType.Normal,
-            spacing = SDGIconLabelSpacing.Spacing4,
-            leftIconResId = R.drawable.ic_common_list,
-            rightIconResId = R.drawable.ic_common_next_s,
-            maxLines = 1,
+            fontWeight = SDGIconLabelFontWeight.Normal,
+            gap = SDGIconLabelGap.Spacing4,
+            leftIc = R.drawable.ic_common_list,
+            rightIc = R.drawable.ic_common_next_s,
+            labelOverflow = SDGIconLabelOverflow.SingleLineEllipsis,
             isFillMaxWidth = true,
         )
     }
