@@ -3,6 +3,7 @@ package com.shopl.sdg.scene
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import com.shopl.sdg.ui.screen.component.DropdownScreen
+import com.shopl.sdg.ui.screen.component.IconLabelScreen
 import com.shopl.sdg.ui.screen.component.TimeSelectInputScreen
 import com.shopl.sdg.ui.screen.component.button.BottomButtonScreen
 import com.shopl.sdg.ui.screen.component.button.BoxButtonScreen
@@ -270,11 +271,16 @@ internal sealed class ComponentScene(
 
     data object IconLabel : ComponentScene(
         displayLabel = "Icon Label",
-        implemented = false
+        implemented = true,
     ) {
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-            throw IllegalStateException("Not implemented")
+            IconLabelScreen(
+                onClickBack = backToScene,
+                onClickMenu = {
+                    moveToScene(Menu)
+                },
+            )
         }
     }
 

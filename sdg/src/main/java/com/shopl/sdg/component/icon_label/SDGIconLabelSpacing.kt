@@ -6,4 +6,12 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 enum class SDGIconLabelSpacing(val value: Dp) {
     Spacing2(value = SDGSpacing.Spacing2),
     Spacing4(value = SDGSpacing.Spacing4),
+
+    ;
+
+    internal val gap: SDGIconLabelGap
+        get() = when (this) {
+            Spacing2 -> SDGIconLabelGap.Spacing2
+            Spacing4 -> SDGIconLabelGap.Spacing4
+        }
 }
