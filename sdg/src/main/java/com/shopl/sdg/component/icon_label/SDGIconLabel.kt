@@ -35,12 +35,12 @@ fun SDGIconLabel(
     size: SDGIconLabelSize,
     fontWeight: SDGIconLabelFontWeight,
     gap: SDGIconLabelGap,
+    onClick: (() -> Unit)?,
+    labelOverflow: SDGIconLabelOverflow,
     modifier: Modifier = Modifier,
     leftIc: SDGIconLabelIcon? = null,
     rightIc: SDGIconLabelIcon? = null,
-    labelOverflow: SDGIconLabelOverflow = SDGIconLabelOverflow.Full,
     isFillMaxWidth: Boolean = false,
-    onClick: (() -> Unit)?,
 ) {
     Row(
         modifier = modifier
