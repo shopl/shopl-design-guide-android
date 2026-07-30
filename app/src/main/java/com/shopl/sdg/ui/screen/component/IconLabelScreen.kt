@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.icon_label.SDGIconLabel
 import com.shopl.sdg.component.icon_label.SDGIconLabelFontWeight
 import com.shopl.sdg.component.icon_label.SDGIconLabelGap
+import com.shopl.sdg.component.icon_label.SDGIconLabelIcon
 import com.shopl.sdg.component.icon_label.SDGIconLabelOverflow
 import com.shopl.sdg.component.icon_label.SDGIconLabelSize
 import com.shopl.sdg.scene.ComponentScene
@@ -103,10 +104,15 @@ private fun IconLabelSection(
             size = size,
             fontWeight = SDGIconLabelFontWeight.Normal,
             gap = SDGIconLabelGap.Spacing4,
-            leftIc = R.drawable.ic_common_help,
-            leftIcTint = SDGColor.Primary400,
-            rightIc = R.drawable.ic_common_next_s,
-            rightIcTint = SDGColor.Neutral700,
+            leftIc = SDGIconLabelIcon(
+                resId = R.drawable.ic_common_help,
+                tint = SDGColor.Primary400,
+            ),
+            rightIc = SDGIconLabelIcon(
+                resId = R.drawable.ic_common_next_s,
+                tint = SDGColor.Neutral700,
+            ),
+            onClick = null,
         )
 
         SDGIconLabel(
@@ -115,8 +121,11 @@ private fun IconLabelSection(
             size = size,
             fontWeight = SDGIconLabelFontWeight.Bold,
             gap = SDGIconLabelGap.Spacing2,
-            leftIc = R.drawable.ic_common_help,
-            leftIcTint = SDGColor.Primary400,
+            leftIc = SDGIconLabelIcon(
+                resId = R.drawable.ic_common_help,
+                tint = SDGColor.Primary400,
+            ),
+            onClick = null,
         )
     }
 }
@@ -139,10 +148,11 @@ private fun IconLabelOverflowContent() {
             size = SDGIconLabelSize.Small,
             fontWeight = SDGIconLabelFontWeight.Normal,
             gap = SDGIconLabelGap.Spacing4,
-            leftIc = R.drawable.ic_common_list,
-            rightIc = R.drawable.ic_common_next_s,
+            leftIc = SDGIconLabelIcon(resId = R.drawable.ic_common_list),
+            rightIc = SDGIconLabelIcon(resId = R.drawable.ic_common_next_s),
             labelOverflow = SDGIconLabelOverflow.SingleLineEllipsis,
             isFillMaxWidth = true,
+            onClick = null,
         )
     }
 }

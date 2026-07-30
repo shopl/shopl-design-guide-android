@@ -24,13 +24,6 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * @version 2.1.29
  *
- * @param label Label 텍스트
- * @param labelColor Label 색상
- * @param size Label 크기
- * @param fontWeight Label 굵기
- * @param gap 아이콘과 Label 사이 간격
- * @param leftIc 왼쪽 아이콘 리소스
- * @param rightIc 오른쪽 아이콘 리소스
  * @param labelOverflow Label이 길어지는 경우 노출 방식
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=10507-19135&m=dev">Figma</a>
@@ -43,23 +36,28 @@ fun SDGIconLabel(
     fontWeight: SDGIconLabelFontWeight,
     gap: SDGIconLabelGap,
     modifier: Modifier = Modifier,
-    @DrawableRes leftIc: Int? = null,
-    leftIcTint: Color? = null,
-    onClickLeftIc: (() -> Unit)? = null,
-    @DrawableRes rightIc: Int? = null,
-    rightIcTint: Color? = null,
-    onClickRightIc: (() -> Unit)? = null,
+    leftIc: SDGIconLabelIcon? = null,
+    rightIc: SDGIconLabelIcon? = null,
     labelOverflow: SDGIconLabelOverflow = SDGIconLabelOverflow.Full,
     isFillMaxWidth: Boolean = false,
+    onClick: (() -> Unit)?,
 ) {
     Row(
-        modifier = modifier.then(
-            if (isFillMaxWidth) {
-                Modifier.fillMaxWidth()
-            } else {
-                Modifier
-            },
-        ),
+        modifier = modifier
+            .then(
+                if (isFillMaxWidth) {
+                    Modifier.fillMaxWidth()
+                } else {
+                    Modifier
+                },
+            )
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable(hasRipple = false) { onClick() }
+                } else {
+                    Modifier
+                },
+            ),
         horizontalArrangement = Arrangement.spacedBy(gap.value),
         verticalAlignment = Alignment.Top,
     ) {
@@ -67,16 +65,9 @@ fun SDGIconLabel(
             SDGImage(
                 modifier = Modifier
                     .padding(vertical = size.iconVerticalPadding)
-                    .size(SDGIconLabelIconSize)
-                    .then(
-                        if (onClickLeftIc != null) {
-                            Modifier.clickable(hasRipple = false) { onClickLeftIc() }
-                        } else {
-                            Modifier
-                        },
-                    ),
-                resId = leftIc,
-                color = leftIcTint,
+                    .size(SDGIconLabelIconSize),
+                resId = leftIc.resId,
+                color = leftIc.tint,
             )
         }
 
@@ -97,16 +88,9 @@ fun SDGIconLabel(
             SDGImage(
                 modifier = Modifier
                     .padding(vertical = size.iconVerticalPadding)
-                    .size(SDGIconLabelIconSize)
-                    .then(
-                        if (onClickRightIc != null) {
-                            Modifier.clickable(hasRipple = false) { onClickRightIc() }
-                        } else {
-                            Modifier
-                        },
-                    ),
-                resId = rightIc,
-                color = rightIcTint,
+                    .size(SDGIconLabelIconSize),
+                resId = rightIc.resId,
+                color = rightIc.tint,
             )
         }
     }
@@ -137,15 +121,24 @@ fun SDGIconLabel(
     isFillMaxWidth: Boolean = true,
 ) {
     val labelOverflow = SDGIconLabelOverflow.fromMaxLines(maxLines)
+    val onClick = onClickLeftIcon ?: onClickRightIcon
 
     Row(
-        modifier = modifier.then(
-            if (isFillMaxWidth) {
-                Modifier.fillMaxWidth()
-            } else {
-                Modifier
-            },
-        ),
+        modifier = modifier
+            .then(
+                if (isFillMaxWidth) {
+                    Modifier.fillMaxWidth()
+                } else {
+                    Modifier
+                },
+            )
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable(hasRipple = false) { onClick() }
+                } else {
+                    Modifier
+                },
+            ),
         horizontalArrangement = Arrangement.spacedBy(spacing.gap.value),
         verticalAlignment = Alignment.Top,
     ) {
@@ -153,14 +146,7 @@ fun SDGIconLabel(
             SDGImage(
                 modifier = Modifier
                     .padding(vertical = size.iconVerticalPadding)
-                    .size(SDGIconLabelIconSize)
-                    .then(
-                        if (onClickLeftIcon != null) {
-                            Modifier.clickable(hasRipple = false) { onClickLeftIcon() }
-                        } else {
-                            Modifier
-                        },
-                    ),
+                    .size(SDGIconLabelIconSize),
                 resId = leftIconResId,
                 color = leftIconTint,
             )
@@ -183,14 +169,7 @@ fun SDGIconLabel(
             SDGImage(
                 modifier = Modifier
                     .padding(vertical = size.iconVerticalPadding)
-                    .size(SDGIconLabelIconSize)
-                    .then(
-                        if (onClickRightIcon != null) {
-                            Modifier.clickable(hasRipple = false) { onClickRightIcon() }
-                        } else {
-                            Modifier
-                        },
-                    ),
+                    .size(SDGIconLabelIconSize),
                 resId = rightIconResId,
                 color = rightIconTint,
             )
@@ -214,13 +193,10 @@ private fun PreviewSDGIconLabel(
             fontWeight = fontWeight,
             gap = gap,
             leftIc = leftIc,
-            leftIcTint = leftIcTint,
-            onClickLeftIc = null,
             rightIc = rightIc,
-            rightIcTint = rightIcTint,
-            onClickRightIc = null,
             labelOverflow = labelOverflow,
             isFillMaxWidth = isFillMaxWidth,
+            onClick = null,
         )
     }
 }
