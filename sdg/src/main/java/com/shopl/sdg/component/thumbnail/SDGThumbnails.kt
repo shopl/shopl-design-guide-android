@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.SDGCornerRadius
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGAsyncImage
 import com.shopl.sdg_common.ui.components.SDGImage
@@ -65,9 +66,9 @@ fun SDGThumbnails(
         modifier = Modifier
             .padding(marginValues)
             .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(space = SDGSpacing.Spacing8)
     ) {
-        if(singleLine) {
+        if (singleLine) {
             ImageRow(
                 imageModels = imageModels,
                 onClickImage = onClickImage,
@@ -97,7 +98,7 @@ fun SDGThumbnails(
 }
 
 @Composable
-private fun ImageRow(
+internal fun ImageRow(
     imageModels: PersistentList<Any>,
     onClickImage: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -108,7 +109,7 @@ private fun ImageRow(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(space = SDGSpacing.Spacing8),
     ) {
         imageModels.take(MAX_VISIBLE_IMAGES).forEachIndexed { index, imageModel ->
             if (totalImagesCount > MAX_VISIBLE_IMAGES && index == MAX_VISIBLE_IMAGES - 1) {
@@ -118,12 +119,12 @@ private fun ImageRow(
                     onClickImage = { onClickImage(index) },
                 )
             } else {
-                if(deletable) {
+                if (deletable) {
                     Box(
                         modifier = Modifier
                             .weight(1f)
                             .aspectRatio(1f)
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
                             .clickable(hasRipple = false) {
                                 onClickImage(index)
                             },
@@ -131,7 +132,7 @@ private fun ImageRow(
                         SDGAsyncImage(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .clip(RoundedCornerShape(12.dp))
+                                .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
                                 .clickable(hasRipple = false) {
                                     onClickImage(index)
                                 },
@@ -142,7 +143,7 @@ private fun ImageRow(
                                 FailureImage(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .clip(RoundedCornerShape(12.dp))
+                                        .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
                                         .background(color = failureImageBackgroundColor)
                                 )
                             }
@@ -151,10 +152,10 @@ private fun ImageRow(
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
                                 .size(24.dp)
-                                .clickable(hasRipple = false) {
+                                .clickable {
                                     onClickDelete?.invoke(index)
                                 }
-                                .padding(2.dp),
+                                .padding(all = SDGSpacing.Spacing2),
                             resId = R.drawable.ic_remove_m,
                             color = null
                         )
@@ -164,8 +165,8 @@ private fun ImageRow(
                         modifier = Modifier
                             .weight(1f)
                             .aspectRatio(1f)
-                            .clip(RoundedCornerShape(12.dp))
-                            .clickable(hasRipple = false) {
+                            .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
+                            .clickable {
                                 onClickImage(index)
                             },
                         imageModel = imageModel,
@@ -176,7 +177,7 @@ private fun ImageRow(
                                 modifier = Modifier
                                     .weight(1f)
                                     .aspectRatio(1f)
-                                    .clip(RoundedCornerShape(12.dp))
+                                    .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
                                     .background(color = failureImageBackgroundColor)
                             )
                         }
@@ -201,8 +202,8 @@ private fun RowScope.OverflowImage(
         modifier = Modifier
             .weight(1f)
             .aspectRatio(1f)
-            .clip(RoundedCornerShape(12.dp))
-            .clickable(hasRipple = false) {
+            .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
+            .clickable {
                 onClickImage()
             }
     ) {
@@ -221,11 +222,11 @@ private fun RowScope.OverflowImage(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .clip(RoundedCornerShape(12.dp))
-                .background(SDGColor.Neutral900_a40)
+                .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
+                .background(color = SDGColor.Neutral900_a40)
         ) {
             SDGText(
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(alignment = Alignment.Center),
                 text = "+$extraCount",
                 textColor = SDGColor.Neutral0,
                 typography = SDGTypography.Body2SB
@@ -241,8 +242,8 @@ private fun FailureImage(modifier: Modifier = Modifier) {
     ) {
         SDGImage(
             modifier = Modifier
-                .align(Alignment.Center)
-                .size(20.dp),
+                .align(alignment = Alignment.Center)
+                .size(size = 20.dp),
             resId = R.drawable.ic_common_photo,
             color = SDGColor.Neutral250,
             contentScale = ContentScale.Crop
