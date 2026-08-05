@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.SDGButtonFontWeight
 import com.shopl.sdg.component.button.ghost.SDGGhostButtonSize
+import com.shopl.sdg.component.button.ghost.extension.SDGGhostButton
 import com.shopl.sdg.component.calendar.SDGCalendarDay
 import com.shopl.sdg.component.calendar.SDGCalendarDayMode
 import com.shopl.sdg.component.calendar.SDGCalendarMonth
@@ -45,7 +46,6 @@ import com.shopl.sdg.component.calendar.WeekDateTime
 import com.shopl.sdg.component.calendar.equalY
 import com.shopl.sdg.component.calendar.equalYM
 import com.shopl.sdg.component.tab.SDGLineFixedTab
-import com.shopl.sdg.component.util.button.ghost.SDGGhostButton
 import com.shopl.sdg_common.ext.distanceDays
 import com.shopl.sdg_common.ext.withColor
 import com.shopl.sdg_common.foundation.SDGColor
