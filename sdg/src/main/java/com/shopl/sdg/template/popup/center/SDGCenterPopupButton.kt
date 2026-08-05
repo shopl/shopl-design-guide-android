@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.SDGButtonFontWeight
 import com.shopl.sdg.component.button.ghost.SDGGhostButton
 import com.shopl.sdg.component.button.ghost.SDGGhostButtonSize
-import com.shopl.sdg.component.util.button.ghost.SDGGhostButton
+import com.shopl.sdg.component.button.ghost.extension.SDGGhostButton
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4

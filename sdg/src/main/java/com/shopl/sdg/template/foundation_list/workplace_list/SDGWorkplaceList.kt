@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.template.popup.center.SDGCenterPopupButtonOption
-import com.shopl.sdg.template.util.popup.SDGCenterPopup
+import com.shopl.sdg.template.popup.center.extension.SDGCenterPopup
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing

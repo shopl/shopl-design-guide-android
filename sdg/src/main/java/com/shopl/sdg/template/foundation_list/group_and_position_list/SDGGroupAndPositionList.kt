@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.shopl.sdg.template.foundation_list.group_and_position_list.preview.SDGGroupAndPositionPreviewParameterProvider
 import com.shopl.sdg.template.foundation_list.group_and_position_list.preview.SDGGroupAndPositionPreviewParams
 import com.shopl.sdg.template.popup.center.SDGCenterPopupButtonOption
-import com.shopl.sdg.template.util.popup.SDGCenterPopup
+import com.shopl.sdg.template.popup.center.extension.SDGCenterPopup
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing

@@ -170,7 +170,7 @@ fun SDGIconLabel(
     maxLines: Int = Int.MAX_VALUE,
     isFillMaxWidth: Boolean = true,
 ) {
-    com.shopl.sdg.component.util.icon_label.SDGIconLabel(
+    com.shopl.sdg.component.icon_label.extension.SDGIconLabel(
         label = text,
         labelColor = textColor,
         size = size,

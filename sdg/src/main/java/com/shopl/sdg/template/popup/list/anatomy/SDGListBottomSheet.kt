@@ -27,7 +27,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.shopl.sdg.template.util.list_popup_item_ui_state.SDGListPopupItemUiState
+import com.shopl.sdg.template.popup.list.anatomy.extension.SDGListPopupItemUiState
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
