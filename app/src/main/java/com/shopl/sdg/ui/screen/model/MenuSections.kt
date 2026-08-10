@@ -20,7 +20,7 @@ internal val componentMenuSection = MenuSectionUiModel(
     sectionName = "Component",
     menus = persistentListOf(
         ComponentScene.Avatar.toMenuUiModel(),
-        ComponentScene.AttachmentList.toMenuUiModel(),
+        ComponentScene.AttachmentElement.toMenuUiModel(),
         MenuUiModel.GroupMenu(
             groupName = "Button",
             sceneMenus = persistentListOf(
