@@ -2,15 +2,16 @@ package com.shopl.sdg.scene
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import com.shopl.sdg.ui.screen.component.AttachmentElementScreen
 import com.shopl.sdg.ui.screen.component.DropdownScreen
 import com.shopl.sdg.ui.screen.component.IconLabelScreen
+import com.shopl.sdg.ui.screen.component.SelectInputScreen
 import com.shopl.sdg.ui.screen.component.TimeSelectInputScreen
 import com.shopl.sdg.ui.screen.component.button.BottomButtonScreen
 import com.shopl.sdg.ui.screen.component.button.BoxButtonScreen
 import com.shopl.sdg.ui.screen.component.button.CapsuleButtonScreen
 import com.shopl.sdg.ui.screen.component.button.FloatingButtonScreen
 import com.shopl.sdg.ui.screen.component.button.GhostButtonScreen
-import com.shopl.sdg.ui.screen.component.SelectInputScreen
 import com.shopl.sdg.ui.screen.component.textinput.FixedTextInputScreen
 import com.shopl.sdg.ui.screen.component.textinput.SimpleTextInputScreen
 
@@ -35,13 +36,16 @@ internal sealed class ComponentScene(
         }
     }
 
-    data object AttachmentList : ComponentScene(
-        displayLabel = "Attachment List",
-        implemented = false
+    data object AttachmentElement : ComponentScene(
+        displayLabel = "Attachment Element",
+        implemented = true
     ) {
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-            throw IllegalStateException("Not implemented")
+            AttachmentElementScreen(
+                onClickBack = backToScene,
+                onClickMenu = { moveToScene(Menu) },
+            )
         }
     }
 

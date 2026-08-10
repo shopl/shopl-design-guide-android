@@ -15,7 +15,7 @@ internal val foundationScenes = persistentListOf(
 
 internal val componentScenes = persistentListOf(
     ComponentScene.Avatar,
-    ComponentScene.AttachmentList,
+    ComponentScene.AttachmentElement,
     ComponentScene.Badge.CapsuleBadge,
     ComponentScene.Badge.BoxBadge,
     ComponentScene.Button.BottomButton,
