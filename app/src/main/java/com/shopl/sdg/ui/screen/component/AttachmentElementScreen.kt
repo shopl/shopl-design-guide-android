@@ -50,7 +50,7 @@ private fun AttachmentStateContent(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing12)) {
         SDGText(
-            text = state.title,
+            text = state.sampleAppTitle,
             textColor = SDGColor.Neutral700,
             typography = SDGTypography.Body2SB,
         )
