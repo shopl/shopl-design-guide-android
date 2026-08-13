@@ -79,10 +79,6 @@ fun SDGSimpleTextInput(
     overflow: TextOverflow = TextOverflow.Ellipsis,
     onFocusChanged: ((FocusState) -> Unit)? = null,
 ) {
-    require(maxLength in 0..SDGSimpleTextInputMaxLength) {
-        "maxLength는 0 이상 $SDGSimpleTextInputMaxLength 이하여야 합니다."
-    }
-
     val focusManager = LocalFocusManager.current
     val isKeyboardOpen by keyboardAsState()
     var isFocused by remember { mutableStateOf(false) }
@@ -251,10 +247,6 @@ fun SDGSimpleTextInput(
     minValue: Double? = null,
     maxValue: Double? = null,
 ) {
-    require(maxLength in 0..SDGSimpleTextInputMaxLength) {
-        "maxLength는 0 이상 $SDGSimpleTextInputMaxLength 이하여야 합니다."
-    }
-
     val focusManager = LocalFocusManager.current
     val isKeyboardOpen by keyboardAsState()
     var isFocused by remember { mutableStateOf(false) }

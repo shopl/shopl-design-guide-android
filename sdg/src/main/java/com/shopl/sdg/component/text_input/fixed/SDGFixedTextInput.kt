@@ -79,10 +79,6 @@ fun SDGFixedTextInput(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
-    require(maxLength >= SDGFixedTextInputMinLength) {
-        "maxLength는 $SDGFixedTextInputMinLength 이상이어야 합니다."
-    }
-
     val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current
     val isKeyboardOpen by keyboardAsState()
