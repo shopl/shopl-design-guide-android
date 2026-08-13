@@ -80,10 +80,6 @@ fun SDGSimpleTextInput(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
-    require(maxLength in 0..SDGSimpleTextInputMaxLength) {
-        "maxLength는 0 이상 $SDGSimpleTextInputMaxLength 이하여야 합니다."
-    }
-
     val focusManager = LocalFocusManager.current
     val isKeyboardOpen by keyboardAsState()
     var isFocused by remember { mutableStateOf(false) }
