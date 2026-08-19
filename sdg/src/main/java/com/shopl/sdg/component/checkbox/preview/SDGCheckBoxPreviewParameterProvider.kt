@@ -20,50 +20,50 @@ internal class SDGCheckBoxPreviewParameterProvider :
     )
 
     private fun 기본_상태_MEDIUM() = SDGCheckBoxPreviewParams(
-        state = SDGCheckBoxState.Default,
-        selectedColor = SDGCheckBoxSelectedBackgroundColor.Neutral,
-        size = SDGCheckBoxSize.Medium,
+        state = SDGCheckBoxState.DEFAULT,
+        selectedColor = SDGCheckBoxSelectedBackgroundColor.NEUTRAL,
+        size = SDGCheckBoxSize.MEDIUM,
     )
 
     private fun 선택된_상태_NORMAL_MEDIUM() = SDGCheckBoxPreviewParams(
-        state = SDGCheckBoxState.Selected,
-        selectedColor = SDGCheckBoxSelectedBackgroundColor.Normal,
-        size = SDGCheckBoxSize.Medium,
+        state = SDGCheckBoxState.SELECTED,
+        selectedColor = SDGCheckBoxSelectedBackgroundColor.NORMAL,
+        size = SDGCheckBoxSize.MEDIUM,
     )
 
     private fun 선택된_상태_NEUTRAL_MEDIUM() = SDGCheckBoxPreviewParams(
-        state = SDGCheckBoxState.Selected,
-        selectedColor = SDGCheckBoxSelectedBackgroundColor.Neutral,
-        size = SDGCheckBoxSize.Medium,
+        state = SDGCheckBoxState.SELECTED,
+        selectedColor = SDGCheckBoxSelectedBackgroundColor.NEUTRAL,
+        size = SDGCheckBoxSize.MEDIUM,
     )
 
     private fun 비활성_상태_MEDIUM() = SDGCheckBoxPreviewParams(
-        state = SDGCheckBoxState.Disabled,
-        selectedColor = SDGCheckBoxSelectedBackgroundColor.Neutral,
-        size = SDGCheckBoxSize.Medium,
+        state = SDGCheckBoxState.DISABLED,
+        selectedColor = SDGCheckBoxSelectedBackgroundColor.NEUTRAL,
+        size = SDGCheckBoxSize.MEDIUM,
     )
 
     private fun 기본_상태_LARGE() = SDGCheckBoxPreviewParams(
-        state = SDGCheckBoxState.Default,
-        selectedColor = SDGCheckBoxSelectedBackgroundColor.Neutral,
-        size = SDGCheckBoxSize.Large,
+        state = SDGCheckBoxState.DEFAULT,
+        selectedColor = SDGCheckBoxSelectedBackgroundColor.NEUTRAL,
+        size = SDGCheckBoxSize.LARGE,
     )
 
     private fun 선택된_상태_NORMAL_LARGE() = SDGCheckBoxPreviewParams(
-        state = SDGCheckBoxState.Selected,
-        selectedColor = SDGCheckBoxSelectedBackgroundColor.Normal,
-        size = SDGCheckBoxSize.Large,
+        state = SDGCheckBoxState.SELECTED,
+        selectedColor = SDGCheckBoxSelectedBackgroundColor.NORMAL,
+        size = SDGCheckBoxSize.LARGE,
     )
 
     private fun 선택된_상태_NEUTRAL_LARGE() = SDGCheckBoxPreviewParams(
-        state = SDGCheckBoxState.Selected,
-        selectedColor = SDGCheckBoxSelectedBackgroundColor.Neutral,
-        size = SDGCheckBoxSize.Large,
+        state = SDGCheckBoxState.SELECTED,
+        selectedColor = SDGCheckBoxSelectedBackgroundColor.NEUTRAL,
+        size = SDGCheckBoxSize.LARGE,
     )
 
     private fun 비활성_상태_LARGE() = SDGCheckBoxPreviewParams(
-        state = SDGCheckBoxState.Disabled,
-        selectedColor = SDGCheckBoxSelectedBackgroundColor.Neutral,
-        size = SDGCheckBoxSize.Large,
+        state = SDGCheckBoxState.DISABLED,
+        selectedColor = SDGCheckBoxSelectedBackgroundColor.NEUTRAL,
+        size = SDGCheckBoxSize.LARGE,
     )
 }

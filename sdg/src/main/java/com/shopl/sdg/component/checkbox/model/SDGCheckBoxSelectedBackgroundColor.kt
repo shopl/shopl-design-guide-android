@@ -6,6 +6,6 @@ import com.shopl.sdg_common.foundation.SDGColor
 enum class SDGCheckBoxSelectedBackgroundColor(
     val selectedBackgroundColor: Color,
 ) {
-    Normal(selectedBackgroundColor = SDGColor.Primary300),
-    Neutral(selectedBackgroundColor = SDGColor.Neutral700),
+    NORMAL(selectedBackgroundColor = SDGColor.Primary300),
+    NEUTRAL(selectedBackgroundColor = SDGColor.Neutral700),
 }

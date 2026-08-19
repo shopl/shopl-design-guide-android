@@ -6,6 +6,6 @@ import androidx.compose.ui.unit.dp
 enum class SDGCheckBoxSize(
     val size: Dp,
 ) {
-    Medium(size = 16.dp),
-    Large(size = 18.dp),
+    MEDIUM(size = 16.dp),
+    LARGE(size = 18.dp),
 }
