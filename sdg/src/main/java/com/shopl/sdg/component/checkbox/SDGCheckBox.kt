@@ -54,10 +54,10 @@ fun SDGCheckBox(
     size: SDGCheckBoxSize,
     onClick: () -> Unit,
 ) {
-    val (checkBoxColor, clickable) = when (state) {
-        SDGCheckBoxState.DEFAULT -> SDGColor.Neutral250 to Modifier.clickable(onClick = onClick)
-        SDGCheckBoxState.SELECTED -> selectedBackgroundColor.selectedBackgroundColor to Modifier.clickable(onClick = onClick)
-        SDGCheckBoxState.DISABLED -> SDGColor.Neutral200 to Modifier
+    val (checkBoxColor, checkBoxEnabled) = when (state) {
+        SDGCheckBoxState.DEFAULT -> SDGColor.Neutral250 to true
+        SDGCheckBoxState.SELECTED -> selectedBackgroundColor.selectedBackgroundColor to true
+        SDGCheckBoxState.DISABLED -> SDGColor.Neutral200 to false
     }
 
     Box(
@@ -68,7 +68,10 @@ fun SDGCheckBox(
                 color = checkBoxColor,
                 shape = SDGCornerRadius.BoxRadius.Radius4,
             )
-            .then(other = clickable),
+            .clickable(
+                enabled = checkBoxEnabled,
+                onClick = onClick,
+            ),
     ) {
         SDGImage(
             resId = R.drawable.ic_common_check_s,
