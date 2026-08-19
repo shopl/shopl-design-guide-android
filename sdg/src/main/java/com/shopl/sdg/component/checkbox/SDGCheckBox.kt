@@ -5,7 +5,6 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -64,7 +63,6 @@ fun SDGCheckBox(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .clip(shape = SDGCornerRadius.BoxRadius.Radius4)
             .size(size = size.size)
             .background(
                 color = checkBoxColor,
