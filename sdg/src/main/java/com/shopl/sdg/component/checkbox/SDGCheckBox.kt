@@ -76,7 +76,7 @@ fun SDGCheckBox(
         SDGImage(
             resId = R.drawable.ic_common_check_s,
             color = SDGColor.Neutral0,
-            modifier = Modifier.size(size = 14.dp),
+            modifier = Modifier.size(size = size.size),
         )
     }
 }
