@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.shopl.sdg.component.checkbox.model.SDGCheckBoxSelectedColor
+import com.shopl.sdg.component.checkbox.model.SDGCheckBoxSelectedBackgroundColor
 import com.shopl.sdg.component.checkbox.model.SDGCheckBoxSize
 import com.shopl.sdg.component.checkbox.model.SDGCheckBoxState
 import com.shopl.sdg.component.checkbox.preview.SDGCheckBoxPreviewParameterProvider
@@ -51,13 +51,13 @@ import com.shopl.sdg_resource.R
 @Composable
 fun SDGCheckBox(
     state: SDGCheckBoxState,
-    selectedBackgroundColor: SDGCheckBoxSelectedColor,
+    selectedBackgroundColor: SDGCheckBoxSelectedBackgroundColor,
     size: SDGCheckBoxSize,
     onClick: () -> Unit,
 ) {
     val (checkBoxColor, clickable) = when (state) {
         SDGCheckBoxState.Default -> SDGColor.Neutral250 to Modifier.clickable(onClick = onClick)
-        SDGCheckBoxState.Selected -> selectedBackgroundColor.selectedBoxColor to Modifier.clickable(onClick = onClick)
+        SDGCheckBoxState.Selected -> selectedBackgroundColor.selectedBackgroundColor to Modifier.clickable(onClick = onClick)
         SDGCheckBoxState.Disabled -> SDGColor.Neutral200 to Modifier
     }
 
@@ -65,7 +65,7 @@ fun SDGCheckBox(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .clip(shape = SDGCornerRadius.BoxRadius.Radius4)
-            .size(size = size.boxSize)
+            .size(size = size.size)
             .background(
                 color = checkBoxColor,
                 shape = SDGCornerRadius.BoxRadius.Radius4,
@@ -83,7 +83,7 @@ fun SDGCheckBox(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSDGCheckBox(
-    @PreviewParameter(SDGCheckBoxPreviewParameterProvider::class)
+    @PreviewParameter(provider = SDGCheckBoxPreviewParameterProvider::class)
     params: SDGCheckBoxPreviewParams,
 ) {
     SDGCheckBox(
