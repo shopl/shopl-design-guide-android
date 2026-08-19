@@ -37,7 +37,7 @@ import com.shopl.sdg_resource.R
 /**
  * SDG - Component - Checkbox
  *
- * 여러 옵션 중 하나 이상을 자유롭게 복수 선택하기 위한 컨트롤 컴포넌트
+ * 여러 옵션 중 하나 이상을 자유롭게 복수 선택하거나, 단일 항목의 활성화(On/Off) 상태를 토글하기 위한 컨트롤 컴포넌트
  *
  * @version 2.3.41
  *
