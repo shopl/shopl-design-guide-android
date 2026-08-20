@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.list_header_label.SDGListHeaderLabel
-import com.shopl.sdg.component.list_header_label.model.SDGListHeaderLabelCount
+import com.shopl.sdg.component.list_header_label.model.SDGListHeaderLabelShowCount
 import com.shopl.sdg.component.list_header_label.model.SDGListHeaderLabelShowDropdown
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.SDGImage
@@ -21,7 +21,7 @@ import com.shopl.sdg_resource.R
 fun RowScope.SDGListHeaderLabel(
     weight: Float,
     label: String,
-    count: SDGListHeaderLabelCount,
+    count: SDGListHeaderLabelShowCount,
     showDropdown: SDGListHeaderLabelShowDropdown,
 ) {
     Box(
@@ -29,7 +29,7 @@ fun RowScope.SDGListHeaderLabel(
     ) {
         SDGListHeaderLabel(
             label = label,
-            count = count,
+            showCount = count,
             showDropdown = showDropdown,
         )
     }
@@ -42,7 +42,7 @@ private fun PreviewSDGListHeaderLabel() {
         SDGListHeaderLabel(
             weight = 1f,
             label = "리스트 타이틀",
-            count = SDGListHeaderLabelCount.True(countValue = "1"),
+            count = SDGListHeaderLabelShowCount.True(countValue = "1"),
             showDropdown = SDGListHeaderLabelShowDropdown.True(onClick = {}),
         )
 

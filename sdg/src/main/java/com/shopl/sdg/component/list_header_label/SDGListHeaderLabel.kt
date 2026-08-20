@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.shopl.sdg.component.list_header_label.model.SDGListHeaderLabelCount
+import com.shopl.sdg.component.list_header_label.model.SDGListHeaderLabelShowCount
 import com.shopl.sdg.component.list_header_label.model.SDGListHeaderLabelShowDropdown
 import com.shopl.sdg.component.list_header_label.preview.SDGListHeaderLabelPreviewParameterProvider
 import com.shopl.sdg.component.list_header_label.preview.SDGListHeaderLabelPreviewParams
@@ -31,7 +31,7 @@ import com.shopl.sdg_resource.R
  * @version 2.1.23
  *
  * @param label 리스트 그룹의 성격이나 분류 명칭을 전달하는 메인 타이틀
- * @param count 리스트 그룹에 포함된 전체 데이터 항목의 개수를 (숫자) 포맷으로 시각화하는 보조 인디케이터
+ * @param showCount 리스트 그룹에 포함된 전체 데이터 항목의 개수를 (숫자) 포맷으로 시각화하는 보조 인디케이터
  * @param showDropdown 하위 정렬 옵션이나 필터 팝업을 호출하기 위해 우측에 노출되는 선택적(Optional) 드롭다운 화살표 아이콘 및 클릭 처리
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=22084-3889&m=dev">Figma</a>
@@ -39,7 +39,7 @@ import com.shopl.sdg_resource.R
 @Composable
 fun SDGListHeaderLabel(
     label: String,
-    count: SDGListHeaderLabelCount,
+    showCount: SDGListHeaderLabelShowCount,
     showDropdown: SDGListHeaderLabelShowDropdown,
 ) {
     Row(
@@ -64,9 +64,9 @@ fun SDGListHeaderLabel(
             ),
         )
 
-        if (count is SDGListHeaderLabelCount.True) {
+        if (showCount is SDGListHeaderLabelShowCount.True) {
             SDGText(
-                text = "(${count.countValue})",
+                text = "(${showCount.countValue})",
                 textColor = SDGColor.Neutral700,
                 typography = SDGTypography.Body1SB,
             )
@@ -90,7 +90,7 @@ private fun PreviewSDGListHeaderLabel(
 ) {
     SDGListHeaderLabel(
         label = params.label,
-        count = params.count,
+        showCount = params.count,
         showDropdown = params.showDropdown,
     )
 }
