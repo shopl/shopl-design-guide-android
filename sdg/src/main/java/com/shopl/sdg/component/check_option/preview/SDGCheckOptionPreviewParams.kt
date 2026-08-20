@@ -1,13 +1,13 @@
 package com.shopl.sdg.component.check_option.preview
 
-import com.shopl.sdg.component.check_option.SDGCheckOptionColor
-import com.shopl.sdg.component.check_option.SDGCheckOptionSize
-import com.shopl.sdg.component.check_option.SDGCheckOptionStatus
-import com.shopl.sdg.component.check_option.SDGCheckOptionType
+import com.shopl.sdg.component.check_option.model.SDGCheckOptionSelectedBackgroundColor
+import com.shopl.sdg.component.check_option.model.SDGCheckOptionSize
+import com.shopl.sdg.component.check_option.model.SDGCheckOptionState
+import com.shopl.sdg.component.check_option.model.SDGCheckOptionStyle
 
 internal data class SDGCheckOptionPreviewParams(
-    val type: SDGCheckOptionType,
-    val status: SDGCheckOptionStatus,
-    val selectedColor: SDGCheckOptionColor,
+    val state: SDGCheckOptionState,
+    val selectedBackgroundColor: SDGCheckOptionSelectedBackgroundColor,
     val size: SDGCheckOptionSize,
+    val style: SDGCheckOptionStyle,
 )

@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.check_option
+package com.shopl.sdg.component.check_option.deprecated
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -24,7 +24,7 @@ import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_resource.R
 
-@Deprecated("use SDGCheckOption(type = Solid)")
+@Deprecated("v2.3.42 이상 SDGCheckOption을 사용하세요.")
 @Composable
 fun SDGCheck(
     isChecked: Boolean,
