@@ -41,7 +41,7 @@ import com.shopl.sdg_resource.R
  * @version 2.3.41
  *
  * @param state 체크박스 상태
- * @param selectedBackgroundColor [SDGCheckBoxState.Selected] 상태에 적용할 배경 색상
+ * @param selectedBackgroundColor [SDGCheckBoxState.SELECTED] 상태에 적용할 배경 색상
  * @param size 체크박스 크기
  * @param onClick 체크박스 클릭 콜백
  *
@@ -54,10 +54,10 @@ fun SDGCheckBox(
     size: SDGCheckBoxSize,
     onClick: () -> Unit,
 ) {
-    val (checkBoxColor, clickable) = when (state) {
-        SDGCheckBoxState.Default -> SDGColor.Neutral250 to Modifier.clickable(onClick = onClick)
-        SDGCheckBoxState.Selected -> selectedBackgroundColor.selectedBackgroundColor to Modifier.clickable(onClick = onClick)
-        SDGCheckBoxState.Disabled -> SDGColor.Neutral200 to Modifier
+    val (checkBoxColor, checkBoxEnabled) = when (state) {
+        SDGCheckBoxState.DEFAULT -> SDGColor.Neutral250 to true
+        SDGCheckBoxState.SELECTED -> selectedBackgroundColor.selectedBackgroundColor to true
+        SDGCheckBoxState.DISABLED -> SDGColor.Neutral200 to false
     }
 
     Box(
@@ -68,12 +68,15 @@ fun SDGCheckBox(
                 color = checkBoxColor,
                 shape = SDGCornerRadius.BoxRadius.Radius4,
             )
-            .then(other = clickable),
+            .clickable(
+                enabled = checkBoxEnabled,
+                onClick = onClick,
+            ),
     ) {
         SDGImage(
             resId = R.drawable.ic_common_check_s,
             color = SDGColor.Neutral0,
-            modifier = Modifier.size(size = 14.dp),
+            modifier = Modifier.size(size = size.size),
         )
     }
 }
