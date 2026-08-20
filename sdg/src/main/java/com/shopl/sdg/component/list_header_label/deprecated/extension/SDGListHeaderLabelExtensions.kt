@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.list_header_label.extension
+package com.shopl.sdg.component.list_header_label.deprecated.extension
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -7,30 +7,29 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.shopl.sdg.component.list_header_label.SDGListHeaderLabel
-import com.shopl.sdg.component.list_header_label.model.SDGListHeaderLabelShowCount
-import com.shopl.sdg.component.list_header_label.model.SDGListHeaderLabelShowDropdown
+import com.shopl.sdg.component.list_header_label.deprecated.SDGListHeaderLabel
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_resource.R
 
-/**
- * [RowScope]에서 weight를 지정할 수 있는 [SDGListHeaderLabel]입니다.
- */
+/** 신규 List Header Label RowScope API와의 하위 호환성을 위한 레거시 API입니다. */
+@Deprecated("v2.1.23 이상 SDGListHeaderLabel을 사용하세요.")
 @Composable
 fun RowScope.SDGListHeaderLabel(
     weight: Float,
-    label: String,
-    count: SDGListHeaderLabelShowCount,
-    showDropdown: SDGListHeaderLabelShowDropdown,
+    title: String,
+    count: String?,
+    dropdownIcon: Boolean,
+    onIconClick: (() -> Unit)? = null,
 ) {
     Box(
-        modifier = Modifier.weight(weight = weight),
+        modifier = Modifier.weight(weight)
     ) {
         SDGListHeaderLabel(
-            label = label,
-            showCount = count,
-            showDropdown = showDropdown,
+            title = title,
+            count = count,
+            dropdownIcon = dropdownIcon,
+            onIconClick = onIconClick,
         )
     }
 }
@@ -41,9 +40,9 @@ private fun PreviewSDGListHeaderLabel() {
     Row(modifier = Modifier.fillMaxWidth()) {
         SDGListHeaderLabel(
             weight = 1f,
-            label = "리스트 타이틀",
-            count = SDGListHeaderLabelShowCount.True(countValue = "1"),
-            showDropdown = SDGListHeaderLabelShowDropdown.True(onClick = {}),
+            title = "Weighted 1",
+            count = "1",
+            dropdownIcon = true,
         )
 
         SDGImage(

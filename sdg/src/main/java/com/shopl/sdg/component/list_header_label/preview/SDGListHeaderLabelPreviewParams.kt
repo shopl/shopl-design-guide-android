@@ -1,7 +1,10 @@
 package com.shopl.sdg.component.list_header_label.preview
 
+import com.shopl.sdg.component.list_header_label.model.SDGListHeaderLabelShowCount
+import com.shopl.sdg.component.list_header_label.model.SDGListHeaderLabelShowDropdown
+
 internal data class SDGListHeaderLabelPreviewParams(
-    val title: String,
-    val count: String?,
-    val dropdownIcon: Boolean,
+    val label: String,
+    val count: SDGListHeaderLabelShowCount,
+    val showDropdown: SDGListHeaderLabelShowDropdown,
 )
