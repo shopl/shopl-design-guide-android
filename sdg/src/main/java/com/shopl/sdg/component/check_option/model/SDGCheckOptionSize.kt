@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.check_option
+package com.shopl.sdg.component.check_option.model
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
