@@ -1,9 +1,9 @@
-package com.shopl.sdg.component.radio.preview
+package com.shopl.sdg.component.radio.legacy.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.shopl.sdg.component.radio.SDGRadioColor
-import com.shopl.sdg.component.radio.SDGRadioSize
-import com.shopl.sdg.component.radio.SDGRadioStatus
+import com.shopl.sdg.component.radio.legacy.model.SDGRadioColor
+import com.shopl.sdg.component.radio.legacy.model.SDGRadioSize
+import com.shopl.sdg.component.radio.legacy.model.SDGRadioStatus
 
 internal class SDGRadioPreviewParameterProvider :
     PreviewParameterProvider<SDGRadioPreviewParams> {

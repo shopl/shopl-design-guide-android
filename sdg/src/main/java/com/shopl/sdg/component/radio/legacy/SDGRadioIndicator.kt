@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.radio
+package com.shopl.sdg.component.radio.legacy
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,8 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.shopl.sdg.component.radio.preview.SDGRadioPreviewParameterProvider
-import com.shopl.sdg.component.radio.preview.SDGRadioPreviewParams
+import com.shopl.sdg.component.radio.legacy.model.SDGRadioColor
+import com.shopl.sdg.component.radio.legacy.model.SDGRadioSize
+import com.shopl.sdg.component.radio.legacy.model.SDGRadioStatus
+import com.shopl.sdg.component.radio.legacy.preview.SDGRadioPreviewParameterProvider
+import com.shopl.sdg.component.radio.legacy.preview.SDGRadioPreviewParams
 import com.shopl.sdg_common.foundation.SDGColor
 
 /**
@@ -25,6 +28,7 @@ import com.shopl.sdg_common.foundation.SDGColor
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7349-16797&m=dev">Figma</a>
  */
+@Deprecated("v2.3.41 이상 SDGRadio를 사용하세요.")
 @Composable
 fun SDGRadio(
     status: SDGRadioStatus,
@@ -62,12 +66,12 @@ fun SDGRadio(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSDGRadio(
-    @PreviewParameter(SDGRadioPreviewParameterProvider::class)
-    params: SDGRadioPreviewParams
+    @PreviewParameter(provider = SDGRadioPreviewParameterProvider::class)
+    params: SDGRadioPreviewParams,
 ) {
     SDGRadio(
         status = params.status,
         size = params.size,
-        selectedColor = params.color
+        selectedColor = params.color,
     )
 }

@@ -10,9 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import com.shopl.sdg.component.radio.SDGRadio
-import com.shopl.sdg.component.radio.SDGRadioColor
-import com.shopl.sdg.component.radio.SDGRadioSize
+import com.shopl.sdg.component.radio.legacy.SDGRadio
+import com.shopl.sdg.component.radio.legacy.model.SDGRadioColor
+import com.shopl.sdg.component.radio.legacy.model.SDGRadioSize
 import com.shopl.sdg.template.radio_label.preview.SDGRadioLabelPreviewParameterProvider
 import com.shopl.sdg.template.radio_label.preview.SDGRadioLabelPreviewParams
 import com.shopl.sdg_common.ext.clickable

@@ -32,7 +32,7 @@ import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.IOText
 import kotlin.math.roundToInt
 
-@Deprecated("제거 예정", ReplaceWith("신규 SDGRadio를 사용하세요"))
+@Deprecated("v2.3.41 이상 SDGRadio를 사용하세요.")
 @Composable
 fun SDGRadio(
     isChecked: Boolean = false,

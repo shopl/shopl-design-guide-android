@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.radio
+package com.shopl.sdg.component.radio.legacy.model
 
 import androidx.compose.ui.graphics.Color
 import com.shopl.sdg_common.foundation.SDGColor
