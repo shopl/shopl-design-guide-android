@@ -55,7 +55,7 @@ private const val THUMBNAIL_PLAY_BUTTON_ICON_ROTATION_DEGREES = 90f
  * @version 2.3.43
  *
  * @param type 썸네일 유형과 썸네일 목록 및 클릭 이벤트
- * @param mode 썸네일 표시 방식과 클리어 아이콘 설정
+ * @param line 썸네일 표시 방식과 클리어 아이콘 설정
  * @param failureImageBackgroundColor 이미지 로드 실패 시 표시할 배경색
  * @param marginValues 컴포넌트 외부 여백
  *
@@ -64,11 +64,11 @@ private const val THUMBNAIL_PLAY_BUTTON_ICON_ROTATION_DEGREES = 90f
 @Composable
 fun SDGThumbnails(
     type: SDGThumbnailsType,
-    mode: SDGThumbnailsLine,
+    line: SDGThumbnailsLine,
     failureImageBackgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
 ) {
-    val visibleThumbnails = when (mode) {
+    val visibleThumbnails = when (line) {
         is SDGThumbnailsLine.SingleLine -> type.thumbnails.take(n = THUMBNAILS_PER_ROW)
         is SDGThumbnailsLine.MultiLine -> type.thumbnails
     }
@@ -86,7 +86,7 @@ fun SDGThumbnails(
                     modifier = Modifier.fillMaxWidth(),
                     thumbnails = thumbnails,
                     type = type,
-                    mode = mode,
+                    line = line,
                     rowStartIndex = rowIndex * THUMBNAILS_PER_ROW,
                     failureImageBackgroundColor = failureImageBackgroundColor,
                 )
@@ -98,14 +98,14 @@ fun SDGThumbnails(
 internal fun SDGThumbnailRow(
     thumbnails: List<SDGThumbnailUiModel>,
     type: SDGThumbnailsType,
-    mode: SDGThumbnailsLine,
+    line: SDGThumbnailsLine,
     rowStartIndex: Int,
     failureImageBackgroundColor: Color,
     modifier: Modifier = Modifier,
 ) {
-    val showClearIcon = when (mode) {
+    val showClearIcon = when (line) {
         is SDGThumbnailsLine.SingleLine -> SDGThumbnailsShowClearIcon.False
-        is SDGThumbnailsLine.MultiLine -> mode.showClearIcon
+        is SDGThumbnailsLine.MultiLine -> line.showClearIcon
     }
 
     Row(
@@ -115,7 +115,7 @@ internal fun SDGThumbnailRow(
         thumbnails.forEachIndexed { index, thumbnail ->
             val thumbnailIndex = rowStartIndex + index
             val shouldShowOverflowOverlay =
-                mode is SDGThumbnailsLine.SingleLine &&
+                line is SDGThumbnailsLine.SingleLine &&
                         type.thumbnails.size > THUMBNAILS_PER_ROW &&
                         index == thumbnails.lastIndex
 
@@ -245,7 +245,7 @@ private fun PreviewSDGThumbnails(
 ) {
     SDGThumbnails(
         type = params.type,
-        mode = params.mode,
+        line = params.line,
         failureImageBackgroundColor = SDGColor.Neutral0,
         marginValues = PaddingValues(),
     )

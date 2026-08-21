@@ -5,5 +5,5 @@ import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsType
 
 internal data class SDGThumbnailsPreviewParams(
     val type: SDGThumbnailsType,
-    val mode: SDGThumbnailsLine,
+    val line: SDGThumbnailsLine,
 )

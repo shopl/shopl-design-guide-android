@@ -35,7 +35,7 @@ private object SDGThumbnailRowContentType
  * @version 2.3.43
  *
  * @param type 썸네일 유형과 썸네일 목록 및 클릭 이벤트
- * @param mode 썸네일 표시 방식과 클리어 아이콘 설정
+ * @param line 썸네일 표시 방식과 클리어 아이콘 설정
  * @param failureImageBackgroundColor 이미지 로드 실패 시 표시할 배경색
  * @param marginValues 컴포넌트 외부 여백
  *
@@ -43,11 +43,11 @@ private object SDGThumbnailRowContentType
  */
 fun LazyListScope.SDGThumbnails(
     type: SDGThumbnailsType,
-    mode: SDGThumbnailsLine,
+    line: SDGThumbnailsLine,
     failureImageBackgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
 ) {
-    val visibleThumbnails = when (mode) {
+    val visibleThumbnails = when (line) {
         is SDGThumbnailsLine.SingleLine -> type.thumbnails.take(n = THUMBNAILS_PER_ROW)
         is SDGThumbnailsLine.MultiLine -> type.thumbnails
     }
@@ -102,7 +102,7 @@ fun LazyListScope.SDGThumbnails(
                 ),
             thumbnails = rowThumbnails,
             type = type,
-            mode = mode,
+            line = line,
             rowStartIndex = rowStartIndex,
             failureImageBackgroundColor = failureImageBackgroundColor,
         )
@@ -121,7 +121,7 @@ private fun PreviewLazyListScopeSDGThumbnails(
     ) {
         SDGThumbnails(
             type = params.type,
-            mode = params.mode,
+            line = params.line,
             failureImageBackgroundColor = SDGColor.Neutral0,
             marginValues = PaddingValues(),
         )

@@ -27,7 +27,7 @@ internal class SDGThumbnailsExtensionPreviewParameterProvider :
                 },
             ),
         ),
-        mode = SDGThumbnailsLine.SingleLine,
+        line = SDGThumbnailsLine.SingleLine,
     )
 
     private fun 사진_멀티() = SDGThumbnailsPreviewParams(
@@ -43,7 +43,7 @@ internal class SDGThumbnailsExtensionPreviewParameterProvider :
                 },
             ),
         ),
-        mode = SDGThumbnailsLine.MultiLine(
+        line = SDGThumbnailsLine.MultiLine(
             showClearIcon = SDGThumbnailsShowClearIcon.True(onClick = {}),
         ),
     )
