@@ -3,28 +3,34 @@ package com.shopl.sdg.component.thumbnail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.thumbnail.model.SDGThumbnailUiModel
+import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsLine
+import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsShowClearIcon
+import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsType
+import com.shopl.sdg.component.thumbnail.preview.SDGThumbnailsPreviewParameterProvider
+import com.shopl.sdg.component.thumbnail.preview.SDGThumbnailsPreviewParams
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
@@ -34,291 +40,213 @@ import com.shopl.sdg_common.ui.components.SDGAsyncImage
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 
-private const val MAX_VISIBLE_IMAGES = 4
+internal const val THUMBNAILS_PER_ROW = 4
+private const val THUMBNAIL_ASPECT_RATIO = 1f
+private const val THUMBNAIL_OVERFLOW_MAX_COUNT = 999
+private const val THUMBNAIL_PLAY_BUTTON_BACKGROUND_ALPHA = 0.5f
+private const val THUMBNAIL_PLAY_BUTTON_ICON_ROTATION_DEGREES = 90f
 
 /**
  * SDG - Component - Thumbnails
  *
- * 사진 파일의 이미지를 소형화한 컴포넌트
+ * 여러 장의 사진을 4분할 격자(Grid) 형태로 정렬하는 통합 썸네일 레이아웃 컴포넌트
  *
- * @param singleLine 1줄로 표기되는 경우 사용, true인 경우 이미지는 4장까지만 노출되고 더 있는 경우 + N으로 표기됨
+ * @version 2.3.43
  *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6870-15446&t=MczCJoG28XDGLRPP-4">Figma</a>
+ * @param type 썸네일 유형과 썸네일 목록 및 클릭 이벤트
+ * @param line 썸네일 표시 방식과 클리어 아이콘 설정
+ * @param failureImageBackgroundColor 이미지 로드 실패 시 표시할 배경색
+ * @param marginValues 컴포넌트 외부 여백
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6870-15446&m=dev">Figma</a>
  */
-
-private const val CHUNK_SIZE = 4
-
 @Composable
 fun SDGThumbnails(
-    imageModels: PersistentList<Any>,
-    singleLine: Boolean,
-    onClickImage: (index: Int) -> Unit,
+    type: SDGThumbnailsType,
+    line: SDGThumbnailsLine,
     failureImageBackgroundColor: Color = SDGColor.Neutral0,
-    deletable: Boolean = false,
-    onClickDelete: ((index: Int) -> Unit)? = null,
     marginValues: PaddingValues = PaddingValues(),
 ) {
+    val visibleThumbnails = when (line) {
+        is SDGThumbnailsLine.SingleLine -> type.thumbnails.take(n = THUMBNAILS_PER_ROW)
+        is SDGThumbnailsLine.MultiLine -> type.thumbnails
+    }
+
     Column(
         modifier = Modifier
-            .padding(marginValues)
+            .padding(paddingValues = marginValues)
             .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(space = SDGSpacing.Spacing8)
+        verticalArrangement = Arrangement.spacedBy(space = SDGSpacing.Spacing8),
     ) {
-        if (singleLine) {
-            ImageRow(
-                imageModels = imageModels,
-                onClickImage = onClickImage,
-                totalImagesCount = imageModels.size,
-                failureImageBackgroundColor = failureImageBackgroundColor,
-                deletable = deletable,
-                onClickDelete = onClickDelete
-            )
-        } else {
-            imageModels.chunked(CHUNK_SIZE).forEachIndexed { chunkedIndex, chunkedList ->
-                ImageRow(
-                    imageModels = chunkedList.toPersistentList(),
-                    onClickImage = { index ->
-                        val indexOfModels = CHUNK_SIZE * chunkedIndex + index
-                        onClickImage(indexOfModels)
-                    },
+        visibleThumbnails
+            .chunked(size = THUMBNAILS_PER_ROW)
+            .forEachIndexed { rowIndex, thumbnails ->
+                SDGThumbnailRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    thumbnails = thumbnails,
+                    type = type,
+                    line = line,
+                    rowStartIndex = rowIndex * THUMBNAILS_PER_ROW,
                     failureImageBackgroundColor = failureImageBackgroundColor,
-                    deletable = deletable,
-                    onClickDelete = { index ->
-                        val indexOfModels = CHUNK_SIZE * chunkedIndex + index
-                        onClickDelete?.invoke(indexOfModels)
-                    }
                 )
             }
-        }
     }
 }
 
 @Composable
-internal fun ImageRow(
-    imageModels: PersistentList<Any>,
-    onClickImage: (index: Int) -> Unit,
-    modifier: Modifier = Modifier,
+internal fun SDGThumbnailRow(
+    thumbnails: List<SDGThumbnailUiModel>,
+    type: SDGThumbnailsType,
+    line: SDGThumbnailsLine,
+    rowStartIndex: Int,
     failureImageBackgroundColor: Color,
-    totalImagesCount: Int = MAX_VISIBLE_IMAGES,
-    deletable: Boolean = false,
-    onClickDelete: ((index: Int) -> Unit)? = null,
+    modifier: Modifier = Modifier,
 ) {
+    val showClearIcon = when (line) {
+        is SDGThumbnailsLine.SingleLine -> SDGThumbnailsShowClearIcon.False
+        is SDGThumbnailsLine.MultiLine -> line.showClearIcon
+    }
+
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(space = SDGSpacing.Spacing8),
     ) {
-        imageModels.take(MAX_VISIBLE_IMAGES).forEachIndexed { index, imageModel ->
-            if (totalImagesCount > MAX_VISIBLE_IMAGES && index == MAX_VISIBLE_IMAGES - 1) {
-                OverflowImage(
-                    imageModel = imageModel,
-                    extraCount = totalImagesCount - MAX_VISIBLE_IMAGES,
-                    onClickImage = { onClickImage(index) },
-                )
-            } else {
-                if (deletable) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .aspectRatio(1f)
-                            .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-                            .clickable(hasRipple = false) {
-                                onClickImage(index)
-                            },
-                    ) {
-                        SDGAsyncImage(
+        thumbnails.forEachIndexed { index, thumbnail ->
+            val thumbnailIndex = rowStartIndex + index
+            val shouldShowOverflowOverlay =
+                line is SDGThumbnailsLine.SingleLine &&
+                        type.thumbnails.size > THUMBNAILS_PER_ROW &&
+                        index == thumbnails.lastIndex
+
+            Box(
+                modifier = Modifier
+                    .weight(weight = 1f)
+                    .aspectRatio(ratio = THUMBNAIL_ASPECT_RATIO)
+                    .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
+                    .clickable(
+                        onClick = { type.onClick(thumbnailIndex) },
+                    ),
+            ) {
+                SDGAsyncImage(
+                    modifier = Modifier.fillMaxSize(),
+                    imageModel = thumbnail.thumbnail,
+                    isUseShimmer = true,
+                    failureImage = {
+                        SDGThumbnailFailureImage(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-                                .clickable(hasRipple = false) {
-                                    onClickImage(index)
-                                },
-                            imageModel = imageModel,
-                            contentScale = ContentScale.Crop,
-                            isUseShimmer = true,
-                            failureImage = {
-                                FailureImage(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-                                        .background(color = failureImageBackgroundColor)
-                                )
-                            }
+                                .background(color = failureImageBackgroundColor),
                         )
-                        SDGImage(
-                            modifier = Modifier
-                                .align(Alignment.TopEnd)
-                                .size(24.dp)
-                                .clickable {
-                                    onClickDelete?.invoke(index)
-                                }
-                                .padding(all = SDGSpacing.Spacing2),
-                            resId = R.drawable.ic_remove_m,
-                            color = null
+                    },
+                    contentScale = ContentScale.Crop,
+                )
+
+                if (type is SDGThumbnailsType.Video) {
+                    SDGThumbnailPlayButton()
+                }
+
+                if (shouldShowOverflowOverlay) {
+                    val overflowThumbnailCount = (type.thumbnails.size - thumbnailIndex)
+                        .coerceAtMost(maximumValue = THUMBNAIL_OVERFLOW_MAX_COUNT)
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = SDGColor.Neutral900_a40),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        SDGText(
+                            text = "+$overflowThumbnailCount",
+                            textColor = SDGColor.Neutral0,
+                            typography = SDGTypography.Body2SB,
                         )
                     }
-                } else {
-                    SDGAsyncImage(
-                        modifier = Modifier
-                            .weight(1f)
-                            .aspectRatio(1f)
-                            .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-                            .clickable {
-                                onClickImage(index)
-                            },
-                        imageModel = imageModel,
-                        contentScale = ContentScale.Crop,
-                        isUseShimmer = true,
-                        failureImage = {
-                            FailureImage(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .aspectRatio(1f)
-                                    .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-                                    .background(color = failureImageBackgroundColor)
-                            )
-                        }
+                }
+
+                if (showClearIcon is SDGThumbnailsShowClearIcon.True) {
+                    SDGThumbnailClearIcon(
+                        onClick = { showClearIcon.onClick(thumbnailIndex) },
                     )
                 }
             }
         }
 
-        repeat(MAX_VISIBLE_IMAGES - imageModels.size) {
-            DummyView()
+        repeat(times = THUMBNAILS_PER_ROW - thumbnails.size) {
+            Spacer(modifier = Modifier.weight(weight = 1f))
         }
     }
 }
 
 @Composable
-private fun RowScope.OverflowImage(
-    imageModel: Any,
-    extraCount: Int,
-    onClickImage: () -> Unit,
+private fun SDGThumbnailFailureImage(
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier
-            .weight(1f)
-            .aspectRatio(1f)
-            .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-            .clickable {
-                onClickImage()
-            }
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
     ) {
-        SDGAsyncImage(
-            modifier = Modifier.fillMaxSize(),
-            imageModel = imageModel,
-            isUseShimmer = true,
+        SDGImage(
+            modifier = Modifier.size(size = SDGSpacing.Spacing20),
+            resId = R.drawable.ic_common_photo,
+            color = SDGColor.Neutral250,
             contentScale = ContentScale.Crop,
-            failureImage = {
-                FailureImage(
-                    Modifier.fillMaxSize()
-                )
-            }
         )
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-                .background(color = SDGColor.Neutral900_a40)
-        ) {
-            SDGText(
-                modifier = Modifier.align(alignment = Alignment.Center),
-                text = "+$extraCount",
-                textColor = SDGColor.Neutral0,
-                typography = SDGTypography.Body2SB
-            )
-        }
     }
 }
 
 @Composable
-private fun FailureImage(modifier: Modifier = Modifier) {
+private fun BoxScope.SDGThumbnailPlayButton() {
     Box(
-        modifier = modifier
+        modifier = Modifier
+            .align(alignment = Alignment.Center)
+            .size(size = SDGSpacing.Spacing20)
+            .background(
+                color = SDGColor.Neutral700.copy(alpha = THUMBNAIL_PLAY_BUTTON_BACKGROUND_ALPHA),
+                shape = CircleShape,
+            ),
+        contentAlignment = Alignment.Center,
     ) {
         SDGImage(
             modifier = Modifier
-                .align(alignment = Alignment.Center)
-                .size(size = 20.dp),
-            resId = R.drawable.ic_common_photo,
-            color = SDGColor.Neutral250,
-            contentScale = ContentScale.Crop
+                .size(size = 14.dp)
+                .offset(x = SDGSpacing.Spacing1)
+                .rotate(degrees = THUMBNAIL_PLAY_BUTTON_ICON_ROTATION_DEGREES),
+            resId = R.drawable.ic_common_triangleup,
+            color = SDGColor.Neutral0,
         )
     }
 }
 
-/**
- * Row에 일정 너비를 맞추기 위해 weight 처리를 위한 더미 뷰
- */
 @Composable
-private fun RowScope.DummyView() {
-    Spacer(modifier = Modifier.weight(1f))
-}
-
-@Preview
-@Composable
-private fun PreviewThumbnails() {
-
-    val images by remember {
-        mutableStateOf(
-            persistentListOf(
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-                "image_url",
-            )
-        )
-    }
-
-    var deletedIndex by remember { mutableStateOf<Int?>(null) }
-
-    Column(
+private fun BoxScope.SDGThumbnailClearIcon(
+    onClick: () -> Unit,
+) {
+    Box(
         modifier = Modifier
-            .background(SDGColor.Neutral50)
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .align(alignment = Alignment.TopEnd)
+            .size(size = SDGSpacing.Spacing24)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center,
     ) {
-        SDGText(
-            text = "Single Line",
-            textColor = SDGColor.Neutral700,
-            typography = SDGTypography.Body1SB
+        SDGImage(
+            modifier = Modifier.size(size = SDGSpacing.Spacing20),
+            resId = R.drawable.ic_remove_m,
+            color = null,
         )
-        SDGThumbnails(
-            imageModels = images,
-            singleLine = true,
-            onClickImage = {},
-        )
-        SDGText(
-            text = "Multi Line",
-            textColor = SDGColor.Neutral700,
-            typography = SDGTypography.Body1SB
-        )
-        SDGThumbnails(
-            imageModels = images,
-            singleLine = false,
-            onClickImage = {},
-            deletable = true,
-            onClickDelete = {
-                deletedIndex = it
-            }
-        )
-        deletedIndex?.let {
-            SDGText(
-                text = "Deleted Index : $deletedIndex",
-                textColor = SDGColor.Neutral700,
-                typography = SDGTypography.Body1SB
-            )
-        }
     }
+}
 
+@Preview(showBackground = true)
+@Composable
+private fun PreviewSDGThumbnails(
+    @PreviewParameter(provider = SDGThumbnailsPreviewParameterProvider::class)
+    params: SDGThumbnailsPreviewParams,
+) {
+    SDGThumbnails(
+        type = params.type,
+        line = params.line,
+        failureImageBackgroundColor = SDGColor.Neutral0,
+        marginValues = PaddingValues(),
+    )
 }

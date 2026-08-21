@@ -16,9 +16,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.shopl.sdg.component.check_option.deprecated.SDGCheckOptionColor
-import com.shopl.sdg.component.check_option.deprecated.SDGCheckOptionStatus
-import com.shopl.sdg.component.check_option.deprecated.SDGCheckOptionType
+import com.shopl.sdg.component.check_option.legacy.SDGCheckOptionColor
+import com.shopl.sdg.component.check_option.legacy.SDGCheckOptionStatus
+import com.shopl.sdg.component.check_option.legacy.SDGCheckOptionType
 import com.shopl.sdg.component.check_option.model.SDGCheckOptionSelectedBackgroundColor
 import com.shopl.sdg.component.check_option.model.SDGCheckOptionSize
 import com.shopl.sdg.component.check_option.model.SDGCheckOptionState

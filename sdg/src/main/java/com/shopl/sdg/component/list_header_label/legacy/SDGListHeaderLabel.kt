@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.list_header_label.deprecated
+package com.shopl.sdg.component.list_header_label.legacy
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
