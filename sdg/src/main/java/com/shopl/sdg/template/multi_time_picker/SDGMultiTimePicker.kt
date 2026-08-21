@@ -47,33 +47,27 @@ private val TimeFieldHeight = 40.dp
  * SDG - Template - Multi Time Picker
  *
  * 시각 및 시간을 선택하는 바텀 팝업으로 노출되는 템플릿
- * [endTime]이 null이면 단일 시각 선택, 값이 있으면 시작/종료 시간 선택으로 표시합니다.
+ * [type]에 따라 단일 시각 또는 시작/종료 시각 선택으로 표시합니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=8099-26608&m=dev">Figma</a>
  */
 @Composable
 fun SDGMultiTimePicker(
-    startTime: HourMin,
+    type: SDGMultiTimePickerType,
     onClickCancel: () -> Unit,
-    onClickConfirm: (startTime: HourMin, endTime: HourMin?) -> Unit,
+    onClickConfirm: (SDGMultiTimePickerType) -> Unit,
     modifier: Modifier = Modifier,
     title: String? = null,
-    endTime: HourMin? = null,
     cancelLabel: String = stringResource(id = R.string.dialog_common_btn_cancel),
     confirmLabel: String = stringResource(id = R.string.dialog_common_btn_ok),
 ) {
-    var pendingStartTime by remember(startTime) { mutableStateOf(startTime.normalizeToClockRange()) }
-    var pendingEndTime by remember(endTime) { mutableStateOf(endTime?.normalizeToClockRange()) }
-    var selectedTarget by remember(endTime != null) { mutableStateOf(TimeTarget.Start) }
-
-    val selectedTime = when (selectedTarget) {
-        TimeTarget.Start -> pendingStartTime
-        TimeTarget.End -> pendingEndTime ?: pendingStartTime
-    }
+    var pendingType by remember(type) { mutableStateOf(type.normalizeToClockRange()) }
+    var selectedTarget by remember(type) { mutableStateOf(TimeTarget.Start) }
+    val selectedTime = pendingType.selectedTime(selectedTarget)
 
     FixedBottomPopup(
         singleButton = false,
-        onClickConfirm = { onClickConfirm(pendingStartTime, pendingEndTime) },
+        onClickConfirm = { onClickConfirm(pendingType) },
         modifier = modifier,
         cancelLabel = cancelLabel,
         confirmLabel = confirmLabel,
@@ -89,7 +83,7 @@ fun SDGMultiTimePicker(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(Spacing24),
         ) {
-            if (!title.isNullOrBlank() || pendingEndTime != null) {
+            if (!title.isNullOrBlank() || pendingType is SDGMultiTimePickerType.Multi) {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing16)) {
                     if (!title.isNullOrBlank()) {
                         SDGText(
@@ -99,13 +93,15 @@ fun SDGMultiTimePicker(
                         )
                     }
 
-                    pendingEndTime?.let { end ->
-                        TimeRangeFields(
-                            startTime = pendingStartTime,
-                            endTime = end,
+                    when (val currentType = pendingType) {
+                        is SDGMultiTimePickerType.Multi -> TimeRangeFields(
+                            startTime = currentType.startTime,
+                            endTime = currentType.endTime,
                             selectedTarget = selectedTarget,
                             onClickTarget = { selectedTarget = it },
                         )
+
+                        is SDGMultiTimePickerType.Single -> Unit
                     }
                 }
             }
@@ -117,9 +113,8 @@ fun SDGMultiTimePicker(
                             value = selectedTime.hour,
                             rangeList = HourRange,
                             onValueChange = { hour ->
-                                when (selectedTarget) {
-                                    TimeTarget.Start -> pendingStartTime = pendingStartTime.copy(hour = hour)
-                                    TimeTarget.End -> pendingEndTime = pendingEndTime?.copy(hour = hour)
+                                pendingType = pendingType.updateSelectedTime(selectedTarget) {
+                                    it.copy(hour = hour)
                                 }
                             },
                             supportsInfiniteScroll = true,
@@ -128,9 +123,8 @@ fun SDGMultiTimePicker(
                             value = selectedTime.min,
                             rangeList = MinuteRange,
                             onValueChange = { minute ->
-                                when (selectedTarget) {
-                                    TimeTarget.Start -> pendingStartTime = pendingStartTime.copy(min = minute)
-                                    TimeTarget.End -> pendingEndTime = pendingEndTime?.copy(min = minute)
+                                pendingType = pendingType.updateSelectedTime(selectedTarget) {
+                                    it.copy(min = minute)
                                 }
                             },
                             supportsInfiniteScroll = true,
@@ -209,10 +203,12 @@ private fun TimeField(
 private fun PreviewSDGMultiTimePicker() {
     SDGMultiTimePicker(
         title = "Title",
-        startTime = HourMin(hour = 9),
-        endTime = HourMin(hour = 18),
+        type = SDGMultiTimePickerType.Multi(
+            startTime = HourMin(hour = 9),
+            endTime = HourMin(hour = 18),
+        ),
         onClickCancel = {},
-        onClickConfirm = { _, _ -> },
+        onClickConfirm = {},
     )
 }
 
@@ -221,8 +217,8 @@ private fun PreviewSDGMultiTimePicker() {
 private fun PreviewSDGSingleTimePicker() {
     SDGMultiTimePicker(
         title = "Title",
-        startTime = HourMin(hour = 9),
+        type = SDGMultiTimePickerType.Single(time = HourMin(hour = 9)),
         onClickCancel = {},
-        onClickConfirm = { _, _ -> },
+        onClickConfirm = {},
     )
 }
