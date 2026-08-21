@@ -1,7 +1,6 @@
 package com.shopl.sdg.template.multi_time_picker
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -18,16 +17,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -37,6 +34,9 @@ import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.foundation.typography.SDGTypography
+import com.shopl.sdg_common.ui.components.SDGText
+import com.shopl.sdg_common.util.SDGPopupPreviewContainer
 import com.shopl.sdg_resource.R
 
 /**
@@ -66,6 +66,24 @@ internal fun FixedBottomPopup(
     ),
     content: @Composable () -> Unit,
 ) {
+    if (LocalInspectionMode.current) {
+        FixedBottomPopupInspectionPreview(
+            singleButton = singleButton,
+            modifier = modifier,
+            containerColor = containerColor,
+            contentColor = contentColor,
+            cancelLabel = cancelLabel,
+            confirmLabel = confirmLabel,
+            onClickCancel = onClickCancel,
+            onClickConfirm = onClickConfirm,
+            isConfirmEnable = isConfirmEnable,
+            confirmLabelColor = confirmLabelColor,
+            contentPadding = contentPadding,
+            content = content,
+        )
+        return
+    }
+
     val dismissState = rememberFixedBottomPopupDismissState()
     dismissState.updateDefaultAction(onClickCancel ?: onClickConfirm)
 
@@ -141,45 +159,112 @@ private fun FixedBottomPopupContent(
                 enter = slideInVertically { it } + fadeIn(),
                 exit = slideOutVertically { it } + fadeOut(),
             ) {
-                Surface(
+                FixedBottomPopupSheetContent(
                     modifier = modifier.fillMaxWidth(),
-                    color = containerColor,
+                    singleButton = singleButton,
+                    containerColor = containerColor,
                     contentColor = contentColor,
-                    shape = RoundedCornerShape(
-                        topStart = SDGCornerRadius.Radius20,
-                        topEnd = SDGCornerRadius.Radius20,
-                    ),
-                    tonalElevation = 0.dp,
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .navigationBarsPadding()
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(contentPadding),
-                        ) {
-                            content()
-                        }
-
-                        SDGPopupBottomButton(
-                            singleButton = singleButton,
-                            cancelLabel = cancelLabel,
-                            confirmLabel = confirmLabel,
-                            onClickCancel = onClickCancel?.let { cancel ->
-                                { state.requestDismiss(cancel) }
-                            },
-                            onClickConfirm = { state.requestDismiss(onClickConfirm) },
-                            isConfirmEnable = isConfirmEnable,
-                            confirmLabelColor = confirmLabelColor,
-                            isBottomDialog = true,
-                        )
-                    }
-                }
+                    cancelLabel = cancelLabel,
+                    confirmLabel = confirmLabel,
+                    onClickCancel = onClickCancel?.let { cancel ->
+                        { state.requestDismiss(cancel) }
+                    },
+                    onClickConfirm = { state.requestDismiss(onClickConfirm) },
+                    isConfirmEnable = isConfirmEnable,
+                    confirmLabelColor = confirmLabelColor,
+                    contentPadding = contentPadding,
+                    content = content,
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun FixedBottomPopupSheetContent(
+    modifier: Modifier,
+    singleButton: Boolean,
+    containerColor: Color,
+    contentColor: Color,
+    cancelLabel: String,
+    confirmLabel: String,
+    onClickCancel: (() -> Unit)?,
+    onClickConfirm: () -> Unit,
+    isConfirmEnable: Boolean,
+    confirmLabelColor: Color,
+    contentPadding: PaddingValues,
+    content: @Composable () -> Unit,
+) {
+    Surface(
+        modifier = modifier,
+        color = containerColor,
+        contentColor = contentColor,
+        shape = RoundedCornerShape(
+            topStart = SDGCornerRadius.Radius20,
+            topEnd = SDGCornerRadius.Radius20,
+        ),
+        tonalElevation = 0.dp,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(contentPadding),
+            ) {
+                content()
+            }
+
+            SDGPopupBottomButton(
+                singleButton = singleButton,
+                cancelLabel = cancelLabel,
+                confirmLabel = confirmLabel,
+                onClickCancel = onClickCancel,
+                onClickConfirm = onClickConfirm,
+                isConfirmEnable = isConfirmEnable,
+                confirmLabelColor = confirmLabelColor,
+                isBottomDialog = true,
+            )
+        }
+    }
+}
+
+/**
+ * Compose Preview에서 Dialog 대신 하단 팝업 콘텐츠를 인라인으로 렌더링합니다.
+ */
+@Composable
+private fun FixedBottomPopupInspectionPreview(
+    singleButton: Boolean,
+    modifier: Modifier,
+    containerColor: Color,
+    contentColor: Color,
+    cancelLabel: String,
+    confirmLabel: String,
+    onClickCancel: (() -> Unit)?,
+    onClickConfirm: () -> Unit,
+    isConfirmEnable: Boolean,
+    confirmLabelColor: Color,
+    contentPadding: PaddingValues,
+    content: @Composable () -> Unit,
+) {
+    SDGPopupPreviewContainer(contentAlignment = Alignment.BottomCenter) {
+        FixedBottomPopupSheetContent(
+            modifier = modifier.fillMaxWidth(),
+            singleButton = singleButton,
+            containerColor = containerColor,
+            contentColor = contentColor,
+            cancelLabel = cancelLabel,
+            confirmLabel = confirmLabel,
+            onClickCancel = onClickCancel,
+            onClickConfirm = onClickConfirm,
+            isConfirmEnable = isConfirmEnable,
+            confirmLabelColor = confirmLabelColor,
+            contentPadding = contentPadding,
+            content = content,
+        )
     }
 }
 
@@ -187,26 +272,18 @@ private fun FixedBottomPopupContent(
 private fun rememberFixedBottomPopupDismissState(): FixedBottomPopupDismissState =
     remember { FixedBottomPopupDismissState() }
 
-@Stable
-internal class FixedBottomPopupDismissState {
-    val transitionState = MutableTransitionState(false).apply { targetState = true }
-
-    private var defaultAction: (() -> Unit)? = null
-    private var pendingAction: (() -> Unit)? by mutableStateOf(null)
-
-    fun updateDefaultAction(action: () -> Unit) {
-        defaultAction = action
-    }
-
-    fun requestDismiss(action: (() -> Unit)? = null) {
-        if (!transitionState.targetState) return
-
-        pendingAction = action ?: defaultAction
-        transitionState.targetState = false
-    }
-
-    fun consumePendingAction() {
-        pendingAction?.invoke()
-        pendingAction = null
+@Preview(name = "Fixed Bottom Popup", widthDp = 360, heightDp = 640)
+@Composable
+private fun PreviewFixedBottomPopup() {
+    FixedBottomPopup(
+        singleButton = false,
+        onClickConfirm = {},
+        onClickCancel = {},
+    ) {
+        SDGText(
+            text = "FixedBottomPopup Content",
+            textColor = SDGColor.Neutral700,
+            typography = SDGTypography.Body1R,
+        )
     }
 }
