@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.check_option.deprecated
+package com.shopl.sdg.component.check_option.legacy
 
 import androidx.compose.ui.graphics.Color
 import com.shopl.sdg_common.foundation.SDGColor

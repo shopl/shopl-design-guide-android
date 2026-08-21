@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.thumbnail.extension
+package com.shopl.sdg.component.thumbnail.legacy.extension
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.shopl.sdg.component.thumbnail.ImageRow
+import com.shopl.sdg.component.thumbnail.legacy.ImageRow
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import kotlinx.collections.immutable.PersistentList
@@ -24,7 +24,7 @@ import kotlinx.collections.immutable.toPersistentList
 /**
  * SDG - Component - Thumbnails for [LazyListScope]
  *
- * 기존 [com.shopl.sdg.component.thumbnail.SDGThumbnails]와 동일한 UI 및 동작을 제공하면서,
+ * 기존 [com.shopl.sdg.component.thumbnail.legacy.SDGThumbnails]와 동일한 UI 및 동작을 제공하면서,
  * 각 썸네일 행을 상위 Lazy layout의 item으로 구성합니다.
  *
  * @param singleLine 1줄로 표기되는 경우 사용, true인 경우 이미지는 4장까지만 노출되고 더 있는 경우 + N으로 표기됨

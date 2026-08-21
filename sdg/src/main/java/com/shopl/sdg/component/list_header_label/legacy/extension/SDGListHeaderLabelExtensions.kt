@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.list_header_label.deprecated.extension
+package com.shopl.sdg.component.list_header_label.legacy.extension
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.shopl.sdg.component.list_header_label.deprecated.SDGListHeaderLabel
+import com.shopl.sdg.component.list_header_label.legacy.SDGListHeaderLabel
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_resource.R

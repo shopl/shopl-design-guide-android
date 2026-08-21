@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.shopl.sdg.component.list_header_label.deprecated.extension.SDGListHeaderLabel
+import com.shopl.sdg.component.list_header_label.legacy.extension.SDGListHeaderLabel
 import com.shopl.sdg.template.list_header.icon.preview.SDGIconHeaderPreviewParam
 import com.shopl.sdg.template.list_header.icon.preview.SDGIconHeaderPreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable

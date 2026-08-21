@@ -1,4 +1,4 @@
-package com.shopl.sdg.component.thumbnail
+package com.shopl.sdg.component.thumbnail.legacy
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

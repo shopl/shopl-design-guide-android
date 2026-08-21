@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
-import com.shopl.sdg.component.check_option.deprecated.SDGCheck
+import com.shopl.sdg.component.check_option.legacy.SDGCheck
 import com.shopl.sdg.template.check_option_label.SDGCheckOptionLabelSize
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
