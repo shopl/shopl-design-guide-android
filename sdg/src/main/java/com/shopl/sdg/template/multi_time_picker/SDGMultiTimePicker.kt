@@ -204,9 +204,6 @@ private fun TimeField(
     }
 }
 
-private fun HourMin.toTimeText(): String =
-    "${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}"
-
 @Preview(name = "Multi", widthDp = 374, heightDp = 790)
 @Composable
 private fun PreviewSDGMultiTimePicker() {
