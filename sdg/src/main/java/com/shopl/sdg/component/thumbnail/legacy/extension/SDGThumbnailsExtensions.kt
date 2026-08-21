@@ -36,6 +36,7 @@ private const val THUMBNAIL_COLUMN_COUNT = 4
 
 private object SDGThumbnailRowContentType
 
+@Deprecated("v2.3.43 이상 SDGThumbnails를 사용하세요.")
 fun LazyListScope.SDGThumbnails(
     imageModels: PersistentList<Any>,
     singleLine: Boolean,

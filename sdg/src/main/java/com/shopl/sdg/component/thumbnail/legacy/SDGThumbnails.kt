@@ -52,6 +52,7 @@ private const val MAX_VISIBLE_IMAGES = 4
 
 private const val CHUNK_SIZE = 4
 
+@Deprecated("v2.3.43 이상 SDGThumbnails를 사용하세요.")
 @Composable
 fun SDGThumbnails(
     imageModels: PersistentList<Any>,
