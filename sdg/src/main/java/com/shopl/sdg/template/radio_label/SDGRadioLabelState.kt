@@ -1,7 +1,7 @@
 package com.shopl.sdg.template.radio_label
 
 import androidx.compose.ui.graphics.Color
-import com.shopl.sdg.component.radio.SDGRadioStatus
+import com.shopl.sdg.component.radio.legacy.model.SDGRadioStatus
 import com.shopl.sdg_common.foundation.SDGColor
 
 enum class SDGRadioLabelState(

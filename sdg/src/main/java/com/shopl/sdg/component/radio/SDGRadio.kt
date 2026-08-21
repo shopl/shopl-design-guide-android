@@ -9,52 +9,60 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.radio.model.SDGRadioSelectedBackgroundColor
+import com.shopl.sdg.component.radio.model.SDGRadioSize
+import com.shopl.sdg.component.radio.model.SDGRadioState
 import com.shopl.sdg.component.radio.preview.SDGRadioPreviewParameterProvider
 import com.shopl.sdg.component.radio.preview.SDGRadioPreviewParams
+import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.ui.components.SDGImage
+import com.shopl.sdg_resource.R
 
 /**
  * SDG - Component - Radio
  *
- * 여러개의 옵션 중 단일 선택을 위한 컴포넌트
+ * 여러 상호 배타적인 선택지 중 사용자가 단 하나의 옵션만 명확하게 확정할 수 있도록 제어하는 원형 인디케이터 컴포넌트
  *
- * @param status Radio 상태
- * @param size 라디오 버튼 크기 (Medium(Default, 16*16) or Large(18*18))
- * @param selectedColor 라디오 버튼 색상 (Basic(Default, Primary300) or Special(Neutral700))
+ * @version 2.3.41
  *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7349-16797&m=dev">Figma</a>
+ * @param state 라디오 버튼 상태
+ * @param selectedBackgroundColor [SDGRadioState.SELECTED] 상태에 적용할 배경 색상
+ * @param size 라디오 버튼 크기
+ * @param onClick 라디오 버튼 클릭 콜백
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=27346-40022&m=dev">Figma</a>
  */
 @Composable
 fun SDGRadio(
-    status: SDGRadioStatus,
-    selectedColor: SDGRadioColor = SDGRadioColor.BASIC,
-    size: SDGRadioSize = SDGRadioSize.MEDIUM,
+    state: SDGRadioState,
+    selectedBackgroundColor: SDGRadioSelectedBackgroundColor,
+    size: SDGRadioSize,
+    onClick: () -> Unit,
 ) {
-    val radioColor = when (status) {
-        SDGRadioStatus.DEFAULT -> SDGColor.Neutral200
-        SDGRadioStatus.SELECTED -> selectedColor.color
-        SDGRadioStatus.DISABLED -> SDGColor.Neutral200
+    val (radioColor, radioEnabled) = when (state) {
+        SDGRadioState.DEFAULT -> SDGColor.Neutral250 to true
+        SDGRadioState.SELECTED -> selectedBackgroundColor.selectedBackgroundColor to true
+        SDGRadioState.DISABLED -> SDGColor.Neutral200 to false
     }
-    val circleSize = when (size) {
-        SDGRadioSize.LARGE -> 18.dp
-        SDGRadioSize.MEDIUM -> 16.dp
-    }
-    val innerCircleSize = circleSize / 2
 
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(size = circleSize)
-            .background(color = radioColor, shape = CircleShape)
+            .size(size = size.circleSize)
+            .background(
+                color = radioColor,
+                shape = CircleShape,
+            )
+            .clickable(
+                enabled = radioEnabled,
+                onClick = onClick,
+            ),
     ) {
-        Box(
-            modifier = Modifier
-                .size(size = innerCircleSize)
-                .background(
-                    color = SDGColor.Neutral0,
-                    shape = CircleShape,
-                )
+        SDGImage(
+            resId = R.drawable.ic_common_circle_s,
+            color = SDGColor.Neutral0,
+            modifier = Modifier.size(size = size.iconSize),
         )
     }
 }
@@ -62,12 +70,13 @@ fun SDGRadio(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSDGRadio(
-    @PreviewParameter(SDGRadioPreviewParameterProvider::class)
-    params: SDGRadioPreviewParams
+    @PreviewParameter(provider = SDGRadioPreviewParameterProvider::class)
+    params: SDGRadioPreviewParams,
 ) {
     SDGRadio(
-        status = params.status,
+        state = params.state,
+        selectedBackgroundColor = params.selectedColor,
         size = params.size,
-        selectedColor = params.color
+        onClick = {},
     )
 }

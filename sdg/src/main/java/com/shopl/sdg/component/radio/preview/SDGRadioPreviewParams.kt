@@ -1,11 +1,11 @@
 package com.shopl.sdg.component.radio.preview
 
-import com.shopl.sdg.component.radio.SDGRadioColor
-import com.shopl.sdg.component.radio.SDGRadioSize
-import com.shopl.sdg.component.radio.SDGRadioStatus
+import com.shopl.sdg.component.radio.model.SDGRadioSelectedBackgroundColor
+import com.shopl.sdg.component.radio.model.SDGRadioSize
+import com.shopl.sdg.component.radio.model.SDGRadioState
 
 internal data class SDGRadioPreviewParams(
-    val status: SDGRadioStatus,
-    val color: SDGRadioColor,
+    val state: SDGRadioState,
+    val selectedColor: SDGRadioSelectedBackgroundColor,
     val size: SDGRadioSize,
 )
