@@ -3,6 +3,7 @@ package com.shopl.sdg.scene
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import com.shopl.sdg.ui.screen.template.CheckboxLabelScreen
+import com.shopl.sdg.ui.screen.template.MultiTimePickerScreen
 
 /**
  * SDG - Template
@@ -218,11 +219,14 @@ internal sealed class TemplateScene(
 
     data object MultiTimePicker : TemplateScene(
         displayLabel = "Multi Time Picker",
-        implemented = false
+        implemented = true
     ) {
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-            throw IllegalStateException("Not implemented")
+            MultiTimePickerScreen(
+                onClickBack = backToScene,
+                onClickMenu = { moveToScene(Menu) },
+            )
         }
     }
 
