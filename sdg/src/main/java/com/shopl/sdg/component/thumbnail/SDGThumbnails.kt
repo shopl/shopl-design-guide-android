@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.thumbnail.model.SDGThumbnailUiModel
-import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsMode
+import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsLine
 import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsShowClearIcon
 import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsType
 import com.shopl.sdg.component.thumbnail.preview.SDGThumbnailsPreviewParameterProvider
@@ -64,13 +64,13 @@ private const val THUMBNAIL_PLAY_BUTTON_ICON_ROTATION_DEGREES = 90f
 @Composable
 fun SDGThumbnails(
     type: SDGThumbnailsType,
-    mode: SDGThumbnailsMode,
+    mode: SDGThumbnailsLine,
     failureImageBackgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
 ) {
     val visibleThumbnails = when (mode) {
-        is SDGThumbnailsMode.Single -> type.thumbnails.take(n = THUMBNAILS_PER_ROW)
-        is SDGThumbnailsMode.Multi -> type.thumbnails
+        is SDGThumbnailsLine.SingleLine -> type.thumbnails.take(n = THUMBNAILS_PER_ROW)
+        is SDGThumbnailsLine.MultiLine -> type.thumbnails
     }
 
     Column(
@@ -98,14 +98,14 @@ fun SDGThumbnails(
 internal fun SDGThumbnailRow(
     thumbnails: List<SDGThumbnailUiModel>,
     type: SDGThumbnailsType,
-    mode: SDGThumbnailsMode,
+    mode: SDGThumbnailsLine,
     rowStartIndex: Int,
     failureImageBackgroundColor: Color,
     modifier: Modifier = Modifier,
 ) {
     val showClearIcon = when (mode) {
-        is SDGThumbnailsMode.Single -> SDGThumbnailsShowClearIcon.False
-        is SDGThumbnailsMode.Multi -> mode.showClearIcon
+        is SDGThumbnailsLine.SingleLine -> SDGThumbnailsShowClearIcon.False
+        is SDGThumbnailsLine.MultiLine -> mode.showClearIcon
     }
 
     Row(
@@ -115,7 +115,7 @@ internal fun SDGThumbnailRow(
         thumbnails.forEachIndexed { index, thumbnail ->
             val thumbnailIndex = rowStartIndex + index
             val shouldShowOverflowOverlay =
-                mode is SDGThumbnailsMode.Single &&
+                mode is SDGThumbnailsLine.SingleLine &&
                         type.thumbnails.size > THUMBNAILS_PER_ROW &&
                         index == thumbnails.lastIndex
 

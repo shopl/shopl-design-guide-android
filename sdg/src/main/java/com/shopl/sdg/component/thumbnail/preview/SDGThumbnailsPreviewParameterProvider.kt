@@ -2,7 +2,7 @@ package com.shopl.sdg.component.thumbnail.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.shopl.sdg.component.thumbnail.model.SDGThumbnailUiModel
-import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsMode
+import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsLine
 import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsShowClearIcon
 import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsType
 
@@ -32,7 +32,7 @@ internal class SDGThumbnailsPreviewParameterProvider :
                 },
             ),
         ),
-        mode = SDGThumbnailsMode.Single,
+        mode = SDGThumbnailsLine.SingleLine,
     )
 
     private fun 사진_멀티_클리어아이콘_미노출() = SDGThumbnailsPreviewParams(
@@ -48,7 +48,7 @@ internal class SDGThumbnailsPreviewParameterProvider :
                 },
             ),
         ),
-        mode = SDGThumbnailsMode.Multi(
+        mode = SDGThumbnailsLine.MultiLine(
             showClearIcon = SDGThumbnailsShowClearIcon.False,
         ),
     )
@@ -66,7 +66,7 @@ internal class SDGThumbnailsPreviewParameterProvider :
                 },
             ),
         ),
-        mode = SDGThumbnailsMode.Multi(
+        mode = SDGThumbnailsLine.MultiLine(
             showClearIcon = SDGThumbnailsShowClearIcon.True(onClick = {}),
         ),
     )
@@ -84,7 +84,7 @@ internal class SDGThumbnailsPreviewParameterProvider :
                 },
             ),
         ),
-        mode = SDGThumbnailsMode.Single,
+        mode = SDGThumbnailsLine.SingleLine,
     )
 
     private fun 영상_싱글_오버레이_999개_표기() = SDGThumbnailsPreviewParams(
@@ -100,7 +100,7 @@ internal class SDGThumbnailsPreviewParameterProvider :
                 },
             ),
         ),
-        mode = SDGThumbnailsMode.Single,
+        mode = SDGThumbnailsLine.SingleLine,
     )
 
     private fun 영상_멀티_클리어아이콘_미노출() = SDGThumbnailsPreviewParams(
@@ -116,7 +116,7 @@ internal class SDGThumbnailsPreviewParameterProvider :
                 },
             ),
         ),
-        mode = SDGThumbnailsMode.Multi(
+        mode = SDGThumbnailsLine.MultiLine(
             showClearIcon = SDGThumbnailsShowClearIcon.False,
         ),
     )
@@ -134,7 +134,7 @@ internal class SDGThumbnailsPreviewParameterProvider :
                 },
             ),
         ),
-        mode = SDGThumbnailsMode.Multi(
+        mode = SDGThumbnailsLine.MultiLine(
             showClearIcon = SDGThumbnailsShowClearIcon.True(onClick = {}),
         ),
     )

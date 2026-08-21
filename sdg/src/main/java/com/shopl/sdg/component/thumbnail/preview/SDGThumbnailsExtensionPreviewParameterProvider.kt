@@ -2,7 +2,7 @@ package com.shopl.sdg.component.thumbnail.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.shopl.sdg.component.thumbnail.model.SDGThumbnailUiModel
-import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsMode
+import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsLine
 import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsShowClearIcon
 import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsType
 
@@ -27,7 +27,7 @@ internal class SDGThumbnailsExtensionPreviewParameterProvider :
                 },
             ),
         ),
-        mode = SDGThumbnailsMode.Single,
+        mode = SDGThumbnailsLine.SingleLine,
     )
 
     private fun 사진_멀티() = SDGThumbnailsPreviewParams(
@@ -43,7 +43,7 @@ internal class SDGThumbnailsExtensionPreviewParameterProvider :
                 },
             ),
         ),
-        mode = SDGThumbnailsMode.Multi(
+        mode = SDGThumbnailsLine.MultiLine(
             showClearIcon = SDGThumbnailsShowClearIcon.True(onClick = {}),
         ),
     )

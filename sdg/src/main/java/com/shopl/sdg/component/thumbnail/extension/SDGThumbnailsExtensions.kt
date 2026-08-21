@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.thumbnail.SDGThumbnailRow
 import com.shopl.sdg.component.thumbnail.THUMBNAILS_PER_ROW
-import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsMode
+import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsLine
 import com.shopl.sdg.component.thumbnail.model.SDGThumbnailsType
 import com.shopl.sdg.component.thumbnail.preview.SDGThumbnailsExtensionPreviewParameterProvider
 import com.shopl.sdg.component.thumbnail.preview.SDGThumbnailsPreviewParams
@@ -43,13 +43,13 @@ private object SDGThumbnailRowContentType
  */
 fun LazyListScope.SDGThumbnails(
     type: SDGThumbnailsType,
-    mode: SDGThumbnailsMode,
+    mode: SDGThumbnailsLine,
     failureImageBackgroundColor: Color = SDGColor.Neutral0,
     marginValues: PaddingValues = PaddingValues(),
 ) {
     val visibleThumbnails = when (mode) {
-        is SDGThumbnailsMode.Single -> type.thumbnails.take(n = THUMBNAILS_PER_ROW)
-        is SDGThumbnailsMode.Multi -> type.thumbnails
+        is SDGThumbnailsLine.SingleLine -> type.thumbnails.take(n = THUMBNAILS_PER_ROW)
+        is SDGThumbnailsLine.MultiLine -> type.thumbnails
     }
     val rowCount = (visibleThumbnails.size + THUMBNAILS_PER_ROW - 1) / THUMBNAILS_PER_ROW
 
