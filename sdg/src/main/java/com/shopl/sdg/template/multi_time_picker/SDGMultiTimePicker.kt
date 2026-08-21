@@ -46,7 +46,7 @@ private val TimeFieldHeight = 40.dp
 /**
  * SDG - Template - Multi Time Picker
  *
- * 시각 또는 시작/종료 시간을 선택하는 하단 고정형 타임 피커 템플릿입니다.
+ * 시각 및 시간을 선택하는 바텀 팝업으로 노출되는 템플릿
  * [endTime]이 null이면 단일 시각 선택, 값이 있으면 시작/종료 시간 선택으로 표시합니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=8099-26608&m=dev">Figma</a>
