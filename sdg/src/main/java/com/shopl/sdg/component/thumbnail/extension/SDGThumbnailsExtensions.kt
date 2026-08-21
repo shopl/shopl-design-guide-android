@@ -56,14 +56,13 @@ fun LazyListScope.SDGThumbnails(
     if (rowCount == 0) {
         item(
             contentType = SDGThumbnailRowContentType,
-            content = {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(paddingValues = marginValues),
-                )
-            },
-        )
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(paddingValues = marginValues),
+            )
+        }
         return
     }
 
@@ -73,42 +72,41 @@ fun LazyListScope.SDGThumbnails(
             visibleThumbnails[rowIndex * THUMBNAILS_PER_ROW].id
         },
         contentType = { SDGThumbnailRowContentType },
-        itemContent = { rowIndex ->
-            val rowStartIndex = rowIndex * THUMBNAILS_PER_ROW
-            val rowThumbnails = visibleThumbnails.subList(
-                fromIndex = rowStartIndex,
-                toIndex = minOf(
-                    a = rowStartIndex + THUMBNAILS_PER_ROW,
-                    b = visibleThumbnails.size,
-                ),
-            )
-            val layoutDirection = LocalLayoutDirection.current
+    ) { rowIndex ->
+        val rowStartIndex = rowIndex * THUMBNAILS_PER_ROW
+        val rowThumbnails = visibleThumbnails.subList(
+            fromIndex = rowStartIndex,
+            toIndex = minOf(
+                a = rowStartIndex + THUMBNAILS_PER_ROW,
+                b = visibleThumbnails.size,
+            ),
+        )
+        val layoutDirection = LocalLayoutDirection.current
 
-            SDGThumbnailRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .absolutePadding(
-                        left = marginValues.calculateLeftPadding(layoutDirection = layoutDirection),
-                        top = if (rowIndex == 0) {
-                            marginValues.calculateTopPadding()
-                        } else {
-                            SDGSpacing.Spacing8
-                        },
-                        right = marginValues.calculateRightPadding(layoutDirection = layoutDirection),
-                        bottom = if (rowIndex == rowCount - 1) {
-                            marginValues.calculateBottomPadding()
-                        } else {
-                            0.dp
-                        },
-                    ),
-                thumbnails = rowThumbnails,
-                type = type,
-                mode = mode,
-                rowStartIndex = rowStartIndex,
-                failureImageBackgroundColor = failureImageBackgroundColor,
-            )
-        },
-    )
+        SDGThumbnailRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .absolutePadding(
+                    left = marginValues.calculateLeftPadding(layoutDirection = layoutDirection),
+                    top = if (rowIndex == 0) {
+                        marginValues.calculateTopPadding()
+                    } else {
+                        SDGSpacing.Spacing8
+                    },
+                    right = marginValues.calculateRightPadding(layoutDirection = layoutDirection),
+                    bottom = if (rowIndex == rowCount - 1) {
+                        marginValues.calculateBottomPadding()
+                    } else {
+                        0.dp
+                    },
+                ),
+            thumbnails = rowThumbnails,
+            type = type,
+            mode = mode,
+            rowStartIndex = rowStartIndex,
+            failureImageBackgroundColor = failureImageBackgroundColor,
+        )
+    }
 }
 
 @Preview(showBackground = true)
@@ -120,13 +118,12 @@ private fun PreviewLazyListScopeSDGThumbnails(
     LazyColumn(
         modifier = Modifier.background(color = SDGColor.Neutral50),
         contentPadding = PaddingValues(all = SDGSpacing.Spacing20),
-        content = {
-            SDGThumbnails(
-                type = params.type,
-                mode = params.mode,
-                failureImageBackgroundColor = SDGColor.Neutral0,
-                marginValues = PaddingValues(),
-            )
-        },
-    )
+    ) {
+        SDGThumbnails(
+            type = params.type,
+            mode = params.mode,
+            failureImageBackgroundColor = SDGColor.Neutral0,
+            marginValues = PaddingValues(),
+        )
+    }
 }

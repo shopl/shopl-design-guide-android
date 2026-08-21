@@ -228,14 +228,13 @@ private fun BoxScope.SDGThumbnailClearIcon(
             .size(size = SDGSpacing.Spacing24)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
-        content = {
-            SDGImage(
-                modifier = Modifier.size(size = SDGSpacing.Spacing20),
-                resId = R.drawable.ic_remove_m,
-                color = null,
-            )
-        },
-    )
+    ) {
+        SDGImage(
+            modifier = Modifier.size(size = SDGSpacing.Spacing20),
+            resId = R.drawable.ic_remove_m,
+            color = null,
+        )
+    }
 }
 
 @Preview(showBackground = true)
