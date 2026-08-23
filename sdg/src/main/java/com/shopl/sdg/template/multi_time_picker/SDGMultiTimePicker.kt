@@ -46,6 +46,8 @@ private val TimeFieldHeight = 40.dp
 /**
  * SDG - Template - Multi Time Picker
  *
+ * @version 2.0.0
+ *
  * 시각 및 시간을 선택하는 바텀 팝업으로 노출되는 템플릿
  * [type]에 따라 단일 시각 또는 시작/종료 시각 선택으로 표시합니다.
  *
