@@ -175,7 +175,10 @@ private fun AttachmentThumbnail(
                     .size(ATTACHMENT_THUMBNAIL_SIZE)
                     .clip(SDGCornerRadius.BoxRadius.Radius4),
             ) {
-                AttachmentMediaThumbnail(imageModel = imageModel)
+                AttachmentMediaThumbnail(
+                    type = type,
+                    imageModel = imageModel,
+                )
 
                 if (type == SDGAttachmentElementType.Video) {
                     SDGImage(
@@ -191,10 +194,11 @@ private fun AttachmentThumbnail(
 
 @Composable
 private fun AttachmentMediaThumbnail(
+    type: SDGAttachmentElementType,
     imageModel: Any?,
 ) {
     if (imageModel == null) {
-        AttachmentMediaPlaceholder()
+        AttachmentMediaPlaceholder(type = type)
 
         return
     }
@@ -202,14 +206,20 @@ private fun AttachmentMediaThumbnail(
     SDGAsyncImage(
         modifier = Modifier.fillMaxSize(),
         imageModel = imageModel,
-        failureImage = { AttachmentMediaPlaceholder() },
+        failureImage = { AttachmentMediaPlaceholder(type = type) },
         contentScale = ContentScale.Crop,
-        previewContent = { AttachmentMediaPreview(imageModel = imageModel) },
+        previewContent = {
+            AttachmentMediaPreview(
+                type = type,
+                imageModel = imageModel,
+            )
+        },
     )
 }
 
 @Composable
 private fun AttachmentMediaPreview(
+    type: SDGAttachmentElementType,
     imageModel: Any?,
 ) {
     if (imageModel is Int) {
@@ -220,12 +230,18 @@ private fun AttachmentMediaPreview(
             contentScale = ContentScale.Crop,
         )
     } else {
-        AttachmentMediaPlaceholder()
+        AttachmentMediaPlaceholder(type = type)
     }
 }
 
 @Composable
-private fun AttachmentMediaPlaceholder() {
+private fun AttachmentMediaPlaceholder(
+    type: SDGAttachmentElementType,
+) {
+    if (type == SDGAttachmentElementType.Video) {
+        return
+    }
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -251,7 +267,9 @@ private fun PreviewSDGAttachmentElement(
         fileSize = params.fileSize,
         state = params.state,
         type = params.type,
-        imageModel = if (params.type == SDGAttachmentElementType.Document) {
+        imageModel = if (params.type == SDGAttachmentElementType.Document
+            || params.type == SDGAttachmentElementType.Video
+        ) {
             null
         } else {
             R.drawable.profile_small
