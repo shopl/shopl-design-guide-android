@@ -33,7 +33,7 @@ import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
-private val ATTACHMENT_THUMBNAIL_HEIGHT_SIZE = 36.dp
+private val ATTACHMENT_THUMBNAIL_SIZE = 36.dp
 private val ATTACHMENT_ICON_SIZE = 14.dp
 private val UPLOADING_INDICATOR_SIZE = 22.dp
 private val UPLOADING_INDICATOR_STROKE_WIDTH = 2.dp
@@ -78,7 +78,7 @@ fun SDGAttachmentElement(
     Row(
         modifier = Modifier
             .padding(marginValues)
-            .height(ATTACHMENT_THUMBNAIL_HEIGHT_SIZE),
+            .height(ATTACHMENT_THUMBNAIL_SIZE),
         horizontalArrangement = spacedBy(SDGSpacing.Spacing12),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -91,7 +91,7 @@ fun SDGAttachmentElement(
         Box(
             modifier = Modifier
                 .weight(weight = 1f, fill = false)
-                .height(ATTACHMENT_THUMBNAIL_HEIGHT_SIZE),
+                .height(ATTACHMENT_THUMBNAIL_SIZE),
         ) {
             Column(
                 modifier = Modifier.alpha(contentAlpha),
@@ -106,7 +106,7 @@ fun SDGAttachmentElement(
                 SDGText(
                     text = "($fileSize)",
                     textColor = SDGColor.Neutral400,
-                    typography = SDGTypography.Body3R,
+                    typography = SDGTypography.Body2R,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -155,7 +155,7 @@ private fun AttachmentThumbnail(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = modifier
-                    .size(ATTACHMENT_THUMBNAIL_HEIGHT_SIZE)
+                    .size(ATTACHMENT_THUMBNAIL_SIZE)
                     .clip(SDGCornerRadius.BoxRadius.Radius4)
                     .background(SDGColor.Neutral150),
             ) {
@@ -172,7 +172,7 @@ private fun AttachmentThumbnail(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = modifier
-                    .size(ATTACHMENT_THUMBNAIL_HEIGHT_SIZE)
+                    .size(ATTACHMENT_THUMBNAIL_SIZE)
                     .clip(SDGCornerRadius.BoxRadius.Radius4),
             ) {
                 AttachmentMediaThumbnail(imageModel = imageModel)
