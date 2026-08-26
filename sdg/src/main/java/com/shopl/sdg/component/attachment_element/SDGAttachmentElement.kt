@@ -1,11 +1,13 @@
 package com.shopl.sdg.component.attachment_element
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -33,7 +35,7 @@ import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
-private val ATTACHMENT_THUMBNAIL_HEIGHT_SIZE = 36.dp
+private val ATTACHMENT_THUMBNAIL_SIZE = 36.dp
 private val ATTACHMENT_ICON_SIZE = 14.dp
 private val UPLOADING_INDICATOR_SIZE = 22.dp
 private val UPLOADING_INDICATOR_STROKE_WIDTH = 2.dp
@@ -78,7 +80,7 @@ fun SDGAttachmentElement(
     Row(
         modifier = Modifier
             .padding(marginValues)
-            .height(ATTACHMENT_THUMBNAIL_HEIGHT_SIZE),
+            .height(ATTACHMENT_THUMBNAIL_SIZE),
         horizontalArrangement = spacedBy(SDGSpacing.Spacing12),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -91,10 +93,13 @@ fun SDGAttachmentElement(
         Box(
             modifier = Modifier
                 .weight(weight = 1f, fill = false)
-                .height(ATTACHMENT_THUMBNAIL_HEIGHT_SIZE),
+                .height(ATTACHMENT_THUMBNAIL_SIZE),
         ) {
             Column(
-                modifier = Modifier.alpha(contentAlpha),
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .alpha(contentAlpha),
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 SDGText(
                     text = fileName,
@@ -106,7 +111,7 @@ fun SDGAttachmentElement(
                 SDGText(
                     text = "($fileSize)",
                     textColor = SDGColor.Neutral400,
-                    typography = SDGTypography.Body3R,
+                    typography = SDGTypography.Body2R,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -155,7 +160,7 @@ private fun AttachmentThumbnail(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = modifier
-                    .size(ATTACHMENT_THUMBNAIL_HEIGHT_SIZE)
+                    .size(ATTACHMENT_THUMBNAIL_SIZE)
                     .clip(SDGCornerRadius.BoxRadius.Radius4)
                     .background(SDGColor.Neutral150),
             ) {
@@ -172,10 +177,13 @@ private fun AttachmentThumbnail(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = modifier
-                    .size(ATTACHMENT_THUMBNAIL_HEIGHT_SIZE)
+                    .size(ATTACHMENT_THUMBNAIL_SIZE)
                     .clip(SDGCornerRadius.BoxRadius.Radius4),
             ) {
-                AttachmentMediaThumbnail(imageModel = imageModel)
+                AttachmentMediaThumbnail(
+                    type = type,
+                    imageModel = imageModel,
+                )
 
                 if (type == SDGAttachmentElementType.Video) {
                     SDGImage(
@@ -191,10 +199,11 @@ private fun AttachmentThumbnail(
 
 @Composable
 private fun AttachmentMediaThumbnail(
+    type: SDGAttachmentElementType,
     imageModel: Any?,
 ) {
     if (imageModel == null) {
-        AttachmentMediaPlaceholder()
+        AttachmentMediaPlaceholder(type = type)
 
         return
     }
@@ -202,14 +211,20 @@ private fun AttachmentMediaThumbnail(
     SDGAsyncImage(
         modifier = Modifier.fillMaxSize(),
         imageModel = imageModel,
-        failureImage = { AttachmentMediaPlaceholder() },
+        failureImage = { AttachmentMediaPlaceholder(type = type) },
         contentScale = ContentScale.Crop,
-        previewContent = { AttachmentMediaPreview(imageModel = imageModel) },
+        previewContent = {
+            AttachmentMediaPreview(
+                type = type,
+                imageModel = imageModel,
+            )
+        },
     )
 }
 
 @Composable
 private fun AttachmentMediaPreview(
+    type: SDGAttachmentElementType,
     imageModel: Any?,
 ) {
     if (imageModel is Int) {
@@ -220,12 +235,18 @@ private fun AttachmentMediaPreview(
             contentScale = ContentScale.Crop,
         )
     } else {
-        AttachmentMediaPlaceholder()
+        AttachmentMediaPlaceholder(type = type)
     }
 }
 
 @Composable
-private fun AttachmentMediaPlaceholder() {
+private fun AttachmentMediaPlaceholder(
+    type: SDGAttachmentElementType,
+) {
+    if (type == SDGAttachmentElementType.Video) {
+        return
+    }
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -251,7 +272,9 @@ private fun PreviewSDGAttachmentElement(
         fileSize = params.fileSize,
         state = params.state,
         type = params.type,
-        imageModel = if (params.type == SDGAttachmentElementType.Document) {
+        imageModel = if (params.type == SDGAttachmentElementType.Document
+            || params.type == SDGAttachmentElementType.Video
+        ) {
             null
         } else {
             R.drawable.profile_small
