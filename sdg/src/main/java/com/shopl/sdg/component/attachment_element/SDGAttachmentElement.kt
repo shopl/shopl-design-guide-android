@@ -1,11 +1,13 @@
 package com.shopl.sdg.component.attachment_element
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -94,7 +96,10 @@ fun SDGAttachmentElement(
                 .height(ATTACHMENT_THUMBNAIL_SIZE),
         ) {
             Column(
-                modifier = Modifier.alpha(contentAlpha),
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .alpha(contentAlpha),
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 SDGText(
                     text = fileName,
