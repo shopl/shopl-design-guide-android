@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.shopl.sdg.component.badge.box
 
 import androidx.compose.ui.unit.Dp
@@ -7,6 +9,9 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 /**
  * [SDGBoxBadge] Size
  */
+@Deprecated(
+    message = "size가 제거된 신규 SDGBoxBadge API를 사용하세요.",
+)
 sealed class SDGBoxBadgeSize(
     val radius: Dp,
     val verticalPadding: Dp,
@@ -22,3 +27,8 @@ sealed class SDGBoxBadgeSize(
         typography = SDGTypography.Body3R,
     )
 }
+
+internal fun SDGBoxBadgeSize.toFontWeight(): SDGBoxBadgeFontWeight =
+    when (this) {
+        SDGBoxBadgeSize.XSmall -> SDGBoxBadgeFontWeight.Normal
+    }

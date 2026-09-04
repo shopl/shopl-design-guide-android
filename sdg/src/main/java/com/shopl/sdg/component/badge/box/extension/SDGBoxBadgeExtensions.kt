@@ -1,35 +1,33 @@
+@file:Suppress("DEPRECATION")
+
 package com.shopl.sdg.component.badge.box.extension
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.badge.box.SDGBoxBadge
+import com.shopl.sdg.component.badge.box.SDGBoxBadgeIcon
 import com.shopl.sdg.component.badge.box.SDGBoxBadgeSize
 import com.shopl.sdg.component.badge.box.SDGBoxBadgeType
-import com.shopl.sdg_common.ext.clickable
+import com.shopl.sdg.component.badge.box.toFontWeight
+import com.shopl.sdg.component.badge.box.toStyle
 import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.ui.components.SDGImage
-import com.shopl.sdg_common.ui.components.SDGText
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 
 /**
- * [RowScope] [SDGBoxBadge]
+ * 신규 Box Badge API와의 하위 호환성을 위한 레거시 [RowScope] API입니다.
  */
+@Deprecated(
+    message = "RowScope 확장 대신 신규 SDGBoxBadge API를 사용하세요.",
+)
 @Composable
 fun RowScope.SDGBoxBadge(
     weight: Float,
@@ -47,71 +45,43 @@ fun RowScope.SDGBoxBadge(
     marginValues: PaddingValues = PaddingValues(),
     onClick: () -> Unit = {},
 ) {
-    Row(
+    Box(
         modifier = Modifier
-            .weight(weight, fill)
-            .padding(marginValues)
-            .background(
-                color = backgroundColor,
-                shape = RoundedCornerShape(size.radius)
-            )
-            .then(
-                if (type is SDGBoxBadgeType.Line) {
-                    Modifier.border(
-                        width = 1.dp,
-                        color = type.lineColor,
-                        shape = RoundedCornerShape(size = size.radius),
-                    )
-                } else {
-                    Modifier
-                }
-            )
-            .clip(RoundedCornerShape(size.radius))
-            .then(
-                if (enable) {
-                    Modifier.clickable(
-                        hasRipple = true,
-                        rippleColor = SDGColor.Neutral900,
-                        onClick = onClick,
-                    )
-                } else {
-                    Modifier
-                }
-            )
-            .padding(horizontal = size.horizontalPadding, vertical = size.verticalPadding),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+            .weight(weight = weight, fill = fill)
+            .padding(marginValues),
     ) {
-        if (leftIcon != null && leftIconTint != null) {
-            SDGImage(
-                resId = leftIcon,
-                color = leftIconTint,
-                modifier = Modifier.size(14.dp)
-            )
-            Spacer(modifier = Modifier.width(size.iconGap))
-        }
-        SDGText(
-            text = label,
-            textColor = labelColor,
-            typography = size.typography,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
+        SDGBoxBadge(
+            label = label,
+            style = type.toStyle(),
+            fontWeight = size.toFontWeight(),
+            labelColor = labelColor,
+            backgroundColor = backgroundColor,
+            isFillMaxWidth = fill,
+            leftIc = if (leftIcon != null && leftIconTint != null) {
+                SDGBoxBadgeIcon(
+                    resId = leftIcon,
+                    tint = leftIconTint,
+                )
+            } else {
+                null
+            },
+            rightIc = if (rightIcon != null && rightIconTint != null) {
+                SDGBoxBadgeIcon(
+                    resId = rightIcon,
+                    tint = rightIconTint,
+                )
+            } else {
+                null
+            },
+            onClick = onClick.takeIf { enable },
         )
-        if (rightIcon != null && rightIconTint != null) {
-            Spacer(modifier = Modifier.width(size.iconGap))
-            SDGImage(
-                resId = rightIcon,
-                color = rightIconTint,
-                modifier = Modifier.size(14.dp)
-            )
-        }
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun PrevSDGBoxBadge() {
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+private fun PreviewSDGBoxBadge() {
+    Row(horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing8)) {
         SDGBoxBadge(
             weight = 1f,
             size = SDGBoxBadgeSize.XSmall,
@@ -120,7 +90,7 @@ private fun PrevSDGBoxBadge() {
             labelColor = SDGColor.Neutral900,
             backgroundColor = SDGColor.Neutral0,
         )
-        
+
         SDGBoxBadge(
             weight = 1f,
             size = SDGBoxBadgeSize.XSmall,

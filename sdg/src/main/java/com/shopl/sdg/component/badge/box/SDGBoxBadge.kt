@@ -3,15 +3,13 @@ package com.shopl.sdg.component.badge.box
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,22 +22,105 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.badge.box.preview.SDGBoxBadgePreviewParam
 import com.shopl.sdg.component.badge.box.preview.SDGBoxBadgePreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
-import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.SDGCornerRadius
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing6
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
+
+private val SDGBoxBadgeHeight = 20.dp
+private val SDGBoxBadgeIconSize = 14.dp
+private val SDGBoxBadgeBorderWidth = 1.dp
 
 /**
  * SDG - Badge - Box Badge
  *
  * 특정 상태나 데이터 구분 또는 전달을 위한 컴포넌트
  *
- * @param size [SDGBoxBadgeSize]
- * @param type [SDGBoxBadgeType]
- * @param marginValues [PaddingValues] 컴포넌트 외부 여백
+ * @version 2.1.27
  *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/Shopl-App-Design-System?node-id=6863-15045&m=dev">Figma</a>
+ * @param isFillMaxWidth 부모가 허용하는 최대 너비를 채울지 여부
+ * @param marginValues 컴포넌트 외부 여백
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=18890-9265&m=dev">Figma</a>
  */
 @Composable
+fun SDGBoxBadge(
+    label: String,
+    style: SDGBoxBadgeStyle,
+    fontWeight: SDGBoxBadgeFontWeight,
+    labelColor: Color,
+    backgroundColor: Color,
+    leftIc: SDGBoxBadgeIcon? = null,
+    rightIc: SDGBoxBadgeIcon? = null,
+    marginValues: PaddingValues = PaddingValues(),
+    isFillMaxWidth: Boolean = false,
+    onClick: (() -> Unit)? = null,
+) {
+    Row(
+        modifier = Modifier
+            .padding(marginValues)
+            .then(if (isFillMaxWidth) Modifier.fillMaxWidth() else Modifier)
+            .height(SDGBoxBadgeHeight)
+            .clip(SDGCornerRadius.BoxRadius.Radius6)
+            .background(color = backgroundColor)
+            .then(
+                if (style is SDGBoxBadgeStyle.Line) {
+                    Modifier.border(
+                        width = SDGBoxBadgeBorderWidth,
+                        color = style.lineColor,
+                        shape = SDGCornerRadius.BoxRadius.Radius6,
+                    )
+                } else {
+                    Modifier
+                },
+            )
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable(onClick = onClick)
+                } else {
+                    Modifier
+                },
+            )
+            .padding(horizontal = Spacing6),
+        horizontalArrangement = spacedBy(space = Spacing4),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        leftIc?.let { icon ->
+            SDGImage(
+                modifier = Modifier.size(SDGBoxBadgeIconSize),
+                resId = icon.resId,
+                color = icon.tint,
+            )
+        }
+
+        SDGText(
+            modifier = Modifier.weight(weight = 1f, fill = false),
+            text = label,
+            textColor = labelColor,
+            typography = fontWeight.typography,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+
+        rightIc?.let { icon ->
+            SDGImage(
+                modifier = Modifier.size(SDGBoxBadgeIconSize),
+                resId = icon.resId,
+                color = icon.tint,
+            )
+        }
+    }
+}
+
+/**
+ * 신규 Box Badge API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Deprecated(
+    message = "size/type 대신 style/fontWeight를 사용하는 신규 SDGBoxBadge API를 사용하세요.",
+)
+@Composable
+@Suppress("DEPRECATION")
 fun SDGBoxBadge(
     size: SDGBoxBadgeSize,
     type: SDGBoxBadgeType,
@@ -55,92 +136,50 @@ fun SDGBoxBadge(
     marginValues: PaddingValues = PaddingValues(),
     onClick: () -> Unit = {},
 ) {
-    Row(
-        modifier = Modifier
-            .padding(marginValues)
-            .then(
-                if (isFillMaxWidth) {
-                    Modifier.fillMaxWidth()
-                } else {
-                    Modifier
-                }
-            )
-            .background(
-                color = backgroundColor,
-                shape = RoundedCornerShape(size.radius)
-            )
-            .then(
-                if (type is SDGBoxBadgeType.Line) {
-                    Modifier.border(
-                        width = 1.dp,
-                        color = type.lineColor,
-                        shape = RoundedCornerShape(size = size.radius),
-                    )
-                } else {
-                    Modifier
-                }
-            )
-            .clip(RoundedCornerShape(size.radius))
-            .then(
-                if (enable) {
-                    Modifier.clickable(
-                        hasRipple = true,
-                        rippleColor = SDGColor.Neutral900,
-                        onClick = onClick,
-                    )
-                } else {
-                    Modifier
-                }
-            )
-            .padding(horizontal = size.horizontalPadding, vertical = size.verticalPadding),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        if (leftIcon != null && leftIconTint != null) {
-            SDGImage(
+    SDGBoxBadge(
+        label = label,
+        style = type.toStyle(),
+        fontWeight = size.toFontWeight(),
+        labelColor = labelColor,
+        backgroundColor = backgroundColor,
+        isFillMaxWidth = isFillMaxWidth,
+        marginValues = marginValues,
+        leftIc = if (leftIcon != null && leftIconTint != null) {
+            SDGBoxBadgeIcon(
                 resId = leftIcon,
-                color = leftIconTint,
-                modifier = Modifier.size(14.dp)
+                tint = leftIconTint,
             )
-            Spacer(modifier = Modifier.width(size.iconGap))
-        }
-        SDGText(
-            modifier = Modifier.weight(1F, fill = false),
-            text = label,
-            textColor = labelColor,
-            typography = size.typography,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-        if (rightIcon != null && rightIconTint != null) {
-            Spacer(modifier = Modifier.width(size.iconGap))
-            SDGImage(
+        } else {
+            null
+        },
+        rightIc = if (rightIcon != null && rightIconTint != null) {
+            SDGBoxBadgeIcon(
                 resId = rightIcon,
-                color = rightIconTint,
-                modifier = Modifier.size(14.dp)
+                tint = rightIconTint,
             )
-        }
-    }
+        } else {
+            null
+        },
+        onClick = onClick.takeIf { enable },
+    )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun PreviewPrevSDGBoxBadge(
+private fun PreviewSDGBoxBadge(
     @PreviewParameter(SDGBoxBadgePreviewParameterProvider::class)
-    param: SDGBoxBadgePreviewParam
+    param: SDGBoxBadgePreviewParam,
 ) {
-    SDGBoxBadge(
-        size = param.size,
-        type = param.type,
-        label = param.label,
-        labelColor = param.labelColor,
-        backgroundColor = param.backgroundColor,
-        isFillMaxWidth = param.isFillMaxWidth,
-        enable = param.enable,
-        leftIcon = param.leftIcon,
-        leftIconTint = param.leftIconTint,
-        rightIcon = param.rightIcon,
-        rightIconTint = param.rightIconTint,
-        onClick = {}
-    )
+    with(param) {
+        SDGBoxBadge(
+            label = label,
+            style = style,
+            fontWeight = fontWeight,
+            labelColor = labelColor,
+            backgroundColor = backgroundColor,
+            isFillMaxWidth = isFillMaxWidth,
+            leftIc = leftIc,
+            rightIc = rightIc,
+        )
+    }
 }

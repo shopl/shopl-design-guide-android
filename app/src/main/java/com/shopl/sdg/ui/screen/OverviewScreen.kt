@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.R
 import com.shopl.sdg.component.badge.box.SDGBoxBadge
-import com.shopl.sdg.component.badge.box.SDGBoxBadgeSize
-import com.shopl.sdg.component.badge.box.SDGBoxBadgeType
+import com.shopl.sdg.component.badge.box.SDGBoxBadgeFontWeight
+import com.shopl.sdg.component.badge.box.SDGBoxBadgeStyle
 import com.shopl.sdg.component.navigation.basic.SDGBasicNavi
 import com.shopl.sdg.component.navigation.basic.SDGBasicNaviIconItem
 import com.shopl.sdg.scene.SDGScene
@@ -180,13 +180,16 @@ private fun Card(
         ) {
             scenes.forEach { scene ->
                 SDGBoxBadge(
-                    size = SDGBoxBadgeSize.XSmall,
-                    type = SDGBoxBadgeType.Solid,
                     label = scene.displayLabel,
+                    style = SDGBoxBadgeStyle.Solid,
+                    fontWeight = SDGBoxBadgeFontWeight.Normal,
                     labelColor = if (scene.implemented) SDGColor.Neutral400 else SDGColor.Neutral300,
                     backgroundColor = SDGColor.Neutral50,
-                    enable = scene.implemented,
-                    onClick = { onClickSceneButton(scene) }
+                    onClick = if (scene.implemented) {
+                        { onClickSceneButton(scene) }
+                    } else {
+                        null
+                    },
                 )
             }
         }
