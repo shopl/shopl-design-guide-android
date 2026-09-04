@@ -5,9 +5,15 @@ import androidx.compose.ui.graphics.Color
 
 @Immutable
 sealed interface SDGBoxBadgeStyle {
-    data object Solid : SDGBoxBadgeStyle
+    val styleName: String
+
+    data object Solid : SDGBoxBadgeStyle {
+        override val styleName = "Solid"
+    }
 
     data class Line(
         val lineColor: Color,
-    ) : SDGBoxBadgeStyle
+    ) : SDGBoxBadgeStyle {
+        override val styleName = "Line"
+    }
 }
