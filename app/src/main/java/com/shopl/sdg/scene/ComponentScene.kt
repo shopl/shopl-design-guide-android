@@ -3,6 +3,7 @@ package com.shopl.sdg.scene
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import com.shopl.sdg.ui.screen.component.AttachmentElementScreen
+import com.shopl.sdg.ui.screen.component.BoxBadgeScreen
 import com.shopl.sdg.ui.screen.component.DropdownScreen
 import com.shopl.sdg.ui.screen.component.IconLabelScreen
 import com.shopl.sdg.ui.screen.component.SelectInputScreen
@@ -66,11 +67,14 @@ internal sealed class ComponentScene(
 
         data object BoxBadge : Badge(
             displayLabel = "Box Badge",
-            implemented = false
+            implemented = true
         ) {
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                throw IllegalStateException("Not implemented")
+                BoxBadgeScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = { moveToScene(Menu) },
+                )
             }
         }
     }

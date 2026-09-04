@@ -3,7 +3,7 @@ package com.shopl.sdg.ui.common
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.shopl.sdg.component.badge.box.SDGBoxBadgeType
+import com.shopl.sdg.component.badge.box.SDGBoxBadgeStyle
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.ui.base.SDGSampleBaseTab
 import com.shopl.sdg_common.foundation.SDGColor
@@ -32,14 +32,14 @@ internal fun <T> SDGSampleTypeTab(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSDGSampleTypeTab() {
-    val types = persistentListOf<SDGSampleBaseTabItem<SDGBoxBadgeType>>(
+    val types = persistentListOf<SDGSampleBaseTabItem<SDGBoxBadgeStyle>>(
         SDGSampleBaseTabItem(
-            title = SDGBoxBadgeType.Solid::class.simpleName.orEmpty(),
-            item = SDGBoxBadgeType.Solid
+            title = SDGBoxBadgeStyle.Solid.styleName,
+            item = SDGBoxBadgeStyle.Solid,
         ),
         SDGSampleBaseTabItem(
-            title = SDGBoxBadgeType.Line::class.simpleName.orEmpty(),
-            item = SDGBoxBadgeType.Line(SDGColor.Neutral350)
+            title = SDGBoxBadgeStyle.Line(lineColor = SDGColor.Neutral350).styleName,
+            item = SDGBoxBadgeStyle.Line(lineColor = SDGColor.Neutral350),
         ),
     )
     SDGSampleTypeTab(
