@@ -27,6 +27,60 @@ import com.shopl.sdg_common.ui.components.SDGText
  */
 @Composable
 fun SDGCheckOptionLabel(
+    state: SDGCheckOptionLabelState,
+    size: SDGCheckOptionLabelSize,
+    label: String,
+    isChecked: Boolean,
+    enabled: Boolean = true,
+    defaultTextColor: Color = SDGColor.Neutral700,
+    checkTextColor: Color = SDGColor.Primary300,
+    marginValues: PaddingValues = PaddingValues(),
+    onClick: (() -> Unit)? = null,
+) {
+    Row(
+        modifier = Modifier.padding(marginValues),
+        horizontalArrangement = Arrangement.spacedBy(
+            when (size) {
+                SDGCheckOptionLabelSize.SMALL -> Spacing6
+                SDGCheckOptionLabelSize.MEDIUM -> Spacing8
+            }
+        )
+    ) {
+        SDGCheck(
+            isChecked = isChecked,
+            onClick = {
+                if (enabled) {
+                    onClick?.invoke()
+                }
+            },
+            clickPadding = PaddingValues(vertical = SDGSpacing.Spacing2),
+        )
+        SDGText(
+            modifier = Modifier
+                .then(
+                    if (enabled) {
+                        Modifier.clickable(hasRipple = false) {
+                            onClick?.invoke()
+                        }
+                    } else Modifier
+                ),
+            text = label,
+            textColor = if (enabled) {
+                if (isChecked) {
+                    checkTextColor
+                } else {
+                    defaultTextColor
+                }
+            } else {
+                SDGColor.Neutral300
+            },
+            typography = size.typography
+        )
+    }
+}
+
+@Composable
+fun SDGCheckOptionLabel(
     size: SDGCheckOptionLabelSize,
     label: String,
     isChecked: Boolean,
