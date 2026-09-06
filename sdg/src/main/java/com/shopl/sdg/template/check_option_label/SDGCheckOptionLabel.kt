@@ -17,11 +17,13 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.ui.components.SDGText
 
 /**
- * SDG - Check Option Label
+ * SDG - Template - Check Option Label
  *
  * 하나의 옵션을 선택 또는 확인하는 Check Option과 Label이 조합된 템플릿
  *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19392-9158&m=dev">Figma</a>
+ * @version 2.3.42
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=27684-6923&m=dev">Figma</a>
  */
 @Composable
 fun SDGCheckOptionLabel(
