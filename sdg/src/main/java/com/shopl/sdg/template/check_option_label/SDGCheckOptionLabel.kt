@@ -1,19 +1,25 @@
 package com.shopl.sdg.template.check_option_label
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
-import com.shopl.sdg.component.check_option.legacy.SDGCheck
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.shopl.sdg.component.check_option.SDGCheckOption
+import com.shopl.sdg.component.check_option.model.SDGCheckOptionSelectedBackgroundColor
+import com.shopl.sdg.component.check_option.model.SDGCheckOptionSize
+import com.shopl.sdg.component.check_option.model.SDGCheckOptionStyle
+import com.shopl.sdg.template.check_option_label.preview.SDGCheckOptionLabelPreviewParameterProvider
+import com.shopl.sdg.template.check_option_label.preview.SDGCheckOptionLabelPreviewParams
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
-import com.shopl.sdg_common.foundation.spacing.SDGSpacing
-import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing6
-import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.ui.components.SDGText
 
 /**
@@ -27,58 +33,74 @@ import com.shopl.sdg_common.ui.components.SDGText
  */
 @Composable
 fun SDGCheckOptionLabel(
-    state: SDGCheckOptionLabelState,
-    size: SDGCheckOptionLabelSize,
     label: String,
-    isChecked: Boolean,
-    enabled: Boolean = true,
-    defaultTextColor: Color = SDGColor.Neutral700,
-    checkTextColor: Color = SDGColor.Primary300,
+    state: SDGCheckOptionLabelState,
+    selectType: SDGCheckOptionLabelSelectType,
+    size: SDGCheckOptionLabelSize,
+    onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
-    onClick: (() -> Unit)? = null,
+) {
+    SDGCheckOptionLabelContent(
+        label = AnnotatedString(label),
+        state = state,
+        selectedBackgroundColor = selectType.selectedBackgroundColor,
+        size = size,
+        labelColor = state.labelColor(selectType),
+        marginValues = marginValues,
+        onClick = onClick,
+    )
+}
+
+@Composable
+internal fun SDGCheckOptionLabelContent(
+    label: AnnotatedString,
+    state: SDGCheckOptionLabelState,
+    selectedBackgroundColor: SDGCheckOptionSelectedBackgroundColor,
+    size: SDGCheckOptionLabelSize,
+    labelColor: Color,
+    marginValues: PaddingValues,
+    onClick: () -> Unit,
 ) {
     Row(
-        modifier = Modifier.padding(marginValues),
-        horizontalArrangement = Arrangement.spacedBy(
-            when (size) {
-                SDGCheckOptionLabelSize.SMALL -> Spacing6
-                SDGCheckOptionLabelSize.MEDIUM -> Spacing8
-            }
-        )
-    ) {
-        SDGCheck(
-            isChecked = isChecked,
-            onClick = {
-                if (enabled) {
-                    onClick?.invoke()
-                }
-            },
-            clickPadding = PaddingValues(vertical = SDGSpacing.Spacing2),
-        )
-        SDGText(
-            modifier = Modifier
-                .then(
-                    if (enabled) {
-                        Modifier.clickable(hasRipple = false) {
-                            onClick?.invoke()
-                        }
-                    } else Modifier
-                ),
-            text = label,
-            textColor = if (enabled) {
-                if (isChecked) {
-                    checkTextColor
+        modifier = Modifier
+            .padding(marginValues)
+            .then(
+                if (state.isEnabled) {
+                    Modifier.clickable(onClick = onClick)
                 } else {
-                    defaultTextColor
-                }
-            } else {
-                SDGColor.Neutral300
-            },
-            typography = size.typography
+                    Modifier
+                },
+            ),
+        horizontalArrangement = Arrangement.spacedBy(space = size.gap),
+        verticalAlignment = Alignment.Top,
+    ) {
+        Box(
+            modifier = Modifier.padding(vertical = size.checkOptionVerticalPadding),
+        ) {
+            SDGCheckOption(
+                state = state.checkOptionState,
+                selectedBackgroundColor = selectedBackgroundColor,
+                size = SDGCheckOptionSize.MEDIUM,
+                style = SDGCheckOptionStyle.SOLID,
+                onClick = null,
+            )
+        }
+
+        SDGText(
+            text = label,
+            textColor = labelColor,
+            typography = size.typography,
         )
     }
 }
 
+
+/**
+ * 신규 Check Option Label API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Deprecated(
+    message = "SDGCheckOptionLabel의 state와 selectType 기반 API를 사용하세요.",
+)
 @Composable
 fun SDGCheckOptionLabel(
     size: SDGCheckOptionLabelSize,
@@ -90,74 +112,36 @@ fun SDGCheckOptionLabel(
     marginValues: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
 ) {
-    Row(
-        modifier = Modifier.padding(marginValues),
-        horizontalArrangement = Arrangement.spacedBy(
-            when (size) {
-                SDGCheckOptionLabelSize.SMALL -> Spacing6
-                SDGCheckOptionLabelSize.MEDIUM -> Spacing8
-            }
-        )
-    ) {
-        SDGCheck(
-            isChecked = isChecked,
-            onClick = {
-                if (enabled) {
-                    onClick?.invoke()
-                }
-            },
-            clickPadding = PaddingValues(vertical = SDGSpacing.Spacing2),
-        )
-        SDGText(
-            modifier = Modifier
-                .then(
-                    if (enabled) {
-                        Modifier.clickable(hasRipple = false) {
-                            onClick?.invoke()
-                        }
-                    } else Modifier
-                ),
-            text = label,
-            textColor = if (enabled) {
-                if (isChecked) {
-                    checkTextColor
-                } else {
-                    defaultTextColor
-                }
-            } else {
-                SDGColor.Neutral300
-            },
-            typography = size.typography
-        )
-    }
-}
+    val state = SDGCheckOptionLabelState.fromLegacy(
+        isChecked = isChecked,
+        enabled = enabled,
+    )
 
-@Preview(showBackground = true)
-@Composable
-private fun PreviewSDGCheckOptionLabel() {
-    SDGCheckOptionLabel(
-        size = SDGCheckOptionLabelSize.SMALL,
-        label = "Label",
-        isChecked = false
+    SDGCheckOptionLabelContent(
+        label = AnnotatedString(label),
+        state = state,
+        selectedBackgroundColor = SDGCheckOptionSelectedBackgroundColor.NORMAL,
+        size = size,
+        labelColor = state.legacyLabelColor(
+            defaultTextColor = defaultTextColor,
+            checkTextColor = checkTextColor,
+        ),
+        marginValues = marginValues,
+        onClick = { onClick?.invoke() },
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewSDGCheckOptionLabelChecked() {
+private fun PreviewSDGCheckOptionLabel(
+    @PreviewParameter(SDGCheckOptionLabelPreviewParameterProvider::class)
+    params: SDGCheckOptionLabelPreviewParams,
+) {
     SDGCheckOptionLabel(
-        size = SDGCheckOptionLabelSize.MEDIUM,
-        label = "Label",
-        isChecked = true
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PreviewSDGCheckOptionLabelWithLineBreak() {
-    SDGCheckOptionLabel(
-        size = SDGCheckOptionLabelSize.MEDIUM,
-        label = "Long\nLabel",
-        isChecked = true
+        label = params.label,
+        state = params.state,
+        selectType = params.selectType,
+        size = params.size,
+        onClick = {},
     )
 }
