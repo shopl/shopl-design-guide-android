@@ -20,7 +20,7 @@ enum class SDGCheckOptionLabelState(
     ),
     ;
 
-    internal fun labelColor(selectType: SDGCheckOptionLabelSelectType): Color =
+    internal fun labelColor(selectType: SDGCheckOptionLabelSelectedType): Color =
         when (this) {
             Default -> SDGColor.Neutral700
             Selected -> selectType.labelColor

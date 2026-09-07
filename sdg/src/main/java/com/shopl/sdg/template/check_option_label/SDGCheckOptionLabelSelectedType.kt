@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.shopl.sdg.component.check_option.model.SDGCheckOptionSelectedBackgroundColor
 import com.shopl.sdg_common.foundation.SDGColor
 
-enum class SDGCheckOptionLabelSelectType(
+enum class SDGCheckOptionLabelSelectedType(
     internal val labelColor: Color,
     internal val selectedBackgroundColor: SDGCheckOptionSelectedBackgroundColor,
 ) {

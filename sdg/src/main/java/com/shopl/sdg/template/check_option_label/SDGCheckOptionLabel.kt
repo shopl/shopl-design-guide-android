@@ -35,7 +35,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 fun SDGCheckOptionLabel(
     label: String,
     state: SDGCheckOptionLabelState,
-    selectType: SDGCheckOptionLabelSelectType,
+    selectedType: SDGCheckOptionLabelSelectedType,
     size: SDGCheckOptionLabelSize,
     onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
@@ -43,13 +43,14 @@ fun SDGCheckOptionLabel(
     SDGCheckOptionLabelContent(
         label = AnnotatedString(label),
         state = state,
-        selectedBackgroundColor = selectType.selectedBackgroundColor,
+        selectedBackgroundColor = selectedType.selectedBackgroundColor,
         size = size,
-        labelColor = state.labelColor(selectType),
+        labelColor = state.labelColor(selectedType),
         marginValues = marginValues,
         onClick = onClick,
     )
 }
+
 
 @Composable
 internal fun SDGCheckOptionLabelContent(
@@ -140,7 +141,7 @@ private fun PreviewSDGCheckOptionLabel(
     SDGCheckOptionLabel(
         label = params.label,
         state = params.state,
-        selectType = params.selectType,
+        selectedType = params.selectType,
         size = params.size,
         onClick = {},
     )
