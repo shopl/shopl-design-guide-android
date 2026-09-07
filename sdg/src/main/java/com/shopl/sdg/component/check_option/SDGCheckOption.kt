@@ -41,7 +41,7 @@ import com.shopl.sdg_resource.R
  * @param selectedBackgroundColor [SDGCheckOptionState.SELECTED] 상태에 적용할 색상
  * @param size 체크 옵션 크기
  * @param style 체크 옵션 스타일
- * @param onClick 체크 옵션 클릭 콜백
+ * @param onClick 체크 옵션 클릭 콜백. null인 경우 클릭 영역을 생성하지 않음
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7349-16748&m=dev">Figma</a>
  */
@@ -51,7 +51,7 @@ fun SDGCheckOption(
     selectedBackgroundColor: SDGCheckOptionSelectedBackgroundColor,
     size: SDGCheckOptionSize,
     style: SDGCheckOptionStyle,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)?,
 ) {
     val (checkOptionColor, checkOptionEnabled) = when (state) {
         SDGCheckOptionState.DEFAULT -> SDGColor.Neutral250 to true
@@ -80,9 +80,15 @@ fun SDGCheckOption(
         modifier = Modifier
             .size(size = size.circleSize)
             .then(other = checkOptionModifier)
-            .clickable(
-                enabled = checkOptionEnabled,
-                onClick = onClick,
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable(
+                        enabled = checkOptionEnabled,
+                        onClick = onClick,
+                    )
+                } else {
+                    Modifier
+                },
             ),
     ) {
         SDGImage(
