@@ -87,6 +87,8 @@ internal class SDGBoxButtonPreviewParameterProvider :
         backgroundColor = SDGColor.Neutral0,
         size = SDGBoxButtonSize.XSmall,
         type = SDGBoxButtonType.Line(SDGColor.Neutral300),
+        rightIcon = R.drawable.ic_common_edit,
+        iconDownSize = true,
         isFillMaxWidth = false,
     )
 }

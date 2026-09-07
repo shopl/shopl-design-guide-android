@@ -128,6 +128,7 @@ fun SDGBoxButton(
             }
 
             SDGText(
+                modifier = Modifier.weight(1f, fill = false),
                 text = label,
                 textColor = when {
                     enable || labelColor == SDGColor.Neutral0 -> labelColor
