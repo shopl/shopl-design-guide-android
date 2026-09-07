@@ -19,5 +19,6 @@
   <path
       android:pathData="M2 4C2 2.89543 2.89543 2 4 2H20C21.1046 2 22 2.89543 22 4V7.5H2V4Z"
       android:fillColor="#555555"
+      android:fillAlpha="0.2"
       android:fillType="nonZero"/>
 </vector>
