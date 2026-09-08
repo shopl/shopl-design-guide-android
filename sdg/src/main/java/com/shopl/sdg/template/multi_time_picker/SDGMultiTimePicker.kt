@@ -23,8 +23,8 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.shopl.sdg.component.number_picker.SDGNumberPicker
-import com.shopl.sdg.component.number_picker.SDGNumberPickerOption
+import com.shopl.sdg.component.time_picker.SDGTimePicker
+import com.shopl.sdg.component.time_picker.SDGTimePickerOption
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
@@ -109,9 +109,9 @@ fun SDGMultiTimePicker(
             }
 
             key(selectedTarget) {
-                SDGNumberPicker(
-                    option = SDGNumberPickerOption.TwoOption(
-                        left = SDGNumberPickerOption.TwoOption.OptionModel(
+                SDGTimePicker(
+                    option = SDGTimePickerOption.TwoOption(
+                        left = SDGTimePickerOption.TwoOption.OptionModel(
                             value = selectedTime.hour,
                             rangeList = HourRange,
                             onValueChange = { hour ->
@@ -119,9 +119,8 @@ fun SDGMultiTimePicker(
                                     it.copy(hour = hour)
                                 }
                             },
-                            supportsInfiniteScroll = true,
                         ),
-                        right = SDGNumberPickerOption.TwoOption.OptionModel(
+                        right = SDGTimePickerOption.TwoOption.OptionModel(
                             value = selectedTime.min,
                             rangeList = MinuteRange,
                             onValueChange = { minute ->
@@ -129,7 +128,6 @@ fun SDGMultiTimePicker(
                                     it.copy(min = minute)
                                 }
                             },
-                            supportsInfiniteScroll = true,
                         ),
                     )
                 )
