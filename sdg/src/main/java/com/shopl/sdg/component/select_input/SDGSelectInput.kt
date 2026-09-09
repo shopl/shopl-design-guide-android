@@ -436,7 +436,7 @@ private fun SelectInputText(
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
     SDGText(
-        modifier = modifier,
+        modifier = modifier.padding(vertical = SDGSpacing.Spacing5),
         text = text,
         textColor = textColor,
         typography = SDGTypography.Body1R,
