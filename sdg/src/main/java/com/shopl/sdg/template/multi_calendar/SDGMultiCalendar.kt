@@ -99,6 +99,8 @@ fun SDGMultiCalendarModal(
     onClickConfirm: (SDGMultiCalendarModalType, DateTime, DateTime) -> Unit,
     onClickConfirmWeek: ((SDGMultiCalendarModalType, WeekDateTime, WeekDateTime) -> Unit)? = null,
     onMaxCountError: ((SDGMultiCalendarModalType) -> Unit)? = null,
+    cancelLabel: String = stringResource(id = R.string.dialog_common_btn_cancel),
+    confirmLabel: String = stringResource(id = R.string.dialog_common_btn_ok),
 ) {
     require(types.isNotEmpty())
 
@@ -315,7 +317,7 @@ fun SDGMultiCalendarModal(
                 SDGGhostButton(
                     weight = 1F,
                     size = SDGGhostButtonSize.Large,
-                    label = stringResource(id = R.string.dialog_common_btn_cancel),
+                    label = cancelLabel,
                     onClick = { onClickCancel() },
                     labelColor = SDGColor.Neutral700,
                 )
@@ -331,7 +333,7 @@ fun SDGMultiCalendarModal(
                 SDGGhostButton(
                     weight = 1F,
                     size = SDGGhostButtonSize.Large,
-                    label = stringResource(id = R.string.dialog_common_btn_ok),
+                    label = confirmLabel,
                     labelColor = SDGColor.Neutral700,
                     labelWeight = SDGButtonFontWeight.SB,
                     onClick = {
