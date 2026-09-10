@@ -10,9 +10,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import com.shopl.sdg.component.radio.legacy.SDGRadio
+import com.shopl.sdg.component.radio.SDGRadio
+import com.shopl.sdg.component.radio.model.SDGRadioSize
 import com.shopl.sdg.component.radio.legacy.model.SDGRadioColor
-import com.shopl.sdg.component.radio.legacy.model.SDGRadioSize
+import com.shopl.sdg.component.radio.legacy.model.SDGRadioSize as LegacySDGRadioSize
 import com.shopl.sdg.template.radio_label.preview.SDGRadioLabelPreviewParameterProvider
 import com.shopl.sdg.template.radio_label.preview.SDGRadioLabelPreviewParams
 import com.shopl.sdg_common.ext.clickable
@@ -59,9 +60,10 @@ fun SDGRadioLabel(
             modifier = Modifier.padding(vertical = Spacing2),
         ) {
             SDGRadio(
-                status = state.radioStatus,
-                selectedColor = selectType.radioColor,
+                state = state.radioState,
+                selectedBackgroundColor = selectType.selectedBackgroundColor,
                 size = SDGRadioSize.MEDIUM,
+                onClick = null,
             )
         }
 
@@ -86,7 +88,7 @@ fun SDGRadioLabel(
     status: SDGRadioLabelStatus,
     selectedLabelColor: SDGRadioLabelColor = SDGRadioLabelColor.BASIC,
     radioColor: SDGRadioColor = SDGRadioColor.BASIC,
-    radioSize: SDGRadioSize = SDGRadioSize.MEDIUM,
+    radioSize: LegacySDGRadioSize = LegacySDGRadioSize.MEDIUM,
     onClick: (() -> Unit)? = null,
 ) {
     SDGRadioLabel(
