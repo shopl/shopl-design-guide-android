@@ -1,21 +1,21 @@
 package com.shopl.sdg.template.radio_label
 
 import androidx.compose.ui.graphics.Color
-import com.shopl.sdg.component.radio.legacy.model.SDGRadioStatus
+import com.shopl.sdg.component.radio.model.SDGRadioState
 import com.shopl.sdg_common.foundation.SDGColor
 
 enum class SDGRadioLabelState(
-    internal val radioStatus: SDGRadioStatus,
+    internal val radioState: SDGRadioState,
     internal val isEnabled: Boolean = true,
 ) {
     Default(
-        radioStatus = SDGRadioStatus.DEFAULT,
+        radioState = SDGRadioState.DEFAULT,
     ),
     Selected(
-        radioStatus = SDGRadioStatus.SELECTED,
+        radioState = SDGRadioState.SELECTED,
     ),
     Disabled(
-        radioStatus = SDGRadioStatus.DISABLED,
+        radioState = SDGRadioState.DISABLED,
         isEnabled = false,
     ),
     ;

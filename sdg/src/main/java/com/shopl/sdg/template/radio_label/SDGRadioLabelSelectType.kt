@@ -2,23 +2,24 @@ package com.shopl.sdg.template.radio_label
 
 import androidx.compose.ui.graphics.Color
 import com.shopl.sdg.component.radio.legacy.model.SDGRadioColor
+import com.shopl.sdg.component.radio.model.SDGRadioSelectedBackgroundColor
 import com.shopl.sdg_common.foundation.SDGColor
 
 enum class SDGRadioLabelSelectType(
     internal val labelColor: Color,
-    internal val radioColor: SDGRadioColor,
+    internal val selectedBackgroundColor: SDGRadioSelectedBackgroundColor,
 ) {
     Normal(
         labelColor = SDGColor.Neutral700,
-        radioColor = SDGRadioColor.BASIC,
+        selectedBackgroundColor = SDGRadioSelectedBackgroundColor.NORMAL,
     ),
     Color(
         labelColor = SDGColor.Primary300,
-        radioColor = SDGRadioColor.BASIC,
+        selectedBackgroundColor = SDGRadioSelectedBackgroundColor.NORMAL,
     ),
     Neutral(
         labelColor = SDGColor.Neutral700,
-        radioColor = SDGRadioColor.SPECIAL,
+        selectedBackgroundColor = SDGRadioSelectedBackgroundColor.NEUTRAL,
     ),
     ;
 
