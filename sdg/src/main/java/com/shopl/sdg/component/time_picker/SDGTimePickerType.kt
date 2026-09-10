@@ -10,6 +10,7 @@ sealed interface SDGTimePickerOption {
         val rangeList: PersistentList<Int>,
         val onValueChange: (Int) -> Unit,
         val width: Dp = 0.dp,
+        val onEditingComplete: (Int) -> Unit = {},
     ) : SDGTimePickerOption
 
     data class TwoOption(
@@ -21,6 +22,7 @@ sealed interface SDGTimePickerOption {
             val rangeList: PersistentList<Int>,
             val onValueChange: (Int) -> Unit,
             val width: Dp = 0.dp,
+            val onEditingComplete: (Int) -> Unit = {},
         )
     }
 }

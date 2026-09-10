@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.selected
@@ -65,11 +66,14 @@ fun SDGMultiTimePicker(
 ) {
     var pendingType by remember(type) { mutableStateOf(type.normalizeToClockRange()) }
     var selectedTarget by remember(type) { mutableStateOf(TimeTarget.Start) }
+    val focusManager = LocalFocusManager.current
+    var confirmType = pendingType
     val selectedTime = pendingType.selectedTime(selectedTarget)
 
     FixedBottomPopup(
         singleButton = false,
-        onClickConfirm = { onClickConfirm(pendingType) },
+        onClickConfirm = { onClickConfirm(confirmType) },
+        onBeforeClickConfirm = { focusManager.clearFocus() },
         modifier = modifier,
         cancelLabel = cancelLabel,
         confirmLabel = confirmLabel,
@@ -100,7 +104,10 @@ fun SDGMultiTimePicker(
                             startTime = currentType.startTime,
                             endTime = currentType.endTime,
                             selectedTarget = selectedTarget,
-                            onClickTarget = { selectedTarget = it },
+                            onClickTarget = {
+                                focusManager.clearFocus()
+                                selectedTarget = it
+                            },
                         )
 
                         is SDGMultiTimePickerType.Single -> Unit
@@ -119,12 +126,22 @@ fun SDGMultiTimePicker(
                                     it.copy(hour = hour)
                                 }
                             },
+                            onEditingComplete = { hour ->
+                                confirmType = confirmType.updateSelectedTime(selectedTarget) {
+                                    it.copy(hour = hour)
+                                }
+                            },
                         ),
                         right = SDGTimePickerOption.TwoOption.OptionModel(
                             value = selectedTime.min,
                             rangeList = MinuteRange,
                             onValueChange = { minute ->
                                 pendingType = pendingType.updateSelectedTime(selectedTarget) {
+                                    it.copy(min = minute)
+                                }
+                            },
+                            onEditingComplete = { minute ->
+                                confirmType = confirmType.updateSelectedTime(selectedTarget) {
                                     it.copy(min = minute)
                                 }
                             },
