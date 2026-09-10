@@ -29,7 +29,7 @@ import com.shopl.sdg_resource.R
  * @param state 라디오 버튼 상태
  * @param selectedBackgroundColor [SDGRadioState.SELECTED] 상태에 적용할 배경 색상
  * @param size 라디오 버튼 크기
- * @param onClick 라디오 버튼 클릭 콜백
+ * @param onClick 라디오 버튼 클릭 콜백. null이면 시각 전용으로 표시합니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=27346-40022&m=dev">Figma</a>
  */
@@ -38,7 +38,7 @@ fun SDGRadio(
     state: SDGRadioState,
     selectedBackgroundColor: SDGRadioSelectedBackgroundColor,
     size: SDGRadioSize,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)?,
 ) {
     val (radioColor, radioEnabled) = when (state) {
         SDGRadioState.DEFAULT -> SDGColor.Neutral250 to true
@@ -54,9 +54,15 @@ fun SDGRadio(
                 color = radioColor,
                 shape = CircleShape,
             )
-            .clickable(
-                enabled = radioEnabled,
-                onClick = onClick,
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable(
+                        enabled = radioEnabled,
+                        onClick = onClick,
+                    )
+                } else {
+                    Modifier
+                },
             ),
     ) {
         SDGImage(
