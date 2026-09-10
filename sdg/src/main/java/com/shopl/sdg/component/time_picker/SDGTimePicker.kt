@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
@@ -89,6 +90,7 @@ private fun SDGOneOptionTimePicker(option: OneOption) {
         value = option.value,
         rangeList = option.rangeList,
         onValueChange = option.onValueChange,
+        onEditingComplete = option.onEditingComplete,
         width = option.width,
         isEditMode = true
     )
@@ -112,6 +114,7 @@ private fun SDGTwoOptionTimePicker(option: TwoOption) {
                     value = option.left.value,
                     rangeList = option.left.rangeList,
                     onValueChange = option.left.onValueChange,
+                    onEditingComplete = option.left.onEditingComplete,
                     isEditMode = true,
                 )
             }
@@ -121,6 +124,7 @@ private fun SDGTwoOptionTimePicker(option: TwoOption) {
                     value = option.right.value,
                     rangeList = option.right.rangeList,
                     onValueChange = option.right.onValueChange,
+                    onEditingComplete = option.right.onEditingComplete,
                     isEditMode = true
                 )
             }
@@ -138,6 +142,7 @@ private fun SDGTimePickerBody(
     value: Int,
     rangeList: PersistentList<Int>,
     onValueChange: (Int) -> Unit,
+    onEditingComplete: (Int) -> Unit = {},
     width: Dp = 0.dp,
     isEditMode: Boolean = true,
 ) {
@@ -146,6 +151,7 @@ private fun SDGTimePickerBody(
             value = value,
             rangeList = rangeList,
             onValueChange = onValueChange,
+            onEditingComplete = onEditingComplete,
             width = width,
             isEditMode = isEditMode
         )
@@ -154,6 +160,7 @@ private fun SDGTimePickerBody(
             value = value,
             rangeList = rangeList,
             onValueChange = onValueChange,
+            onEditingComplete = onEditingComplete,
             width = width,
             isEditMode = isEditMode
         )
@@ -171,6 +178,7 @@ private fun FinitePickerBody(
     value: Int,
     rangeList: PersistentList<Int>,
     onValueChange: (Int) -> Unit,
+    onEditingComplete: (Int) -> Unit,
     width: Dp = 0.dp,
     isEditMode: Boolean = true,
 ) {
@@ -183,6 +191,18 @@ private fun FinitePickerBody(
 
     var isEditing by remember { mutableStateOf(false) }
     var editingValue by remember { mutableStateOf(TextFieldValue("")) }
+    val completeEditing = {
+        if (isEditing) {
+            completeEditingValue(
+                editingValue = editingValue,
+                rangeList = rangeList,
+                value = value,
+                setEditing = { isEditing = it },
+                onValueChange = onValueChange,
+                onEditingComplete = onEditingComplete,
+            )
+        }
+    }
 
     LaunchedEffect(Unit) {
         val index = rangeList.indexOf(value)
@@ -246,7 +266,7 @@ private fun FinitePickerBody(
                     editingValue = editingValue,
                     setEditing = { isEditing = it },
                     setEditingValue = { editingValue = it },
-                    onValueChange = onValueChange,
+                    onEditingComplete = completeEditing,
                     isEditMode = isEditMode,
                     rangeList = rangeList
                 )
@@ -263,7 +283,7 @@ private fun FinitePickerItem(
     editingValue: TextFieldValue,
     setEditing: (Boolean) -> Unit,
     setEditingValue: (TextFieldValue) -> Unit,
-    onValueChange: (Int) -> Unit,
+    onEditingComplete: () -> Unit,
     isEditMode: Boolean,
     rangeList: PersistentList<Int>
 ) {
@@ -272,6 +292,11 @@ private fun FinitePickerItem(
     val color = if (isCenter) selectedColor else unSelectedColor
 
     val focusRequester = remember { FocusRequester() }
+    var hasBeenFocused by remember(isEditing) { mutableStateOf(false) }
+    val finishEditing = {
+        hasBeenFocused = false
+        onEditingComplete()
+    }
 
     LaunchedEffect(isEditing) {
         if (isEditing && isCenter) {
@@ -309,15 +334,7 @@ private fun FinitePickerItem(
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone = {
-                        val newValue = editingValue.text.toIntOrNull()
-                        if (newValue != null && newValue in rangeList) {
-                            setEditing(false)
-                            if (newValue != value) {
-                                onValueChange(newValue)
-                            }
-                        }
-                    }
+                    onDone = { finishEditing() }
                 ),
                 textStyle = SDGTypography.Title2R.style.copy(
                     color = selectedColor,
@@ -325,6 +342,13 @@ private fun FinitePickerItem(
                 ),
                 modifier = Modifier
                     .focusRequester(focusRequester)
+                    .onFocusChanged { focusState ->
+                        if (focusState.isFocused) {
+                            hasBeenFocused = true
+                        } else if (hasBeenFocused && isEditing) {
+                            finishEditing()
+                        }
+                    }
                     .fillMaxWidth()
                     .height(ITEM_HEIGHT.dp)
             ) { innerTextField ->
@@ -353,6 +377,7 @@ private fun InfinitePickerBody(
     value: Int,
     rangeList: PersistentList<Int>,
     onValueChange: (Int) -> Unit,
+    onEditingComplete: (Int) -> Unit,
     width: Dp = 0.dp,
     isEditMode: Boolean = true,
 ) {
@@ -367,6 +392,19 @@ private fun InfinitePickerBody(
 
     var isEditing by remember { mutableStateOf(false) }
     var editingValue by remember { mutableStateOf(TextFieldValue("")) }
+    val validRange = remember(displayList) { displayList.filterNotNull() }
+    val completeEditing = {
+        if (isEditing) {
+            completeEditingValue(
+                editingValue = editingValue,
+                rangeList = validRange,
+                value = value,
+                setEditing = { isEditing = it },
+                onValueChange = onValueChange,
+                onEditingComplete = onEditingComplete,
+            )
+        }
+    }
 
     var suppressNextValueScroll by remember { mutableStateOf(false) }
 
@@ -495,8 +533,7 @@ private fun InfinitePickerBody(
                     },
                     editingValue = editingValue,
                     setEditingValue = { editingValue = it },
-                    value = value,
-                    onValueChange = onValueChange,
+                    onEditingComplete = completeEditing,
                     isEditMode = isEditMode
                 )
             }
@@ -516,8 +553,7 @@ private fun InfinitePickerItem(
     setEditing: (Boolean) -> Unit,
     editingValue: TextFieldValue,
     setEditingValue: (TextFieldValue) -> Unit,
-    value: Int,
-    onValueChange: (Int) -> Unit,
+    onEditingComplete: () -> Unit,
     isEditMode: Boolean
 ) {
     val rangeSize = rangeList.size
@@ -538,6 +574,11 @@ private fun InfinitePickerItem(
     val color = lerp(selectedColor, unSelectedColor, colorLerpFraction)
 
     val focusRequester = remember { FocusRequester() }
+    var hasBeenFocused by remember(isEditing) { mutableStateOf(false) }
+    val finishEditing = {
+        hasBeenFocused = false
+        onEditingComplete()
+    }
 
     LaunchedEffect(isEditing) {
         if (isEditing && isCenterItem) {
@@ -561,7 +602,7 @@ private fun InfinitePickerItem(
             )
     ) {
         if (isEditMode && isCenterItem && isEditing) {
-            val validRange = remember { rangeList.filterNotNull() }
+            val validRange = remember(rangeList) { rangeList.filterNotNull() }
             BasicTextField(
                 value = editingValue,
                 onValueChange = { newInput ->
@@ -576,15 +617,7 @@ private fun InfinitePickerItem(
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone = {
-                        val newValue = editingValue.text.toIntOrNull()
-                        if (newValue != null && newValue in validRange) {
-                            setEditing(false)
-                            if (newValue != value) {
-                                onValueChange(newValue)
-                            }
-                        }
-                    }
+                    onDone = { finishEditing() }
                 ),
                 textStyle = SDGTypography.Title2R.style.copy(
                     color = selectedColor,
@@ -592,6 +625,13 @@ private fun InfinitePickerItem(
                 ),
                 modifier = Modifier
                     .focusRequester(focusRequester)
+                    .onFocusChanged { focusState ->
+                        if (focusState.isFocused) {
+                            hasBeenFocused = true
+                        } else if (hasBeenFocused && isEditing) {
+                            finishEditing()
+                        }
+                    }
                     .fillMaxWidth()
                     .height(ITEM_HEIGHT.dp)
             ) { innerTextField ->
@@ -609,6 +649,27 @@ private fun InfinitePickerItem(
                 textColor = color
             )
         }
+    }
+}
+
+/**
+ * 유효한 직접 입력값을 선택값으로 확정합니다.
+ */
+private fun completeEditingValue(
+    editingValue: TextFieldValue,
+    rangeList: Iterable<Int>,
+    value: Int,
+    setEditing: (Boolean) -> Unit,
+    onValueChange: (Int) -> Unit,
+    onEditingComplete: (Int) -> Unit,
+) {
+    val newValue = editingValue.text.toIntOrNull()
+    if (newValue != null && newValue in rangeList) {
+        setEditing(false)
+        if (newValue != value) {
+            onValueChange(newValue)
+        }
+        onEditingComplete(newValue)
     }
 }
 

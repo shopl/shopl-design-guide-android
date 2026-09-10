@@ -50,6 +50,7 @@ import com.shopl.sdg_resource.R
 internal fun FixedBottomPopup(
     singleButton: Boolean,
     onClickConfirm: () -> Unit,
+    onBeforeClickConfirm: () -> Unit = {},
     modifier: Modifier = Modifier,
     containerColor: Color = SDGColor.Neutral0,
     contentColor: Color = SDGColor.Neutral0,
@@ -75,7 +76,10 @@ internal fun FixedBottomPopup(
             cancelLabel = cancelLabel,
             confirmLabel = confirmLabel,
             onClickCancel = onClickCancel,
-            onClickConfirm = onClickConfirm,
+            onClickConfirm = {
+                onBeforeClickConfirm()
+                onClickConfirm()
+            },
             isConfirmEnable = isConfirmEnable,
             confirmLabelColor = confirmLabelColor,
             contentPadding = contentPadding,
@@ -97,6 +101,7 @@ internal fun FixedBottomPopup(
         confirmLabel = confirmLabel,
         onClickCancel = onClickCancel,
         onClickConfirm = onClickConfirm,
+        onBeforeClickConfirm = onBeforeClickConfirm,
         isConfirmEnable = isConfirmEnable,
         confirmLabelColor = confirmLabelColor,
         contentPadding = contentPadding,
@@ -115,6 +120,7 @@ private fun FixedBottomPopupContent(
     confirmLabel: String,
     onClickCancel: (() -> Unit)?,
     onClickConfirm: () -> Unit,
+    onBeforeClickConfirm: () -> Unit,
     isConfirmEnable: Boolean,
     confirmLabelColor: Color,
     contentPadding: PaddingValues,
@@ -169,7 +175,10 @@ private fun FixedBottomPopupContent(
                     onClickCancel = onClickCancel?.let { cancel ->
                         { state.requestDismiss(cancel) }
                     },
-                    onClickConfirm = { state.requestDismiss(onClickConfirm) },
+                    onClickConfirm = {
+                        onBeforeClickConfirm()
+                        state.requestDismiss(onClickConfirm)
+                    },
                     isConfirmEnable = isConfirmEnable,
                     confirmLabelColor = confirmLabelColor,
                     contentPadding = contentPadding,
