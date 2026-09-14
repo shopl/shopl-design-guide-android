@@ -116,18 +116,19 @@ fun SDGMultiTimePicker(
             }
 
             key(selectedTarget) {
+                val editingTarget = selectedTarget
                 SDGTimePicker(
                     option = SDGTimePickerOption.TwoOption(
                         left = SDGTimePickerOption.TwoOption.OptionModel(
                             value = selectedTime.hour,
                             rangeList = HourRange,
                             onValueChange = { hour ->
-                                pendingType = pendingType.updateSelectedTime(selectedTarget) {
+                                pendingType = pendingType.updateSelectedTime(editingTarget) {
                                     it.copy(hour = hour)
                                 }
                             },
                             onEditingComplete = { hour ->
-                                confirmType = confirmType.updateSelectedTime(selectedTarget) {
+                                confirmType = confirmType.updateSelectedTime(editingTarget) {
                                     it.copy(hour = hour)
                                 }
                             },
@@ -136,12 +137,12 @@ fun SDGMultiTimePicker(
                             value = selectedTime.min,
                             rangeList = MinuteRange,
                             onValueChange = { minute ->
-                                pendingType = pendingType.updateSelectedTime(selectedTarget) {
+                                pendingType = pendingType.updateSelectedTime(editingTarget) {
                                     it.copy(min = minute)
                                 }
                             },
                             onEditingComplete = { minute ->
-                                confirmType = confirmType.updateSelectedTime(selectedTarget) {
+                                confirmType = confirmType.updateSelectedTime(editingTarget) {
                                     it.copy(min = minute)
                                 }
                             },
