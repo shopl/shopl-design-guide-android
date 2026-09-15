@@ -6,6 +6,7 @@ import com.shopl.sdg.ui.screen.component.AttachmentElementScreen
 import com.shopl.sdg.ui.screen.component.BoxBadgeScreen
 import com.shopl.sdg.ui.screen.component.DropdownScreen
 import com.shopl.sdg.ui.screen.component.IconLabelScreen
+import com.shopl.sdg.ui.screen.component.IconTabScreen
 import com.shopl.sdg.ui.screen.component.SelectInputScreen
 import com.shopl.sdg.ui.screen.component.TimeSelectInputScreen
 import com.shopl.sdg.ui.screen.component.button.BottomButtonScreen
@@ -456,11 +457,14 @@ internal sealed class ComponentScene(
 
         data object IconTab : Tab(
             displayLabel = "Icon Tab",
-            implemented = false
+            implemented = true
         ) {
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                throw IllegalStateException("Not implemented")
+                IconTabScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = { moveToScene(Menu) },
+                )
             }
         }
     }
