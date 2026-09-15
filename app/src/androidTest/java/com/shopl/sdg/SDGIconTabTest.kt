@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
@@ -29,6 +30,7 @@ import com.shopl.sdg.component.tab.icon.SDGIconTabIconSize
 import com.shopl.sdg.component.tab.icon.SDGIconTabOption
 import com.shopl.sdg.component.tab.icon.SDGTabItem
 import com.shopl.sdg_resource.R
+import kotlinx.collections.immutable.toPersistentList
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertThrows
@@ -225,6 +227,55 @@ class SDGIconTabTest {
     }
 
     @Test
+    fun optionsKeepTabsWhenSourceListsChange() {
+        for (optionCount in 3..5) {
+            val originalTabs = tabs(optionCount)
+            for (source in listOf(originalTabs.toMutableList(), originalTabs.toMutableStateList())) {
+                assertTabsUnaffectedBySourceChanges(source = source, option = option(source))
+            }
+        }
+    }
+
+    @Test
+    fun copiedOptionsKeepTabsWhenSourceListsChange() {
+        for (optionCount in 3..5) {
+            val original = option(tabs(optionCount))
+            val replacementTabs = tabs(optionCount).map { it.copy(label = "수정된 ${it.label}") }
+            for (source in listOf(replacementTabs.toMutableList(), replacementTabs.toMutableStateList())) {
+                val copied = when (original) {
+                    is SDGIconTabOption.ThreeOption -> original.copy(tabs = source)
+                    is SDGIconTabOption.FourOption -> original.copy(tabs = source)
+                    is SDGIconTabOption.FiveOption -> original.copy(tabs = source)
+                }
+                assertTabsUnaffectedBySourceChanges(source = source, option = copied)
+                assertEquals(tabs(optionCount), original.tabs)
+            }
+        }
+    }
+
+    @Test
+    fun copiedOptionsRejectMismatchedTabCounts() {
+        for (optionCount in 3..5) {
+            val original = option(tabs(optionCount))
+            val invalidTabs = tabs(optionCount + 1)
+            assertThrows(IllegalArgumentException::class.java) {
+                when (original) {
+                    is SDGIconTabOption.ThreeOption -> original.copy(tabs = invalidTabs)
+                    is SDGIconTabOption.FourOption -> original.copy(tabs = invalidTabs)
+                    is SDGIconTabOption.FiveOption -> original.copy(tabs = invalidTabs)
+                }
+            }
+            assertThrows(IllegalArgumentException::class.java) {
+                when (original) {
+                    is SDGIconTabOption.ThreeOption -> original.copy(tabs = invalidTabs.toPersistentList())
+                    is SDGIconTabOption.FourOption -> original.copy(tabs = invalidTabs.toPersistentList())
+                    is SDGIconTabOption.FiveOption -> original.copy(tabs = invalidTabs.toPersistentList())
+                }
+            }
+        }
+    }
+
+    @Test
     fun selectedTabRejectsZeroBasedPosition() {
         assertThrows(IllegalArgumentException::class.java) {
             composeRule.setContent {
@@ -246,6 +297,21 @@ class SDGIconTabTest {
                     onTabClick = {})
             }
         }
+    }
+
+    private fun assertTabsUnaffectedBySourceChanges(
+        source: MutableList<SDGTabItem>,
+        option: SDGIconTabOption,
+    ) {
+        val originalTabs = source.toList()
+        source.add(source.first())
+        assertEquals(originalTabs, option.tabs)
+        source.removeAt(0)
+        assertEquals(originalTabs, option.tabs)
+        source[0] = source.first().copy(label = "변경된 라벨", count = "999+", showCount = false)
+        assertEquals(originalTabs, option.tabs)
+        source.clear()
+        assertEquals(originalTabs, option.tabs)
     }
 
     private fun option(tabs: List<SDGTabItem>): SDGIconTabOption = when (tabs.size) {
