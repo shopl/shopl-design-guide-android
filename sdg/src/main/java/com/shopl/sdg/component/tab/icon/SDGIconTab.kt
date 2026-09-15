@@ -31,7 +31,7 @@ private val SDGIconTabItemMinWidth = 50.dp
  * @param onTabClick 클릭한 탭의 위치(1부터 시작)를 전달하는 콜백. 호출부에서 selectedTab을 갱신합니다.
  * @param paddingValues 컴포넌트 외부 여백. 여백을 제외한 부모의 가용 너비를 채웁니다.
  *
- * @see <a href="https://www.figma.com/design/SsBipIZV6kO3kUo0ekFyOR/Icon-Tab?node-id=1-63&m=dev">Figma</a>
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=20931-22253&m=dev">Figma</a>
  */
 @Composable
 fun SDGIconTab(
@@ -61,7 +61,9 @@ fun SDGIconTab(
                 iconTabIc = tab.iconTabIc,
                 onClick = { onTabClick(index + 1) },
                 modifier = if (isSelected) {
-                    Modifier.weight(1f).widthIn(min = SDGIconTabItemMinWidth)
+                    Modifier
+                        .weight(1f)
+                        .widthIn(min = SDGIconTabItemMinWidth)
                 } else {
                     Modifier.width(SDGIconTabItemMinWidth)
                 },
