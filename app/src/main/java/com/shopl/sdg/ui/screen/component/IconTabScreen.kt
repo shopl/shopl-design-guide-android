@@ -94,7 +94,7 @@ private fun IconTabSection(
     title: String,
     option: SDGIconTabOption,
 ) {
-    var selectedTab by rememberSaveable { mutableIntStateOf(1) }
+    var selectedTab by rememberSaveable { mutableIntStateOf(0) }
 
     Column(
         modifier = Modifier.fillMaxWidth(),

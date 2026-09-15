@@ -27,8 +27,8 @@ private val SDGIconTabItemMinWidth = 50.dp
  * @version 2.3.47
  *
  * @param option Option: ThreeOption / FourOption / FiveOption
- * @param selectedTab Selected Tab: 1부터 시작하는 선택 위치. Option의 탭 개수 이내로 지정합니다.
- * @param onTabClick 클릭한 탭의 위치(1부터 시작)를 전달하는 콜백. 호출부에서 selectedTab을 갱신합니다.
+ * @param selectedTab Selected Tab: 0부터 시작하는 선택 인덱스. 0 이상 Option의 탭 개수 미만으로 지정합니다.
+ * @param onTabClick 클릭한 탭의 인덱스(0부터 시작)를 전달하는 콜백. 호출부에서 selectedTab을 갱신합니다.
  * @param paddingValues 컴포넌트 외부 여백. 여백을 제외한 부모의 가용 너비를 채웁니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=20931-22253&m=dev">Figma</a>
@@ -40,8 +40,8 @@ fun SDGIconTab(
     onTabClick: (Int) -> Unit,
     paddingValues: PaddingValues = PaddingValues(0.dp),
 ) {
-    require(selectedTab in 1..option.tabs.size) {
-        "Selected Tab은 1부터 ${option.tabs.size} 사이의 위치여야 합니다. (입력값: $selectedTab)"
+    require(selectedTab in option.tabs.indices) {
+        "Selected Tab은 0부터 ${option.tabs.lastIndex} 사이의 인덱스여야 합니다. (입력값: $selectedTab)"
     }
 
     Row(
@@ -52,14 +52,14 @@ fun SDGIconTab(
         horizontalArrangement = Arrangement.spacedBy(Spacing4),
     ) {
         option.tabs.forEachIndexed { index, tab ->
-            val isSelected = index + 1 == selectedTab
+            val isSelected = index == selectedTab
             SDGIconTabItem(
                 state = if (isSelected) SDGIconTabItemState.Selected else SDGIconTabItemState.Unselected,
                 label = tab.label,
                 count = tab.count,
                 showCount = tab.showCount,
                 iconTabIc = tab.iconTabIc,
-                onClick = { onTabClick(index + 1) },
+                onClick = { onTabClick(index) },
                 modifier = if (isSelected) {
                     Modifier
                         .weight(1f)

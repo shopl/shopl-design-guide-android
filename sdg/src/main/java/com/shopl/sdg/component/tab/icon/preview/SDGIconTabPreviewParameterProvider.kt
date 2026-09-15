@@ -36,86 +36,86 @@ internal class SDGIconTabPreviewParameterProvider :
 
     private fun 기본_Three_옵션() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.ThreeOption(tabs = tabs(3)),
-        selectedTab = 1,
+        selectedTab = 0,
     )
 
     private fun 기본_Three_옵션_두번째_탭_선택() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.ThreeOption(tabs = tabs(3)),
-        selectedTab = 2,
+        selectedTab = 1,
     )
 
     private fun 기본_Three_옵션_세번째_탭_선택() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.ThreeOption(tabs = tabs(3)),
-        selectedTab = 3,
+        selectedTab = 2,
     )
 
     private fun 기본_Four_옵션() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.FourOption(tabs = tabs(4)),
-        selectedTab = 1,
+        selectedTab = 0,
     )
 
     private fun 기본_Four_옵션_두번째_탭_선택() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.FourOption(tabs = tabs(4)),
-        selectedTab = 2,
+        selectedTab = 1,
     )
 
     private fun 기본_Four_옵션_세번째_탭_선택() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.FourOption(tabs = tabs(4)),
-        selectedTab = 3,
+        selectedTab = 2,
     )
 
     private fun 기본_Four_옵션_네번째_탭_선택() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.FourOption(tabs = tabs(4)),
-        selectedTab = 4,
+        selectedTab = 3,
     )
 
     private fun 기본_Five_옵션() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.FiveOption(tabs = tabs(5)),
-        selectedTab = 1,
+        selectedTab = 0,
     )
 
     private fun 기본_Five_옵션_두번째_탭_선택() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.FiveOption(tabs = tabs(5)),
-        selectedTab = 2,
+        selectedTab = 1,
     )
 
     private fun 기본_Five_옵션_세번째_탭_선택() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.FiveOption(tabs = tabs(5)),
-        selectedTab = 3,
+        selectedTab = 2,
     )
 
     private fun 기본_Five_옵션_네번째_탭_선택() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.FiveOption(tabs = tabs(5)),
-        selectedTab = 4,
+        selectedTab = 3,
     )
 
     private fun 기본_Five_옵션_다섯번째_탭_선택() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.FiveOption(tabs = tabs(5)),
-        selectedTab = 5,
+        selectedTab = 4,
     )
 
     private fun 긴_라벨_말줄임() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.FiveOption(
             tabs = tabs(5).map { it.copy(label = "긴 라벨은 두 줄까지 표시하고 이후 말줄임 처리합니다. 추가 설명입니다.") },
         ),
-        selectedTab = 1,
+        selectedTab = 0,
     )
 
     private fun 수치_미노출() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.ThreeOption(tabs = tabs(3).map { it.copy(showCount = false) }),
-        selectedTab = 1,
+        selectedTab = 0,
     )
 
     private fun 선택된_탭_수치_미노출() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.ThreeOption(
             tabs = tabs(3).mapIndexed { index, tab -> tab.copy(showCount = index != 1) },
         ),
-        selectedTab = 2,
+        selectedTab = 1,
     )
 
     private fun 여백_지정() = SDGIconTabPreviewParameter(
         option = SDGIconTabOption.ThreeOption(tabs = tabs(3)),
-        selectedTab = 1,
+        selectedTab = 0,
         paddingValues = PaddingValues(horizontal = Spacing16, vertical = Spacing8),
     )
 
