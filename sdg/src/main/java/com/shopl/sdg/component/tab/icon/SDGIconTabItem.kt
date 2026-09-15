@@ -82,7 +82,7 @@ internal fun SDGIconTabItem(
                 contentAlignment = Alignment.Center,
             ) {
                 SDGImage(
-                    resId = iconTabIc.icon,
+                    resId = iconTabIc.resId,
                     color = iconTabIc.tint,
                     modifier = Modifier.size(iconTabIc.size.size),
                     contentDescription = label,

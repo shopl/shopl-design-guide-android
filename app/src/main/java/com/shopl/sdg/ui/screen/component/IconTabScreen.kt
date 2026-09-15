@@ -52,7 +52,7 @@ private fun IconTabScreenContent() {
             count = "${(index + 1) * 12}",
             showCount = true,
             iconTabIc = SDGIconTabIcon(
-                icon = R.drawable.ic_common_list,
+                resId = R.drawable.ic_common_list,
                 size = size,
                 tint = SDGColor.Neutral500,
             ),

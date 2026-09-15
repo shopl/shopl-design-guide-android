@@ -126,7 +126,7 @@ internal class SDGIconTabPreviewParameterProvider :
                 count = "999+",
                 showCount = true,
                 iconTabIc = SDGIconTabIcon(
-                    icon = R.drawable.ic_common_list,
+                    resId = R.drawable.ic_common_list,
                     tint = SDGColor.Neutral500,
                     size = SDGIconTabIconSize.entries[index % SDGIconTabIconSize.entries.size],
                 ),

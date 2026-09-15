@@ -47,9 +47,11 @@ class SDGIconTabTest {
         val option = mutableStateOf(option(tabs(3)))
         val selectedTab = mutableIntStateOf(1)
         composeRule.setContent {
-            Box(modifier = Modifier
-                .width(335.dp)
-                .testTag("Icon Tab container")) {
+            Box(
+                modifier = Modifier
+                    .width(335.dp)
+                    .testTag("Icon Tab container")
+            ) {
                 SDGIconTab(
                     option = option.value,
                     selectedTab = selectedTab.intValue,
@@ -230,7 +232,10 @@ class SDGIconTabTest {
     fun optionsKeepTabsWhenSourceListsChange() {
         for (optionCount in 3..5) {
             val originalTabs = tabs(optionCount)
-            for (source in listOf(originalTabs.toMutableList(), originalTabs.toMutableStateList())) {
+            for (source in listOf(
+                originalTabs.toMutableList(),
+                originalTabs.toMutableStateList()
+            )) {
                 assertTabsUnaffectedBySourceChanges(source = source, option = option(source))
             }
         }
@@ -241,7 +246,10 @@ class SDGIconTabTest {
         for (optionCount in 3..5) {
             val original = option(tabs(optionCount))
             val replacementTabs = tabs(optionCount).map { it.copy(label = "수정된 ${it.label}") }
-            for (source in listOf(replacementTabs.toMutableList(), replacementTabs.toMutableStateList())) {
+            for (source in listOf(
+                replacementTabs.toMutableList(),
+                replacementTabs.toMutableStateList()
+            )) {
                 val copied = when (original) {
                     is SDGIconTabOption.ThreeOption -> original.copy(tabs = source)
                     is SDGIconTabOption.FourOption -> original.copy(tabs = source)
@@ -328,7 +336,7 @@ class SDGIconTabTest {
                 count = "${(index + 1) * 10}",
                 showCount = true,
                 iconTabIc = SDGIconTabIcon(
-                    icon = R.drawable.ic_common_list,
+                    resId = R.drawable.ic_common_list,
                     size = SDGIconTabIconSize.entries[index % SDGIconTabIconSize.entries.size],
                 ),
             )
