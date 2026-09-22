@@ -29,12 +29,25 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=22986-3555&m=dev">Figma</a>
  */
 @Composable
-fun SDGCustomHistory() {
+fun SDGCustomHistory(
+    position: SDGCustomHistoryPosition,
+    dotColor: Color,
+    header: @Composable () -> Unit,
+    body: @Composable () -> Unit,
+) {
     Row(
         horizontalArrangement = spacedBy(Spacing16),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        HistoryTimeLine(
+            position = position,
+            dotColor = dotColor
+        )
 
+        Column {
+            header()
+            body()
+        }
     }
 }
 
