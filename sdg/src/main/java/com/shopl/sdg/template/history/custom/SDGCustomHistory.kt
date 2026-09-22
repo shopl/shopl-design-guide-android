@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing20
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 
 /**
@@ -33,7 +35,7 @@ fun SDGCustomHistory(
     position: SDGCustomHistoryPosition,
     dotColor: Color,
     header: @Composable () -> Unit,
-    body: @Composable () -> Unit,
+    body: (@Composable () -> Unit)?,
 ) {
     Row(
         horizontalArrangement = spacedBy(Spacing16),
@@ -45,9 +47,24 @@ fun SDGCustomHistory(
         )
 
         Column {
-            header()
-            body()
+            HistoryHeader(header = header)
+            body?.invoke()
         }
+    }
+}
+
+@Composable
+private fun HistoryHeader(
+    header: @Composable () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier.padding(
+            top = Spacing20,
+            bottom = Spacing16,
+        )
+    ) {
+        header()
     }
 }
 
