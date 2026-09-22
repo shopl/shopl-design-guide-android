@@ -1,6 +1,10 @@
 package com.shopl.sdg.template.history.custom
 
+import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
 
 /**
  * SDG - History - CustomHistory
@@ -13,5 +17,10 @@ import androidx.compose.runtime.Composable
  */
 @Composable
 fun SDGCustomHistory() {
+    Row(
+        horizontalArrangement = spacedBy(Spacing16),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
 
+    }
 }
