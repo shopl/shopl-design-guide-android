@@ -1,9 +1,16 @@
 package com.shopl.sdg.template.history.custom
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
 
 /**
@@ -24,3 +31,30 @@ fun SDGCustomHistory() {
 
     }
 }
+
+@Composable
+private fun HistoryTimeLine(modifier: Modifier = Modifier) {
+
+}
+
+@Composable
+private fun Line(modifier: Modifier = Modifier) {
+
+}
+
+@Composable
+private fun Dot(
+    color: Color,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .size(DotSize)
+            .background(
+                color = color,
+                shape = CircleShape,
+            )
+    )
+}
+
+private val DotSize = 8.dp
