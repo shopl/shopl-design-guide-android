@@ -54,7 +54,9 @@ fun SDGCustomHistory(
         horizontalArrangement = spacedBy(Spacing16),
     ) {
         HistoryTimeLine(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier
+                .width(TimelineWidth)
+                .fillMaxHeight(),
             position = position,
             dotColor = dotColor,
         )
@@ -79,30 +81,6 @@ fun SDGCustomHistory(
     }
 }
 
-@Composable
-private fun HistoryHeader(
-    header: @Composable () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-    ) {
-        header()
-    }
-}
-
-@Composable
-private fun HistoryBody(
-    body: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(),
-) {
-    Box(
-        modifier = modifier.padding(contentPadding)
-    ) {
-        body()
-    }
-}
 
 @Composable
 private fun HistoryTimeLine(
@@ -187,7 +165,33 @@ private fun Dot(
     )
 }
 
+@Composable
+private fun HistoryHeader(
+    header: @Composable () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+    ) {
+        header()
+    }
+}
+
+@Composable
+private fun HistoryBody(
+    body: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
+) {
+    Box(
+        modifier = modifier.padding(contentPadding)
+    ) {
+        body()
+    }
+}
+
 private val DotSize = 8.dp
+private val TimelineWidth = 16.dp
 private val TopLineHeight = 21.dp
 
 @Preview(showBackground = true)
