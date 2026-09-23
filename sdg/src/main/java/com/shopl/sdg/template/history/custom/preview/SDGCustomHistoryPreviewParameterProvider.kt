@@ -1,0 +1,52 @@
+package com.shopl.sdg.template.history.custom.preview
+
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.dp
+import com.shopl.sdg.template.history.custom.SDGCustomHistoryPosition
+
+internal class SDGCustomHistoryPreviewParameterProvider :
+    PreviewParameterProvider<SDGCustomHistoryPreviewParams> {
+
+    override val values: Sequence<SDGCustomHistoryPreviewParams> = sequenceOf(
+        독립_이력(),
+        첫번째_이력(),
+        중간_이력(),
+        마지막_이력(),
+        Body_패딩_적용(),
+    )
+
+    private fun 독립_이력() = SDGCustomHistoryPreviewParams(
+        position = SDGCustomHistoryPosition.FIRST,
+        header = "근무 이력이 등록되었습니다",
+    )
+
+    private fun 첫번째_이력() = SDGCustomHistoryPreviewParams(
+        position = SDGCustomHistoryPosition.TOP,
+        header = "근무 일정이 변경되었습니다",
+        body = "변경된 일정: 09:00 - 18:00",
+    )
+
+    private fun 중간_이력() = SDGCustomHistoryPreviewParams(
+        position = SDGCustomHistoryPosition.MIDDLE,
+        header = "담당자가 배정되었습니다",
+        body = "담당자: 홍길동\n처리 예정: 오늘 18:00",
+    )
+
+    private fun 마지막_이력() = SDGCustomHistoryPreviewParams(
+        position = SDGCustomHistoryPosition.LAST,
+        header = "검토가 완료되었습니다",
+    )
+
+    private fun Body_패딩_적용() = SDGCustomHistoryPreviewParams(
+        position = SDGCustomHistoryPosition.MIDDLE,
+        header = "본문에 추가 여백이 적용되었습니다",
+        body = "본문 영역에 기본값과 다른 여백을 적용한 예시입니다.",
+        bodyContentPadding = PaddingValues(
+            start = 16.dp,
+            top = 8.dp,
+            end = 16.dp,
+            bottom = 8.dp,
+        ),
+    )
+}
