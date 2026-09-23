@@ -4,8 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -36,19 +39,35 @@ fun SDGCustomHistory(
     dotColor: Color,
     header: @Composable () -> Unit,
     body: (@Composable () -> Unit)?,
+    modifier: Modifier = Modifier,
+    bodyContentPadding: PaddingValues = PaddingValues(),
 ) {
     Row(
+        modifier = modifier.height(IntrinsicSize.Min),
         horizontalArrangement = spacedBy(Spacing16),
-        verticalAlignment = Alignment.CenterVertically
     ) {
         HistoryTimeLine(
+            modifier = Modifier.fillMaxHeight(),
             position = position,
-            dotColor = dotColor
+            dotColor = dotColor,
         )
 
         Column {
-            HistoryHeader(header = header)
-            body?.invoke()
+            HistoryHeader(
+                header = header,
+                modifier = Modifier.padding(
+                    top = Spacing20,
+                    bottom = Spacing16,
+                )
+            )
+
+            body?.let {
+                HistoryBody(
+                    body = it,
+                    modifier = Modifier.padding(bottom = Spacing20),
+                    contentPadding = bodyContentPadding,
+                )
+            }
         }
     }
 }
@@ -59,12 +78,22 @@ private fun HistoryHeader(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier.padding(
-            top = Spacing20,
-            bottom = Spacing16,
-        )
+        modifier = modifier
     ) {
         header()
+    }
+}
+
+@Composable
+private fun HistoryBody(
+    body: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
+) {
+    Box(
+        modifier = modifier.padding(contentPadding)
+    ) {
+        body()
     }
 }
 
