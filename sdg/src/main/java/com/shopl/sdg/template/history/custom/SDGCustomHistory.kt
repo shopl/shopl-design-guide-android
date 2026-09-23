@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -201,21 +202,31 @@ private fun PreviewSDGCustomHistory(
     params: SDGCustomHistoryPreviewParams,
 ) {
     SDGCustomHistory(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
         position = params.position,
         dotColor = SDGColor.Primary300,
         header = {
-            SDGText(
-                text = params.header,
-                typography = SDGTypography.Body1R,
-                textColor = SDGColor.Neutral700,
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(SDGColor.PurpleP_a10, RoundedCornerShape(8.dp))
+                    .padding(12.dp),
+            ) {
+                SDGText(
+                    text = params.header,
+                    typography = SDGTypography.Body1R,
+                    textColor = SDGColor.Neutral700,
+                )
+            }
         },
         body = params.body?.let { bodyText ->
             {
                 Box(
                     modifier = Modifier
-                        .background(SDGColor.Neutral50, RoundedCornerShape(8.dp))
+                        .fillMaxWidth()
+                        .background(SDGColor.Neutral200, RoundedCornerShape(8.dp))
                         .padding(12.dp),
                 ) {
                     SDGText(
