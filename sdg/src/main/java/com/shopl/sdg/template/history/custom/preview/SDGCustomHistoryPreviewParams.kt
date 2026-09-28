@@ -8,4 +8,5 @@ internal data class SDGCustomHistoryPreviewParams(
     val header: String,
     val body: String? = null,
     val bodyContentPadding: PaddingValues = PaddingValues(),
+    val hasHeaderBackground: Boolean = true,
 )

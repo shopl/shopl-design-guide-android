@@ -12,6 +12,7 @@ internal class SDGCustomHistoryPreviewParameterProvider :
         독립_이력(),
         첫번째_이력(),
         중간_이력(),
+        Header_배경_없음(),
         마지막_이력(),
         Body_패딩_적용(),
     )
@@ -36,6 +37,10 @@ internal class SDGCustomHistoryPreviewParameterProvider :
     private fun 마지막_이력() = SDGCustomHistoryPreviewParams(
         position = SDGCustomHistoryPosition.LAST,
         header = "검토가 완료되었습니다",
+    )
+
+    private fun Header_배경_없음() = 중간_이력().copy(
+        hasHeaderBackground = false,
     )
 
     private fun Body_패딩_적용() = SDGCustomHistoryPreviewParams(

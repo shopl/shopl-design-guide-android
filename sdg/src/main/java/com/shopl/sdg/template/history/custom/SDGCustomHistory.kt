@@ -33,7 +33,7 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
 /**
- * SDG - History - CustomHistory
+ * SDG - History - Custom History
  *
  * Dot과 Line 타임라인을 기반으로 다양한 이력과 진행 흐름을 커스텀 구성하는 템플릿
  *
@@ -62,19 +62,18 @@ fun SDGCustomHistory(
             dotColor = dotColor,
         )
 
-        Column {
+        Column(modifier = Modifier.weight(1f)) {
             HistoryHeader(
                 header = header,
-                modifier = Modifier.padding(
-                    top = Spacing20,
-                    bottom = Spacing16,
-                )
+                modifier = Modifier.padding(top = Spacing20, bottom = Spacing16),
             )
 
             body?.let {
                 HistoryBody(
                     body = it,
-                    modifier = Modifier.padding(bottom = Spacing20),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = Spacing20),
                     contentPadding = bodyContentPadding,
                 )
             }
@@ -169,10 +168,10 @@ private fun Dot(
 @Composable
 private fun HistoryHeader(
     header: @Composable () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     ) {
         header()
     }
@@ -211,8 +210,14 @@ private fun PreviewSDGCustomHistory(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(SDGColor.PurpleP_a10, RoundedCornerShape(8.dp))
-                    .padding(12.dp),
+                    .then(
+                        if (params.hasHeaderBackground) {
+                            Modifier.background(SDGColor.PurpleP_a10, RoundedCornerShape(8.dp))
+                        } else {
+                            Modifier
+                        }
+                    )
+                    .padding(horizontal = 12.dp),
             ) {
                 SDGText(
                     text = params.header,
