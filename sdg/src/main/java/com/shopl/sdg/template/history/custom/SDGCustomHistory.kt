@@ -1,6 +1,5 @@
 package com.shopl.sdg.template.history.custom
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -8,15 +7,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -80,20 +82,16 @@ fun SDGCustomHistory(
                 modifier = Modifier.height(IntrinsicSize.Min),
                 horizontalArrangement = spacedBy(Spacing16),
             ) {
-                Canvas(
+                Box(
                     modifier = Modifier
                         .width(TimelineWidth)
                         .fillMaxHeight(),
+                    contentAlignment = Alignment.Center,
                 ) {
-                    if (showBottomLine) {
-                        val x = size.width / 2f
-                        drawLine(
-                            color = SDGColor.Neutral200,
-                            start = Offset(x, 0f),
-                            end = Offset(x, size.height),
-                            strokeWidth = LineWidth.toPx(),
-                        )
-                    }
+                    TimelineLine(
+                        visible = showBottomLine,
+                        modifier = Modifier.fillMaxHeight(),
+                    )
                 }
 
                 HistoryBody(
@@ -115,35 +113,42 @@ private fun HistoryTimeLine(
     dotColor: Color,
     modifier: Modifier = Modifier,
 ) {
-    Canvas(modifier = modifier) {
-        val x = size.width / 2f
-        val topPadding = Spacing20.toPx()
-        val bottomPadding = Spacing16.toPx()
-        val dotY = topPadding + (size.height - topPadding - bottomPadding) / 2f
-        val lineGap = DotSize.toPx() / 2f + Spacing4.toPx()
-
-        if (showTopLine) {
-            drawLine(
-                color = SDGColor.Neutral200,
-                start = Offset(x, 0f),
-                end = Offset(x, dotY - lineGap),
-                strokeWidth = LineWidth.toPx(),
-            )
-        }
-        if (showBottomLine) {
-            drawLine(
-                color = SDGColor.Neutral200,
-                start = Offset(x, dotY + lineGap),
-                end = Offset(x, size.height),
-                strokeWidth = LineWidth.toPx(),
-            )
-        }
-        drawCircle(
-            color = dotColor,
-            radius = DotSize.toPx() / 2f,
-            center = Offset(x, dotY),
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        TimelineLine(
+            visible = showTopLine,
+            modifier = Modifier.height(TopLineExtraHeight),
+        )
+        TimelineLine(
+            visible = showTopLine,
+            modifier = Modifier.weight(1f),
+        )
+        Spacer(modifier = Modifier.height(Spacing4))
+        Box(
+            modifier = Modifier
+                .size(DotSize)
+                .background(dotColor, CircleShape),
+        )
+        Spacer(modifier = Modifier.height(Spacing4))
+        TimelineLine(
+            visible = showBottomLine,
+            modifier = Modifier.weight(1f),
         )
     }
+}
+
+@Composable
+private fun TimelineLine(
+    visible: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .width(LineWidth)
+            .then(if (visible) Modifier.background(SDGColor.Neutral200) else Modifier),
+    )
 }
 
 @Composable
@@ -174,6 +179,7 @@ private fun HistoryBody(
 private val DotSize = 8.dp
 private val LineWidth = 1.dp
 private val TimelineWidth = 16.dp
+private val TopLineExtraHeight = 4.dp
 
 @Preview(showBackground = true)
 @Composable
