@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +24,7 @@ import com.shopl.sdg.ui.base.SDGSampleBaseGuideLinesContent
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
@@ -69,11 +69,7 @@ private fun CustomHistoryContent() {
             dotColor = SDGColor.Primary300,
             header = {
                 SampleHistoryHeader(
-                    title = "근무 일정이 등록되었습니다",
-                    description = "2026. 09. 28 09:00",
-                    modifier = Modifier
-                        .background(SDGColor.PurpleP_a10, RoundedCornerShape(8.dp))
-                        .padding(SDGSpacing.Spacing12),
+                    stepLabel = "1단계",
                 )
             },
             body = { SampleHistoryBody("근무 일정: 09:00 - 18:00") },
@@ -84,19 +80,18 @@ private fun CustomHistoryContent() {
             dotColor = SDGColor.Primary300,
             header = {
                 SampleHistoryHeader(
-                    title = "근무 일정이 변경되었습니다",
-                    description = "2026. 09. 28 09:30",
-                    modifier = Modifier.padding(
-                        horizontal = SDGSpacing.Spacing12,
+                    stepLabel = "2단계",
+                )
+            },
+            body = {
+                SampleHistoryBody(
+                    text = "출근 시간이 09:00에서 10:00으로 변경되었습니다.",
+                    contentPadding = PaddingValues(
+                        horizontal = SDGSpacing.Spacing8,
                         vertical = SDGSpacing.Spacing8,
                     ),
                 )
             },
-            body = { SampleHistoryBody("출근 시간이 09:00에서 10:00으로 변경되었습니다.") },
-            bodyContentPadding = PaddingValues(
-                horizontal = SDGSpacing.Spacing8,
-                vertical = SDGSpacing.Spacing8,
-            ),
         )
 
         SDGCustomHistory(
@@ -104,11 +99,7 @@ private fun CustomHistoryContent() {
             dotColor = SDGColor.Primary300,
             header = {
                 SampleHistoryHeader(
-                    title = "담당자가 배정되었습니다",
-                    description = "2026. 09. 28 10:00",
-                    modifier = Modifier
-                        .background(SDGColor.PurpleP_a10, RoundedCornerShape(8.dp))
-                        .padding(SDGSpacing.Spacing12),
+                    stepLabel = "3단계",
                 )
             },
             body = {
@@ -121,12 +112,7 @@ private fun CustomHistoryContent() {
             dotColor = SDGColor.Primary300,
             header = {
                 SampleHistoryHeader(
-                    title = "검토가 완료되었습니다",
-                    description = "2026. 09. 28 18:00",
-                    modifier = Modifier.padding(
-                        horizontal = SDGSpacing.Spacing12,
-                        vertical = SDGSpacing.Spacing8,
-                    ),
+                    stepLabel = "4단계",
                 )
             },
             body = null,
@@ -136,9 +122,7 @@ private fun CustomHistoryContent() {
 
 @Composable
 private fun SampleHistoryHeader(
-    title: String,
-    description: String,
-    modifier: Modifier,
+    stepLabel: String,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -155,7 +139,7 @@ private fun SampleHistoryHeader(
                 modifier = Modifier.size(18.dp),
             )
             SDGText(
-                text = "1단계",
+                text = stepLabel,
                 typography = SDGTypography.Body1SB,
                 textColor = SDGColor.Neutral700
             )
@@ -180,15 +164,18 @@ private fun SampleHistoryHeader(
 }
 
 @Composable
-private fun SampleHistoryBody(text: String) {
+private fun SampleHistoryBody(
+    text: String,
+    contentPadding: PaddingValues = PaddingValues(SDGSpacing.Spacing12),
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(SDGColor.Neutral150, RoundedCornerShape(8.dp))
-            .padding(SDGSpacing.Spacing12),
+            .background(SDGColor.Neutral150, SDGCornerRadius.BoxRadius.Radius8)
+            .padding(contentPadding),
     ) {
         SDGText(
-            text = text,
+            text = "text",
             typography = SDGTypography.Body2R,
             textColor = SDGColor.Neutral700,
         )

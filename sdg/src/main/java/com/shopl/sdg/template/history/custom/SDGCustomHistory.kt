@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -48,7 +47,6 @@ fun SDGCustomHistory(
     header: @Composable () -> Unit,
     body: (@Composable () -> Unit)?,
     modifier: Modifier = Modifier,
-    bodyContentPadding: PaddingValues = PaddingValues(),
 ) {
     Column(modifier = modifier) {
         Row(
@@ -94,7 +92,6 @@ fun SDGCustomHistory(
                     modifier = Modifier
                         .weight(1f)
                         .padding(bottom = Spacing20),
-                    contentPadding = bodyContentPadding,
                 )
             }
         }
@@ -162,11 +159,8 @@ private fun HistoryHeader(
 private fun HistoryBody(
     body: @Composable () -> Unit,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(),
 ) {
-    Box(
-        modifier = modifier.padding(contentPadding)
-    ) {
+    Box(modifier = modifier) {
         body()
     }
 }
@@ -208,7 +202,7 @@ private fun PreviewSDGCustomHistory(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(SDGColor.Neutral200, RoundedCornerShape(8.dp))
-                        .padding(12.dp),
+                        .padding(params.bodyPadding),
                 ) {
                     SDGText(
                         text = bodyText,
@@ -218,6 +212,5 @@ private fun PreviewSDGCustomHistory(
                 }
             }
         },
-        bodyContentPadding = params.bodyContentPadding,
     )
 }

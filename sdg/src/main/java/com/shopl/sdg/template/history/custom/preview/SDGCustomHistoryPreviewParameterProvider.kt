@@ -71,7 +71,7 @@ internal class SDGCustomHistoryPreviewParameterProvider :
         header = "본문에 추가 여백이 적용되었습니다",
         body = "본문 영역에 기본값과 다른 여백을 적용한 예시입니다.",
         headerModifier = HeaderBackgroundModifier,
-        bodyContentPadding = PaddingValues(
+        bodyPadding = PaddingValues(
             start = 16.dp,
             top = 8.dp,
             end = 16.dp,
