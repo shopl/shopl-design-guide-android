@@ -5,13 +5,19 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.badge.box.SDGBoxBadge
+import com.shopl.sdg.component.badge.box.SDGBoxBadgeFontWeight
+import com.shopl.sdg.component.badge.box.SDGBoxBadgeStyle
 import com.shopl.sdg.scene.TemplateScene
 import com.shopl.sdg.template.history.custom.SDGCustomHistory
 import com.shopl.sdg.template.history.custom.SDGCustomHistoryPosition
@@ -20,8 +26,11 @@ import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
+import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
+import com.shopl.sdg_resource.R
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -131,21 +140,41 @@ private fun SampleHistoryHeader(
     description: String,
     modifier: Modifier,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .then(modifier),
-        verticalArrangement = spacedBy(SDGSpacing.Spacing4),
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
     ) {
-        SDGText(
-            text = title,
-            typography = SDGTypography.Body1R,
-            textColor = SDGColor.Neutral700,
-        )
-        SDGText(
-            text = description,
-            typography = SDGTypography.Body3R,
-            textColor = SDGColor.Neutral500,
+        Row(
+            horizontalArrangement = spacedBy(Spacing4),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.weight(1f, true)
+        ) {
+            SDGImage(
+                resId = R.drawable.ic_common_checkbold,
+                color = SDGColor.Primary300,
+                modifier = Modifier.size(18.dp),
+            )
+            SDGText(
+                text = "1단계",
+                typography = SDGTypography.Body1SB,
+                textColor = SDGColor.Neutral700
+            )
+            SDGBoxBadge(
+                label = "승인",
+                style = SDGBoxBadgeStyle.Solid,
+                fontWeight = SDGBoxBadgeFontWeight.Normal,
+                backgroundColor = SDGColor.Neutral150,
+                labelColor = SDGColor.Neutral700,
+                leftIc = null,
+                rightIc = null
+            )
+        }
+        SDGImage(
+            resId = R.drawable.ic_common_next_s,
+            color = SDGColor.Neutral600,
+            modifier = Modifier
+                .padding(13.dp)
+                .size(14.dp),
         )
     }
 }
