@@ -21,6 +21,7 @@ internal class SDGCustomHistoryPreviewParameterProvider :
         독립_이력(),
         첫번째_이력(),
         중간_이력(),
+        여러_줄_헤더(),
         Header_배경_없음(),
         마지막_이력(),
         Body_패딩_적용(),
@@ -44,6 +45,13 @@ internal class SDGCustomHistoryPreviewParameterProvider :
         position = SDGCustomHistoryPosition.MIDDLE,
         header = "담당자가 배정되었습니다",
         body = "담당자: 홍길동\n처리 예정: 오늘 18:00",
+        headerModifier = HeaderBackgroundModifier,
+    )
+
+    private fun 여러_줄_헤더() = SDGCustomHistoryPreviewParams(
+        position = SDGCustomHistoryPosition.MIDDLE,
+        header = "근무 일정이 변경되었습니다\n2026. 09. 28 09:30",
+        body = "변경된 일정: 10:00 - 18:00",
         headerModifier = HeaderBackgroundModifier,
     )
 
