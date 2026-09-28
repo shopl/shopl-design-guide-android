@@ -210,13 +210,7 @@ private fun PreviewSDGCustomHistory(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .then(
-                        if (params.hasHeaderBackground) {
-                            Modifier.background(SDGColor.PurpleP_a10, RoundedCornerShape(8.dp))
-                        } else {
-                            Modifier
-                        }
-                    )
+                    .then(params.headerModifier)
                     .padding(horizontal = 12.dp),
             ) {
                 SDGText(
