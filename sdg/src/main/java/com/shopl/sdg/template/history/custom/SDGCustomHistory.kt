@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.template.history.custom.preview.SDGCustomHistoryPreviewParameterProvider
 import com.shopl.sdg.template.history.custom.preview.SDGCustomHistoryPreviewParams
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing20
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
@@ -46,9 +47,8 @@ fun SDGCustomHistory(
     dotColor: Color,
     header: @Composable () -> Unit,
     body: (@Composable () -> Unit)?,
-    modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.height(IntrinsicSize.Min),
             horizontalArrangement = spacedBy(Spacing16),
@@ -176,41 +176,45 @@ private fun PreviewSDGCustomHistory(
     @PreviewParameter(SDGCustomHistoryPreviewParameterProvider::class)
     params: SDGCustomHistoryPreviewParams,
 ) {
-    SDGCustomHistory(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        position = params.position,
-        dotColor = SDGColor.Primary300,
-        header = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .then(params.headerModifier)
-                    .padding(horizontal = 12.dp),
-            ) {
-                SDGText(
-                    text = params.header,
-                    typography = SDGTypography.Body1R,
-                    textColor = SDGColor.Neutral700,
-                )
-            }
-        },
-        body = params.body?.let { bodyText ->
-            {
+            .background(SDGColor.Neutral0)
+            .padding(Spacing16),
+    ) {
+        SDGCustomHistory(
+            position = params.position,
+            dotColor = SDGColor.Primary300,
+            header = {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(SDGColor.Neutral200, RoundedCornerShape(8.dp))
-                        .padding(params.bodyPadding),
+                        .then(params.headerModifier)
+                        .padding(horizontal = Spacing12),
                 ) {
                     SDGText(
-                        text = bodyText,
-                        typography = SDGTypography.Body2R,
+                        text = params.header,
+                        typography = SDGTypography.Body1R,
                         textColor = SDGColor.Neutral700,
                     )
                 }
-            }
-        },
-    )
+            },
+            body = params.body?.let { bodyText ->
+                {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(SDGColor.Neutral200, RoundedCornerShape(8.dp))
+                            .padding(params.bodyPadding),
+                    ) {
+                        SDGText(
+                            text = bodyText,
+                            typography = SDGTypography.Body2R,
+                            textColor = SDGColor.Neutral700,
+                        )
+                    }
+                }
+            },
+        )
+    }
 }

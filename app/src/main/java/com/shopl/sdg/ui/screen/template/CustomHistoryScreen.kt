@@ -175,7 +175,7 @@ private fun SampleHistoryBody(
             .padding(contentPadding),
     ) {
         SDGText(
-            text = "text",
+            text = text,
             typography = SDGTypography.Body2R,
             textColor = SDGColor.Neutral700,
         )
