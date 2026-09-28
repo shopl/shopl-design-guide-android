@@ -50,11 +50,6 @@ fun SDGCustomHistory(
     modifier: Modifier = Modifier,
     bodyContentPadding: PaddingValues = PaddingValues(),
 ) {
-    val showTopLine = position == SDGCustomHistoryPosition.MIDDLE ||
-        position == SDGCustomHistoryPosition.LAST
-    val showBottomLine = position == SDGCustomHistoryPosition.TOP ||
-        position == SDGCustomHistoryPosition.MIDDLE
-
     Column(modifier = modifier) {
         Row(
             modifier = Modifier.height(IntrinsicSize.Min),
@@ -64,8 +59,8 @@ fun SDGCustomHistory(
                 modifier = Modifier
                     .width(TimelineWidth)
                     .fillMaxHeight(),
-                showTopLine = showTopLine,
-                showBottomLine = showBottomLine,
+                showTopLine = position.showTopLine,
+                showBottomLine = position.showBottomLine,
                 dotColor = dotColor,
             )
 
@@ -89,7 +84,7 @@ fun SDGCustomHistory(
                     contentAlignment = Alignment.Center,
                 ) {
                     TimelineLine(
-                        visible = showBottomLine,
+                        visible = position.showBottomLine,
                         modifier = Modifier.fillMaxHeight(),
                     )
                 }
