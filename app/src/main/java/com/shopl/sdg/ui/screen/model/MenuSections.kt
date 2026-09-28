@@ -131,6 +131,7 @@ internal val templateMenuSection = MenuSectionUiModel(
             )
         ),
         TemplateScene.History.toMenuUiModel(),
+        TemplateScene.CustomHistory.toMenuUiModel(),
         TemplateScene.HistoryMini.toMenuUiModel(),
         TemplateScene.ListHeader.toMenuUiModel(),
         TemplateScene.MultiCalendar.toMenuUiModel(),
