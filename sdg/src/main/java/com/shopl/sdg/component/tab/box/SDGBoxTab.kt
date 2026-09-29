@@ -67,11 +67,11 @@ private fun BoxTabItem(
                     modifier = Modifier.weight(1f, fill = false)
                 )
 
-                twoDepth.count?.let { count ->
+                twoDepth.count?.toIntOrNull()?.takeIf { it > 1 }?.let { count ->
                     SDGText(
-                        text = "+${count}",
+                        text = "+${count - 1}",
                         typography = SDGTypography.Body3SB,
-                        textColor = item.state.twoDepthTextColor,
+                        textColor = item.state.countTextColor,
                         maxLines = 1
                     )
                 }
@@ -87,8 +87,8 @@ private fun PreviewBoxTabItem() {
         BoxTabItem(
             item = SDGBoxTabItem(
                 state = SDGBoxTabItemState.Selected,
-                label = "Label",
-                showTwoDepth = SDGBoxTabItem.ShowTwoDepth.True("Selected Text", "2")
+                label = "Labelasdf651asd6f51asd65f16as5d1f65as1df65zx3c2v1zx6c5v1zxcvzxcvzxcv",
+                showTwoDepth = SDGBoxTabItem.ShowTwoDepth.True("Selecdsafasdfasdfasdfasdf6531asd6f51asd65fted Text", "2")
             ),
             modifier = Modifier.width(89.dp)
         )
@@ -97,6 +97,14 @@ private fun PreviewBoxTabItem() {
                 state = SDGBoxTabItemState.Unselected,
                 label = "Label",
                 showTwoDepth = SDGBoxTabItem.ShowTwoDepth.True("Selected Text", "2")
+            ),
+            modifier = Modifier.width(89.dp)
+        )
+        BoxTabItem(
+            item = SDGBoxTabItem(
+                state = SDGBoxTabItemState.Selected,
+                label = "Label",
+                showTwoDepth = SDGBoxTabItem.ShowTwoDepth.True("Selected Text", "1")
             ),
             modifier = Modifier.width(89.dp)
         )

@@ -8,7 +8,7 @@ data class SDGBoxTabItem(
     sealed interface ShowTwoDepth {
         data class True(
             val text: String,
-            val count:String?
+            val count: String?
         ) : ShowTwoDepth
 
         data object False : ShowTwoDepth
