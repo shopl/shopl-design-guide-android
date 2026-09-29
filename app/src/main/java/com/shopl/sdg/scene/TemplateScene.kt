@@ -3,6 +3,7 @@ package com.shopl.sdg.scene
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import com.shopl.sdg.ui.screen.template.CheckboxLabelScreen
+import com.shopl.sdg.ui.screen.template.CustomHistoryScreen
 
 /**
  * SDG - Template
@@ -183,6 +184,19 @@ internal sealed class TemplateScene(
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             throw IllegalStateException("Not implemented")
+        }
+    }
+
+    data object CustomHistory : TemplateScene(
+        displayLabel = "Custom History",
+        implemented = true
+    ) {
+        @Composable
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+            CustomHistoryScreen(
+                onClickBack = backToScene,
+                onClickMenu = { moveToScene(Menu) },
+            )
         }
     }
 

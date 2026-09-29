@@ -76,6 +76,7 @@ internal val templateScenes = persistentListOf(
     TemplateScene.FoundationList.WorkplaceList,
     TemplateScene.FoundationList.GroupAndPositionList,
     TemplateScene.History,
+    TemplateScene.CustomHistory,
     TemplateScene.HistoryMini,
     TemplateScene.ListHeader,
     TemplateScene.MultiCalendar,
