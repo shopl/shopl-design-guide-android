@@ -26,6 +26,7 @@ import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
@@ -70,6 +71,7 @@ private fun CustomHistoryContent() {
             header = {
                 SampleHistoryHeader(
                     stepLabel = "1단계",
+                    isShowDescription = true
                 )
             },
             body = { SampleHistoryBody("근무 일정: 09:00 - 18:00") },
@@ -81,6 +83,8 @@ private fun CustomHistoryContent() {
             header = {
                 SampleHistoryHeader(
                     stepLabel = "2단계",
+                    isShowDescription = true
+
                 )
             },
             body = {
@@ -100,6 +104,7 @@ private fun CustomHistoryContent() {
             header = {
                 SampleHistoryHeader(
                     stepLabel = "3단계",
+                    isShowDescription = false
                 )
             },
             body = {
@@ -113,6 +118,7 @@ private fun CustomHistoryContent() {
             header = {
                 SampleHistoryHeader(
                     stepLabel = "4단계",
+                    isShowDescription = true
                 )
             },
             body = null,
@@ -123,41 +129,53 @@ private fun CustomHistoryContent() {
 @Composable
 private fun SampleHistoryHeader(
     stepLabel: String,
+    isShowDescription: Boolean
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Row(
-            horizontalArrangement = spacedBy(Spacing4),
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            verticalArrangement = spacedBy(Spacing4),
             modifier = Modifier.weight(1f, true)
         ) {
-            SDGImage(
-                resId = R.drawable.ic_common_checkbold,
-                color = SDGColor.Primary300,
-                modifier = Modifier.size(18.dp),
-            )
-            SDGText(
-                text = stepLabel,
-                typography = SDGTypography.Body1SB,
-                textColor = SDGColor.Neutral700
-            )
-            SDGBoxBadge(
-                label = "승인",
-                style = SDGBoxBadgeStyle.Solid,
-                fontWeight = SDGBoxBadgeFontWeight.Normal,
-                backgroundColor = SDGColor.Neutral150,
-                labelColor = SDGColor.Neutral700,
-                leftIc = null,
-                rightIc = null
-            )
+            Row(
+                horizontalArrangement = spacedBy(Spacing4),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                SDGImage(
+                    resId = R.drawable.ic_common_checkbold,
+                    color = SDGColor.Primary300,
+                    modifier = Modifier.size(18.dp),
+                )
+                SDGText(
+                    text = stepLabel,
+                    typography = SDGTypography.Body1SB,
+                    textColor = SDGColor.Neutral700
+                )
+                SDGBoxBadge(
+                    label = "승인",
+                    style = SDGBoxBadgeStyle.Solid,
+                    fontWeight = SDGBoxBadgeFontWeight.Normal,
+                    backgroundColor = SDGColor.Neutral150,
+                    labelColor = SDGColor.Neutral700,
+                    leftIc = null,
+                    rightIc = null
+                )
+            }
+            if (isShowDescription) {
+                SDGText(
+                    text = "설명입니다.",
+                    typography = SDGTypography.Body2R,
+                    textColor = SDGColor.Neutral700
+                )
+            }
         }
         SDGImage(
             resId = R.drawable.ic_common_next_s,
             color = SDGColor.Neutral600,
             modifier = Modifier
-                .padding(13.dp)
+                .padding(horizontal = Spacing12)
                 .size(14.dp),
         )
     }
@@ -166,7 +184,7 @@ private fun SampleHistoryHeader(
 @Composable
 private fun SampleHistoryBody(
     text: String,
-    contentPadding: PaddingValues = PaddingValues(SDGSpacing.Spacing12),
+    contentPadding: PaddingValues = PaddingValues(Spacing12),
 ) {
     Box(
         modifier = Modifier

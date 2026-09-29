@@ -27,6 +27,7 @@ import com.shopl.sdg.template.history.custom.preview.SDGCustomHistoryPreviewPara
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing12
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing18
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing20
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
 import com.shopl.sdg_common.foundation.typography.SDGTypography
@@ -66,7 +67,7 @@ fun SDGCustomHistory(
                 header = header,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(top = Spacing20, bottom = Spacing16),
+                    .padding(vertical = Spacing18),
             )
         }
 
@@ -111,11 +112,7 @@ private fun HistoryTimeLine(
     ) {
         TimelineLine(
             visible = showTopLine,
-            modifier = Modifier.height(TopLineExtraHeight),
-        )
-        TimelineLine(
-            visible = showTopLine,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.height(TopLineHeight),
         )
         Spacer(modifier = Modifier.height(Spacing4))
         Box(
@@ -168,7 +165,7 @@ private fun HistoryBody(
 private val DotSize = 8.dp
 private val LineWidth = 1.dp
 private val TimelineWidth = 16.dp
-private val TopLineExtraHeight = 4.dp
+private val TopLineHeight = 20.dp
 
 @Preview(showBackground = true)
 @Composable
