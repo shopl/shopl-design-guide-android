@@ -71,7 +71,7 @@ private fun CustomHistoryContent() {
             header = {
                 SampleHistoryHeader(
                     stepLabel = "1단계",
-                    isShowDescription = true
+                    showDescription = true
                 )
             },
             body = { SampleHistoryBody("근무 일정: 09:00 - 18:00") },
@@ -83,7 +83,7 @@ private fun CustomHistoryContent() {
             header = {
                 SampleHistoryHeader(
                     stepLabel = "2단계",
-                    isShowDescription = true
+                    showDescription = true
 
                 )
             },
@@ -104,7 +104,7 @@ private fun CustomHistoryContent() {
             header = {
                 SampleHistoryHeader(
                     stepLabel = "3단계",
-                    isShowDescription = false
+                    showDescription = false
                 )
             },
             body = {
@@ -118,7 +118,7 @@ private fun CustomHistoryContent() {
             header = {
                 SampleHistoryHeader(
                     stepLabel = "4단계",
-                    isShowDescription = true
+                    showDescription = true
                 )
             },
             body = null,
@@ -129,7 +129,7 @@ private fun CustomHistoryContent() {
 @Composable
 private fun SampleHistoryHeader(
     stepLabel: String,
-    isShowDescription: Boolean
+    showDescription: Boolean
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -163,7 +163,7 @@ private fun SampleHistoryHeader(
                     rightIc = null
                 )
             }
-            if (isShowDescription) {
+            if (showDescription) {
                 SDGText(
                     text = "설명입니다.",
                     typography = SDGTypography.Body2R,
