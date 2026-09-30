@@ -24,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
-import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing1
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing6
@@ -79,7 +78,6 @@ fun SDGBoxTab(
                     BoxTabItem(item = item, modifier = Modifier.weight(1f))
                     VerticalDivider(
                         modifier = Modifier.height(Spacing16),
-                        thickness = Spacing1,
                         color = SDGColor.Neutral200
                     )
                 }
