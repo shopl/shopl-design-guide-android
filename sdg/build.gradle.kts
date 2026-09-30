@@ -16,4 +16,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewModelCompose)
 
     implementation(libs.joda)
+
+    testImplementation(libs.junit)
 }

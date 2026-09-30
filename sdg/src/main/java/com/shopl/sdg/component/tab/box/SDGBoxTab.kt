@@ -39,14 +39,14 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * @version 2.3.47
  *
- * @param tabItems 2개 또는 3개의 탭. 정확히 한 항목의 state를 Selected로 지정합니다.
- * @param onTabClick 0부터 시작하는 클릭 인덱스. 호출부에서 tabItems의 state를 갱신합니다.
+ * @param option 2개 또는 3개의 탭. 정확히 한 항목의 state를 Selected로 지정합니다.
+ * @param onTabClick 0부터 시작하는 클릭 인덱스. 호출부에서 option의 탭 state를 갱신합니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=20902-19365&m=dev">Figma</a>
  */
 @Composable
 fun SDGBoxTab(
-    tabItems: List<SDGBoxTabItem>,
+    option: SDGBoxTabOption,
     style: SDGBoxTabStyle = SDGBoxTabStyle.Solid,
     onTabClick: (tabPosition: Int) -> Unit
 ) {
@@ -61,7 +61,7 @@ fun SDGBoxTab(
         horizontalArrangement = spacedBy(Spacing6),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        tabItems.forEachIndexed { index, item ->
+        option.tabs.forEachIndexed { index, item ->
             val itemModifier = Modifier
                 .weight(1f)
                 .selectable(
@@ -70,7 +70,7 @@ fun SDGBoxTab(
                     onClick = { onTabClick(index) }
                 )
 
-            if (index < tabItems.lastIndex) {
+            if (index < option.tabs.lastIndex) {
                 Row(
                     modifier = itemModifier,
                     horizontalArrangement = spacedBy(Spacing6),
@@ -177,17 +177,21 @@ private fun PreviewSDGBoxTab() {
         verticalArrangement = spacedBy(Spacing8)
     ) {
         SDGBoxTab(
-            tabItems = listOf(
-                SDGBoxTabItem(SDGBoxTabItemState.Selected, "Label", SDGBoxTabItem.ShowTwoDepth.True("Selected Text", "3")),
-                SDGBoxTabItem(SDGBoxTabItemState.Unselected, "Label", SDGBoxTabItem.ShowTwoDepth.True("-", null)),
-                SDGBoxTabItem(SDGBoxTabItemState.Unselected, "Label", SDGBoxTabItem.ShowTwoDepth.True("-", null))
+            option = SDGBoxTabOption.ThreeOption(
+                tabs = listOf(
+                    SDGBoxTabItem(SDGBoxTabItemState.Selected, "Label", SDGBoxTabItem.ShowTwoDepth.True("Selected Text", "3")),
+                    SDGBoxTabItem(SDGBoxTabItemState.Unselected, "Label", SDGBoxTabItem.ShowTwoDepth.True("-", null)),
+                    SDGBoxTabItem(SDGBoxTabItemState.Unselected, "Label", SDGBoxTabItem.ShowTwoDepth.True("-", null))
+                )
             ),
             onTabClick = {}
         )
         SDGBoxTab(
-            tabItems = listOf(
-                SDGBoxTabItem(SDGBoxTabItemState.Unselected, "Label", SDGBoxTabItem.ShowTwoDepth.True("-", null)),
-                SDGBoxTabItem(SDGBoxTabItemState.Selected, "Label", SDGBoxTabItem.ShowTwoDepth.True("Selected Text", "3"))
+            option = SDGBoxTabOption.TwoOption(
+                tabs = listOf(
+                    SDGBoxTabItem(SDGBoxTabItemState.Unselected, "Label", SDGBoxTabItem.ShowTwoDepth.True("-", null)),
+                    SDGBoxTabItem(SDGBoxTabItemState.Selected, "Label", SDGBoxTabItem.ShowTwoDepth.True("Selected Text", "3"))
+                )
             ),
             style = SDGBoxTabStyle.Line,
             onTabClick = {}
