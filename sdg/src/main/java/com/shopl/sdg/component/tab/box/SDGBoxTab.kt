@@ -4,12 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.VerticalDivider
@@ -21,7 +21,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.tab.box.preview.SDGBoxTabPreviewParameter
+import com.shopl.sdg.component.tab.box.preview.SDGBoxTabPreviewParameterProvider
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
@@ -136,63 +139,16 @@ private fun BoxTabItem(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun PreviewBoxTabItem() {
-    Row {
-        BoxTabItem(
-            item = SDGBoxTabItem(
-                state = SDGBoxTabItemState.Selected,
-                label = "Labelasdf651asd6f51asd65f16as5d1f65as1df65zx3c2v1zx6c5v1zxcvzxcvzxcv",
-                showTwoDepth = SDGBoxTabItem.ShowTwoDepth.True("Selecdsafasdfasdfasdfasdf6531asd6f51asd65fted Text", "2")
-            ),
-            modifier = Modifier.width(89.dp)
-        )
-        BoxTabItem(
-            item = SDGBoxTabItem(
-                state = SDGBoxTabItemState.Unselected,
-                label = "Label",
-                showTwoDepth = SDGBoxTabItem.ShowTwoDepth.True("Selected Text", "2")
-            ),
-            modifier = Modifier.width(89.dp)
-        )
-        BoxTabItem(
-            item = SDGBoxTabItem(
-                state = SDGBoxTabItemState.Selected,
-                label = "Label",
-                showTwoDepth = SDGBoxTabItem.ShowTwoDepth.True("Selected Text", "1")
-            ),
-            modifier = Modifier.width(89.dp)
-        )
-    }
-}
-
 @Preview(showBackground = true, widthDp = 335)
 @Composable
-private fun PreviewSDGBoxTab() {
-    Column(
-        modifier = Modifier.background(SDGColor.Neutral50),
-        verticalArrangement = spacedBy(Spacing8)
-    ) {
+private fun PreviewSDGBoxTab(
+    @PreviewParameter(SDGBoxTabPreviewParameterProvider::class)
+    parameter: SDGBoxTabPreviewParameter
+) {
+    Box(modifier = Modifier.background(SDGColor.Neutral50)) {
         SDGBoxTab(
-            option = SDGBoxTabOption.ThreeOption(
-                tabs = listOf(
-                    SDGBoxTabItem(SDGBoxTabItemState.Selected, "Label", SDGBoxTabItem.ShowTwoDepth.True("Selected Text", "3")),
-                    SDGBoxTabItem(SDGBoxTabItemState.Unselected, "Label", SDGBoxTabItem.ShowTwoDepth.True("-", null)),
-                    SDGBoxTabItem(SDGBoxTabItemState.Unselected, "Label", SDGBoxTabItem.ShowTwoDepth.True("-", null))
-                )
-            ),
-            style = SDGBoxTabStyle.Solid,
-            onTabClick = {}
-        )
-        SDGBoxTab(
-            option = SDGBoxTabOption.TwoOption(
-                tabs = listOf(
-                    SDGBoxTabItem(SDGBoxTabItemState.Unselected, "Label", SDGBoxTabItem.ShowTwoDepth.True("-", null)),
-                    SDGBoxTabItem(SDGBoxTabItemState.Selected, "Label", SDGBoxTabItem.ShowTwoDepth.True("Selected Text", "3"))
-                )
-            ),
-            style = SDGBoxTabStyle.Line,
+            option = parameter.option,
+            style = parameter.style,
             onTabClick = {}
         )
     }
