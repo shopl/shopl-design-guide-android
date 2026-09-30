@@ -48,7 +48,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 fun SDGBoxTab(
     tabItems: List<SDGBoxTabItem>,
     style: SDGBoxTabStyle = SDGBoxTabStyle.Solid,
-    onTabClick: (Int) -> Unit
+    onTabClick: (tabPosition: Int) -> Unit
 ) {
     Row(
         modifier = Modifier
