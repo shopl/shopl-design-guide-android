@@ -33,7 +33,7 @@ import kotlinx.collections.immutable.PersistentList
 /**
  * SDG - Tab - Scroll Tab
  *
- * 수평 스크롤로 개수 제한 없이 카테고리를 탐색하고 라벨과 인디케이터로 선택 상태를 표시합니다.
+ * 수평 스크롤을 통해 다수의 카테고리를 탐색하고, 언더라인 인디케이터로 선택 상태를 전달하는 탭 컴포넌트
  *
  * @version 2.3.48
  *
@@ -79,7 +79,7 @@ fun SDGScrollTab(
             val viewportStart = layoutInfo.viewportStartOffset
             val viewportEnd = layoutInfo.viewportEndOffset
             val isPartiallyHidden = itemInfo.offset < viewportStart ||
-                (itemInfo.offset + itemInfo.size) > viewportEnd
+                    (itemInfo.offset + itemInfo.size) > viewportEnd
 
             if (isPartiallyHidden) {
                 val offset = (viewportStart + viewportEnd - itemInfo.size) / 2
