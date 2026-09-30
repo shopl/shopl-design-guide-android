@@ -50,11 +50,6 @@ fun SDGBoxTab(
     style: SDGBoxTabStyle = SDGBoxTabStyle.Solid,
     onTabClick: (Int) -> Unit
 ) {
-    require(tabItems.size in 2..3) { "Box Tab은 2개 또는 3개의 항목으로 구성해야 합니다." }
-    require(tabItems.count { it.state == SDGBoxTabItemState.Selected } == 1) {
-        "Box Tab은 한 항목만 선택해야 합니다."
-    }
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
