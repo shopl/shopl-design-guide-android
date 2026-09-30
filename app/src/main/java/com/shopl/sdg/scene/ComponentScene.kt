@@ -7,6 +7,7 @@ import com.shopl.sdg.ui.screen.component.BoxBadgeScreen
 import com.shopl.sdg.ui.screen.component.DropdownScreen
 import com.shopl.sdg.ui.screen.component.IconLabelScreen
 import com.shopl.sdg.ui.screen.component.IconTabScreen
+import com.shopl.sdg.ui.screen.component.ScrollTabScreen
 import com.shopl.sdg.ui.screen.component.SelectInputScreen
 import com.shopl.sdg.ui.screen.component.TimeSelectInputScreen
 import com.shopl.sdg.ui.screen.component.button.BottomButtonScreen
@@ -427,11 +428,15 @@ internal sealed class ComponentScene(
     ) : ComponentScene(displayLabel, implemented) {
         data object ScrollTab : Tab(
             displayLabel = "Scroll Tab",
-            implemented = false
+            implemented = true
         ) {
+            /** Scroll Tab 샘플과 뒤로가기·메뉴 이동을 연결합니다. */
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                throw IllegalStateException("Not implemented")
+                ScrollTabScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = { moveToScene(Menu) },
+                )
             }
         }
 

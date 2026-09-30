@@ -7,7 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.tab.scroll.SDGScrollTab
-import com.shopl.sdg.component.tab.scroll.SDGScrollTabType
+import com.shopl.sdg.component.tab.scroll.SDGScrollTabSize
+import com.shopl.sdg.component.tab.scroll.SDGScrollTabStyle
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
@@ -18,7 +19,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 /**
- * SDG 샘플에서 사용되는 Scroll Tab(Type, Spec, 등)
+ * SDG 샘플의 속성(Type, Spec 등)을 Large / Only Text 탭으로 표시하고 선택 인덱스를 전달합니다.
  *
  * @param tabTitle 탭의 타이틀
  * @param tabs 탭 선택가능 값
@@ -41,9 +42,10 @@ internal fun <T> SDGSampleBaseTab(
             typography = SDGTypography.Body3SB
         )
         SDGScrollTab(
-            type = SDGScrollTabType.Text,
+            style = SDGScrollTabStyle.OnlyText,
+            size = SDGScrollTabSize.Large,
             titles = tabs.map { it.title }.toPersistentList(),
-            selectedIndex = selectedTabIndex,
+            selectedTab = selectedTabIndex,
             onTabClick = onTabClick,
             backgroundColor = SDGColor.Transparent
         )
