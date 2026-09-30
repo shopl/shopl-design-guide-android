@@ -47,7 +47,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 @Composable
 fun SDGBoxTab(
     option: SDGBoxTabOption,
-    style: SDGBoxTabStyle = SDGBoxTabStyle.Solid,
+    style: SDGBoxTabStyle,
     onTabClick: (tabPosition: Int) -> Unit
 ) {
     Row(
@@ -184,6 +184,7 @@ private fun PreviewSDGBoxTab() {
                     SDGBoxTabItem(SDGBoxTabItemState.Unselected, "Label", SDGBoxTabItem.ShowTwoDepth.True("-", null))
                 )
             ),
+            style = SDGBoxTabStyle.Solid,
             onTabClick = {}
         )
         SDGBoxTab(
