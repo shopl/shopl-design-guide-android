@@ -27,7 +27,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * 고정된 영역 내에서 3개 이하로 분할되며, 패이지 내 유사한 콘텐츠를 그룹화하여 섹션 간 이동 시 사용하는 탭 컴포넌트
  *
- * @version 2.1.15
+ * @version 2.3.48
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=20900-15091&m=dev">Figma</a>
  */
