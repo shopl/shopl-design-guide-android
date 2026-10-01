@@ -1,7 +1,6 @@
 package com.shopl.sdg.component.tab.box
 
 data class SDGBoxTabItem(
-    val state: SDGBoxTabItemState,
     val label: String,
     val showTwoDepth: ShowTwoDepth,
 ) {

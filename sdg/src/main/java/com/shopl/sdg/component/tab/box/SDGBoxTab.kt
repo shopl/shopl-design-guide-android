@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -18,6 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +26,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.tab.box.preview.SDGBoxTabPreviewParameter
 import com.shopl.sdg.component.tab.box.preview.SDGBoxTabPreviewParameterProvider
+import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
@@ -41,8 +43,9 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * @version 2.3.47
  *
- * @param option 2개 또는 3개의 탭. 정확히 한 항목의 state를 Selected로 지정합니다.
- * @param onTabClick 0부터 시작하는 클릭 인덱스. 호출부에서 option의 탭 state를 갱신합니다.
+ * @param option 2개 또는 3개의 탭 데이터
+ * @param selectedTab 0부터 시작하는 필수 선택 인덱스. 0 이상 탭 개수 미만으로 지정합니다.
+ * @param onTabClick 클릭한 탭의 인덱스를 전달합니다. 호출부에서 selectedTab을 갱신합니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=20902-19365&m=dev">Figma</a>
  */
@@ -50,8 +53,13 @@ import com.shopl.sdg_common.ui.components.SDGText
 fun SDGBoxTab(
     option: SDGBoxTabOption,
     style: SDGBoxTabStyle,
+    selectedTab: Int,
     onTabClick: (tabPosition: Int) -> Unit
 ) {
+    require(selectedTab in option.tabs.indices) {
+        "Selected Tab은 0부터 ${option.tabs.lastIndex} 사이의 인덱스여야 합니다. (입력값: $selectedTab)"
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -64,10 +72,12 @@ fun SDGBoxTab(
         verticalAlignment = Alignment.CenterVertically
     ) {
         option.tabs.forEachIndexed { index, item ->
+            val isSelected = index == selectedTab
+            val state = if (isSelected) SDGBoxTabItemState.Selected else SDGBoxTabItemState.Unselected
             val itemModifier = Modifier
                 .weight(1f)
-                .selectable(
-                    selected = item.state == SDGBoxTabItemState.Selected,
+                .semantics { selected = isSelected }
+                .clickable(
                     role = Role.Tab,
                     onClick = { onTabClick(index) }
                 )
@@ -78,14 +88,14 @@ fun SDGBoxTab(
                     horizontalArrangement = spacedBy(Spacing6),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    BoxTabItem(item = item, modifier = Modifier.weight(1f))
+                    BoxTabItem(item = item, state = state, modifier = Modifier.weight(1f))
                     VerticalDivider(
                         modifier = Modifier.height(Spacing16),
                         color = SDGColor.Neutral200
                     )
                 }
             } else {
-                BoxTabItem(item = item, modifier = itemModifier)
+                BoxTabItem(item = item, state = state, modifier = itemModifier)
             }
         }
     }
@@ -94,6 +104,7 @@ fun SDGBoxTab(
 @Composable
 private fun BoxTabItem(
     item: SDGBoxTabItem,
+    state: SDGBoxTabItemState,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -103,8 +114,8 @@ private fun BoxTabItem(
     ) {
         SDGText(
             text = item.label,
-            typography = item.state.labelTypography,
-            textColor = item.state.labelTextColor,
+            typography = state.labelTypography,
+            textColor = state.labelTextColor,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
@@ -120,7 +131,7 @@ private fun BoxTabItem(
                 SDGText(
                     text = twoDepth.text,
                     typography = SDGTypography.Body3R,
-                    textColor = item.state.twoDepthColor,
+                    textColor = state.twoDepthColor,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f, fill = false)
@@ -130,7 +141,7 @@ private fun BoxTabItem(
                     SDGText(
                         text = "+${count - 1}",
                         typography = SDGTypography.Body3SB,
-                        textColor = item.state.twoDepthColor,
+                        textColor = state.twoDepthColor,
                         maxLines = 1
                     )
                 }
@@ -149,6 +160,7 @@ private fun PreviewSDGBoxTab(
         SDGBoxTab(
             option = parameter.option,
             style = parameter.style,
+            selectedTab = parameter.selectedTab,
             onTabClick = {}
         )
     }

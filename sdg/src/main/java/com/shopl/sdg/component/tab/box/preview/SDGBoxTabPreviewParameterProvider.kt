@@ -2,7 +2,6 @@ package com.shopl.sdg.component.tab.box.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.shopl.sdg.component.tab.box.SDGBoxTabItem
-import com.shopl.sdg.component.tab.box.SDGBoxTabItemState
 import com.shopl.sdg.component.tab.box.SDGBoxTabOption
 import com.shopl.sdg.component.tab.box.SDGBoxTabStyle
 
@@ -63,6 +62,7 @@ internal class SDGBoxTabPreviewParameterProvider :
     ) = SDGBoxTabPreviewParameter(
         option = SDGBoxTabOption.TwoOption(tabs(2, selectedTab, selectedTwoDepth, unselectedTwoDepth)),
         style = style,
+        selectedTab = selectedTab,
     )
 
     private fun threeOption(
@@ -73,6 +73,7 @@ internal class SDGBoxTabPreviewParameterProvider :
     ) = SDGBoxTabPreviewParameter(
         option = SDGBoxTabOption.ThreeOption(tabs(3, selectedTab, selectedTwoDepth, unselectedTwoDepth)),
         style = style,
+        selectedTab = selectedTab,
     )
 
     private fun tabs(
@@ -82,7 +83,6 @@ internal class SDGBoxTabPreviewParameterProvider :
         unselectedTwoDepth: SDGBoxTabItem.ShowTwoDepth,
     ): List<SDGBoxTabItem> = List(count) { index ->
         SDGBoxTabItem(
-            state = if (index == selectedTab) SDGBoxTabItemState.Selected else SDGBoxTabItemState.Unselected,
             label = "Label ${index + 1}",
             showTwoDepth = if (index == selectedTab) selectedTwoDepth else unselectedTwoDepth,
         )
@@ -92,4 +92,5 @@ internal class SDGBoxTabPreviewParameterProvider :
 internal data class SDGBoxTabPreviewParameter(
     val option: SDGBoxTabOption,
     val style: SDGBoxTabStyle,
+    val selectedTab: Int,
 )

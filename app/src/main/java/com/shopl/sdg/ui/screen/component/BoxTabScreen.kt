@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.tab.box.SDGBoxTab
 import com.shopl.sdg.component.tab.box.SDGBoxTabItem
-import com.shopl.sdg.component.tab.box.SDGBoxTabItemState
 import com.shopl.sdg.component.tab.box.SDGBoxTabOption
 import com.shopl.sdg.component.tab.box.SDGBoxTabStyle
 import com.shopl.sdg.scene.ComponentScene
@@ -47,9 +46,9 @@ internal fun BoxTabScreen(
 @Composable
 private fun BoxTabScreenContent() {
     val tabs = listOf(
-        SDGBoxTabItem(SDGBoxTabItemState.Unselected, "근무지", SDGBoxTabItem.ShowTwoDepth.True("서울 본사", "1")),
-        SDGBoxTabItem(SDGBoxTabItemState.Unselected, "구성원", SDGBoxTabItem.ShowTwoDepth.True("홍길동", "2")),
-        SDGBoxTabItem(SDGBoxTabItemState.Unselected, "상태", SDGBoxTabItem.ShowTwoDepth.True("진행 중", "12")),
+        SDGBoxTabItem("근무지", SDGBoxTabItem.ShowTwoDepth.True("서울 본사", "1")),
+        SDGBoxTabItem("구성원", SDGBoxTabItem.ShowTwoDepth.True("홍길동", "2")),
+        SDGBoxTabItem("상태", SDGBoxTabItem.ShowTwoDepth.True("진행 중", "12")),
     )
     val twoTabs = tabs.take(2)
 
@@ -132,9 +131,6 @@ private fun BoxTabSection(
     initialSelectedTab: Int = 0,
 ) {
     var selectedTab by rememberSaveable { mutableIntStateOf(initialSelectedTab) }
-    val tabs = option.tabs.mapIndexed { index, tab ->
-        tab.copy(state = if (index == selectedTab) SDGBoxTabItemState.Selected else SDGBoxTabItemState.Unselected)
-    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -146,11 +142,9 @@ private fun BoxTabSection(
             typography = SDGTypography.Body1SB,
         )
         SDGBoxTab(
-            option = when (option) {
-                is SDGBoxTabOption.TwoOption -> SDGBoxTabOption.TwoOption(tabs)
-                is SDGBoxTabOption.ThreeOption -> SDGBoxTabOption.ThreeOption(tabs)
-            },
+            option = option,
             style = style,
+            selectedTab = selectedTab,
             onTabClick = { selectedTab = it },
         )
     }
