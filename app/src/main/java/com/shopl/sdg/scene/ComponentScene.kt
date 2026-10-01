@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import com.shopl.sdg.ui.screen.component.AttachmentElementScreen
 import com.shopl.sdg.ui.screen.component.BoxBadgeScreen
+import com.shopl.sdg.ui.screen.component.BoxTabScreen
 import com.shopl.sdg.ui.screen.component.DropdownScreen
 import com.shopl.sdg.ui.screen.component.IconLabelScreen
 import com.shopl.sdg.ui.screen.component.IconTabScreen
@@ -452,11 +453,14 @@ internal sealed class ComponentScene(
 
         data object BoxTab : Tab(
             displayLabel = "Box Tab",
-            implemented = false
+            implemented = true
         ) {
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                throw IllegalStateException("Not implemented")
+                BoxTabScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = { moveToScene(Menu) },
+                )
             }
         }
 
