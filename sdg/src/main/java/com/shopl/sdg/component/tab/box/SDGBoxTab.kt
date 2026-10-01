@@ -65,7 +65,13 @@ fun SDGBoxTab(
             .fillMaxWidth()
             .clip(SDGCornerRadius.BoxRadius.Radius12)
             .background(SDGColor.Neutral0)
-            .border(1.dp, style.borderColor, SDGCornerRadius.BoxRadius.Radius12)
+            .then(
+                if (style == SDGBoxTabStyle.Line) {
+                    Modifier.border(1.dp, SDGColor.Neutral200, SDGCornerRadius.BoxRadius.Radius12)
+                } else {
+                    Modifier
+                }
+            )
             .padding(horizontal = Spacing6, vertical = Spacing8)
             .selectableGroup(),
         horizontalArrangement = spacedBy(Spacing6),
