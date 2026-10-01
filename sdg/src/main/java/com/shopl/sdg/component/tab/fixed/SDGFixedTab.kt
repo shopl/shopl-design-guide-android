@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
@@ -144,18 +145,21 @@ private fun Tab(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 412)
 @Composable
 private fun PreviewSDGFixedTab(
     @PreviewParameter(SDGFixedTabPreviewParameterProvider::class)
     parameter: SDGFixedTabPreviewParameter
 ) {
     with(parameter) {
-        SDGFixedTab(
-            type = type,
-            onTabClick = onTabClick,
-            selectedTabIndex = selectedTabIndex,
-            unselectedTabUnderLineColor = SDGColor.Neutral100
-        )
+        Box(modifier = Modifier.width(width)) {
+            SDGFixedTab(
+                option = option,
+                selectedTab = selectedTab,
+                onTabClick = onTabClick,
+                unselectedTabUnderLineColor = unselectedTabUnderLineColor,
+                tabHorizontalPadding = tabHorizontalPadding,
+            )
+        }
     }
 }
