@@ -30,6 +30,9 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 
+private val SelectedTabUnderlineHeight = 2.dp
+private val UnselectedTabUnderlineHeight = 1.dp
+
 /**
  * SDG - Tab - Fixed Tab
  *
@@ -59,17 +62,17 @@ fun SDGFixedTab(
     require(selectedTab in option.tabs.indices) {
         "Selected Tab은 0부터 ${option.tabs.lastIndex} 사이의 인덱스여야 합니다. (입력값: $selectedTab)"
     }
-    val indicator = @Composable { tabPositions: List<TabPosition> ->
+    val selectedTabUnderline = @Composable { tabPositions: List<TabPosition> ->
         SecondaryIndicator(
             modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
-            height = 2.dp,
+            height = SelectedTabUnderlineHeight,
             color = SDGColor.Neutral700
         )
     }
     Box(modifier = Modifier.fillMaxWidth().padding(marginValues)) {
         SecondaryIndicator(
             modifier = Modifier.align(Alignment.BottomCenter),
-            height = 1.dp,
+            height = UnselectedTabUnderlineHeight,
             color = unselectedTabUnderLineColor
         )
         TabRow(
@@ -78,7 +81,7 @@ fun SDGFixedTab(
                 .padding(horizontal = tabHorizontalPadding),
             containerColor = SDGColor.Transparent,
             selectedTabIndex = selectedTab,
-            indicator = indicator,
+            indicator = selectedTabUnderline,
             divider = {},
         ) {
             option.tabs.forEachIndexed { index, title ->
