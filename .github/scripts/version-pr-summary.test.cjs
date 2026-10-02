@@ -71,8 +71,8 @@ async function run({ labels = ['add'], body = versionPr.body, action, total = 3,
   assert.equal(minor.updates.length, 1);
   const body = minor.updates[0].body;
   assert.match(body, /권장 버전: \*\*1\.23\.0\*\* \(`minor`\)/);
-  assert.match(body, /#458 \*\*add\*\*/);
-  assert.match(body, /#457 \*\*update\*\*/);
+  assert.match(body, /^- #458 \*\*add\*\*$/m);
+  assert.match(body, /^- #457 \*\*update\*\*$/m);
   assert.equal(body.match(/#458/g).length, 1);
   assert.doesNotMatch(body, /#100|#101|#102|#103|#459/);
 

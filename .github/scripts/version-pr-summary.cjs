@@ -87,7 +87,7 @@ module.exports = async ({ github, context }) => {
     const nextVersion = addCount ? `${major}.${minor + 1}.0` : `${major}.${minor}.${patch + 1}`;
     const changes = pulls.map(pull => {
       const labels = pull.labels.map(label => `**${escapeMarkdown(label.name)}**`).join(' ') || '**라벨 없음**';
-      return `- #${pull.number} ${labels} — ${escapeMarkdown(pull.title)}`;
+      return `- #${pull.number} ${labels}`;
     });
     const summary = [
       startMarker,
