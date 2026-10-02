@@ -22,7 +22,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
@@ -44,9 +43,8 @@ private val UnselectedTabUnderlineHeight = 1.dp
  * @param selectedTab Selected Tab: 0부터 시작하는 필수 선택 인덱스. 0 이상 탭 개수 미만으로 지정합니다.
  * @param onTabClick 클릭한 탭의 인덱스를 전달합니다. 호출부에서 selectedTab을 갱신합니다.
  * @param unselectedTabUnderLineColor 미선택 탭의 밑줄과 Baseline Divider에 함께 적용할 색상
- * @param tabHorizontalPadding 탭 셀 바깥의 좌우 여백. 해당 영역까지 1dp Baseline Divider가 확장됩니다.
- * 기본값 0.dp에서는 탭 셀 바깥으로 확장하지 않습니다.
- * @param marginValues 컴포넌트 외부 여백
+ * @param baselineDivider 좌우 Baseline Divider의 노출 상태. Visible에서 확장 여백을 지정합니다.
+ * @param marginValues 컴포넌트 외부 여백. Hidden에서도 탭 배치 여백을 지정할 수 있습니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=20900-15091&m=dev">Figma</a>
  */
@@ -56,11 +54,15 @@ fun SDGFixedTab(
     selectedTab: Int,
     onTabClick: (Int) -> Unit,
     unselectedTabUnderLineColor: Color,
-    tabHorizontalPadding: Dp = 0.dp,
+    baselineDivider: SDGFixedTabBaselineDivider = SDGFixedTabBaselineDivider.Hidden,
     marginValues: PaddingValues = PaddingValues(),
 ) {
     require(selectedTab in option.tabs.indices) {
         "Selected Tab은 0부터 ${option.tabs.lastIndex} 사이의 인덱스여야 합니다. (입력값: $selectedTab)"
+    }
+    val tabHorizontalPadding = when (baselineDivider) {
+        SDGFixedTabBaselineDivider.Hidden -> 0.dp
+        is SDGFixedTabBaselineDivider.Visible -> baselineDivider.horizontalPadding
     }
     val selectedTabUnderline = @Composable { tabPositions: List<TabPosition> ->
         SecondaryIndicator(
@@ -161,7 +163,8 @@ private fun PreviewSDGFixedTab(
                 selectedTab = selectedTab,
                 onTabClick = onTabClick,
                 unselectedTabUnderLineColor = unselectedTabUnderLineColor,
-                tabHorizontalPadding = tabHorizontalPadding,
+                baselineDivider = baselineDivider,
+                marginValues = marginValues,
             )
         }
     }
