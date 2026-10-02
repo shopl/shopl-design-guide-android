@@ -31,6 +31,9 @@ import com.shopl.sdg_common.ui.components.SDGText
 private val SelectedTabUnderlineHeight = 2.dp
 private val UnselectedTabUnderlineHeight = 1.dp
 
+/** 미선택 밑줄과 Baseline Divider는 바깥 Box에서 그리므로 TabRow 내부 divider를 생략합니다. */
+private val NoTabRowDivider: @Composable () -> Unit = {}
+
 /**
  * SDG - Tab - Fixed Tab
  *
@@ -81,7 +84,7 @@ fun SDGFixedTab(
             containerColor = SDGColor.Transparent,
             selectedTabIndex = selectedTab,
             indicator = selectedTabUnderline,
-            divider = {},
+            divider = NoTabRowDivider,
         ) {
             option.tabs.forEachIndexed { index, title ->
                 Tab(
