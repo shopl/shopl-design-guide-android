@@ -50,7 +50,7 @@ private val UnselectedTabUnderlineHeight = 1.dp
 fun SDGFixedTab(
     option: SDGFixedTabOption,
     selectedTab: Int,
-    onTabClick: (Int) -> Unit,
+    onTabClick: (tabIndex: Int) -> Unit,
     unselectedTabUnderLineColor: Color,
     baselineDivider: SDGFixedTabBaselineDivider,
 ) {
@@ -155,7 +155,9 @@ private fun PreviewSDGFixedTab(
     parameter: SDGFixedTabPreviewParameter
 ) {
     with(parameter) {
-        Box(modifier = Modifier.width(width).padding(horizontal = horizontalPadding)) {
+        Box(modifier = Modifier
+            .width(width)
+            .padding(horizontal = horizontalPadding)) {
             SDGFixedTab(
                 option = option,
                 selectedTab = selectedTab,
