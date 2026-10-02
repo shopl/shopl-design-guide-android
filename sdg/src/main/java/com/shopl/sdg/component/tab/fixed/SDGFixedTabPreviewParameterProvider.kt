@@ -25,11 +25,13 @@ internal class SDGFixedTabPreviewParameterProvider :
         SDGFixedTabPreviewParameter(
             option = SDGFixedTabOption.TwoOption(listOf("한 줄로 말줄임 처리되는 매우 긴 탭 라벨", "Label")),
             onTabClick = {},
+            baselineDivider = SDGFixedTabBaselineDivider.Hidden,
             width = 335.dp,
         ),
         SDGFixedTabPreviewParameter(
             option = SDGFixedTabOption.ThreeOption(listOf("Label", "Label", "선택된 매우 긴 탭 라벨도 한 줄로 말줄임됩니다")),
             onTabClick = {},
+            baselineDivider = SDGFixedTabBaselineDivider.Hidden,
             selectedTab = 2,
             width = 335.dp,
         ),
@@ -53,6 +55,7 @@ internal class SDGFixedTabPreviewParameterProvider :
         return SDGFixedTabPreviewParameter(
             option = SDGFixedTabOption.TwoOption(listOf("Label", "Label")),
             onTabClick = {},
+            baselineDivider = SDGFixedTabBaselineDivider.Hidden,
             selectedTab = 0
         )
     }
@@ -61,6 +64,7 @@ internal class SDGFixedTabPreviewParameterProvider :
         return SDGFixedTabPreviewParameter(
             option = SDGFixedTabOption.TwoOption(listOf("Label", "Label")),
             onTabClick = {},
+            baselineDivider = SDGFixedTabBaselineDivider.Hidden,
             selectedTab = 1
         )
     }
@@ -69,6 +73,7 @@ internal class SDGFixedTabPreviewParameterProvider :
         return SDGFixedTabPreviewParameter(
             option = SDGFixedTabOption.ThreeOption(listOf("Label", "Label", "Label")),
             onTabClick = {},
+            baselineDivider = SDGFixedTabBaselineDivider.Hidden,
             selectedTab = 0
         )
     }
@@ -77,6 +82,7 @@ internal class SDGFixedTabPreviewParameterProvider :
         return SDGFixedTabPreviewParameter(
             option = SDGFixedTabOption.ThreeOption(listOf("Label", "Label", "Label")),
             onTabClick = {},
+            baselineDivider = SDGFixedTabBaselineDivider.Hidden,
             selectedTab = 1
         )
     }
@@ -85,6 +91,7 @@ internal class SDGFixedTabPreviewParameterProvider :
         return SDGFixedTabPreviewParameter(
             option = SDGFixedTabOption.ThreeOption(listOf("Label", "Label", "Label")),
             onTabClick = {},
+            baselineDivider = SDGFixedTabBaselineDivider.Hidden,
             selectedTab = 2
         )
     }
@@ -96,7 +103,7 @@ internal data class SDGFixedTabPreviewParameter(
     val onTabClick: (Int) -> Unit,
     val selectedTab: Int = 0,
     val width: Dp = 375.dp,
-    val baselineDivider: SDGFixedTabBaselineDivider = SDGFixedTabBaselineDivider.Hidden,
+    val baselineDivider: SDGFixedTabBaselineDivider,
     val horizontalPadding: Dp = 0.dp,
     val unselectedTabUnderLineColor: Color = SDGColor.Neutral200,
 )

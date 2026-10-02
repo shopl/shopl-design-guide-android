@@ -52,7 +52,7 @@ fun SDGFixedTab(
     selectedTab: Int,
     onTabClick: (Int) -> Unit,
     unselectedTabUnderLineColor: Color,
-    baselineDivider: SDGFixedTabBaselineDivider = SDGFixedTabBaselineDivider.Hidden,
+    baselineDivider: SDGFixedTabBaselineDivider,
 ) {
     require(selectedTab in option.tabs.indices) {
         "Selected Tab은 0부터 ${option.tabs.lastIndex} 사이의 인덱스여야 합니다. (입력값: $selectedTab)"
@@ -117,6 +117,7 @@ fun SDGFixedTab(
         selectedTab = selectedTabIndex,
         onTabClick = onTabClick,
         unselectedTabUnderLineColor = unselectedTabUnderLineColor,
+        baselineDivider = SDGFixedTabBaselineDivider.Hidden,
     )
 }
 

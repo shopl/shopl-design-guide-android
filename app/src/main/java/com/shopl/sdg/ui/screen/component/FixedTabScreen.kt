@@ -56,8 +56,17 @@ private fun FixedTabScreenContent() {
             .padding(horizontal = SDGSpacing.Spacing16, vertical = SDGSpacing.Spacing24),
         verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing24),
     ) {
-        FixedTabSection(title = "2 Option", option = twoOptions)
-        FixedTabSection(title = "3 Option", option = threeOptions, initialSelectedTab = 1)
+        FixedTabSection(
+            title = "2 Option",
+            option = twoOptions,
+            baselineDivider = SDGFixedTabBaselineDivider.Hidden,
+        )
+        FixedTabSection(
+            title = "3 Option",
+            option = threeOptions,
+            baselineDivider = SDGFixedTabBaselineDivider.Hidden,
+            initialSelectedTab = 1,
+        )
         FixedTabSection(
             title = "Baseline Divider 표시 · 좌우 20dp",
             option = twoOptions,
@@ -66,6 +75,7 @@ private fun FixedTabScreenContent() {
         FixedTabSection(
             title = "Baseline Divider 숨김 · 좌우 여백 20dp",
             option = twoOptions,
+            baselineDivider = SDGFixedTabBaselineDivider.Hidden,
             horizontalPadding = SDGSpacing.Spacing20,
         )
         FixedTabSection(
@@ -79,6 +89,7 @@ private fun FixedTabScreenContent() {
             option = SDGFixedTabOption.ThreeOption(
                 listOf("전체", "가용 영역을 초과하는 매우 긴 탭 라벨", "완료"),
             ),
+            baselineDivider = SDGFixedTabBaselineDivider.Hidden,
             initialSelectedTab = 1,
         )
     }
@@ -88,7 +99,7 @@ private fun FixedTabScreenContent() {
 private fun FixedTabSection(
     title: String,
     option: SDGFixedTabOption,
-    baselineDivider: SDGFixedTabBaselineDivider = SDGFixedTabBaselineDivider.Hidden,
+    baselineDivider: SDGFixedTabBaselineDivider,
     horizontalPadding: Dp = 0.dp,
     unselectedTabUnderLineColor: Color = SDGColor.Neutral200,
     initialSelectedTab: Int = 0,
