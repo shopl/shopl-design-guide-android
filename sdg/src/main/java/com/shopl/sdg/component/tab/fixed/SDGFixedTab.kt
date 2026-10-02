@@ -1,7 +1,6 @@
 package com.shopl.sdg.component.tab.fixed
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -44,7 +43,6 @@ private val UnselectedTabUnderlineHeight = 1.dp
  * @param onTabClick 클릭한 탭의 인덱스를 전달합니다. 호출부에서 selectedTab을 갱신합니다.
  * @param unselectedTabUnderLineColor 미선택 탭의 밑줄과 Baseline Divider에 함께 적용할 색상
  * @param baselineDivider 좌우 Baseline Divider의 노출 상태. Visible에서 확장 여백을 지정합니다.
- * @param marginValues 컴포넌트 외부 여백. Hidden에서도 탭 배치 여백을 지정할 수 있습니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=20900-15091&m=dev">Figma</a>
  */
@@ -55,7 +53,6 @@ fun SDGFixedTab(
     onTabClick: (Int) -> Unit,
     unselectedTabUnderLineColor: Color,
     baselineDivider: SDGFixedTabBaselineDivider = SDGFixedTabBaselineDivider.Hidden,
-    marginValues: PaddingValues = PaddingValues(),
 ) {
     require(selectedTab in option.tabs.indices) {
         "Selected Tab은 0부터 ${option.tabs.lastIndex} 사이의 인덱스여야 합니다. (입력값: $selectedTab)"
@@ -71,7 +68,7 @@ fun SDGFixedTab(
             color = SDGColor.Neutral700
         )
     }
-    Box(modifier = Modifier.fillMaxWidth().padding(marginValues)) {
+    Box(modifier = Modifier.fillMaxWidth()) {
         SecondaryIndicator(
             modifier = Modifier.align(Alignment.BottomCenter),
             height = UnselectedTabUnderlineHeight,
@@ -157,14 +154,13 @@ private fun PreviewSDGFixedTab(
     parameter: SDGFixedTabPreviewParameter
 ) {
     with(parameter) {
-        Box(modifier = Modifier.width(width)) {
+        Box(modifier = Modifier.width(width).padding(horizontal = horizontalPadding)) {
             SDGFixedTab(
                 option = option,
                 selectedTab = selectedTab,
                 onTabClick = onTabClick,
                 unselectedTabUnderLineColor = unselectedTabUnderLineColor,
                 baselineDivider = baselineDivider,
-                marginValues = marginValues,
             )
         }
     }

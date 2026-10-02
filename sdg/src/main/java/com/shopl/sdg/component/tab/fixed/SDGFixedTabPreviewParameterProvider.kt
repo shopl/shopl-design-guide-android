@@ -1,6 +1,5 @@
 package com.shopl.sdg.component.tab.fixed
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -16,7 +15,7 @@ internal class SDGFixedTabPreviewParameterProvider :
             option = SDGFixedTabOption.TwoOption(listOf("Label", "Label")),
             onTabClick = {},
             baselineDivider = SDGFixedTabBaselineDivider.Hidden,
-            marginValues = PaddingValues(horizontal = Spacing20),
+            horizontalPadding = Spacing20,
         ),
         기본_Two_옵션(),
         기본_Two_옵션_두번째_탭_선택(),
@@ -98,6 +97,6 @@ internal data class SDGFixedTabPreviewParameter(
     val selectedTab: Int = 0,
     val width: Dp = 375.dp,
     val baselineDivider: SDGFixedTabBaselineDivider = SDGFixedTabBaselineDivider.Hidden,
-    val marginValues: PaddingValues = PaddingValues(),
+    val horizontalPadding: Dp = 0.dp,
     val unselectedTabUnderLineColor: Color = SDGColor.Neutral200,
 )
