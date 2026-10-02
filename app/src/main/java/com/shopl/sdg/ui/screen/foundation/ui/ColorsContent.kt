@@ -105,7 +105,7 @@ private fun ColorContent(
             modifier = Modifier
                 .size(40.dp)
                 .then(
-                    if (colorUiModel.color == SDGColor.Neutral0 || colorUiModel.color == SDGColor.Neutral0_a10) {
+                    if (colorUiModel.color.copy(alpha = 1f) == SDGColor.Neutral0) {
                         Modifier.border(
                             width = 1.dp,
                             color = SDGColor.Neutral200,
