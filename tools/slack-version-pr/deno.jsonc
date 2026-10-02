@@ -1,0 +1,10 @@
+{
+  "lock": false,
+  "imports": {
+    "deno-slack-sdk/": "https://deno.land/x/deno_slack_sdk@2.15.1/",
+    "deno-slack-api/": "https://deno.land/x/deno_slack_api@2.8.0/"
+  },
+  "tasks": {
+    "check": "deno check manifest.ts triggers/create-version-pr.ts && deno lint && deno test --allow-read"
+  }
+}
