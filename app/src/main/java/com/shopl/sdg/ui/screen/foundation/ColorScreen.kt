@@ -224,6 +224,12 @@ private fun SpecialColorContent() {
         SDGColor.SpecialLe.toColorUiModel(displayLabel = "Le"),
         SDGColor.SpecialYG.toColorUiModel(displayLabel = "YG"),
         SDGColor.SpecialCG.toColorUiModel(displayLabel = "CG"),
+        SDGColor.SpecialDP.toColorUiModel(displayLabel = "DP"),
+        SDGColor.SpecialMG.toColorUiModel(displayLabel = "MG"),
+        SDGColor.SpecialPG.toColorUiModel(displayLabel = "PG"),
+        SDGColor.SpecialBK_a40.toColorUiModel(displayLabel = "BK-40"),
+        SDGColor.SpecialWH_a40.toColorUiModel(displayLabel = "WH-40"),
+        SDGColor.SpecialWH_a80.toColorUiModel(displayLabel = "WH-80"),
     )
     specialColors.ColorsContent()
 }

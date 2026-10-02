@@ -230,6 +230,24 @@ object SDGColor {
     @Stable
     val SpecialYG = Color(0xFF95E237)
 
+    @Stable
+    val SpecialDP = Color(0xFF8566CF)
+
+    @Stable
+    val SpecialMG = Color(0xFFE5FBEE)
+
+    @Stable
+    val SpecialPG = Color(0xFF06C058)
+
+    @Stable
+    val SpecialBK_a40 = Color(0x66000000)
+
+    @Stable
+    val SpecialWH_a40 = Color(0x66FFFFFF)
+
+    @Stable
+    val SpecialWH_a80 = Color(0xCCFFFFFF)
+
     /** ETC **/
     @Stable
     val ShimmerColorShades = listOf(
