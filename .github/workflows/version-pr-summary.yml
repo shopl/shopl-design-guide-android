@@ -37,9 +37,12 @@ jobs:
           persist-credentials: false
 
       - name: 변경사항 생성 로직 확인
+        # 최초 설치 PR에서는 기준 브랜치에 스크립트가 아직 없습니다.
+        if: hashFiles('.github/scripts/version-pr-summary.cjs') != ''
         run: node .github/scripts/version-pr-summary.test.cjs
 
       - name: PR 목록, 라벨, 권장 버전 갱신
+        if: hashFiles('.github/scripts/version-pr-summary.cjs') != ''
         uses: actions/github-script@v7
         with:
           script: |
