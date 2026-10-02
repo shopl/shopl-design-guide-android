@@ -97,7 +97,7 @@ module.exports = async ({ github, context }) => {
 
   for (const number of numbers) {
     let { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number: number });
-    if (pr.state !== 'open' || pr.base.ref !== 'main' || !pr.head.ref.startsWith('version/') || pr.head.repo.full_name !== `${owner}/${repo}`) continue;
+    if (pr.state !== 'open' || pr.base.ref !== 'main' || !pr.head.ref.startsWith('version/') || pr.head.repo?.full_name !== `${owner}/${repo}`) continue;
 
     for (let attempt = 0; pr.mergeable === null && attempt < 3; attempt++) {
       await new Promise(resolve => setTimeout(resolve, 2000));

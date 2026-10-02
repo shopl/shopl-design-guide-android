@@ -7,7 +7,7 @@ module.exports = async ({ github, context }) => {
 
   const findOpenVersionPr = async () => (await github.paginate(github.rest.pulls.list, {
     owner, repo, state: 'open', base: 'main', per_page: 100,
-  })).find(pr => pr.head.ref.startsWith('version/') && pr.head.repo.full_name === `${owner}/${repo}`);
+  })).find(pr => pr.head.ref.startsWith('version/') && pr.head.repo?.full_name === `${owner}/${repo}`);
   const reuse = async pr => {
     const automationBranch = pr.head.ref.match(/^version\/automation\/(minor|patch)-\d+\.\d+\.\d+$/);
     if (automationBranch && !pr.labels.some(label => label.name === automationBranch[1])) {

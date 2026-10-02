@@ -59,7 +59,7 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
         listReads++;
         if (existing || (concurrent && listReads > 1)) return [{ ...existingPr,
           head: { ...existingPr.head, ref: missingLabel ? branch : existingPr.head.ref } }];
-        return [{ ...existingPr, head: { ...existingPr.head, repo: { full_name: 'fork/other' } } }];
+        return [{ ...existingPr, head: { ...existingPr.head, repo: null } }];
       }
       return [{ number: 458, merged_at: '2026-10-02T06:00:00Z', merge_commit_sha: 'main-sha',
         base: { ref: 'main' }, head: { ref: 'add/scott/task' }, labels: [{ name: add ? 'add' : 'update' }] }];
