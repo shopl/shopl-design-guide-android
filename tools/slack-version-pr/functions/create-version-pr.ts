@@ -16,7 +16,7 @@ export const CreateVersionPr = DefineFunction({
 
 export default SlackFunction(
   CreateVersionPr,
-  async ({ inputs, env, team_id }) => {
+  async ({ inputs, env, team_id, client }) => {
     if (team_id !== "T016H73FHDH" || inputs.channel_id !== "C093TU3CCBG") {
       return { error: "#sdg-android-deploy 채널에서 실행해주세요." };
     }
@@ -44,16 +44,23 @@ export default SlackFunction(
             `GitHub 실행 요청 실패: HTTP ${response.status}. 워크플로 설치와 Actions 권한을 확인해주세요.`,
         };
       }
-      return {
-        outputs: {
-          message:
-            "SDG 버전 PR 생성을 요청했습니다. 완료되면 이 채널에 PR 링크를 알려드립니다.",
-        },
-      };
+      const message =
+        "SDG 버전 PR 생성을 요청했습니다. 완료되면 이 채널에 PR 링크를 알려드립니다.";
+      const notification = await client.chat.postMessage({
+        channel: inputs.channel_id,
+        text: message,
+      });
+      if (!notification.ok) {
+        return {
+          error:
+            "GitHub 요청은 접수됐지만 Slack 알림을 보내지 못했습니다. 앱의 채널 참여와 권한을 확인해주세요.",
+        };
+      }
+      return { outputs: { message } };
     } catch {
       return {
         error:
-          "GitHub 실행 요청을 확인하지 못했습니다. 잠시 후 다시 실행해주세요.",
+          "실행 요청 또는 Slack 알림 전송을 확인하지 못했습니다. 실행 결과를 확인한 뒤 다시 시도해주세요.",
       };
     }
   },

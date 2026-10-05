@@ -27,7 +27,7 @@ Actions를 요청하므로 별도 서버를 운영하지 않습니다.
    배포된 앱의 `SDG_GITHUB_ACTIONS_TOKEN` 환경 변수에 설정합니다.
    `slack env set SDG_GITHUB_ACTIONS_TOKEN --app <배포된 앱 ID>`로 숨김 입력창에
    직접 입력합니다. 토큰 입력은 운영 담당자가 로컬에서 수행합니다.
-5. `#sdg-android-deploy` 채널에 **SDG 버전 PR** 앱을 초대합니다.
+5. `#sdg-android-deploy` 채널에 **SDG Version PR** 앱을 초대합니다.
 6. `slack trigger create --trigger-def triggers/create-version-pr.ts --app <배포된 앱 ID>`로
    운영용 링크를 생성합니다.
    `slack trigger access --trigger-id <트리거 ID> --grant --channels C093TU3CCBG --app <배포된 앱 ID>`로

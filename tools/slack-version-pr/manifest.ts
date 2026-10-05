@@ -10,16 +10,12 @@ export const VersionPrWorkflow = DefineWorkflow({
     required: ["channel_id"],
   },
 });
-const request = VersionPrWorkflow.addStep(CreateVersionPr, {
+VersionPrWorkflow.addStep(CreateVersionPr, {
   channel_id: VersionPrWorkflow.inputs.channel_id,
-});
-VersionPrWorkflow.addStep(Schema.slack.functions.SendMessage, {
-  channel_id: "C093TU3CCBG",
-  message: request.outputs.message,
 });
 
 export default Manifest({
-  name: "SDG 버전 PR",
+  name: "SDG Version PR",
   description: "SDG Android 버전 PR 생성",
   icon: "../../app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
   functions: [CreateVersionPr],
