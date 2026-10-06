@@ -9,6 +9,14 @@ Actions를 요청하므로 별도 서버를 운영하지 않습니다.
 라벨 및 Android 팀 리뷰 요청까지 수행합니다. 열려 있는 버전 PR이 있으면 해당 PR
 링크를 반환합니다. 결과는 기존 `SLACK_SDG_ANDROID_WEB_HOOK`으로 채널에 알립니다.
 
+## 설치된 운영 앱 (2026-10-06)
+
+[SDG Version PR](https://slack.com/apps/A0C7SN83G8G) (`A0C7SN83G8G`)의 Slack
+서버 검증·배포·채널 연결을 완료했습니다. 운영 트리거는 `Ft0C6H0H2CUF`이며,
+실행 권한은 `C093TU3CCBG` 채널 멤버에게만 설정했습니다.
+[운영 실행 링크](https://slack.com/shortcuts/Ft0C6H0H2CUF/5fc960098cfa9655c5c795b3accbe3ac)는
+main 병합과 GitHub 토큰 설정 후 채널에 게시합니다. 현재 운영 실행 검증은 대기 중입니다.
+
 ## 최초 설치
 
 1. `.github/workflows/create-version-pr.yml`을 main에 병합합니다. GitHub
@@ -21,7 +29,7 @@ Actions를 요청하므로 별도 서버를 운영하지 않습니다.
 3. 이 디렉터리에서 `slack deploy --team T016H73FHDH`를 실행합니다. 앱은 워크플로
    실행(`commands`)과 메시지 게시(`chat:write`) 권한을 요청합니다. 채널 내용
    조회 권한은 요청하지 않습니다.
-4. GitHub의 봇 또는 서비스 계정으로 **shopl/shopl-design-guide-android
+4. GitHub의 봇 또는 서비스 계정으로 [토큰 발급 화면](https://github.com/settings/personal-access-tokens/new?name=SDG+Version+PR&target_name=shopl&expires_in=90&actions=write)을 열고 **shopl/shopl-design-guide-android
    저장소만** 선택한 fine-grained token을 발급합니다. 권한은 **Actions: Read and
    write**만 필요합니다. 토큰을 git에 커밋하거나 Slack 메시지로 보내지 않고
    배포된 앱의 `SDG_GITHUB_ACTIONS_TOKEN` 환경 변수에 설정합니다.
@@ -31,7 +39,8 @@ Actions를 요청하므로 별도 서버를 운영하지 않습니다.
 6. `slack trigger create --trigger-def triggers/create-version-pr.ts --app <배포된 앱 ID>`로
    운영용 링크를 생성합니다.
    `slack trigger access --trigger-id <트리거 ID> --grant --channels C093TU3CCBG --app <배포된 앱 ID>`로
-   해당 채널 멤버에게 실행 권한을 설정하고 `--info`로 확인합니다.
+   협업자 포함 질문에는 **No**를 선택하고, `--info`로 해당 채널 멤버만 실행할 수
+   있는지 확인합니다.
 7. 생성된 Shortcut URL을 채널에 게시하면 실행 버튼이 표시됩니다. 메시지를
    고정하거나 채널 링크에 등록합니다. `slack run`으로 만든 개발용 링크는
    운영용으로 사용하지 않습니다.
