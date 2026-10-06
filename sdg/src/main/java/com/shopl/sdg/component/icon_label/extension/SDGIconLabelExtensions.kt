@@ -67,11 +67,15 @@ fun SDGIconLabel(
         }
 
         SDGText(
-            modifier = if (isFillMaxWidth) {
-                Modifier.weight(1f)
-            } else {
-                Modifier
-            },
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .then(
+                    if (isFillMaxWidth) {
+                        Modifier.weight(1f)
+                    } else {
+                        Modifier
+                    },
+                ),
             text = label,
             textColor = labelColor,
             typography = fontWeight.typography(size),
