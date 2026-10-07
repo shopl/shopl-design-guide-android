@@ -38,7 +38,7 @@ jobs:
         with:
           script: |
             const createVersionPr = require('./.github/scripts/create-version-pr.cjs');
-            const result = await createVersionPr({ github, context: { ...context, ref: 'refs/heads/main' }, dryRun: true });
+            const result = await createVersionPr({ github, context: { repo: context.repo, ref: 'refs/heads/main' }, dryRun: true });
             const text = result.status === 'existing' ? `열린 버전 PR: ${result.url}` :
               result.status === 'empty' ? '최신 릴리스 이후 변경사항이 없습니다.' : result.body;
             await core.summary.addRaw(`## 읽기 전용 검증\n${text}\n\n버전 브랜치·PR·라벨은 변경하지 않았습니다.`).write();
