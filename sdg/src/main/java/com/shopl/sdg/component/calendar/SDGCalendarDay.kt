@@ -52,7 +52,6 @@ import androidx.compose.ui.unit.sp
 import com.shopl.sdg.component.number_picker.SDGNumberPicker
 import com.shopl.sdg.component.number_picker.SDGNumberPickerOption.OneOption
 import com.shopl.sdg_common.ext.clickable
-import com.shopl.sdg_common.ext.distanceDays
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.IOText
@@ -64,7 +63,9 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import org.joda.time.Days
 import org.joda.time.format.DateTimeFormat
+import kotlin.math.abs
 
 /**
  * DateTime DayOfWeek는 minSDK 문제로 사용할 수 없음
@@ -468,6 +469,7 @@ private fun RowScope.SDGWeekHeaderCell(
     )
 }
 
+/** 기간 끝 날짜를 연·월·일로 비교하며, 최대 기간을 초과하면 오류 콜백만 호출한다. */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SDGCalendarPager(
@@ -525,7 +527,8 @@ private fun SDGCalendarPager(
                     }
 
                     is SDGCalendarDayMode.MultipleExternalSelection -> {
-                        val isDeselected = list.removeAll { selectedDate -> selectedDate.equalYMD(it) }
+                        val isDeselected =
+                            list.removeAll { selectedDate -> selectedDate.equalYMD(it) }
                         if (!isDeselected) {
                             list.add(it)
                         }
@@ -545,15 +548,18 @@ private fun SDGCalendarPager(
                                 }
 
                                 1 -> {
-                                    val count = list[0].distanceDays(it)
+                                    val selectedDate = list[0].toLocalDate()
+                                    val clickedDate = it.toLocalDate()
+                                    val count =
+                                        abs(Days.daysBetween(selectedDate, clickedDate).days) + 1
                                     if (maxCount in 1..<count) {
                                         onMaxCountError?.invoke(maxCount)
+                                        return@SDGCalendarBody
+                                    }
+                                    if (clickedDate.isAfter(selectedDate)) {
+                                        list.add(it)
                                     } else {
-                                        if (it.isAfter(list[0])) {
-                                            list.add(it)
-                                        } else {
-                                            list.add(0, it)
-                                        }
+                                        list.add(0, it)
                                     }
                                 }
 
