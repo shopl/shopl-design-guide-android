@@ -516,11 +516,17 @@ private fun SDGCalendarPager(
                         }
                     }
 
-                    is SDGCalendarDayMode.Multiple,
-                    is SDGCalendarDayMode.MultipleExternalSelection -> {
+                    is SDGCalendarDayMode.Multiple -> {
                         if (list.contains(it)) {
                             list.remove(it)
                         } else {
+                            list.add(it)
+                        }
+                    }
+
+                    is SDGCalendarDayMode.MultipleExternalSelection -> {
+                        val isDeselected = list.removeAll { selectedDate -> selectedDate.equalYMD(it) }
+                        if (!isDeselected) {
                             list.add(it)
                         }
                     }
