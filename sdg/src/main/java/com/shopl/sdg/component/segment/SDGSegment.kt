@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ext.dropShadow
+import com.shopl.sdg_common.ext.orDefault
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
@@ -63,11 +64,11 @@ fun SDGSegment(
         }
 
         Box(
-            modifier = Modifier.clip(RoundedCornerShape(12.dp))
+            modifier = Modifier.clip(SDGCornerRadius.BoxRadius.Radius12)
         ) {
             TabRow(
-                modifier = Modifier.clip(RoundedCornerShape(8.dp)),
-                selectedTabIndex = selectedIndex ?: 0,
+                modifier = Modifier.clip(SDGCornerRadius.BoxRadius.Radius8),
+                selectedTabIndex = selectedIndex.orDefault(),
                 containerColor = backgroundColor,
                 indicator = {
                     if (selectedIndex != null) {
