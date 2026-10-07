@@ -52,17 +52,20 @@ import androidx.compose.ui.unit.sp
 import com.shopl.sdg.component.number_picker.SDGNumberPicker
 import com.shopl.sdg.component.number_picker.SDGNumberPickerOption.OneOption
 import com.shopl.sdg_common.ext.clickable
-import com.shopl.sdg_common.ext.distanceDays
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import org.joda.time.Days
 import org.joda.time.format.DateTimeFormat
+import kotlin.math.abs
 
 /**
  * DateTime DayOfWeek는 minSDK 문제로 사용할 수 없음
@@ -106,6 +109,13 @@ sealed class SDGCalendarDaySize(
     )
 }
 
+/**
+ * 기존 방식인 Single/Multiple/Period는 초기 선택값을 받고, 이후 날짜 선택은 달력 내부에서 관리한다.
+ * 호출부에서 초기 선택값을 변경해도 달력의 선택 상태에는 반영되지 않는다.
+ *
+ * ExternalSelection은 날짜를 눌러도 선택 표시를 바로 변경하지 않고 onSelectDate로 알린다.
+ * 호출부에서 선택값을 변경해 전달하면 달력의 선택 표시도 변경된다.
+ */
 sealed class SDGCalendarDayMode(
     open val inActivatedList: List<DateTime>?,
     open val disabledList: List<DateTime>?,
@@ -139,6 +149,32 @@ sealed class SDGCalendarDayMode(
         val maxCount: Int = 0,
         val fixedCount: Int = 0,
     ) : SDGCalendarDayMode(inActivatedList, disabledList, bulletList)
+
+    /** 호출부의 단일 선택을 표시하며, null은 선택 없음이다. */
+    data class SingleExternalSelection(
+        val selected: DateTime? = null,
+        override val inActivatedList: List<DateTime>? = null,
+        override val disabledList: List<DateTime>? = null,
+        override val bulletList: List<DateTime>? = null,
+    ) : SDGCalendarDayMode(inActivatedList, disabledList, bulletList)
+
+    /** 호출부의 다중 선택을 표시하며, 빈 목록은 선택 없음이다. */
+    data class MultipleExternalSelection(
+        val selectedDates: PersistentList<DateTime> = persistentListOf(),
+        override val inActivatedList: List<DateTime>? = null,
+        override val disabledList: List<DateTime>? = null,
+        override val bulletList: List<DateTime>? = null,
+    ) : SDGCalendarDayMode(inActivatedList, disabledList, bulletList)
+
+    /** 호출부의 기간 선택을 표시한다. null은 선택 없음, 종료일이 null이면 첫 날짜만 선택한 상태다. */
+    data class PeriodExternalSelection(
+        val selected: Pair<DateTime, DateTime?>? = null,
+        override val inActivatedList: List<DateTime>? = null,
+        override val disabledList: List<DateTime>? = null,
+        override val bulletList: List<DateTime>? = null,
+        val maxCount: Int = 0,
+        val fixedCount: Int = 0,
+    ) : SDGCalendarDayMode(inActivatedList, disabledList, bulletList)
 }
 
 private val LocalSize = staticCompositionLocalOf<SDGCalendarDaySize> { SDGCalendarDaySize.Basic }
@@ -153,6 +189,7 @@ private val LocalBulletList = staticCompositionLocalOf<List<DateTime>?> { null }
 /**
  * weekStart = SDGDayOfWeek.of(SDGDB.getInstance().getInt(G.DB.DB_KEY_FIRST_DAY_OF_WEEK) - 1)
  * weekStart = SDGDayOfWeek.of(ClientConfig.weekStart)
+ * onMonthChanged는 처음 표시할 때와 표시 월이 변경될 때 호출된다.
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -167,6 +204,7 @@ fun SDGCalendarDay(
     maxDate: DateTime? = null,
     dateProvider: DateProvider = DateProvider(weekStart),
     onMaxCountError: ((Int) -> Unit)? = null,
+    onMonthChanged: (DateTime) -> Unit = {},
     onSelectDate: (List<DateTime>) -> Unit
 ) {
 
@@ -187,11 +225,25 @@ fun SDGCalendarDay(
     }
 
     val coroutineScope = rememberCoroutineScope()
+    val externalSelectedDates = when (mode) {
+        is SDGCalendarDayMode.SingleExternalSelection -> listOfNotNull(mode.selected)
+        is SDGCalendarDayMode.MultipleExternalSelection -> mode.selectedDates
+        is SDGCalendarDayMode.PeriodExternalSelection -> mode.selected?.let {
+            listOfNotNull(it.first, it.second)
+        }.orEmpty()
 
-    val selectedList = rememberSaveable {
+        else -> null
+    }
+
+    val internalSelectedDates = rememberSaveable {
         val list = mutableListOf<DateTime>()
         when (mode) {
-            is SDGCalendarDayMode.View -> {}
+            is SDGCalendarDayMode.View,
+            is SDGCalendarDayMode.SingleExternalSelection,
+            is SDGCalendarDayMode.MultipleExternalSelection,
+            is SDGCalendarDayMode.PeriodExternalSelection -> {
+            }
+
             is SDGCalendarDayMode.Single -> mode.selected?.let { list.add(it) }
             is SDGCalendarDayMode.Period -> mode.selected?.let {
                 list.add(it.first)
@@ -209,6 +261,10 @@ fun SDGCalendarDay(
         snapshotFlow { pagerState.currentPage }.collect { index ->
             currentDate = initDate.plusMonths(index - initialPage)
         }
+    }
+
+    LaunchedEffect(currentDate.year, currentDate.monthOfYear) {
+        onMonthChanged(currentDate.withDayOfMonth(1).withTimeAtStartOfDay())
     }
 
     CompositionLocalProvider(
@@ -246,7 +302,8 @@ fun SDGCalendarDay(
                     showMonthSelector = !showMonthSelector
                     if (!showMonthSelector && currentDate != monthSelectorDate) {
                         currentDate = monthSelectorDate
-                        val distanceFromInitDate = (currentDate.year - initDate.year) * 12 + (currentDate.monthOfYear - initDate.monthOfYear)
+                        val distanceFromInitDate =
+                            (currentDate.year - initDate.year) * 12 + (currentDate.monthOfYear - initDate.monthOfYear)
                         coroutineScope.launch {
                             pagerState.scrollToPage(initialPage + distanceFromInitDate)
                         }
@@ -254,7 +311,8 @@ fun SDGCalendarDay(
                 },
                 onClickToday = {
                     currentDate = today
-                    val distanceFromInitDate = (currentDate.year - initDate.year) * 12 + (currentDate.monthOfYear - initDate.monthOfYear)
+                    val distanceFromInitDate =
+                        (currentDate.year - initDate.year) * 12 + (currentDate.monthOfYear - initDate.monthOfYear)
                     coroutineScope.launch {
                         pagerState.scrollToPage(initialPage + distanceFromInitDate)
                     }
@@ -269,13 +327,13 @@ fun SDGCalendarDay(
                     )
                     SDGCalendarPager(
                         initDate = initDate,
-                        selectedList = selectedList.value,
+                        selectedList = externalSelectedDates ?: internalSelectedDates.value,
                         dateProvider = dateProvider,
                         pagerState = pagerState,
                         initialPage = initialPage,
                         onMaxCountError = onMaxCountError,
                         onSelectDate = {
-                            selectedList.value = it
+                            if (externalSelectedDates == null) internalSelectedDates.value = it
                             onSelectDate(it)
                         }
                     )
@@ -411,6 +469,7 @@ private fun RowScope.SDGWeekHeaderCell(
     )
 }
 
+/** 기간 끝 날짜를 연·월·일로 비교하며, 최대 기간을 초과하면 오류 콜백만 호출한다. */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SDGCalendarPager(
@@ -423,6 +482,11 @@ private fun SDGCalendarPager(
     onSelectDate: (List<DateTime>) -> Unit
 ) {
     val mode = LocalMode.current
+    val (maxCount, fixedCount) = when (mode) {
+        is SDGCalendarDayMode.Period -> mode.maxCount to mode.fixedCount
+        is SDGCalendarDayMode.PeriodExternalSelection -> mode.maxCount to mode.fixedCount
+        else -> 0 to 0
+    }
 
     HorizontalPager(
         modifier = Modifier,
@@ -444,7 +508,8 @@ private fun SDGCalendarPager(
                 val list = selectedList.toMutableList()
                 when (mode) {
                     is SDGCalendarDayMode.View -> {}
-                    is SDGCalendarDayMode.Single -> {
+                    is SDGCalendarDayMode.Single,
+                    is SDGCalendarDayMode.SingleExternalSelection -> {
                         if (list.isEmpty()) {
                             list.add(it)
                         } else if (list.first() != it) {
@@ -461,11 +526,20 @@ private fun SDGCalendarPager(
                         }
                     }
 
-                    is SDGCalendarDayMode.Period -> {
-                        if (mode.fixedCount > 1) {
+                    is SDGCalendarDayMode.MultipleExternalSelection -> {
+                        val isDeselected =
+                            list.removeAll { selectedDate -> selectedDate.equalYMD(it) }
+                        if (!isDeselected) {
+                            list.add(it)
+                        }
+                    }
+
+                    is SDGCalendarDayMode.Period,
+                    is SDGCalendarDayMode.PeriodExternalSelection -> {
+                        if (fixedCount > 1) {
                             list.clear()
                             list.add(it)
-                            list.add(it.plusDays(mode.fixedCount - 1))
+                            list.add(it.plusDays(fixedCount - 1))
                         } else {
                             when (list.size) {
                                 2 -> {
@@ -474,15 +548,18 @@ private fun SDGCalendarPager(
                                 }
 
                                 1 -> {
-                                    val count = list[0].distanceDays(it)
-                                    if (mode.maxCount in 1..<count) {
-                                        onMaxCountError?.invoke(mode.maxCount)
+                                    val selectedDate = list[0].toLocalDate()
+                                    val clickedDate = it.toLocalDate()
+                                    val count =
+                                        abs(Days.daysBetween(selectedDate, clickedDate).days) + 1
+                                    if (maxCount in 1..<count) {
+                                        onMaxCountError?.invoke(maxCount)
+                                        return@SDGCalendarBody
+                                    }
+                                    if (clickedDate.isAfter(selectedDate)) {
+                                        list.add(it)
                                     } else {
-                                        if (it.isAfter(list[0])) {
-                                            list.add(it)
-                                        } else {
-                                            list.add(0, it)
-                                        }
+                                        list.add(0, it)
                                     }
                                 }
 
@@ -538,7 +615,8 @@ private fun SDGCalendarBodyRow(
             var hasBeforePeriod = false
             var hasAfterPeriod = false
             when (LocalMode.current) {
-                is SDGCalendarDayMode.Period -> {
+                is SDGCalendarDayMode.Period,
+                is SDGCalendarDayMode.PeriodExternalSelection -> {
                     if (selectedList.size == 2) {
                         val start = selectedList[0]
                         val end = selectedList[1]
@@ -731,7 +809,11 @@ private fun MonthSelector(
                         value = currentDate.year,
                         rangeList = (1970..(1970 + 1000)).toPersistentList(),
                         onValueChange = {
-                            currentDate = currentDate.withDate(it, currentDate.monthOfYear, currentDate.dayOfMonth)
+                            currentDate = currentDate.withDate(
+                                it,
+                                currentDate.monthOfYear,
+                                currentDate.dayOfMonth
+                            )
                             onChangeDate(currentDate)
                         },
                         supportsInfiniteScroll = false
@@ -743,7 +825,8 @@ private fun MonthSelector(
                         value = currentDate.monthOfYear,
                         rangeList = (1..12).toPersistentList(),
                         onValueChange = {
-                            currentDate = currentDate.withDate(currentDate.year, it, currentDate.dayOfMonth)
+                            currentDate =
+                                currentDate.withDate(currentDate.year, it, currentDate.dayOfMonth)
                             onChangeDate(currentDate)
                         },
                         supportsInfiniteScroll = false
@@ -835,8 +918,12 @@ class DateProvider(
 }
 
 fun DateTime.equalY(compare: DateTime): Boolean = compare.year == year
-fun DateTime.equalYM(compare: DateTime): Boolean = equalY(compare) && compare.monthOfYear == monthOfYear
-fun DateTime.equalYMD(compare: DateTime): Boolean = equalYM(compare) && compare.dayOfMonth == dayOfMonth
+fun DateTime.equalYM(compare: DateTime): Boolean =
+    equalY(compare) && compare.monthOfYear == monthOfYear
+
+fun DateTime.equalYMD(compare: DateTime): Boolean =
+    equalYM(compare) && compare.dayOfMonth == dayOfMonth
+
 fun DateTime.equalW(compare: DateTime): Boolean = compare.weekOfWeekyear == weekOfWeekyear
 
 @Composable
