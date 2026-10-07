@@ -5,6 +5,6 @@
     "deno-slack-api/": "https://deno.land/x/deno_slack_api@2.8.0/"
   },
   "tasks": {
-    "check": "deno check manifest.ts triggers/create-version-pr.ts && deno lint && deno test --allow-read"
+    "check": "deno check manifest.ts triggers/*.ts && deno lint && deno test --allow-read"
   }
 }
