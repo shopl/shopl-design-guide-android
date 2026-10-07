@@ -59,6 +59,8 @@ import com.shopl.sdg_common.ui.components.IOText
 import com.shopl.sdg_common.ui.components.IOTypeface
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
@@ -157,7 +159,7 @@ sealed class SDGCalendarDayMode(
 
     /** 호출부의 다중 선택을 표시하며, 빈 목록은 선택 없음이다. */
     data class MultipleExternalSelection(
-        val selectedDates: List<DateTime> = emptyList(),
+        val selectedDates: PersistentList<DateTime> = persistentListOf(),
         override val inActivatedList: List<DateTime>? = null,
         override val disabledList: List<DateTime>? = null,
         override val bulletList: List<DateTime>? = null,
