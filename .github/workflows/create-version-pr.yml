@@ -33,6 +33,14 @@ jobs:
           node .github/scripts/version-pr-summary.test.cjs
           node .github/scripts/create-version-pr.test.cjs
 
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.9.7
+
+      - name: Slack 앱 타입, lint 및 요청 처리 확인
+        working-directory: tools/slack-version-pr
+        run: deno task check
+
       - name: 실제 GitHub 데이터로 읽기 전용 미리보기
         uses: actions/github-script@v7
         with:

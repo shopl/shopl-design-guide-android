@@ -17,6 +17,31 @@ Actions를 요청하므로 별도 서버를 운영하지 않습니다.
 [운영 실행 링크](https://slack.com/shortcuts/Ft0C6H0H2CUF/5fc960098cfa9655c5c795b3accbe3ac)는
 main 병합과 GitHub 토큰 설정 후 채널에 게시합니다. 현재 운영 실행 검증은 대기 중입니다.
 
+## 병합 전 테스트 (2026-10-07)
+
+PR의 `validate` 작업은 쓰기 권한 없이 버전 계산·중복 실행·오류 처리 검사를
+실행하고, 실제 main의 버전 변경을 `dryRun: true`로 확인합니다. PR 실행에서는
+운영 `create` 작업과 Slack 배포 웹훅 알림을 실행하지 않습니다.
+
+로컬에서 같은 읽기 전용 조회를 실행할 수 있습니다. GitHub CLI(`gh`) 인증이
+필요하며, GitHub API는 이 저장소의 GET 요청만 허용합니다.
+
+```sh
+node preview.cjs
+```
+
+별도 **SDG Version PR Test (local)** 앱(`A0C6WBJ3YR5`)의
+[테스트 버튼 게시물](https://shopl-workspace.slack.com/archives/C093TU3CCBG/p1791357022469899)에서
+미리보기를 실행할 수 있습니다. 실행 권한은 `C093TU3CCBG` 채널 멤버로 제한했습니다.
+개발 앱은 이 Mac에서 `slack run`이 실행 중일 때만 동작합니다. 로컬 테스트 앱의
+소스·설치 정보는 Git에서 제외된 `.slack/preview-app`에 보관합니다.
+
+[실제 Slack 실행 결과](https://shopl-workspace.slack.com/archives/C093TU3CCBG/p1791357253801889)에서
+`v1.22.0 → v1.23.0`의 `add` 3개 → minor, `v1.23.0 → v1.23.1`의 `add` 0개 → patch,
+현재 main의 변경사항 없음 결과를 확인했습니다. 브랜치·PR·라벨은 변경하지 않습니다.
+운영 GitHub 토큰과 실제 PR 생성·리뷰 요청·배포 웹훅 경로는 이 미리보기 검증에
+포함되지 않으며 운영 실행 전에 별도 확인해야 합니다.
+
 ## 최초 설치
 
 1. `.github/workflows/create-version-pr.yml`을 main에 병합합니다. GitHub
