@@ -10,7 +10,7 @@ const existingPr = { number: 459, html_url: 'https://example.test/459', labels: 
 
 async function run({ add = true, existing = false, concurrent = false, empty = false, mainChanged = false,
   releaseChanged = false, currentVersion = '1.22.0', branchExists = false, branchChanged = false, wrongRef = false,
-  fail = false, missingLabel = false } = {}) {
+  fail = false, missingLabel = false, dryRun = false } = {}) {
   const writes = [];
   let mainReads = 0;
   let releaseReads = 0;
@@ -65,7 +65,7 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
         base: { ref: 'main' }, head: { ref: 'add/scott/task' }, labels: [{ name: add ? 'add' : 'update' }] }];
     },
   };
-  const result = await createVersionPr({ github, context: { ...context, ref: wrongRef ? 'refs/heads/other' : context.ref } });
+  const result = await createVersionPr({ github, context: { ...context, ref: wrongRef ? 'refs/heads/other' : context.ref }, dryRun });
   return { result, writes };
 }
 
@@ -85,6 +85,20 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
   assert.equal((await run({ empty: true })).writes.length, 0);
   assert.deepEqual((await run({ branchExists: true })).writes.map(([kind]) => kind), ['pr', 'labels', 'reviewers']);
   assert.deepEqual((await run({ existing: true, missingLabel: true })).writes.map(([kind]) => kind), ['labels']);
+  for (const add of [true, false]) {
+    const preview = await run({ dryRun: true, add });
+    assert.equal(preview.result.status, 'preview');
+    assert.equal(preview.result.version, add ? '1.23.0' : '1.22.1');
+    assert.equal(preview.result.path, versionPath);
+    assert.match(preview.result.content, new RegExp(`VERSION = "${preview.result.version}"`));
+    assert.equal(preview.writes.length, 0);
+  }
+  assert.equal((await run({ dryRun: true, existing: true, missingLabel: true })).writes.length, 0);
+  assert.equal((await run({ dryRun: true, concurrent: true, missingLabel: true })).writes.length, 0);
+  assert.equal((await run({ dryRun: true, branchExists: true })).writes.length, 0);
+  assert.equal((await run({ dryRun: true, empty: true })).writes.length, 0);
+  await assert.rejects(run({ dryRun: true, mainChanged: true }), /조회 중/);
+  await assert.rejects(run({ dryRun: true, currentVersion: '1.23.0' }), /진행 중인 릴리스/);
   await assert.rejects(run({ mainChanged: true }), /조회 중/);
   await assert.rejects(run({ releaseChanged: true }), /조회 중/);
   await assert.rejects(run({ currentVersion: '1.23.0' }), /진행 중인 릴리스/);

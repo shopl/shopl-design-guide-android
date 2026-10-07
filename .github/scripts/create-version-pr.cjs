@@ -1,7 +1,7 @@
 const { getVersionChanges } = require('./version-pr-summary.cjs');
 const versionPath = 'build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt';
 
-module.exports = async ({ github, context }) => {
+module.exports = async ({ github, context, dryRun = false }) => {
   const { owner, repo } = context.repo;
   if (context.ref !== 'refs/heads/main') throw new Error('버전 PR 생성은 main에서 실행해주세요.');
 
@@ -10,7 +10,7 @@ module.exports = async ({ github, context }) => {
   })).find(pr => pr.head.ref.startsWith('version/') && pr.head.repo?.full_name === `${owner}/${repo}`);
   const reuse = async pr => {
     const automationBranch = pr.head.ref.match(/^version\/automation\/(minor|patch)-\d+\.\d+\.\d+$/);
-    if (automationBranch && !pr.labels.some(label => label.name === automationBranch[1])) {
+    if (!dryRun && automationBranch && !pr.labels.some(label => label.name === automationBranch[1])) {
       await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels: [automationBranch[1]] });
     }
     return { status: 'existing', url: pr.html_url, number: pr.number };
@@ -22,7 +22,7 @@ module.exports = async ({ github, context }) => {
   const mainSha = main.object.sha;
   const { data: release } = await github.rest.repos.getLatestRelease({ owner, repo });
   const changes = await getVersionChanges({ github, context, release, headSha: mainSha });
-  if (!changes.commitShas.size) return { status: 'empty' };
+  if (!changes.commitShas.size) return { status: 'empty', ...(dryRun ? { body: changes.body } : {}) };
 
   const { data: file } = await github.rest.repos.getContent({ owner, repo, path: versionPath, ref: mainSha });
   if (file.type !== 'file' || file.encoding !== 'base64') throw new Error('버전 설정 파일을 확인해주세요.');
@@ -60,6 +60,9 @@ module.exports = async ({ github, context }) => {
   }
   const concurrent = await findOpenVersionPr();
   if (concurrent) return reuse(concurrent);
+
+  if (dryRun) return { status: 'preview', version: changes.nextVersion, bump: changes.bump,
+    branch, body: changes.body, path: versionPath, content: updated };
 
   if (!branchRef) {
     const { data: parent } = await github.rest.git.getCommit({ owner, repo, commit_sha: mainSha });
