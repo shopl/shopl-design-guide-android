@@ -49,14 +49,16 @@ private const val SDGSelectInputDisabledAlpha = 0.3f
 /**
  * SDG - Component - Select Input
  *
- * 특정 타겟을 선택하는 인풋 컴포넌트
+ * 특정 타켓을 선택하는 인풋 컴포넌트
  *
- * @version 2.3.39
+ * @version 2.3.45
  *
  * @param placeholder 선택값이 없을 때 표시할 안내 문구
  * @param state 인풋 상태
  * @param inputField 인풋 필드 배경 유형
  * @param type Selected Element 유형과 선택 텍스트
+ * @param onClickClear Selected 상태에서 선택값을 초기화하는 클릭 이벤트
+ * @param showClearIcon 초기화 아이콘 노출 여부
  * @param marginValues 컴포넌트 외부 여백
  * @param onClick Input Field 클릭 이벤트
  *
@@ -192,6 +194,7 @@ private fun SelectInputField(
     }
 }
 
+/** 초기화 아이콘이 없는 기존 Select Input API의 하위 호환성을 유지합니다. */
 @Deprecated(
     message = "onClickClear와 showClearIcon을 지원하는 SDGSelectInput API를 사용하세요.",
 )
@@ -539,7 +542,7 @@ private fun PreviewSDGSelectInput(
     }
 }
 
-/** [SDGSelectInputImageElement]를 독립적인 One Image Input 유형으로 변환합니다. */
+/** [SDGSelectInputImageElement]를 One Image 선택 항목으로 변환합니다. */
 private fun SDGSelectInputImageElement.toOneImageType(): SDGSelectInputType.OneImage {
     return SDGSelectInputType.OneImage(
         text = text,

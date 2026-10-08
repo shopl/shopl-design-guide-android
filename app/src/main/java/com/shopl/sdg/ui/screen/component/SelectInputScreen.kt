@@ -99,7 +99,7 @@ internal fun SelectInputScreen(
 
     SDGSampleBaseComponentScaffold(
         componentName = ComponentScene.SelectInput.displayLabel,
-        componentDescription = "특정 타겟을 선택하는 인풋 컴포넌트",
+        componentDescription = "특정 타켓을 선택하는 인풋 컴포넌트",
         types = types,
         specs = specs,
         guideLineDescriptions = persistentListOf(
