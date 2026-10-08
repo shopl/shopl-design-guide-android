@@ -25,7 +25,6 @@ import com.shopl.sdg.scene.ComponentScene
 import com.shopl.sdg.ui.base.SDGSampleBaseComponentScaffold
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
-import com.shopl.sdg_common.util.emptyPersistentList
 import com.shopl.sdg_resource.R
 import kotlinx.collections.immutable.persistentListOf
 
@@ -103,7 +102,12 @@ internal fun SelectInputScreen(
         componentDescription = "특정 타겟을 선택하는 인풋 컴포넌트",
         types = types,
         specs = specs,
-        guideLineDescriptions = emptyPersistentList(),
+        guideLineDescriptions = persistentListOf(
+            "초기화 아이콘은 Selected 상태에서 선택값을 Placeholder로 되돌립니다.",
+            "Disabled 상태에서는 필드와 초기화 아이콘의 모든 클릭이 차단됩니다.",
+            "2 Image는 80dp 높이의 한 필드에 표시됩니다.",
+            "Selected 상태의 텍스트·이미지·아이콘은 수직 중앙에 정렬됩니다.",
+        ),
         componentContent = { currentType, currentSpec, currentStatus ->
             if (currentType != null && currentSpec != null) {
                 SelectInputContent(
