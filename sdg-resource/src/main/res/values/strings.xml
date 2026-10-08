@@ -48,4 +48,5 @@
     <string name="no_registered_members">No registered members</string>
     <string name="sdg_cm_single_group">Group</string>
     <string name="sdg_cm_position">Job title</string>
+    <string name="sdg_select_input_clear">Clear selection</string>
 </resources>

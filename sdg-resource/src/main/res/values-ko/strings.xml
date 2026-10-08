@@ -48,4 +48,5 @@
     <string name="no_registered_members">등록된 구성원이 없습니다</string>
     <string name="sdg_cm_single_group">그룹</string>
     <string name="sdg_cm_position">직무/직급</string>
+    <string name="sdg_select_input_clear">선택 초기화</string>
 </resources>
