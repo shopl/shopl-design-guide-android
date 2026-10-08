@@ -4,6 +4,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -120,6 +124,8 @@ private fun SelectInputContent(
     inputField: SDGSelectInputField,
     status: SDGSampleStatus,
 ) {
+    var isSelected by remember(type, inputField, status) { mutableStateOf(true) }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -133,12 +139,15 @@ private fun SelectInputContent(
             placeholder = stringResource(id = R.string.select),
             state = if (status == SDGSampleStatus.DISABLED) {
                 SDGSelectInputState.Disabled
-            } else {
+            } else if (isSelected) {
                 SDGSelectInputState.Selected
+            } else {
+                SDGSelectInputState.Default
             },
             inputField = inputField,
             type = type,
-            onClick = {},
+            onClickClear = { isSelected = false },
+            onClick = { isSelected = true },
         )
     }
 }
