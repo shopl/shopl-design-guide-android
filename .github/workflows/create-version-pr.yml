@@ -1,0 +1,103 @@
+name: SDG 버전 PR 만들기
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+    paths:
+      - '.github/scripts/**'
+      - '.github/workflows/create-version-pr.yml'
+      - 'tools/slack-version-pr/**'
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  # ponytail: 저장소별 직렬 처리로 버튼 중복 클릭을 처리합니다. 저장소가 나뉘면 그룹도 분리합니다.
+  group: create-version-pr-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: minor, patch, 미리보기 및 재실행 로직 확인
+        run: |
+          node .github/scripts/version-pr-summary.test.cjs
+          node .github/scripts/create-version-pr.test.cjs
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.9.7
+
+      - name: Slack 앱 타입, lint 및 요청 처리 확인
+        working-directory: tools/slack-version-pr
+        run: deno task check
+
+      - name: 실제 GitHub 데이터로 읽기 전용 미리보기
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const createVersionPr = require('./.github/scripts/create-version-pr.cjs');
+            const result = await createVersionPr({ github, context: { repo: context.repo, ref: 'refs/heads/main' }, dryRun: true });
+            const text = result.status === 'existing' ? `열린 버전 PR: ${result.url}` :
+              result.status === 'empty' ? '최신 릴리스 이후 변경사항이 없습니다.' : result.body;
+            await core.summary.addRaw(`## 읽기 전용 검증\n${text}\n\n버전 브랜치·PR·라벨은 변경하지 않았습니다.`).write();
+
+  create:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: 버전 자동화 로직 확인
+        run: |
+          node .github/scripts/version-pr-summary.test.cjs
+          node .github/scripts/create-version-pr.test.cjs
+
+      - name: 버전 PR 생성
+        id: create
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const createVersionPr = require('./.github/scripts/create-version-pr.cjs');
+            const result = await createVersionPr({ github, context });
+            core.setOutput('status', result.status);
+            core.setOutput('url', result.url || '');
+            const text = result.status === 'created' ? `${result.version} 버전 PR을 만들었습니다.` :
+              result.status === 'existing' ? '이미 열려 있는 버전 PR을 확인해주세요.' : '이전 릴리스 이후 변경사항이 없습니다.';
+            await core.summary.addRaw(text).addEOL().addLink('버전 PR', result.url || context.serverUrl + '/' + context.repo.owner + '/' + context.repo.repo).write();
+
+      - name: SDG Android 배포 채널에 결과 알림
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_SDG_ANDROID_WEB_HOOK }}
+          CREATE_STATUS: ${{ steps.create.outputs.status }}
+          PR_URL: ${{ steps.create.outputs.url }}
+          JOB_STATUS: ${{ job.status }}
+        with:
+          script: |
+            const { SLACK_WEBHOOK, CREATE_STATUS, PR_URL, JOB_STATUS } = process.env;
+            if (!SLACK_WEBHOOK) throw new Error('SLACK_SDG_ANDROID_WEB_HOOK 설정이 필요합니다.');
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const text = JOB_STATUS !== 'success' ? `SDG 버전 PR 생성에 실패했습니다. <${runUrl}|실행 결과 확인>` :
+              CREATE_STATUS === 'created' ? `SDG 버전 PR을 만들었습니다. <${PR_URL}|PR 확인>` :
+              CREATE_STATUS === 'existing' ? `이미 열려 있는 SDG 버전 PR이 있습니다. <${PR_URL}|PR 확인>` :
+              '이전 SDG 릴리스 이후 변경사항이 없습니다.';
+            const response = await fetch(SLACK_WEBHOOK, {
+              method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }),
+            });
+            if (!response.ok) throw new Error(`Slack 결과 알림 실패: HTTP ${response.status}`);

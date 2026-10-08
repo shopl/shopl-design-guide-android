@@ -1,0 +1,50 @@
+name: 버전 PR 변경사항 자동 생성
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited, ready_for_review, labeled, unlabeled, closed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: '변경사항을 생성할 버전 PR 번호'
+        required: true
+        type: number
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  # ponytail: 저장소별 직렬 처리, 동시 버전 PR이 많아지면 PR별 그룹으로 분리합니다.
+  group: version-pr-summary-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  summarize:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       (startsWith(github.event.pull_request.head.ref, 'version/') ||
+        github.event.action == 'labeled' || github.event.action == 'unlabeled' ||
+        (github.event.action == 'closed' && github.event.pull_request.merged)))
+    runs-on: ubuntu-latest
+    steps:
+      - name: 기준 브랜치 소스 체크아웃
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha || github.sha }}
+          persist-credentials: false
+
+      - name: 변경사항 생성 로직 확인
+        # 최초 설치 PR에서는 기준 브랜치에 스크립트가 아직 없습니다.
+        if: hashFiles('.github/scripts/version-pr-summary.cjs') != ''
+        run: node .github/scripts/version-pr-summary.test.cjs
+
+      - name: PR 목록, 라벨, 권장 버전 갱신
+        if: hashFiles('.github/scripts/version-pr-summary.cjs') != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const summarize = require('./.github/scripts/version-pr-summary.cjs');
+            await summarize({ github, context });
