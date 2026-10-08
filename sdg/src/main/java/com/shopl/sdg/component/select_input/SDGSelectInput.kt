@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -41,6 +42,7 @@ private val SDGSelectInputDefaultHeight = 40.dp
 private val SDGSelectInputTwoImageHeight = 80.dp
 private val SDGSelectInputIconTouchWidth = 24.dp
 private val SDGSelectInputIconTouchHeight = 28.dp
+private val SDGSelectInputClearIconSize = 18.dp
 private val SDGSelectInputChevronSize = 24.dp
 private const val SDGSelectInputDisabledAlpha = 0.3f
 
@@ -66,6 +68,8 @@ fun SDGSelectInput(
     state: SDGSelectInputState,
     inputField: SDGSelectInputField,
     type: SDGSelectInputType,
+    onClickClear: (() -> Unit)?,
+    showClearIcon: Boolean = true,
     marginValues: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
 ) {
@@ -75,6 +79,8 @@ fun SDGSelectInput(
         state = state,
         inputField = inputField,
         type = type,
+        onClickClear = onClickClear,
+        showClearIcon = showClearIcon,
         onClick = onClick,
     )
 }
@@ -85,6 +91,8 @@ private fun SelectInputField(
     state: SDGSelectInputState,
     inputField: SDGSelectInputField,
     type: SDGSelectInputType,
+    onClickClear: (() -> Unit)?,
+    showClearIcon: Boolean,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
@@ -93,6 +101,7 @@ private fun SelectInputField(
     } else {
         SDGSelectInputDefaultHeight
     }
+    val isClearEnabled = state == SDGSelectInputState.Selected && onClickClear != null
     val backgroundColor = when (state) {
         SDGSelectInputState.Error -> SDGColor.Red300_a10
         SDGSelectInputState.Default,
@@ -135,6 +144,38 @@ private fun SelectInputField(
             type = type,
         )
 
+        if (showClearIcon) {
+            Box(
+                modifier = Modifier
+                    .size(
+                        width = SDGSelectInputIconTouchWidth,
+                        height = SDGSelectInputIconTouchHeight,
+                    )
+                    .then(
+                        if (isClearEnabled) {
+                            Modifier.clickable(
+                                role = Role.Button,
+                                onClick = { onClickClear?.invoke() },
+                            )
+                        } else {
+                            Modifier
+                        },
+                    ),
+                contentAlignment = Alignment.Center,
+            ) {
+                SDGImage(
+                    modifier = Modifier.size(SDGSelectInputClearIconSize),
+                    resId = R.drawable.ic_input_delete,
+                    color = null,
+                    contentDescription = if (isClearEnabled) {
+                        stringResource(id = R.string.sdg_select_input_clear)
+                    } else {
+                        null
+                    },
+                )
+            }
+        }
+
         Box(
             modifier = Modifier.size(
                 width = SDGSelectInputIconTouchWidth,
@@ -149,6 +190,30 @@ private fun SelectInputField(
             )
         }
     }
+}
+
+@Deprecated(
+    message = "onClickClear와 showClearIcon을 지원하는 SDGSelectInput API를 사용하세요.",
+)
+@Composable
+fun SDGSelectInput(
+    placeholder: String,
+    state: SDGSelectInputState,
+    inputField: SDGSelectInputField,
+    type: SDGSelectInputType,
+    marginValues: PaddingValues = PaddingValues(),
+    onClick: (() -> Unit)? = null,
+) {
+    SDGSelectInput(
+        placeholder = placeholder,
+        state = state,
+        inputField = inputField,
+        type = type,
+        onClickClear = null,
+        showClearIcon = false,
+        marginValues = marginValues,
+        onClick = onClick,
+    )
 }
 
 /**
@@ -176,6 +241,8 @@ fun SDGSelectInput(
             text = text ?: placeholder,
             overflow = overflow,
         ),
+        onClickClear = null,
+        showClearIcon = false,
         marginValues = marginValues,
         onClick = onClick,
     )
