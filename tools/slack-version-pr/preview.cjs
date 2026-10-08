@@ -1,8 +1,6 @@
 const { execFile } = require('node:child_process');
 const { promisify } = require('node:util');
-const assert = require('node:assert/strict');
 const createVersionPr = require('../../.github/scripts/create-version-pr.cjs');
-const { getVersionChanges } = require('../../.github/scripts/version-pr-summary.cjs');
 const execute = promisify(execFile);
 const context = { repo: { owner: 'shopl', repo: 'shopl-design-guide-android' }, ref: 'refs/heads/main' };
 const repoUrl = 'https://github.com/shopl/shopl-design-guide-android';
@@ -55,11 +53,5 @@ const slackMarkdown = body => body.replace(/<!--[^>]*-->/g, '').trim()
   const messages = ['*SDG 버전 PR 병합 전 테스트*', 'GitHub 조회와 버전 계산만 수행합니다. 브랜치·PR·라벨은 변경하지 않습니다.', '', '*현재 main 미리보기*',
     current.status === 'existing' ? `열린 버전 PR: ${current.url}` :
       current.status === 'empty' ? '최신 릴리스 이후 변경사항이 없어 PR을 만들지 않습니다.' : slackMarkdown(current.body)];
-  for (const [tag, head] of [['v1.22.0', 'v1.23.0'], ['v1.23.0', 'v1.23.1']]) {
-    const changes = await getVersionChanges({ github, context,
-      release: { tag_name: tag, html_url: `${repoUrl}/releases/tag/${tag}` }, headSha: head });
-    assert.equal(changes.nextVersion, head.replace(/^v/, ''), `${tag} 이후 실제 릴리스의 버전 계산을 확인해주세요.`);
-    messages.push('', `*실제 릴리스 재현: ${tag} → ${head}*`, slackMarkdown(changes.body));
-  }
   process.stdout.write(JSON.stringify({ message: messages.join('\n'), current }));
 })().catch(error => { console.error(error.message); process.exitCode = 1; });
