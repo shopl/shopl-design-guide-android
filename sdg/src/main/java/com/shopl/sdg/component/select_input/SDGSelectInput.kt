@@ -71,7 +71,7 @@ fun SDGSelectInput(
     inputField: SDGSelectInputField,
     type: SDGSelectInputType,
     onClickClear: (() -> Unit)?,
-    showClearIcon: Boolean = true,
+    showClearIcon: Boolean,
     marginValues: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
 ) {

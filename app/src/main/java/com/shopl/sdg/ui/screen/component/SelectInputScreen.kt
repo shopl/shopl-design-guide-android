@@ -145,6 +145,7 @@ private fun SelectInputContent(
             inputField = inputField,
             type = type,
             onClickClear = { isSelected = false },
+            showClearIcon = true,
             onClick = { isSelected = true },
         )
     }
