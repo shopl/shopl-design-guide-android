@@ -2,6 +2,7 @@ package com.shopl.sdg.component.select_input
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -38,6 +39,8 @@ import com.shopl.sdg_resource.R
 
 private val SDGSelectInputDefaultHeight = 40.dp
 private val SDGSelectInputTwoImageHeight = 80.dp
+private val SDGSelectInputIconTouchWidth = 24.dp
+private val SDGSelectInputIconTouchHeight = 28.dp
 private val SDGSelectInputChevronSize = 24.dp
 private const val SDGSelectInputDisabledAlpha = 0.3f
 
@@ -132,11 +135,19 @@ private fun SelectInputField(
             type = type,
         )
 
-        SDGImage(
-            modifier = Modifier.size(SDGSelectInputChevronSize),
-            resId = R.drawable.ic_common_next,
-            color = chevronColor,
-        )
+        Box(
+            modifier = Modifier.size(
+                width = SDGSelectInputIconTouchWidth,
+                height = SDGSelectInputIconTouchHeight,
+            ),
+            contentAlignment = Alignment.Center,
+        ) {
+            SDGImage(
+                modifier = Modifier.size(SDGSelectInputChevronSize),
+                resId = R.drawable.ic_common_next,
+                color = chevronColor,
+            )
+        }
     }
 }
 
