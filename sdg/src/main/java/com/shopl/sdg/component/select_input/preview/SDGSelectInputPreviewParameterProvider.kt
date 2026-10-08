@@ -15,15 +15,24 @@ internal class SDGSelectInputPreviewParameterProvider :
 
     override val values: Sequence<SDGSelectInputPreviewParameter> = sequenceOf(
         기본_LightGray(),
+        기본_LightGray().copy(inputField = SDGSelectInputField.White),
+        기본_LightGray().copy(showClearIcon = false),
         선택_Text_단일선택(),
+        선택_Text_단일선택().copy(showClearIcon = false),
         선택_Text_다중선택(),
         선택_Avatar(),
         선택_OneImage_Normal1(),
         선택_OneImage_Normal2(),
         선택_OneImage_Special1(),
         선택_TwoImage(),
+        선택_TwoImage().copy(state = SDGSelectInputState.Default),
+        선택_TwoImage().copy(state = SDGSelectInputState.Disabled),
+        선택_TwoImage().copy(state = SDGSelectInputState.Error),
         비활성_Avatar(),
+        비활성_Avatar().copy(inputField = SDGSelectInputField.White),
+        비활성_Avatar().copy(showClearIcon = false),
         오류_Text(),
+        오류_Text().copy(showClearIcon = false),
     )
 
     private fun 기본_LightGray() = SDGSelectInputPreviewParameter(
@@ -94,6 +103,7 @@ internal data class SDGSelectInputPreviewParameter(
     val placeholder: String = "Placeholder",
     val inputField: SDGSelectInputField = SDGSelectInputField.LightGray,
     val type: SDGSelectInputPreviewType = SDGSelectInputPreviewType.Text,
+    val showClearIcon: Boolean = true,
 )
 
 internal enum class SDGSelectInputPreviewType {
@@ -147,7 +157,6 @@ internal fun SDGSelectInputPreviewParameter.toSelectInputType(): SDGSelectInputT
                 image = SDGSelectInputImage.Resource(
                     resId = R.drawable.ic_common_photo,
                 ),
-                state = SDGSelectInputState.Selected,
             ),
             second = SDGSelectInputImageElement(
                 text = SDGSelectInputText.Single(
@@ -156,7 +165,6 @@ internal fun SDGSelectInputPreviewParameter.toSelectInputType(): SDGSelectInputT
                 image = SDGSelectInputImage.Resource(
                     resId = R.drawable.ic_common_photo,
                 ),
-                state = SDGSelectInputState.Error,
             ),
         )
     }

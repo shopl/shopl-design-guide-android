@@ -532,6 +532,8 @@ private fun PreviewSDGSelectInput(
             state = state,
             inputField = inputField,
             type = selectedElementType,
+            onClickClear = {},
+            showClearIcon = showClearIcon,
             marginValues = PaddingValues(SDGSpacing.Spacing20),
         )
     }
