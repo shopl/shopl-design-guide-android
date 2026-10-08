@@ -307,13 +307,13 @@ private fun SelectedElement(
                 SelectedElement(
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = placeholder,
-                    state = type.first.state ?: state,
+                    state = if (state == SDGSelectInputState.Disabled) state else type.first.state ?: state,
                     type = type.first.toOneImageType(),
                 )
                 SelectedElement(
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = placeholder,
-                    state = type.second.state ?: state,
+                    state = if (state == SDGSelectInputState.Disabled) state else type.second.state ?: state,
                     type = type.second.toOneImageType(),
                 )
             }
