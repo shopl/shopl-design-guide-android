@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -65,36 +66,14 @@ fun SDGSelectInput(
     marginValues: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
 ) {
-    if (type is SDGSelectInputType.TwoImage) {
-        Column(
-            modifier = Modifier.padding(marginValues),
-            verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
-        ) {
-            SelectInputField(
-                placeholder = placeholder,
-                state = type.first.state ?: state,
-                inputField = inputField,
-                type = type.first.toOneImageType(),
-                onClick = onClick,
-            )
-            SelectInputField(
-                placeholder = placeholder,
-                state = type.second.state ?: state,
-                inputField = inputField,
-                type = type.second.toOneImageType(),
-                onClick = onClick,
-            )
-        }
-    } else {
-        SelectInputField(
-            modifier = Modifier.padding(marginValues),
-            placeholder = placeholder,
-            state = state,
-            inputField = inputField,
-            type = type,
-            onClick = onClick,
-        )
-    }
+    SelectInputField(
+        modifier = Modifier.padding(marginValues),
+        placeholder = placeholder,
+        state = state,
+        inputField = inputField,
+        type = type,
+        onClick = onClick,
+    )
 }
 
 @Composable
@@ -106,18 +85,6 @@ private fun SelectInputField(
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    val displayText = if (state == SDGSelectInputState.Default) {
-        placeholder
-    } else {
-        type.text.displayText.ifEmpty { placeholder }
-    }
-    val textColor = when (state) {
-        SDGSelectInputState.Default -> SDGColor.Neutral350
-        SDGSelectInputState.Selected,
-        SDGSelectInputState.Disabled,
-        SDGSelectInputState.Error,
-            -> SDGColor.Neutral700
-    }
     val backgroundColor = when (state) {
         SDGSelectInputState.Error -> SDGColor.Red300_a10
         SDGSelectInputState.Default,
@@ -135,6 +102,7 @@ private fun SelectInputField(
 
     Row(
         modifier = modifier
+            .fillMaxWidth()
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
             .background(color = backgroundColor)
             .then(
@@ -152,29 +120,12 @@ private fun SelectInputField(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
     ) {
-        if (state == SDGSelectInputState.Default) {
-            SelectInputText(
-                modifier = Modifier.weight(1f),
-                text = displayText,
-                textColor = textColor,
-                overflow = TextOverflow.Ellipsis,
-            )
-        } else {
-            SelectedElement(
-                modifier = Modifier
-                    .weight(1f)
-                    .then(
-                        if (state == SDGSelectInputState.Disabled) {
-                            Modifier.alpha(SDGSelectInputDisabledAlpha)
-                        } else {
-                            Modifier
-                        },
-                    ),
-                text = displayText,
-                textColor = textColor,
-                type = type,
-            )
-        }
+        SelectedElement(
+            modifier = Modifier.weight(1f, true),
+            placeholder = placeholder,
+            state = state,
+            type = type,
+        )
 
         SDGImage(
             modifier = Modifier.size(SDGSelectInputChevronSize),
@@ -287,26 +238,44 @@ fun SDGSelectInput(
 
 @Composable
 private fun SelectedElement(
-    text: String,
-    textColor: Color,
+    placeholder: String,
+    state: SDGSelectInputState,
     type: SDGSelectInputType,
     modifier: Modifier = Modifier,
 ) {
+    val text = type.text.displayText.ifEmpty { placeholder }
+    val elementModifier = modifier.then(
+        if (state == SDGSelectInputState.Disabled && type !is SDGSelectInputType.TwoImage) {
+            Modifier.alpha(SDGSelectInputDisabledAlpha)
+        } else {
+            Modifier
+        },
+    )
+
+    if (state == SDGSelectInputState.Default) {
+        SelectInputText(
+            modifier = modifier,
+            text = placeholder,
+            textColor = SDGColor.Neutral350,
+        )
+        return
+    }
+
     when (type) {
         is SDGSelectInputType.Text -> {
             SelectInputText(
-                modifier = modifier,
+                modifier = elementModifier,
                 text = text,
-                textColor = textColor,
+                textColor = SDGColor.Neutral700,
                 overflow = type.text.overflow,
             )
         }
 
         is SDGSelectInputType.Avatar -> {
             SelectedElementRow(
-                modifier = modifier,
+                modifier = elementModifier,
                 text = text,
-                textColor = textColor,
+                textColor = SDGColor.Neutral700,
                 image = type.selectedElementImage,
                 imageSize = SDGSelectInputImageType.Normal1,
                 clipImageToCircle = true,
@@ -316,9 +285,9 @@ private fun SelectedElement(
 
         is SDGSelectInputType.OneImage -> {
             SelectedElementRow(
-                modifier = modifier,
+                modifier = elementModifier,
                 text = text,
-                textColor = textColor,
+                textColor = SDGColor.Neutral700,
                 image = type.image,
                 imageSize = type.type,
                 overflow = type.text.overflow,
@@ -326,7 +295,23 @@ private fun SelectedElement(
         }
 
         is SDGSelectInputType.TwoImage -> {
-            error("TwoImage는 독립적인 One Image Input으로 렌더링되어야 합니다.")
+            Column(
+                modifier = modifier,
+                verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
+            ) {
+                SelectedElement(
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = placeholder,
+                    state = type.first.state ?: state,
+                    type = type.first.toOneImageType(),
+                )
+                SelectedElement(
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = placeholder,
+                    state = type.second.state ?: state,
+                    type = type.second.toOneImageType(),
+                )
+            }
         }
     }
 }
