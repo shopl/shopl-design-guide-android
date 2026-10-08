@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -38,6 +37,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
 private val SDGSelectInputDefaultHeight = 40.dp
+private val SDGSelectInputTwoImageHeight = 80.dp
 private val SDGSelectInputChevronSize = 24.dp
 private const val SDGSelectInputDisabledAlpha = 0.3f
 
@@ -85,6 +85,11 @@ private fun SelectInputField(
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
+    val height = if (type is SDGSelectInputType.TwoImage && state != SDGSelectInputState.Default) {
+        SDGSelectInputTwoImageHeight
+    } else {
+        SDGSelectInputDefaultHeight
+    }
     val backgroundColor = when (state) {
         SDGSelectInputState.Error -> SDGColor.Red300_a10
         SDGSelectInputState.Default,
@@ -112,7 +117,7 @@ private fun SelectInputField(
                     Modifier
                 },
             )
-            .heightIn(min = SDGSelectInputDefaultHeight)
+            .height(height)
             .padding(
                 horizontal = SDGSpacing.Spacing12,
                 vertical = SDGSpacing.Spacing5,
