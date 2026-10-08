@@ -62,74 +62,76 @@ fun SDGScrollTab(
     maxItemWidth: Dp? = null,
     backgroundColor: Color = SDGColor.Neutral0,
 ) {
-    require(selectedTab in titles.indices) {
-        "Selected Tab은 0부터 ${titles.lastIndex} 사이의 인덱스여야 합니다. (입력값: $selectedTab)"
-    }
+    if (titles.isNotEmpty()) {
+        require(selectedTab in titles.indices) {
+            "Selected Tab은 0부터 ${titles.lastIndex} 사이의 인덱스여야 합니다. (입력값: $selectedTab)"
+        }
 
-    val listState = rememberLazyListState()
+        val listState = rememberLazyListState()
 
-    LaunchedEffect(selectedTab, titles, size, maxItemWidth, contentPadding) {
-        val layoutInfo = listState.layoutInfo
-        val visibleItems = layoutInfo.visibleItemsInfo
-        val itemInfo = visibleItems.find { it.index == selectedTab }
+        LaunchedEffect(selectedTab, titles, size, maxItemWidth, contentPadding) {
+            val layoutInfo = listState.layoutInfo
+            val visibleItems = layoutInfo.visibleItemsInfo
+            val itemInfo = visibleItems.find { it.index == selectedTab }
 
-        if (itemInfo == null) {
-            listState.animateScrollToItem(selectedTab)
-        } else {
-            val viewportStart = layoutInfo.viewportStartOffset
-            val viewportEnd = layoutInfo.viewportEndOffset
-            val isPartiallyHidden = itemInfo.offset < viewportStart ||
-                    (itemInfo.offset + itemInfo.size) > viewportEnd
+            if (itemInfo == null) {
+                listState.animateScrollToItem(selectedTab)
+            } else {
+                val viewportStart = layoutInfo.viewportStartOffset
+                val viewportEnd = layoutInfo.viewportEndOffset
+                val isPartiallyHidden = itemInfo.offset < viewportStart ||
+                        (itemInfo.offset + itemInfo.size) > viewportEnd
 
-            if (isPartiallyHidden) {
-                val offset = (viewportStart + viewportEnd - itemInfo.size) / 2
-                listState.animateScrollToItem(selectedTab, -offset)
+                if (isPartiallyHidden) {
+                    val offset = (viewportStart + viewportEnd - itemInfo.size) / 2
+                    listState.animateScrollToItem(selectedTab, -offset)
+                }
             }
         }
-    }
 
-    Box(
-        modifier = Modifier
-            .then(if (isFillMaxWidth) Modifier.fillMaxWidth() else Modifier)
-            .padding(marginValues)
-            .background(backgroundColor)
-    ) {
-        if (isFillMaxWidth && style.showUnderline) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = contentPadding.calculateBottomPadding())
-                    .height(height = 1.dp)
-                    .align(Alignment.BottomStart)
-                    .background(SDGColor.Neutral200)
-            )
-        }
-
-        LazyRow(
-            modifier = Modifier.selectableGroup(),
-            contentPadding = contentPadding,
-            state = listState,
+        Box(
+            modifier = Modifier
+                .then(if (isFillMaxWidth) Modifier.fillMaxWidth() else Modifier)
+                .padding(marginValues)
+                .background(backgroundColor)
         ) {
-            itemsIndexed(
-                items = titles,
-                key = { index, _ -> index },
-            ) { index, title ->
-                Row(modifier = Modifier.height(IntrinsicSize.Min)) {
-                    SDGScrollTabItem(
-                        style = style,
-                        size = size,
-                        state = if (index == selectedTab) {
-                            SDGScrollTabItemState.Selected
-                        } else {
-                            SDGScrollTabItemState.Unselected
-                        },
-                        label = title,
-                        maxItemWidth = maxItemWidth,
-                        onClick = { onTabClick(index) }
-                    )
+            if (isFillMaxWidth && style.showUnderline) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = contentPadding.calculateBottomPadding())
+                        .height(height = 1.dp)
+                        .align(Alignment.BottomStart)
+                        .background(SDGColor.Neutral200)
+                )
+            }
 
-                    if (index < titles.lastIndex) {
-                        SDGScrollTabSpacer(style = style, size = size)
+            LazyRow(
+                modifier = Modifier.selectableGroup(),
+                contentPadding = contentPadding,
+                state = listState,
+            ) {
+                itemsIndexed(
+                    items = titles,
+                    key = { index, _ -> index },
+                ) { index, title ->
+                    Row(modifier = Modifier.height(IntrinsicSize.Min)) {
+                        SDGScrollTabItem(
+                            style = style,
+                            size = size,
+                            state = if (index == selectedTab) {
+                                SDGScrollTabItemState.Selected
+                            } else {
+                                SDGScrollTabItemState.Unselected
+                            },
+                            label = title,
+                            maxItemWidth = maxItemWidth,
+                            onClick = { onTabClick(index) }
+                        )
+
+                        if (index < titles.lastIndex) {
+                            SDGScrollTabSpacer(style = style, size = size)
+                        }
                     }
                 }
             }

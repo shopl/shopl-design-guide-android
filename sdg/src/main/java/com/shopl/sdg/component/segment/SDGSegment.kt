@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ext.dropShadow
+import com.shopl.sdg_common.ext.orDefault
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
@@ -52,48 +53,50 @@ fun SDGSegment(
     backgroundColor: Color,
     onLabelClick: (Int) -> Unit,
 ) {
-    require(labels.size == type.requiredLabelCount) {
-        "라벨 개수를 Type과 맞춰주세요. (라벨 필요 개수: ${type.requiredLabelCount})"
-    }
-    if (selectedIndex != null) {
-        require(selectedIndex in 0..labels.lastIndex) {
-            "라벨 개수에 맞는 인덱스를 입력하세요. (라벨 개수: ${labels.size} / 선택한 인덱스: $selectedIndex) "
+    if (labels.isNotEmpty()) {
+        require(labels.size == type.requiredLabelCount) {
+            "라벨 개수를 Type과 맞춰주세요. (라벨 필요 개수: ${type.requiredLabelCount})"
         }
-    }
+        if (selectedIndex != null) {
+            require(selectedIndex in 0..labels.lastIndex) {
+                "라벨 개수에 맞는 인덱스를 입력하세요. (라벨 개수: ${labels.size} / 선택한 인덱스: $selectedIndex) "
+            }
+        }
 
-    Box(
-        modifier = Modifier.clip(RoundedCornerShape(12.dp))
-    ) {
-        TabRow(
-            modifier = Modifier.clip(RoundedCornerShape(8.dp)),
-            selectedTabIndex = selectedIndex ?: 0,
-            containerColor = backgroundColor,
-            indicator = {
-                if (selectedIndex != null) {
-                    SDGSegmentIndicator(
-                        tabPositions = it,
-                        selectedIndex = selectedIndex
+        Box(
+            modifier = Modifier.clip(SDGCornerRadius.BoxRadius.Radius12)
+        ) {
+            TabRow(
+                modifier = Modifier.clip(SDGCornerRadius.BoxRadius.Radius8),
+                selectedTabIndex = selectedIndex.orDefault(),
+                containerColor = backgroundColor,
+                indicator = {
+                    if (selectedIndex != null) {
+                        SDGSegmentIndicator(
+                            tabPositions = it,
+                            selectedIndex = selectedIndex
+                        )
+                    }
+                },
+                divider = {}
+            ) {
+                labels.forEachIndexed { index, label ->
+                    val itemPadding = PaddingValues(
+                        top = Spacing4,
+                        bottom = Spacing4,
+                        start = if (index == 0) Spacing4 else Spacing2,
+                        end = if (index == labels.lastIndex) Spacing4 else Spacing2
+                    )
+                    SDGSegmentUnit(
+                        line = line,
+                        label = label,
+                        selected = selectedIndex == index,
+                        paddingValues = itemPadding,
+                        onLabelClick = {
+                            onLabelClick(index)
+                        }
                     )
                 }
-            },
-            divider = {}
-        ) {
-            labels.forEachIndexed { index, label ->
-                val itemPadding = PaddingValues(
-                    top = Spacing4,
-                    bottom = Spacing4,
-                    start = if (index == 0) Spacing4 else Spacing2,
-                    end = if (index == labels.lastIndex) Spacing4 else Spacing2
-                )
-                SDGSegmentUnit(
-                    line = line,
-                    label = label,
-                    selected = selectedIndex == index,
-                    paddingValues = itemPadding,
-                    onLabelClick = {
-                        onLabelClick(index)
-                    }
-                )
             }
         }
     }
