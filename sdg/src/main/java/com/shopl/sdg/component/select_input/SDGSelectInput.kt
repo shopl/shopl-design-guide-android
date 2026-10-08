@@ -169,11 +169,6 @@ private fun SelectInputField(
                     modifier = Modifier.size(SDGSelectInputClearIconSize),
                     resId = R.drawable.ic_input_delete,
                     color = null,
-                    contentDescription = if (isClearEnabled) {
-                        stringResource(id = R.string.sdg_select_input_clear)
-                    } else {
-                        null
-                    },
                 )
             }
         }
