@@ -21,14 +21,14 @@ sealed class SDGSelectInputText {
 
     /** 다중 선택 텍스트입니다. */
     data class Multiple(
-        val value: String,
-        val additionalCount: Int,
+        val firstItemLabel: String,
+        val count: Int,
     ) : SDGSelectInputText() {
         init {
-            require(additionalCount > 0) { "추가 선택 개수는 1 이상이어야 합니다." }
+            require(count > 1) { "다중 선택 개수는 2 이상이어야 합니다." }
         }
 
-        override val displayText: String = "$value+$additionalCount"
+        override val displayText: String = "$firstItemLabel+${count - 1}"
         override val overflow: TextOverflow = TextOverflow.MiddleEllipsis
     }
 
