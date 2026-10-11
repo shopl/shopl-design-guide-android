@@ -248,6 +248,7 @@ fun SDGSelectInput(
     onClick: (() -> Unit)? = null,
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
+    // 레거시는 텍스트 유무에 따른 기존 색상 규칙을 유지합니다.
     val textColor = when {
         state == SDGSelectInputState.Disabled -> SDGColor.Neutral300
         !text.isNullOrEmpty() -> SDGColor.Neutral700

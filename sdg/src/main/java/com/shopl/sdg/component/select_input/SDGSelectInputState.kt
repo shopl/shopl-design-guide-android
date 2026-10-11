@@ -6,6 +6,7 @@ import com.shopl.sdg_common.foundation.SDGColor
 
 @Stable
 sealed interface SDGSelectInputState {
+    /** null이면 Input Field 또는 레거시 API에서 지정한 배경색을 사용합니다. */
     val backgroundColor: Color?
     val typographyColor: Color
     val chevronColor: Color
