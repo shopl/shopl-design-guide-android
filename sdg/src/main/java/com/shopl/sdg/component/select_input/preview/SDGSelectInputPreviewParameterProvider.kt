@@ -20,6 +20,7 @@ internal class SDGSelectInputPreviewParameterProvider :
         선택_Text_단일선택(),
         선택_Text_단일선택().copy(showClearIcon = false),
         선택_Text_다중선택(),
+        선택_Text_다중선택_5명(),
         선택_Avatar(),
         선택_OneImage_Normal1(),
         선택_OneImage_Normal2(),
@@ -48,8 +49,16 @@ internal class SDGSelectInputPreviewParameterProvider :
 
     private fun 선택_Text_다중선택() = SDGSelectInputPreviewParameter(
         text = SDGSelectInputText.Multiple(
-            firstItemLabel = "Selected Text가 길어지면 마지막에 말줄임표가 표시됩니다.",
+            firstItemLabel = "Selected Text가 길어지면 중간에 말줄임표가 표시됩니다.",
             count = 4,
+        ),
+        state = SDGSelectInputState.Selected,
+    )
+
+    private fun 선택_Text_다중선택_5명() = SDGSelectInputPreviewParameter(
+        text = SDGSelectInputText.Multiple(
+            firstItemLabel = "첫번째 사용자",
+            count = 5,
         ),
         state = SDGSelectInputState.Selected,
     )
