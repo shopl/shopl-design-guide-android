@@ -19,7 +19,12 @@ sealed class SDGSelectInputText {
         override val overflow: TextOverflow = TextOverflow.Ellipsis
     }
 
-    /** 다중 선택 텍스트입니다. */
+    /**
+     * 다중 선택 텍스트입니다.
+     *
+     * @param firstItemLabel 첫 번째 선택 항목의 라벨
+     * @param count 첫 번째 항목을 포함한 전체 선택 개수 (2 이상)
+     */
     data class Multiple(
         val firstItemLabel: String,
         val count: Int,
