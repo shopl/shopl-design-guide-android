@@ -50,16 +50,16 @@ internal class SDGSelectInputPreviewParameterProvider :
 
     private fun 선택_Text_다중선택() = SDGSelectInputPreviewParameter(
         text = SDGSelectInputText.Multiple(
-            firstItemLabel = "Selected Text가 길어지면 중간에 말줄임표가 표시됩니다.",
-            count = 4,
+            value = "Selected Text가 길어지면 중간에 말줄임표가 표시됩니다.",
+            additionalCount = 3,
         ),
         state = SDGSelectInputState.Selected,
     )
 
     private fun 선택_Text_다중선택_5명() = SDGSelectInputPreviewParameter(
         text = SDGSelectInputText.Multiple(
-            firstItemLabel = "첫번째 사용자",
-            count = 5,
+            value = "첫번째 사용자",
+            additionalCount = 4,
         ),
         state = SDGSelectInputState.Selected,
     )
