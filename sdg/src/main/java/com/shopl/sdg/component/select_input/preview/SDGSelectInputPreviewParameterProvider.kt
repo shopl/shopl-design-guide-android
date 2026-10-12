@@ -5,6 +5,7 @@ import com.shopl.sdg.component.select_input.SDGSelectInputField
 import com.shopl.sdg.component.select_input.SDGSelectInputImage
 import com.shopl.sdg.component.select_input.SDGSelectInputImageElement
 import com.shopl.sdg.component.select_input.SDGSelectInputImageType
+import com.shopl.sdg.component.select_input.SDGSelectInputShowClearIcon
 import com.shopl.sdg.component.select_input.SDGSelectInputState
 import com.shopl.sdg.component.select_input.SDGSelectInputText
 import com.shopl.sdg.component.select_input.SDGSelectInputType
@@ -16,9 +17,9 @@ internal class SDGSelectInputPreviewParameterProvider :
     override val values: Sequence<SDGSelectInputPreviewParameter> = sequenceOf(
         기본_LightGray(),
         기본_LightGray().copy(inputField = SDGSelectInputField.White),
-        기본_LightGray().copy(showClearIcon = false),
+        기본_LightGray().copy(showClearIcon = SDGSelectInputShowClearIcon.False),
         선택_Text_단일선택(),
-        선택_Text_단일선택().copy(showClearIcon = false),
+        선택_Text_단일선택().copy(showClearIcon = SDGSelectInputShowClearIcon.False),
         선택_Text_다중선택(),
         선택_Text_다중선택_5명(),
         선택_Avatar(),
@@ -31,9 +32,9 @@ internal class SDGSelectInputPreviewParameterProvider :
         선택_TwoImage().copy(state = SDGSelectInputState.Error),
         비활성_Avatar(),
         비활성_Avatar().copy(inputField = SDGSelectInputField.White),
-        비활성_Avatar().copy(showClearIcon = false),
+        비활성_Avatar().copy(showClearIcon = SDGSelectInputShowClearIcon.False),
         오류_Text(),
-        오류_Text().copy(showClearIcon = false),
+        오류_Text().copy(showClearIcon = SDGSelectInputShowClearIcon.False),
     )
 
     private fun 기본_LightGray() = SDGSelectInputPreviewParameter(
@@ -112,7 +113,7 @@ internal data class SDGSelectInputPreviewParameter(
     val placeholder: String = "Placeholder",
     val inputField: SDGSelectInputField = SDGSelectInputField.LightGray,
     val type: SDGSelectInputPreviewType = SDGSelectInputPreviewType.Text,
-    val showClearIcon: Boolean = true,
+    val showClearIcon: SDGSelectInputShowClearIcon = SDGSelectInputShowClearIcon.True(onClick = {}),
 )
 
 internal enum class SDGSelectInputPreviewType {
