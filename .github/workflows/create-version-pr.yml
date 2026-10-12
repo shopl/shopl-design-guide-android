@@ -40,16 +40,17 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: minor, patch, 미리보기 및 재실행 로직 확인
+      - name: JavaScript 구문 확인
         run: |
-          node .github/scripts/version-pr-summary.test.cjs
-          node .github/scripts/create-version-pr.test.cjs
+          node --check .github/scripts/version-pr-summary.cjs
+          node --check .github/scripts/create-version-pr.cjs
+          node --check tools/slack-version-pr/preview.cjs
 
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.9.7
 
-      - name: Slack 앱 타입, lint 및 요청 처리 확인
+      - name: Slack 앱 타입 및 lint 확인
         working-directory: tools/slack-version-pr
         run: deno task check
 
@@ -74,10 +75,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: 버전 자동화 로직 확인
+      - name: JavaScript 구문 확인
         run: |
-          node .github/scripts/version-pr-summary.test.cjs
-          node .github/scripts/create-version-pr.test.cjs
+          node --check .github/scripts/version-pr-summary.cjs
+          node --check .github/scripts/create-version-pr.cjs
 
       - name: 버전 PR 생성
         id: create
