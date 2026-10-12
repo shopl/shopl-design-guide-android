@@ -45,13 +45,14 @@ private val SDGSelectInputIconTouchWidth = 24.dp
 private val SDGSelectInputIconTouchHeight = 28.dp
 private val SDGSelectInputClearIconSize = 18.dp
 private val SDGSelectInputChevronSize = 24.dp
+private val SDGSelectInputCircularIconSize = 14.dp
 
 /**
  * SDG - Component - Select Input
  *
- * 특정 타겟을 선택하는 인풋 컴포넌트
+ * 특정 타켓을 선택하는 인풋 컴포넌트
  *
- * @version 2.3.45
+ * @version 2.3.51
  *
  * @param placeholder 선택값이 없을 때 표시할 안내 문구
  * @param state 인풋 상태
@@ -394,10 +395,11 @@ private fun SelectedElementImage(
     clipToCircle: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
-    val imageModifier = modifier
+    val isWithCircular = imageSize == SDGSelectInputImageType.WithCircular && !clipToCircle
+    val imageModifier = Modifier
         .size(
-            width = imageSize.width,
-            height = imageSize.height,
+            width = if (isWithCircular) SDGSelectInputCircularIconSize else imageSize.width,
+            height = if (isWithCircular) SDGSelectInputCircularIconSize else imageSize.height,
         )
         .then(
             if (clipToCircle) {
@@ -412,48 +414,61 @@ private fun SelectedElementImage(
         ContentScale.Fit
     }
 
-    when (image) {
-        is SDGSelectInputImage.Resource -> {
-            SDGImage(
-                modifier = imageModifier,
-                resId = image.resId,
-                color = null,
-                contentScale = contentScale,
-            )
-        }
+    Box(
+        modifier = modifier
+            .size(width = imageSize.width, height = imageSize.height)
+            .then(
+                if (isWithCircular) {
+                    Modifier.background(color = SDGColor.Neutral200, shape = CircleShape)
+                } else {
+                    Modifier
+                },
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        when (image) {
+            is SDGSelectInputImage.Resource -> {
+                SDGImage(
+                    modifier = imageModifier,
+                    resId = image.resId,
+                    color = null,
+                    contentScale = contentScale,
+                )
+            }
 
-        is SDGSelectInputImage.Url -> {
-            SDGAsyncImage(
-                modifier = imageModifier,
-                imageModel = image.url,
-                contentScale = contentScale,
-                failureImage = {
-                    image.failureImageResId?.let { resId ->
+            is SDGSelectInputImage.Url -> {
+                SDGAsyncImage(
+                    modifier = imageModifier,
+                    imageModel = image.url,
+                    contentScale = contentScale,
+                    failureImage = {
+                        image.failureImageResId?.let { resId ->
+                            SDGImage(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .then(
+                                        if (clipToCircle) {
+                                            Modifier.clip(CircleShape)
+                                        } else {
+                                            Modifier
+                                        },
+                                    ),
+                                resId = resId,
+                                color = null,
+                                contentScale = contentScale,
+                            )
+                        }
+                    },
+                    previewContent = {
                         SDGImage(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .then(
-                                    if (clipToCircle) {
-                                        Modifier.clip(CircleShape)
-                                    } else {
-                                        Modifier
-                                    },
-                                ),
-                            resId = resId,
+                            modifier = imageModifier,
+                            resId = image.failureImageResId ?: R.drawable.ic_common_photo,
                             color = null,
                             contentScale = contentScale,
                         )
-                    }
-                },
-                previewContent = {
-                    SDGImage(
-                        modifier = imageModifier,
-                        resId = image.failureImageResId ?: R.drawable.ic_common_photo,
-                        color = null,
-                        contentScale = contentScale,
-                    )
-                },
-            )
+                    },
+                )
+            }
         }
     }
 }
