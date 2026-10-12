@@ -331,7 +331,7 @@ private fun SelectedElement(
         SelectInputText(
             modifier = modifier,
             text = placeholder,
-            textColor = state.typographyColor,
+            textColor = SDGColor.Neutral350,
         )
         return
     }
@@ -341,7 +341,7 @@ private fun SelectedElement(
             SelectInputText(
                 modifier = elementModifier,
                 text = text,
-                textColor = state.typographyColor,
+                textColor = SDGColor.Neutral700,
                 overflow = type.text.overflow,
             )
         }
@@ -350,7 +350,7 @@ private fun SelectedElement(
             SelectedElementRow(
                 modifier = elementModifier,
                 text = text,
-                textColor = state.typographyColor,
+                textColor = SDGColor.Neutral700,
                 image = type.selectedElementImage,
                 imageSize = SDGSelectInputImageType.Normal1,
                 clipImageToCircle = true,
@@ -362,7 +362,7 @@ private fun SelectedElement(
             SelectedElementRow(
                 modifier = elementModifier,
                 text = text,
-                textColor = state.typographyColor,
+                textColor = SDGColor.Neutral700,
                 image = type.image,
                 imageSize = type.type,
                 overflow = type.text.overflow,
