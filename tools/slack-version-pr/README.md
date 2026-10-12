@@ -1,182 +1,121 @@
 # SDG 버전 PR 버튼과 채팅창 실행
 
 운영 대상은 shopl 워크스페이스(`T016H73FHDH`)의
-`#sdg-android-deploy`(`C093TU3CCBG`)입니다. Slack에서 실행하는 앱이 GitHub
-Actions를 요청하므로 별도 서버를 운영하지 않습니다.
+`#sdg-android-deploy`(`C093TU3CCBG`)입니다. Slack 앱이 GitHub Actions를
+요청하므로 별도 서버를 운영하지 않습니다.
 
 ## 팀원 사용 방법
 
-- 고정된 안내 메시지의 **버전 PR 생성** 버튼을 누릅니다.
-- 안내 메시지를 찾기 어려우면 채널의 채팅창에 `/SDG`를 입력하고 목록에서 **SDG
-  버전 PR 만들기**를 선택합니다. 두 진입점은 같은 생성 워크플로를 실행합니다.
-- **SDG 버전 PR 안내**를 선택하면 실행한 사람에게만 버튼과 사용법을 보여줍니다.
-  이 안내만 실행해서는 GitHub 요청이나 채널 공개 게시·고정이 일어나지 않습니다.
+1. 채널 상단 **워크플로** 탭에서 **SDG 버전 PR 만들기**를 실행합니다.
+   채팅창에 `/SDG`를 입력해 같은 워크플로를 선택할 수도 있습니다.
+2. 본인에게만 뜨는 입력창의 **개인 토큰 생성** 링크를 엽니다.
+   [fine-grained token 발급 화면](https://github.com/settings/personal-access-tokens/new?name=SDG+Version+PR&target_name=shopl&expires_in=30&actions=write)에서
+   Resource owner는 **shopl**, Repository access는 **Only select repositories →
+   shopl-design-guide-android**, 권한은 **Actions: Read and write**로 설정합니다.
+   링크는 이름·대상 조직·권한·30일 만료를 미리 채우며 저장소는 직접 선택합니다.
+   조직이 토큰 승인을 요구하면 승인 후 사용합니다.
+3. 발급한 개인 토큰을 입력하고 **PR 생성 요청**을 누릅니다.
+   토큰은 실행할 때마다 입력합니다. 앱은 토큰을 저장하지 않으므로 재사용할 토큰은
+   본인이 안전하게 보관합니다. 토큰 만료·삭제 후에는 새 토큰을 사용합니다.
+4. 채널의 접수 안내와 PR 링크를 확인합니다. PR 리뷰·병합·배포는 팀에서 진행합니다.
 
-채팅창 실행은 Slack의
-[워크플로 바로가기](https://docs.slack.dev/faq/#how-do-i-build-a-slash-command-in-apps-created-with-the-deno-slack-sdk)를
-사용합니다. `/sdg-version create`처럼 문자열을 입력하고 바로 전송하는 사용자
-정의 slash command는 등록하지 않습니다. 팀원은 해당 트리거의 실행 권한만 있으면
-되며 개인 GitHub 토큰이나 CLI 설치가 필요 없습니다.
+[GitHub 공식 문서](https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event)에
+따르면 실행 요청에는 Actions 쓰기 권한이 필요합니다. 개인 토큰은 계정 확인과
+워크플로 실행 요청에만 사용합니다. `GET /user`로 확인한 토큰 소유자의 고유 ID를
+담당자로 전달하므로 GitHub 이름이 바뀌어도 같은 계정을 지정합니다.
 
-버튼을 누르면 이전 릴리스부터 main까지 병합된 PR을 조회합니다. `add` 라벨이
-하나라도 있으면 minor, 없으면 patch를 올립니다. VERSION 변경, 버전 PR 생성, 버전
-라벨 및 Android 팀 리뷰 요청까지 수행합니다. 열려 있는 버전 PR이 있으면 해당 PR
-링크를 반환합니다. 결과는 기존 `SLACK_SDG_ANDROID_WEB_HOOK`으로 채널에 알립니다.
-요청 접수와 결과 알림에는 버튼을 누른 Slack 사용자를 멘션하며, 새 PR의 Assignee는
-그 사용자에 연결된 GitHub 계정으로 지정합니다. 기존 PR을 재사용할 때는 담당자를
-바꾸지 않습니다.
+토큰 원문은 채널 메시지, 함수 입출력, 모달 메타데이터, 로그, 앱 환경 변수 또는
+데이터스토어에 넣지 않습니다. 계정 확인·실행 요청이 실패하면 입력창에 오류를
+표시하고, 취소하면 GitHub 요청이나 채널 메시지를 보내지 않습니다. 실행 요청을
+접수한 뒤의 Slack 알림은 별도 단계에서 처리합니다. 통신 오류로 접수 여부가 불명확하면
+GitHub Actions 실행 결과를 먼저 확인합니다.
 
-## Slack 사용자와 GitHub 계정 연결
+`SDG_GITHUB_ACTIONS_TOKEN`, `SDG_GITHUB_USER_MAP`, OAuth 앱 등록은 이 구현에
+필요하지 않습니다. 기존 운영 앱에 남아 있는 설정은 새 코드에서 사용하지 않습니다.
 
-운영 앱의 `SDG_GITHUB_USER_MAP`에 Slack 사용자 ID와 GitHub 로그인을 JSON으로
-등록합니다. 표시 이름이나 이메일로 추측하지 않으며 Slack 프로필 조회 권한을
-추가하지 않습니다. 현재 확인한 Scott 계정의 연결 예시는 다음과 같습니다.
+## 생성되는 PR
 
-```json
-{"U07SM8410PP":"Songgyubin"}
-```
+최신 릴리스부터 main까지의 변경과 연결된 병합 PR을 조회합니다. `add` 라벨이
+하나라도 있으면 minor, 없으면 patch를 올립니다. 변경사항이 없으면 PR을 만들지
+않으며 열려 있는 버전 PR이 있으면 해당 PR을 안내합니다.
 
-운영 담당자가 `slack env set SDG_GITHUB_USER_MAP --app A0C7SN83G8G`로 전체 연결
-목록을 입력합니다. 이 프로젝트는 배포 시 `.env`도 사용하므로 같은 목록을 Git에서
-제외된 `.env`에 유지하고, 배포 후 운영 환경에 목록이 남아 있는지 확인합니다.
-팀원을 추가할 때는 기존 연결을 유지합니다. 미등록 사용자나
-잘못된 연결 설정은 GitHub 실행 요청 전에 오류로 안내합니다. GitHub Actions는
-연결된 계정이 저장소의 Assignee가 될 수 있는지 쓰기 전에 확인하고, PR 생성 후
-실제 지정 결과도 확인합니다. 생성·지정 도중 오류가 났다면 실행 로그와 이미
-생성된 PR을 확인해야 합니다.
+실제 코드 수정은 GitHub Actions의 `GITHUB_TOKEN`으로 수행합니다. main에서
+새 버전 브랜치를 만들고 `PublishingConfig.VERSION`만 수정한 커밋으로 PR을
+생성합니다. PR 본문에는 이전 릴리스·권장 버전·판정 근거·PR 번호와 라벨·전체
+비교 링크를 표시합니다. PR 제목은 링크에서 보이므로 목록에 중복 작성하지 않습니다.
 
-새 매니페스트를 배포한 뒤 기존 생성 트리거를 다음과 같이 갱신해야 버튼과 `/SDG`
-모두 실제 실행자의 `user_id`를 전달합니다. 안내를 게시한 사람의 ID를 사용하지
-않습니다.
+요청 접수와 결과 알림에는 버튼을 누른 Slack 사용자를 멘션합니다. 새 PR의
+Assignee는 개인 토큰의 GitHub 계정이며 버전 라벨과 Android 팀 리뷰 요청도
+추가합니다. 기존 PR을 재사용할 때는 담당자를 바꾸지 않습니다. 담당자를 지정할 수
+있는지 GitHub 쓰기 전에 확인하고, 생성 후 실제 지정 결과도 확인합니다.
+생성 또는 지정 도중 오류가 났다면 실행 로그와 이미 생성된 PR을 확인합니다.
 
-```sh
-slack trigger update --trigger-id Ft0C6H0H2CUF --trigger-def triggers/create-version-pr.ts --app A0C7SN83G8G
-```
+## 병합 전 직접 테스트
 
-## 설치된 운영 앱 (2026-10-06)
+테스트 채널은 `#마라팸`(`C082MGJUVHR`)이며 **SDG Version PR Test (local)**
+앱(`A0C6WBJ3YR5`)을 사용합니다. 채널 상단 **워크플로** 탭에서 **SDG 버전 PR
+테스트 (미리보기) (local)**를 실행하거나 `/SDG`로 선택합니다. 화면이 좁으면
+**더 보기 → 워크플로**에서 찾습니다. 채팅 메시지 고정은 사용하지 않습니다.
 
-[SDG Version PR](https://slack.com/apps/A0C7SN83G8G) (`A0C7SN83G8G`)의 Slack
-서버 검증·배포·채널 연결을 완료했습니다. 운영 트리거는 `Ft0C6H0H2CUF`이며, 실행
-권한은 `C093TU3CCBG` 채널 멤버에게만 설정했습니다.
-[운영 실행 링크](https://slack.com/shortcuts/Ft0C6H0H2CUF/5fc960098cfa9655c5c795b3accbe3ac)는
-main 병합과 GitHub 토큰 설정 후 채널에 게시합니다. 현재 운영 실행 검증은 대기
-중입니다.
+미리보기 트리거(`Ft0C79R5NN6S`)와 함수는 이 테스트 채널만 허용합니다.
+토큰 소유자를 확인한 뒤 같은 토큰으로 읽기 전용 GitHub 조회를 수행합니다.
+미리보기용 자식 프로세스에만 `GH_TOKEN`을 일시적으로 전달하며 `.env`에는 저장하지
+않습니다. 최신 릴리스부터 현재 main까지의 PR 내용 한 건과 예정 담당자를 표시합니다.
+커밋·브랜치·PR·라벨·GitHub Actions 실행 요청은 만들지 않습니다.
 
-## 안내 버튼 준비 및 직접 테스트 (2026-10-08)
+이 미리보기는 개인 토큰의 인증·조회와 버전 계산을 확인합니다. 공개 저장소 조회의
+성공만으로 Actions 쓰기 권한을 증명할 수 없으며 실제 생성·Assignee·결과 웹훅의
+검증은 별도로 필요합니다. 테스트 실행과 토큰 입력은 담당자가 직접 수행합니다.
 
-안내는
-[workflow button](https://docs.slack.dev/reference/block-kit/block-elements/workflow-button-element/)으로
-같은 버전 PR 생성 트리거를 실행합니다. 기본 동작은 `chat.postEphemeral`로 실행한
-사람에게만 표시하는 것입니다. 공개 게시·고정은 별도 트리거를 사람이 직접 실행할
-때만 동작하며 앱 배포나 GitHub CI에서 자동으로 실행하지 않습니다.
+개발 앱은 이 Mac에서 `slack run`이 실행 중일 때만 동작합니다. 로컬 소스·설치
+정보는 Git에서 제외된 `.slack/preview-app`에 보관하며 운영 앱과 분리합니다.
+운영 코드 변경은 PR #460에서 검토하며 충분한 테스트 후 팀에서 병합합니다.
 
-1. 이 디렉터리에서 변경된 앱을 배포합니다. `pins:write` 권한은 안내 메시지
-   고정에 사용하며 채널 내용 조회 권한은 추가하지 않습니다. 앱 배포 자체는
-   메시지를 게시하거나 main을 병합하지 않습니다.
-2. 앱의 `SDG_VERSION_PR_TRIGGER_URL`에 같은 앱·환경의 **SDG 버전 PR 만들기**
-   Shortcut URL을 설정합니다. 운영 앱은 위 운영 실행 링크를 사용합니다. 테스트용
-   앱에는 운영 PR을 생성하지 않는 테스트 트리거를 연결하고 해당 앱의
-   `SDG_GITHUB_ACTIONS_TOKEN`을 설정하지 않습니다.
-3. `slack trigger create --trigger-def triggers/version-pr-guide.ts --app <앱 ID>`로
-   개인 안내 트리거를 생성합니다. 직접 테스트 중에는 실행 권한을 테스트 담당자
-   한 명으로 제한하고 링크를 공유 채널에 게시하지 않습니다.
-4. 직접 테스트할 때 링크 또는 채널의 `/SDG` 검색에서 **SDG 버전 PR 안내**를
-   선택합니다. 안내가 본인에게만 보이고 채널 메시지·핀은 추가되지 않는지
-   확인합니다. 생성 버튼의 실제 PR 생성 경로는 main의 워크플로 설치와 운영 토큰
-   설정이 필요합니다. 본 PR은 팀의 검토와 직접 테스트를 거친 뒤 팀에서
-   병합합니다.
-5. 운영 게시가 필요해졌을 때만
-   `slack trigger create --trigger-def triggers/publish-version-pr-guide.ts --app <앱 ID>`로
-   **SDG 버전 PR 안내 게시·고정** 트리거를 생성합니다. 실행 권한은 운영
-   담당자에게만 주고 해당 담당자가 한 번 실행합니다. 게시 후 고정이 실패하면
-   오류 안내에 따라 이미 게시된 메시지를 수동으로 고정합니다. 재실행하면 안내가
-   다시 게시됩니다.
-
-안내 기능의 Slack 배포와 개인 안내 트리거(`Ft0C7LBKJUJW`) 생성을 완료했습니다.
-현재 해당 트리거의 실행 권한은 Scott(`U07SM8410PP`) 한 명에게만 있습니다. 운영
-채널용 게시·고정 트리거는 생성하지 않았습니다. Deno 타입·lint·대체 요청 검사,
-Node 버전 계산 검사 및 Slack 매니페스트 검증이 통과했습니다.
-
-## 현재 테스트 채널 (2026-10-08)
-
-직접 테스트 대상은 `#마라팸`(`C082MGJUVHR`)입니다. 별도 **SDG Version PR Test
-(local)** 앱(`A0C6WBJ3YR5`)의 **SDG 버전 PR 테스트 (미리보기) (local)**를 채널
-상단 **워크플로** 탭에 추가하고 메시지 탭 바로 다음에 배치했습니다. 화면이
-좁으면 상단 **더 보기 → 워크플로**에서 찾을 수 있습니다. 채팅창에 `/SDG`를
-입력해 같은 워크플로를 선택하는 경로도 유지합니다.
-
-[테스트 안내 메시지](https://shopl-workspace.slack.com/archives/C082MGJUVHR/p1791426525093799)의
-채팅 고정은 해제했습니다. 상단 탭 등록은 Slack 기본 기능으로 설정하며 안내
-게시·고정 트리거를 다시 실행하지 않습니다.
-
-미리보기 트리거(`Ft0C79R5NN6S`)는 `C082MGJUVHR` 채널 멤버만 실행할 수 있으며
-이전 테스트 채널의 실행 권한은 제거했습니다. 함수도 같은 채널만 허용합니다. 안내
-게시·고정 트리거는 Scott 한 명에게만 허용합니다. 이번 준비에서는 상단 탭 등록과
-메시지 고정 해제를 확인했고, 미리보기 실행은 담당자가 직접 진행합니다.
-
-이 테스트는 버전 계산과 PR 라벨 목록을 조회하며 실제 커밋·브랜치·PR·라벨을
-변경하지 않습니다. Slack에는 최신 릴리스부터 현재 main까지의 결과 한 건만
-표시하며, 변경사항이 없으면 PR을 만들지 않는다는 안내만 표시합니다. 과거 릴리스
-재현 결과는 포함하지 않습니다. 운영 PR 생성 경로의 검증은 별도로 필요합니다.
-개발 앱은 이 Mac에서 `slack run`이 실행 중일 때만 동작합니다. 로컬 테스트 앱의 소스·설치
-정보는 Git에서 제외된 `.slack/preview-app`에 보관합니다.
-
-## 병합 전 테스트 (2026-10-07)
-
-PR의 `validate` 작업은 쓰기 권한 없이 버전 계산·중복 실행·오류 처리 검사를
-실행하고, 실제 main의 버전 변경을 `dryRun: true`로 확인합니다. PR 실행에서는
-운영 `create` 작업과 Slack 배포 웹훅 알림을 실행하지 않습니다.
-
-로컬에서 같은 읽기 전용 조회를 실행할 수 있습니다. GitHub CLI(`gh`) 인증이
-필요하며, GitHub API는 이 저장소의 GET 요청만 허용합니다.
+CLI로는 다음 읽기 전용 조회도 가능합니다. GitHub CLI 인증이 필요합니다.
 
 ```sh
 node preview.cjs Songgyubin
+node preview.cjs '' 37494776
 ```
 
-GitHub 로그인을 전달하면 Assignee 가능 여부와 예정 담당자도 읽기 전용으로
-확인합니다. 인자를 생략하면 기존 버전 계산 미리보기만 실행합니다.
+첫 번째는 로그인, 두 번째는 고유 ID로 예정 담당자를 확인합니다. 저장소 GET 요청과
+고유 ID의 공개 계정 조회만 허용하며 실제 GitHub 쓰기는 수행하지 않습니다.
 
-2026-10-07 당시의
-[Slack 실행 결과](https://shopl-workspace.slack.com/archives/C093TU3CCBG/p1791357253801889)에서
-`v1.22.0 → v1.23.0`의 `add` 3개 → minor, `v1.23.0 → v1.23.1`의 `add` 0개 →
-patch, 당시 main의 변경사항 없음 결과를 확인했습니다. 브랜치·PR·라벨은 변경하지
-않습니다. 운영 GitHub 토큰과 실제 PR 생성·리뷰 요청·배포 웹훅 경로는 이 미리보기
-검증에 포함되지 않으며 운영 실행 전에 별도 확인해야 합니다.
+## 운영 설치 및 적용
 
-## 최초 설치
+운영 앱은 [SDG Version PR](https://slack.com/apps/A0C7SN83G8G)
+(`A0C7SN83G8G`)이며 기존 생성 트리거는 `Ft0C6H0H2CUF`입니다.
+실행 권한은 `C093TU3CCBG` 채널 멤버에게만 설정되어 있습니다.
+[운영 실행 링크](https://slack.com/shortcuts/Ft0C6H0H2CUF/5fc960098cfa9655c5c795b3accbe3ac)는
+운영 준비가 끝나면 담당자가 공유합니다. 개인 토큰 방식의 운영 배포·직접 실행은
+테스트 후 적용합니다.
 
-1. `.github/workflows/create-version-pr.yml`을 main에 병합합니다. GitHub
-   저장소의 Actions 설정에서 **Allow GitHub Actions to create and approve pull
-   requests**가 허용되어 있어야 합니다. 기존 배포 알림 웹훅이 `C093TU3CCBG`를
-   가리키는지 확인합니다.
+1. 팀에서 PR 검토와 테스트를 마친 뒤 `.github/workflows/create-version-pr.yml`을
+   main에 병합합니다. GitHub Actions 설정의 **Allow GitHub Actions to create and
+   approve pull requests**가 허용되어 있어야 합니다.
 2. [Slack CLI](https://docs.slack.dev/tools/slack-cli/guides/installing-the-slack-cli-for-mac-and-linux/)와
-   Deno를 설치하고 `slack login`으로 shopl 워크스페이스를 인증합니다. Slack에서
-   호스팅하는 앱은 유료 플랜과 워크스페이스의 앱 설치 승인이 필요합니다.
-3. 이 디렉터리에서 `slack deploy --team T016H73FHDH`를 실행합니다. 앱은 워크플로
-   실행(`commands`), 메시지 게시(`chat:write`), 고정(`pins:write`) 권한을
-   요청합니다. 채널 내용 조회 권한은 요청하지 않습니다.
-4. GitHub의 봇 또는 서비스 계정으로
-   [토큰 발급 화면](https://github.com/settings/personal-access-tokens/new?name=SDG+Version+PR&target_name=shopl&expires_in=90&actions=write)을
-   열고 **shopl/shopl-design-guide-android 저장소만** 선택한 fine-grained
-   token을 발급합니다. 권한은 **Actions: Read and write**만 필요합니다. 토큰을
-   git에 커밋하거나 Slack 메시지로 보내지 않고 배포된 앱의
-   `SDG_GITHUB_ACTIONS_TOKEN` 환경 변수에 설정합니다.
-   `slack env set SDG_GITHUB_ACTIONS_TOKEN --app <배포된 앱 ID>`로 숨김 입력창에
-   직접 입력합니다. 토큰 입력은 운영 담당자가 로컬에서 수행합니다.
-   위 **Slack 사용자와 GitHub 계정 연결**에 따라 `SDG_GITHUB_USER_MAP`도 설정합니다.
-5. `#sdg-android-deploy` 채널에 **SDG Version PR** 앱을 초대합니다.
-6. `slack trigger create --trigger-def triggers/create-version-pr.ts --app <배포된 앱 ID>`로
-   운영용 링크를 생성합니다.
-   `slack trigger access --trigger-id <트리거 ID> --grant --channels C093TU3CCBG --app <배포된 앱 ID>`로
-   협업자 포함 질문에는 **No**를 선택하고, `--info`로 해당 채널 멤버만 실행할 수
-   있는지 확인합니다.
-7. `SDG_VERSION_PR_TRIGGER_URL` 설정과 개인 안내 테스트를 진행한 뒤 위의 **안내
-   게시·고정** 절차로 버튼을 게시합니다. 개인 안내 트리거는 운영 시 채널
-   멤버에게 실행 권한을 줍니다. 게시·고정 트리거는 운영 담당자에게만 줍니다.
-   `slack run`으로 만든 개발용 링크는 운영용으로 사용하지 않습니다.
+   Deno를 설치하고 `slack login`으로 shopl을 인증합니다.
+3. 이 디렉터리에서 `slack deploy --team T016H73FHDH --app A0C7SN83G8G`로
+   변경된 앱을 배포합니다. `commands`, `chat:write`, `pins:write` 권한을 사용하며
+   토큰용 저장소나 OAuth 권한을 추가하지 않습니다.
+4. 기존 트리거를 다음과 같이 갱신해 실제 요청자의 ID와 개인 입력창을 열
+   interactivity를 전달합니다. 기존 링크와 채널 실행 권한은 유지합니다.
 
-## 확인
+   ```sh
+   slack trigger update --trigger-id Ft0C6H0H2CUF --trigger-def triggers/create-version-pr.ts --app A0C7SN83G8G
+   slack trigger access --trigger-id Ft0C6H0H2CUF --info --app A0C7SN83G8G
+   ```
+
+5. 앱을 운영 채널에 초대하고 기존 `SLACK_SDG_ANDROID_WEB_HOOK`의 대상 채널을
+   확인합니다. 토큰을 가진 팀원이 직접 버튼으로 생성과 중복 실행을 테스트합니다.
+
+개인 안내는 `SDG_VERSION_PR_TRIGGER_URL`의 동일 환경 트리거를 workflow button으로
+연결합니다. **SDG 버전 PR 안내**는 실행한 사람에게만 표시하며 GitHub 요청을 하지
+않습니다. 공개 안내 게시·고정 트리거는 사람이 명시적으로 실행할 때만 동작합니다.
+기본 배포·CI에서는 메시지 게시 또는 고정을 실행하지 않습니다. 상단 탭을 사용하는
+현재 테스트에서는 안내 게시·고정 트리거를 실행하지 않습니다.
+
+## 검증
 
 ```sh
 deno task check
@@ -184,6 +123,6 @@ node ../../.github/scripts/version-pr-summary.test.cjs
 node ../../.github/scripts/create-version-pr.test.cjs
 ```
 
-GitHub에서 워크플로를 수동 실행해 PR 생성 및 결과 알림을 확인한 뒤, 채널 버튼을
-눌러 같은 PR 링크가 반환되는지 확인합니다. 이 앱은 PR 생성까지만 수행하며,
-리뷰·병합·배포는 기존 절차를 따릅니다.
+PR의 `validate`는 읽기 권한으로 토큰 입력·취소·오류·요청자·담당자·버전 계산·중복
+실행 검사와 실제 main의 `dryRun` 조회를 수행합니다. PR 실행에서는 운영 생성 작업과
+Slack 결과 웹훅을 실행하지 않습니다. 자동화는 PR 생성까지만 수행합니다.
