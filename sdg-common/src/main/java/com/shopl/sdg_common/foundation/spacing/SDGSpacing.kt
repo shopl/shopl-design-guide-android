@@ -5,6 +5,8 @@ import androidx.compose.ui.unit.dp
 /**
  * SDG - Foundation - Spacing
  *
+ * @version 2.3.47
+ *
  * 컴포넌트 및 템플릿, 그리고 화면의 여백과 간격 값을 정의합니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6764-15774&m=dev">Figma</a>
@@ -26,11 +28,17 @@ object SDGSpacing {
     val Spacing1 = 1.dp
     val Spacing3 = 3.dp
     val Spacing5 = 5.dp
+    val Spacing7 = 7.dp
     val Spacing11 = 11.dp
     val Spacing18 = 18.dp
     val Spacing28 = 28.dp
     val Spacing32 = 32.dp
+    val Spacing36 = 36.dp
+    val Spacing44 = 44.dp
+    val Spacing52 = 52.dp
     val Spacing60 = 60.dp
+    val Spacing68 = 68.dp
+    val Spacing76 = 76.dp
     val Spacing100 = 100.dp
     val Spacing104 = 104.dp
 }
