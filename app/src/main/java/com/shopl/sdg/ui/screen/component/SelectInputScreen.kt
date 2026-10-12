@@ -16,6 +16,7 @@ import com.shopl.sdg.component.select_input.SDGSelectInput
 import com.shopl.sdg.component.select_input.SDGSelectInputField
 import com.shopl.sdg.component.select_input.SDGSelectInputImage
 import com.shopl.sdg.component.select_input.SDGSelectInputImageElement
+import com.shopl.sdg.component.select_input.SDGSelectInputShowClearIcon
 import com.shopl.sdg.component.select_input.SDGSelectInputState
 import com.shopl.sdg.component.select_input.SDGSelectInputText
 import com.shopl.sdg.component.select_input.SDGSelectInputType
@@ -144,8 +145,9 @@ private fun SelectInputContent(
             },
             inputField = inputField,
             type = type,
-            onClickClear = { isSelected = false },
-            showClearIcon = true,
+            showClearIcon = SDGSelectInputShowClearIcon.True(
+                onClick = { isSelected = false },
+            ),
             onClick = { isSelected = true },
         )
     }
