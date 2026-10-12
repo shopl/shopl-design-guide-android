@@ -30,6 +30,7 @@ enum class SDGSelectInputImageType(
             replaceWith = ReplaceWith("WithCircular"),
         )
         @Suppress("PropertyName")
+        @JvmField
         val Normal1: SDGSelectInputImageType = WithCircular
 
         @Deprecated(
@@ -37,6 +38,7 @@ enum class SDGSelectInputImageType(
             replaceWith = ReplaceWith("Square"),
         )
         @Suppress("PropertyName")
+        @JvmField
         val Normal2: SDGSelectInputImageType = Square
 
         @Deprecated(
@@ -44,6 +46,7 @@ enum class SDGSelectInputImageType(
             replaceWith = ReplaceWith("Rectangle"),
         )
         @Suppress("PropertyName")
+        @JvmField
         val Special1: SDGSelectInputImageType = Rectangle
     }
 }
