@@ -99,13 +99,6 @@ private fun SelectInputField(
     } else {
         SDGSelectInputDefaultHeight
     }
-    val backgroundColor = when (state) {
-        SDGSelectInputState.Error -> SDGColor.Red300_a10
-        SDGSelectInputState.Default,
-        SDGSelectInputState.Selected,
-        SDGSelectInputState.Disabled,
-            -> inputField.color
-    }
     val chevronColor = when (state) {
         SDGSelectInputState.Disabled -> SDGColor.Neutral300
         SDGSelectInputState.Default,
@@ -118,7 +111,7 @@ private fun SelectInputField(
         modifier = modifier
             .fillMaxWidth()
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-            .background(color = backgroundColor)
+            .background(color = state.backgroundColor ?: inputField.color)
             .then(
                 if (state != SDGSelectInputState.Disabled && onClick != null) {
                     Modifier.clickable(onClick = onClick)
@@ -256,11 +249,6 @@ fun SDGSelectInput(
     onClick: (() -> Unit)? = null,
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
-    val background = if (state == SDGSelectInputState.Error) {
-        SDGColor.Red300_a10
-    } else {
-        backgroundColor
-    }
     val textColor = when {
         state == SDGSelectInputState.Disabled -> SDGColor.Neutral300
         !text.isNullOrEmpty() -> SDGColor.Neutral700
@@ -277,7 +265,7 @@ fun SDGSelectInput(
             .padding(marginValues)
             .height(SDGSelectInputDefaultHeight)
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-            .background(color = background)
+            .background(color = state.backgroundColor ?: backgroundColor)
             .clickable(
                 hasRipple = true,
                 rippleColor = SDGColor.Neutral350,
