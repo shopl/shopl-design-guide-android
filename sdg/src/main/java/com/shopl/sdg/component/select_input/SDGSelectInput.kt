@@ -99,7 +99,6 @@ private fun SelectInputField(
     } else {
         SDGSelectInputDefaultHeight
     }
-    val isClearEnabled = state == SDGSelectInputState.Selected && showClearIcon.enabled
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -127,7 +126,7 @@ private fun SelectInputField(
             type = type,
         )
 
-        if (showClearIcon.enabled) {
+        if (showClearIcon is SDGSelectInputShowClearIcon.True) {
             Box(
                 modifier = Modifier
                     .size(
@@ -135,7 +134,7 @@ private fun SelectInputField(
                         height = SDGSelectInputIconTouchHeight,
                     )
                     .then(
-                        if (isClearEnabled) {
+                        if (state == SDGSelectInputState.Selected) {
                             Modifier.clickable(
                                 role = Role.Button,
                                 onClick = showClearIcon.onClick,
