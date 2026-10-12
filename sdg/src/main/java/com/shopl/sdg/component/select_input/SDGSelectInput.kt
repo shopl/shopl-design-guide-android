@@ -57,8 +57,7 @@ private const val SDGSelectInputDisabledAlpha = 0.3f
  * @param state 인풋 상태
  * @param inputField 인풋 필드 배경 유형
  * @param type Selected Element 유형과 선택 텍스트
- * @param onClickClear Selected 상태에서 선택값을 초기화하는 클릭 이벤트
- * @param showClearIcon 초기화 아이콘 노출 여부
+ * @param showClearIcon 초기화 아이콘 노출 여부와 Selected 상태의 초기화 클릭 이벤트
  * @param marginValues 컴포넌트 외부 여백
  * @param onClick Input Field 클릭 이벤트
  *
@@ -173,7 +172,7 @@ private fun SelectInputField(
 
 /** 초기화 아이콘이 없는 기존 Select Input API의 하위 호환성을 유지합니다. */
 @Deprecated(
-    message = "onClickClear와 showClearIcon을 지원하는 SDGSelectInput API를 사용하세요.",
+    message = "SDGSelectInputShowClearIcon을 지정하는 API를 사용하세요.",
 )
 @Composable
 fun SDGSelectInput(
