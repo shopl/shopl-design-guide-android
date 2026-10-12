@@ -11,6 +11,10 @@ on:
         description: '새 PR 담당자의 GitHub 로그인'
         type: string
         required: false
+      assignee_id:
+        description: '개인 토큰으로 확인한 GitHub 고유 ID (Slack 앱에서 전달)'
+        type: string
+        required: false
   pull_request:
     types: [opened, reopened, synchronize]
     branches: [main]
@@ -82,11 +86,13 @@ jobs:
         env:
           REQUESTER_SLACK_ID: ${{ inputs.requester_slack_id }}
           PR_ASSIGNEE: ${{ inputs.assignee }}
+          PR_ASSIGNEE_ID: ${{ inputs.assignee_id }}
         with:
           script: |
             const createVersionPr = require('./.github/scripts/create-version-pr.cjs');
             const result = await createVersionPr({ github, context,
-              assignee: process.env.PR_ASSIGNEE, requesterSlackId: process.env.REQUESTER_SLACK_ID });
+              assignee: process.env.PR_ASSIGNEE, assigneeId: process.env.PR_ASSIGNEE_ID,
+              requesterSlackId: process.env.REQUESTER_SLACK_ID });
             core.setOutput('status', result.status);
             core.setOutput('url', result.url || '');
             const text = result.status === 'created' ? `${result.version} 버전 PR을 만들었습니다.` :

@@ -10,8 +10,9 @@ const existingPr = { number: 459, html_url: 'https://example.test/459', labels: 
 
 async function run({ add = true, existing = false, concurrent = false, empty = false, mainChanged = false,
   releaseChanged = false, currentVersion = '1.22.0', branchExists = false, branchChanged = false, wrongRef = false,
-  fail = false, missingLabel = false, dryRun = false, assignee = '', requesterSlackId = '',
-  unassignable = false, assignmentIgnored = false, assignmentFailure = false, writes = [] } = {}) {
+  fail = false, missingLabel = false, dryRun = false, assignee = '', assigneeId = '', requesterSlackId = '',
+  accountLogin = 'Songgyubin', accountMissing = false, wrongAccount = false,
+  unassignable = false, assignmentIgnored = false, assignmentFailure = false, assignmentWrongId = false, writes = [] } = {}) {
   let mainReads = 0;
   let releaseReads = 0;
   let listReads = 0;
@@ -30,7 +31,8 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
         addAssignees: async params => {
           writes.push(['assignee', params]);
           if (assignmentFailure) throw new Error('assignee API failure');
-          return { data: { assignees: assignmentIgnored ? [] : params.assignees.map(login => ({ login: login.toLowerCase() })) } };
+          return { data: { assignees: assignmentIgnored ? [] : params.assignees.map(login => ({ login: login.toLowerCase(),
+            id: assignmentWrongId ? 999 : Number(assigneeId) })) } };
         },
       },
       repos: {
@@ -54,9 +56,15 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
         createRef: async params => { writes.push(['ref', params]); },
       },
     },
-    request: async (route, { basehead, assignee: login }) => {
+    request: async (route, { basehead, assignee: login, account_id }) => {
+      if (route === 'GET /user/{account_id}') {
+        assert.equal(account_id, Number(assigneeId));
+        assert.equal(writes.length, 0);
+        if (accountMissing) throw Object.assign(new Error('missing user'), { status: 404 });
+        return { data: { id: wrongAccount ? 999 : account_id, login: accountLogin, type: 'User' } };
+      }
       if (route === 'GET /repos/{owner}/{repo}/assignees/{assignee}') {
-        assert.equal(login, assignee);
+        assert.equal(login, assigneeId ? accountLogin : assignee);
         assert.equal(writes.length, 0);
         if (unassignable) throw Object.assign(new Error('not assignable'), { status: 404 });
         return { status: 204 };
@@ -79,7 +87,7 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
     },
   };
   const result = await createVersionPr({ github, context: { ...context, ref: wrongRef ? 'refs/heads/other' : context.ref },
-    dryRun, assignee, requesterSlackId });
+    dryRun, assignee, assigneeId, requesterSlackId });
   return { result, writes };
 }
 
@@ -96,6 +104,22 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
   assert.equal(assigned.result.assignee, 'Songgyubin');
   assert.deepEqual(assigned.writes.map(([kind]) => kind), ['blob', 'tree', 'commit', 'ref', 'pr', 'assignee', 'labels', 'reviewers']);
   assert.deepEqual(assigned.writes[5][1], { owner: 'shopl', repo: 'shopl-design-guide-android', issue_number: 461, assignees: ['Songgyubin'] });
+  const linked = await run({ assigneeId: '37494776', requesterSlackId: 'UTEST' });
+  assert.equal(linked.result.assignee, 'Songgyubin');
+  assert.deepEqual(linked.writes[5][1].assignees, ['Songgyubin']);
+  await assert.rejects(run({ assigneeId: '37494776', assignmentWrongId: true }), /담당자 지정에 실패/);
+  const renamed = await run({ assignee: 'old-login', assigneeId: '37494776', accountLogin: 'new-login', dryRun: true });
+  assert.equal(renamed.result.assignee, 'new-login');
+  assert.equal(renamed.writes.length, 0);
+  assert.equal((await run({ assigneeId: '37494776', existing: true })).writes.length, 0);
+  for (const assigneeId of ['0', '-1', 'bad', '9007199254740992', 123]) {
+    await assert.rejects(run({ assigneeId }), /담당자 ID 형식/);
+  }
+  for (const args of [{ accountMissing: true }, { wrongAccount: true }, { accountLogin: 'bad<@UTEST>' }]) {
+    const accountWrites = [];
+    await assert.rejects(run({ assigneeId: '37494776', writes: accountWrites, ...args }), /GitHub/);
+    assert.equal(accountWrites.length, 0);
+  }
   assert.equal((await run({ assignee: 'other-member', existing: true })).writes.length, 0);
   assert.equal((await run({ assignee: 'other-member', concurrent: true })).writes.length, 0);
   assert.equal((await run({ assignee: 'Songgyubin', empty: true })).writes.length, 0);

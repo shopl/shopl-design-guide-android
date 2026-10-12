@@ -1,14 +1,31 @@
 const { getVersionChanges } = require('./version-pr-summary.cjs');
 const versionPath = 'build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt';
 
-module.exports = async ({ github, context, dryRun = false, assignee = '', requesterSlackId = '' }) => {
+module.exports = async ({ github, context, dryRun = false, assignee = '', assigneeId = '', requesterSlackId = '' }) => {
   const { owner, repo } = context.repo;
   if (context.ref !== 'refs/heads/main') throw new Error('버전 PR 생성은 main에서 실행해주세요.');
-  if (requesterSlackId && (!/^[UW][A-Z0-9]+$/.test(requesterSlackId) || !assignee)) {
+  if (requesterSlackId && (!/^[UW][A-Z0-9]+$/.test(requesterSlackId) || (!assignee && !assigneeId))) {
     throw new Error('Slack 요청자와 GitHub 담당자 설정을 확인해주세요.');
   }
   if (assignee && (typeof assignee !== 'string' || !/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(assignee))) {
     throw new Error('GitHub 담당자 계정 형식을 확인해주세요.');
+  }
+  if (assigneeId) {
+    if (typeof assigneeId !== 'string' || !/^[1-9]\d*$/.test(assigneeId) || !Number.isSafeInteger(Number(assigneeId))) {
+      throw new Error('GitHub 담당자 ID 형식을 확인해주세요.');
+    }
+    let account;
+    try {
+      ({ data: account } = await github.request('GET /user/{account_id}', { account_id: Number(assigneeId) }));
+    } catch (error) {
+      if (error.status !== 404) throw error;
+      throw new Error('토큰 소유자의 GitHub 계정을 찾을 수 없습니다. 토큰을 확인해주세요.');
+    }
+    if (account.id !== Number(assigneeId) || account.type !== 'User' ||
+        typeof account.login !== 'string' || !/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(account.login)) {
+      throw new Error('토큰 소유자의 GitHub 담당자 계정을 확인하지 못했습니다.');
+    }
+    assignee = account.login;
   }
 
   const findOpenVersionPr = async () => (await github.paginate(github.rest.pulls.list, {
@@ -94,7 +111,8 @@ module.exports = async ({ github, context, dryRun = false, assignee = '', reques
   if (assignee) {
     const { data: assigned } = await github.rest.issues.addAssignees({ owner, repo,
       issue_number: pr.number, assignees: [assignee] });
-    if (!assigned.assignees.some(user => user.login.toLowerCase() === assignee.toLowerCase())) {
+    if (!assigned.assignees.some(user => user.login.toLowerCase() === assignee.toLowerCase() &&
+        (!assigneeId || user.id === Number(assigneeId)))) {
       throw new Error(`${pr.html_url}의 담당자 지정에 실패했습니다. GitHub 쓰기 권한을 확인해주세요.`);
     }
   }
