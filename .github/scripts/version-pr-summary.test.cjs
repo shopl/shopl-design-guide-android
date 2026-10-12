@@ -13,14 +13,14 @@ const pull = (number, sha, labels = [], overrides = {}) => ({
   labels: labels.map(name => ({ name })), ...overrides,
 });
 
-async function run({ labels = ['add'], body = versionPr.body, action, total = 3, divergent = false, headChanged = false, baseChanged = false, conflict = false, concurrentBody, fail = false } = {}) {
+async function run({ labels = ['add'], featureRef = 'update/scott/task-458', improvementRef = 'update/scott/task-457', body = versionPr.body, action, total = 3, divergent = false, headChanged = false, baseChanged = false, conflict = false, concurrentBody, fail = false } = {}) {
   const updates = [];
   const pages = [];
   const requests = [];
   let reads = 0;
   const pr = { ...versionPr, body, mergeable: !conflict, base: { ref: 'main', sha: total ? 'improvement' : 'previous-release' } };
-  const feature = pull(458, 'feature', labels);
-  const improvement = pull(457, 'improvement', ['update']);
+  const feature = pull(458, 'feature', labels, { head: { ref: featureRef } });
+  const improvement = pull(457, 'improvement', ['update'], { head: { ref: improvementRef } });
   const github = {
     rest: {
       repos: { getLatestRelease: async () => ({ data: { tag_name: 'v1.22.9', html_url: 'https://example.test/v1.22.9' } }) },
@@ -78,6 +78,22 @@ async function run({ labels = ['add'], body = versionPr.body, action, total = 3,
 
   const patch = await run({ labels: ['update', 'document'] });
   assert.match(patch.updates[0].body, /권장 버전: \*\*1\.22\.10\*\* \(`patch`\)/);
+  for (const labels of [[], ['update'], ['add']]) {
+    const icon = await run({ labels, featureRef: 'update/icon' });
+    assert.match(icon.updates[0].body, /^- #458 \*\*icon\*\*$/m);
+    assert.match(icon.updates[0].body, /권장 버전: \*\*1\.22\.10\*\* \(`patch`\)/);
+    assert.match(icon.updates[0].body, /`add` 라벨 PR 0개/);
+  }
+  const mixed = await run({ improvementRef: 'update/icon' });
+  assert.match(mixed.updates[0].body, /^- #458 \*\*add\*\*$/m);
+  assert.match(mixed.updates[0].body, /^- #457 \*\*icon\*\*$/m);
+  assert.match(mixed.updates[0].body, /권장 버전: \*\*1\.23\.0\*\* \(`minor`\)/);
+  for (const featureRef of ['update/icons', 'update/icon/task']) {
+    const ordinary = await run({ featureRef });
+    assert.match(ordinary.updates[0].body, /^- #458 \*\*add\*\*$/m);
+    assert.match(ordinary.updates[0].body, /권장 버전: \*\*1\.23\.0\*\* \(`minor`\)/);
+    assert.match((await run({ featureRef, labels: [] })).updates[0].body, /^- #458 \*\*라벨 없음\*\*$/m);
+  }
   assert.equal((await run({ body })).updates.length, 0);
 
   const notes = await run({ body: `수동 메모\n\n${body}\n\n리뷰 요청`, labels: [] });

@@ -8,7 +8,7 @@ const original = 'object PublishingConfig {\n    const val VERSION = "1.22.0"\n}
 const existingPr = { number: 459, html_url: 'https://example.test/459', labels: [],
   head: { ref: 'version/scott/minor-1.23.0', repo: { full_name: repository } } };
 
-async function run({ add = true, existing = false, concurrent = false, empty = false, mainChanged = false,
+async function run({ add = true, headRef = 'add/scott/task', existing = false, concurrent = false, empty = false, mainChanged = false,
   releaseChanged = false, currentVersion = '1.22.0', branchExists = false, branchChanged = false, wrongRef = false,
   fail = false, missingLabel = false, dryRun = false, assignee = '', assigneeId = '', requesterSlackId = '',
   accountLogin = 'Songgyubin', accountMissing = false, wrongAccount = false,
@@ -83,7 +83,7 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
         return [{ ...existingPr, head: { ...existingPr.head, repo: null } }];
       }
       return [{ number: 458, merged_at: '2026-10-02T06:00:00Z', merge_commit_sha: 'main-sha',
-        base: { ref: 'main' }, head: { ref: 'add/scott/task' }, labels: [{ name: add ? 'add' : 'update' }] }];
+        base: { ref: 'main' }, head: { ref: headRef }, labels: [{ name: add ? 'add' : 'update' }] }];
     },
   };
   const result = await createVersionPr({ github, context: { ...context, ref: wrongRef ? 'refs/heads/other' : context.ref },
@@ -136,6 +136,14 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
   await assert.rejects(run({ requesterSlackId: 'UTEST' }), /요청자와 GitHub 담당자/);
   await assert.rejects(run({ requesterSlackId: '<@UOTHER>', assignee: 'Songgyubin' }), /요청자와 GitHub 담당자/);
   assert.equal((await run({ add: false })).result.version, '1.22.1');
+  for (const dryRun of [true, false]) {
+    const icon = await run({ add: false, headRef: 'update/icon', dryRun });
+    assert.equal(icon.result.version, '1.22.1');
+    assert.equal(icon.result.bump, 'patch');
+    assert.match(dryRun ? icon.result.body : icon.writes.find(([kind]) => kind === 'pr')[1].body, /^- #458 \*\*icon\*\*$/m);
+    if (dryRun) assert.equal(icon.writes.length, 0);
+    else assert.deepEqual(icon.writes.find(([kind]) => kind === 'labels')[1].labels, ['patch']);
+  }
   assert.equal((await run({ existing: true })).writes.length, 0);
   assert.equal((await run({ concurrent: true })).writes.length, 0);
   assert.equal((await run({ empty: true })).result.status, 'empty');

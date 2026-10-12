@@ -17,6 +17,7 @@ function mergeSummary(body, summary) {
 }
 
 const escapeMarkdown = text => text.replace(/\r?\n/g, ' ').replace(/[\\`*_{}\[\]<>()#!|@]/g, '\\$&');
+const getSummaryLabels = pull => pull.head.ref === 'update/icon' ? ['icon'] : pull.labels.map(label => label.name);
 
 async function getVersionChanges({ github, context, release, headSha, excludePullNumber }) {
   const { owner, repo } = context.repo;
@@ -53,12 +54,12 @@ async function getVersionChanges({ github, context, release, headSha, excludePul
   }
 
   const pulls = [...included.values()].sort((a, b) => b.merged_at.localeCompare(a.merged_at) || b.number - a.number);
-  const addCount = pulls.filter(pull => pull.labels.some(label => label.name === 'add')).length;
+  const addCount = pulls.filter(pull => getSummaryLabels(pull).includes('add')).length;
   const bump = addCount ? 'minor' : 'patch';
   const [major, minor, patch] = version.slice(1).map(Number);
   const nextVersion = addCount ? `${major}.${minor + 1}.0` : `${major}.${minor}.${patch + 1}`;
   const changes = pulls.map(pull => {
-    const labels = pull.labels.map(label => `**${escapeMarkdown(label.name)}**`).join(' ') || '**라벨 없음**';
+    const labels = getSummaryLabels(pull).map(label => `**${escapeMarkdown(label)}**`).join(' ') || '**라벨 없음**';
     return `- #${pull.number} ${labels}`;
   });
   const body = [
