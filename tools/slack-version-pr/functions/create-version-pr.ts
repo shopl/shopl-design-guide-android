@@ -1,5 +1,6 @@
 import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
-import { getTokenOwner, tokenError, tokenView } from "./github-token.ts";
+import { resolveToken, tokenFeedback, tokenView } from "./github-token.ts";
+import { deleteToken, loadToken } from "./token-store.ts";
 
 export const CreateVersionPr = DefineFunction({
   callback_id: "sdg_create_version_pr",
@@ -33,9 +34,10 @@ export default SlackFunction(
       return { error: "버튼을 누른 Slack 사용자를 확인하지 못했습니다." };
     }
     try {
+      const saved = await loadToken(client, team_id, inputs.user_id);
       const opened = await client.views.open({
         interactivity_pointer: inputs.interactivity.interactivity_pointer,
-        view: tokenView(),
+        view: tokenView(false, saved),
       });
       if (!opened.ok) {
         return {
@@ -51,17 +53,29 @@ export default SlackFunction(
   },
 ).addViewSubmissionHandler(
   "sdg_version_pr_token",
-  async ({ inputs, client, body, view, team_id }) => {
+  async ({ inputs, client, body, view, team_id, env }) => {
     if (
       !allowed(team_id, inputs.channel_id, inputs.user_id) ||
       body.user.id !== inputs.user_id
     ) {
-      return tokenError("버튼을 누른 본인의 요청만 실행할 수 있습니다.");
+      return tokenFeedback(
+        view,
+        "버튼을 누른 본인의 요청만 실행할 수 있습니다.",
+      );
     }
-    // 개인 토큰은 모달 제출에서만 읽고 함수 입출력·메타데이터·환경 변수·로그에 남기지 않습니다.
-    const token = view.state.values.github_token?.token?.value?.trim() || "";
-    const owner = await getTokenOwner(token);
-    if ("error" in owner) return tokenError(owner.error);
+    // 원문 토큰은 개인 입력 또는 복호화 결과로만 읽으며 함수 결과·메타데이터·로그에 넣지 않습니다.
+    const provided = view.state.values.github_token?.token?.value?.trim() || "";
+    const resolved = await resolveToken(
+      client,
+      env.SDG_TOKEN_ENCRYPTION_KEY || "",
+      team_id,
+      inputs.user_id,
+      provided,
+    );
+    if ("error" in resolved) {
+      return tokenFeedback(view, resolved.error, false, resolved.reset);
+    }
+    const { token, owner } = resolved;
     try {
       const response = await fetch(
         "https://api.github.com/repos/shopl/shopl-design-guide-android/actions/workflows/create-version-pr.yml/dispatches",
@@ -85,7 +99,16 @@ export default SlackFunction(
         },
       );
       if (![200, 204].includes(response.status)) {
-        return tokenError(
+        if (response.status === 401) {
+          return tokenFeedback(
+            view,
+            "토큰이 만료되거나 폐기됐습니다. 새 토큰을 입력해주세요.",
+            false,
+            true,
+          );
+        }
+        return tokenFeedback(
+          view,
           `GitHub 실행 요청 실패: HTTP ${response.status}. main의 워크플로 설치, 토큰의 SDG 저장소 선택·Actions 쓰기 권한·조직 승인을 확인해주세요.`,
         );
       }
@@ -96,15 +119,52 @@ export default SlackFunction(
         outputs: { message },
       });
       if (!completed.ok) {
-        return tokenError(
+        return tokenFeedback(
+          view,
           "GitHub 요청은 접수됐지만 Slack 안내를 이어가지 못했습니다. GitHub Actions 실행 결과를 먼저 확인해주세요.",
         );
       }
       return { response_action: "clear" as const };
     } catch {
-      return tokenError(
+      return tokenFeedback(
+        view,
         "GitHub 요청의 접수 여부를 확인하지 못했습니다. GitHub Actions 실행 결과를 확인한 뒤 다시 시도해주세요.",
       );
+    }
+  },
+).addBlockActionsHandler(
+  ["sdg_token_change", "sdg_token_delete"],
+  async ({ inputs, client, body, action, team_id }) => {
+    if (
+      !allowed(team_id, inputs.channel_id, inputs.user_id) ||
+      body.user.id !== inputs.user_id || !body.view
+    ) return;
+    try {
+      if (action.action_id === "sdg_token_delete") {
+        await deleteToken(
+          client,
+          team_id,
+          inputs.user_id,
+        );
+      }
+      const updated = await client.views.update({
+        view_id: body.view.id,
+        hash: body.view.hash,
+        view: tokenView(
+          false,
+          null,
+          action.action_id === "sdg_token_delete"
+            ? "앱에 저장된 토큰을 삭제했습니다."
+            : "새 토큰으로 변경합니다. 새 토큰을 확인하기 전까지 기존 토큰은 유지합니다.",
+        ),
+      });
+      if (!updated.ok) throw new Error();
+    } catch {
+      await client.functions.completeError({
+        function_execution_id: body.function_data.execution_id,
+        error:
+          "토큰 변경·삭제 화면을 갱신하지 못했습니다. 창을 닫고 다시 실행해주세요.",
+      });
     }
   },
 ).addViewClosedHandler(

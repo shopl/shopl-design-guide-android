@@ -1,6 +1,7 @@
 import { DefineWorkflow, Manifest, Schema } from "deno-slack-sdk/mod.ts";
 import { CreateVersionPr } from "./functions/create-version-pr.ts";
 import { VersionPrGuide } from "./functions/version-pr-guide.ts";
+import GitHubTokens from "./datastores/github-tokens.ts";
 import { NotifyVersionPr } from "./functions/notify-version-pr.ts";
 
 export const VersionPrWorkflow = DefineWorkflow({
@@ -51,6 +52,13 @@ export default Manifest({
   icon: "../../app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
   functions: [CreateVersionPr, NotifyVersionPr, VersionPrGuide],
   workflows: [VersionPrWorkflow, VersionPrGuideWorkflow],
+  datastores: [GitHubTokens],
   outgoingDomains: ["api.github.com"],
-  botScopes: ["commands", "chat:write", "pins:write"],
+  botScopes: [
+    "commands",
+    "chat:write",
+    "pins:write",
+    "datastore:read",
+    "datastore:write",
+  ],
 });

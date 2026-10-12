@@ -40,7 +40,10 @@ Deno.test("개인 안내는 공개 게시 없이 같은 버튼을 표시하고 �
     const blocks = JSON.parse(body.get("blocks") || "[]");
     assert.match(blocks[0].text.text, /`\/SDG`/);
     assert.match(blocks[0].text.text, /minor.*patch/);
-    assert.match(blocks[0].text.text, /토큰은 저장하지 않으며 실행마다 입력/);
+    assert.match(
+      blocks[0].text.text,
+      /사용자별로 암호화해 저장하고 다음 실행부터 재사용/,
+    );
     assert.equal(blocks[1].elements[0].type, "workflow_button");
     assert.equal(blocks[1].elements[0].workflow.trigger.url, triggerUrl);
     assert.equal(blocks[1].elements[0].text.text, "버전 PR 생성");

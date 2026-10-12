@@ -13,6 +13,7 @@ const { createContext: notifyContext } = SlackFunctionTester(
 const interactive = handler as typeof handler & {
   viewSubmission(context: unknown): Promise<{ response_action?: string }>;
   viewClosed(context: unknown): Promise<void>;
+  blockActions(context: unknown): Promise<unknown>;
 };
 const inputs = {
   channel_id: "C093TU3CCBG",
@@ -23,8 +24,9 @@ const inputs = {
   },
 };
 const token = "github_pat_TEST_NOT_A_REAL_TOKEN";
+const key = btoa(String.fromCharCode(...new Uint8Array(32).fill(7)));
 
-Deno.test("개인 입력창의 토큰으로 실행 요청하고 소유자를 담당자로 전달하며 토큰은 남기지 않음", async () => {
+Deno.test("개인 토큰 요청·암호화 재사용·만료 처리와 원문 비노출", async () => {
   assert.equal(trigger.inputs?.user_id?.value, "{{data.user_id}}");
   assert.equal(trigger.inputs?.interactivity?.value, "{{data.interactivity}}");
   const steps = VersionPrWorkflow.export().steps;
@@ -32,6 +34,11 @@ Deno.test("개인 입력창의 토큰으로 실행 요청하고 소유자를 담
   assert.equal(steps[1].function_id, "#/functions/sdg_version_pr_notify");
   assert.equal(steps[1].inputs.message, "{{steps.0.message}}");
   const originalFetch = globalThis.fetch;
+  let stored: Record<string, unknown> = {};
+  let putOK = true;
+  let puts = 0;
+  let deletes = 0;
+  let updates = 0;
   let openOK = true;
   let notificationOK = true;
   let completeOK = true;
@@ -49,6 +56,45 @@ Deno.test("개인 입력창의 토큰으로 실행 요청하고 소유자를 담
   const outputs: { message: string }[] = [];
   globalThis.fetch = (url, init) => {
     const target = String(url);
+    if (target.startsWith("https://slack.com/api/apps.datastore.")) {
+      const body = new URLSearchParams(String(init?.body));
+      assert.equal(body.get("datastore"), "sdg_github_tokens");
+      if (target.endsWith(".put")) {
+        puts++;
+        const item = JSON.parse(body.get("item") || "{}");
+        assert.deepEqual(Object.keys(item).sort(), [
+          "encrypted_token",
+          "github_id",
+          "github_login",
+          "id",
+        ]);
+        assert.equal(item.id, "T016H73FHDH:UTEST");
+        assert.equal(item.github_id, 37494776);
+        assert.equal(item.github_login, "Songgyubin");
+        assert.match(item.encrypted_token, /^v1\./);
+        assert.ok(!JSON.stringify(item).includes(token));
+        if (putOK) stored = item;
+        return Promise.resolve(Response.json({ ok: putOK }));
+      }
+      assert.equal(body.get("id"), "T016H73FHDH:UTEST");
+      if (target.endsWith(".get")) {
+        return Promise.resolve(Response.json({ ok: true, item: stored }));
+      }
+      assert.ok(target.endsWith(".delete"));
+      deletes++;
+      stored = {};
+      return Promise.resolve(Response.json({ ok: true }));
+    }
+    if (target === "https://slack.com/api/views.update") {
+      updates++;
+      const body = new URLSearchParams(String(init?.body));
+      assert.equal(body.get("view_id"), "VTEST");
+      const view = JSON.parse(body.get("view") || "{}");
+      assert.equal(view.private_metadata, "");
+      assert.ok(view.blocks.some((b: { type: string }) => b.type === "input"));
+      assert.ok(!JSON.stringify(view).includes(token));
+      return Promise.resolve(Response.json({ ok: true }));
+    }
     if (target === "https://slack.com/api/views.open") {
       const body = new URLSearchParams(String(init?.body));
       assert.equal(body.get("interactivity_pointer"), "test-pointer");
@@ -61,11 +107,18 @@ Deno.test("개인 입력창의 토큰으로 실행 요청하고 소유자를 담
       );
       assert.match(
         view.blocks[0].text.text,
-        /저장하지 않으며 실행할 때마다 입력/,
+        /암호화해 보관하고 다음 실행부터 재사용/,
       );
-      assert.equal(view.blocks[1].block_id, "github_token");
-      assert.equal(view.blocks[1].element.action_id, "token");
-      assert.equal(view.private_metadata, undefined);
+      if (Object.keys(stored).length) {
+        assert.equal(view.private_metadata, "Songgyubin");
+        assert.ok(
+          !view.blocks.some((b: { type: string }) => b.type === "input"),
+        );
+      } else {
+        assert.equal(view.blocks[1].block_id, "github_token");
+        assert.equal(view.blocks[1].element.action_id, "token");
+        assert.equal(view.private_metadata, "");
+      }
       return Promise.resolve(Response.json({ ok: openOK }));
     }
     if (target === "https://slack.com/api/functions.completeSuccess") {
@@ -117,11 +170,18 @@ Deno.test("개인 입력창의 토큰으로 실행 요청하고 소유자를 담
     handler(createContext({
       team_id: "T016H73FHDH",
       inputs,
-      env: { SDG_GITHUB_ACTIONS_TOKEN: "DO_NOT_USE_SHARED_TOKEN" },
+      env: {
+        SDG_GITHUB_ACTIONS_TOKEN: "DO_NOT_USE_SHARED_TOKEN",
+        SDG_TOKEN_ENCRYPTION_KEY: key,
+      },
       ...overrides,
     }));
   const context = (value = token, user = "UTEST", team = "T016H73FHDH") => ({
-    ...createContext({ team_id: team, inputs }),
+    ...createContext({
+      team_id: team,
+      inputs,
+      env: { SDG_TOKEN_ENCRYPTION_KEY: key },
+    }),
     body: {
       type: "view_submission",
       user: { id: user },
@@ -140,7 +200,7 @@ Deno.test("개인 입력창의 토큰으로 실행 요청하고 소유자를 담
     team = "T016H73FHDH",
   ) => {
     const result = await submit(value, user, team);
-    assert.equal(result?.response_action, "errors");
+    assert.equal(result?.response_action, value ? "errors" : "update");
     const text = JSON.stringify(result);
     assert.ok(!text.includes(token));
     return text;
@@ -225,6 +285,57 @@ Deno.test("개인 입력창의 토큰으로 실행 요청하고 소유자를 담
       (await send(outputs.at(-1)!.message)).error || "",
       /알림을 보내지 못/,
     );
+    // 두 번째 실행은 입력 없이 같은 사용자의 암호화된 토큰을 사용합니다.
+    dispatchStatus = 204;
+    notificationOK = true;
+    assert.equal((await start()).completed, false);
+    const savedContext = {
+      ...context(""),
+      view: {
+        ...context("").view,
+        private_metadata: "Songgyubin",
+        state: { values: {} },
+      },
+    };
+    const putCount = puts;
+    assert.equal(
+      (await interactive.viewSubmission(savedContext)).response_action,
+      "clear",
+    );
+    assert.equal(puts, putCount);
+    const beforeFailure = requests;
+    putOK = false;
+    assert.match(await rejected(), /암호화해 저장하지 못/);
+    assert.equal(requests, beforeFailure);
+    putOK = true;
+    const storedBefore = JSON.stringify(stored);
+    const actionContext = (action_id: string, user = "UTEST") => ({
+      ...context(),
+      body: {
+        ...context().body,
+        type: "block_actions",
+        user: { id: user },
+        view: { id: "VTEST", hash: "hash" },
+      },
+      action: { action_id, block_id: "token_controls" },
+    });
+    await interactive.blockActions(actionContext("sdg_token_change", "UOTHER"));
+    assert.equal(updates, 0);
+    await interactive.blockActions(actionContext("sdg_token_change"));
+    assert.equal(JSON.stringify(stored), storedBefore);
+    assert.equal(updates, 1);
+    profileStatus = 401;
+    const expired = await interactive.viewSubmission(savedContext);
+    assert.equal(expired.response_action, "update");
+    assert.ok(!JSON.stringify(expired).includes(token));
+    assert.ok(Object.keys(stored).length > 0);
+    assert.equal(deletes, 0);
+    assert.equal(requests, beforeFailure);
+    profileStatus = 200;
+    await submit();
+    await interactive.blockActions(actionContext("sdg_token_delete"));
+    assert.equal(deletes, 1);
+    assert.equal(Object.keys(stored).length, 0);
     const closed = {
       ...context(),
       body: { ...context().body, type: "view_closed" },
