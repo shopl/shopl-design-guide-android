@@ -41,7 +41,7 @@ export default SlackFunction(
           text: {
             type: "mrkdwn" as const,
             text:
-              "*SDG 버전 PR*\n이전 릴리스 이후 PR의 라벨을 확인해 `add`가 있으면 minor, 없으면 patch를 올립니다. 이미 열린 버전 PR이 있으면 해당 PR을 안내합니다.\n버튼을 누르거나 채팅창에 `/SDG`를 입력하고 *SDG 버전 PR 만들기*를 선택하세요. PR 리뷰·병합은 팀에서 진행합니다.",
+              "*SDG 버전 PR*\n이전 릴리스 이후 PR의 라벨을 확인해 `add`가 있으면 minor, 없으면 patch를 올립니다. 이미 열린 버전 PR이 있으면 해당 PR을 안내합니다.\n버튼을 누르거나 채팅창에 `/SDG`를 입력하고 *SDG 버전 PR 만들기*를 선택하세요. 개인 토큰 입력창에서 토큰 생성 링크를 제공합니다. 토큰은 저장하지 않으며 실행마다 입력합니다. 새 PR의 담당자는 토큰 소유자의 GitHub 계정입니다. PR 리뷰·병합은 팀에서 진행합니다.",
           },
         },
         {

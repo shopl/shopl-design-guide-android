@@ -9,6 +9,7 @@ const trigger: Trigger<typeof VersionPrWorkflow.definition> = {
   inputs: {
     channel_id: { value: "{{data.channel_id}}" },
     user_id: { value: "{{data.user_id}}" },
+    interactivity: { value: "{{data.interactivity}}" },
   },
 };
 

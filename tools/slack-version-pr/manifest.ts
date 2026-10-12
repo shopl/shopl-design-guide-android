@@ -1,6 +1,7 @@
 import { DefineWorkflow, Manifest, Schema } from "deno-slack-sdk/mod.ts";
 import { CreateVersionPr } from "./functions/create-version-pr.ts";
 import { VersionPrGuide } from "./functions/version-pr-guide.ts";
+import { NotifyVersionPr } from "./functions/notify-version-pr.ts";
 
 export const VersionPrWorkflow = DefineWorkflow({
   callback_id: "sdg_version_pr",
@@ -10,13 +11,19 @@ export const VersionPrWorkflow = DefineWorkflow({
     properties: {
       channel_id: { type: Schema.slack.types.channel_id },
       user_id: { type: Schema.slack.types.user_id },
+      interactivity: { type: Schema.slack.types.interactivity },
     },
-    required: ["channel_id", "user_id"],
+    required: ["channel_id", "user_id", "interactivity"],
   },
 });
-VersionPrWorkflow.addStep(CreateVersionPr, {
+const request = VersionPrWorkflow.addStep(CreateVersionPr, {
   channel_id: VersionPrWorkflow.inputs.channel_id,
   user_id: VersionPrWorkflow.inputs.user_id,
+  interactivity: VersionPrWorkflow.inputs.interactivity,
+});
+VersionPrWorkflow.addStep(NotifyVersionPr, {
+  channel_id: VersionPrWorkflow.inputs.channel_id,
+  message: request.outputs.message,
 });
 
 export const VersionPrGuideWorkflow = DefineWorkflow({
@@ -42,7 +49,7 @@ export default Manifest({
   name: "SDG Version PR",
   description: "SDG Android 버전 PR 생성",
   icon: "../../app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
-  functions: [CreateVersionPr, VersionPrGuide],
+  functions: [CreateVersionPr, NotifyVersionPr, VersionPrGuide],
   workflows: [VersionPrWorkflow, VersionPrGuideWorkflow],
   outgoingDomains: ["api.github.com"],
   botScopes: ["commands", "chat:write", "pins:write"],
