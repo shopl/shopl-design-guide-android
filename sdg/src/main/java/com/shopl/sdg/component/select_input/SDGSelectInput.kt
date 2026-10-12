@@ -474,29 +474,6 @@ private fun SelectInputText(
     )
 }
 
-@Preview(
-    showBackground = true,
-    widthDp = 375,
-)
-@Composable
-private fun PreviewSDGSelectInput(
-    @PreviewParameter(SDGSelectInputPreviewParameterProvider::class)
-    parameter: SDGSelectInputPreviewParameter,
-) {
-    with(parameter) {
-        val selectedElementType = parameter.toSelectInputType()
-
-        SDGSelectInput(
-            placeholder = placeholder,
-            state = state,
-            inputField = inputField,
-            type = selectedElementType,
-            showClearIcon = showClearIcon,
-            marginValues = PaddingValues(SDGSpacing.Spacing20),
-        )
-    }
-}
-
 /** [SDGSelectInputImageElement]를 One Image 선택 항목으로 변환합니다. */
 private fun SDGSelectInputImageElement.toOneImageType(): SDGSelectInputType.OneImage {
     return SDGSelectInputType.OneImage(
@@ -522,6 +499,29 @@ private fun SDGSelectInputType.withText(
         is SDGSelectInputType.OneImage -> copy(text = legacyText)
         is SDGSelectInputType.TwoImage -> copy(
             first = first.copy(text = legacyText),
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    widthDp = 375,
+)
+@Composable
+private fun PreviewSDGSelectInput(
+    @PreviewParameter(SDGSelectInputPreviewParameterProvider::class)
+    parameter: SDGSelectInputPreviewParameter,
+) {
+    with(parameter) {
+        val selectedElementType = parameter.toSelectInputType()
+
+        SDGSelectInput(
+            placeholder = placeholder,
+            state = state,
+            inputField = inputField,
+            type = selectedElementType,
+            showClearIcon = showClearIcon,
+            marginValues = PaddingValues(SDGSpacing.Spacing20),
         )
     }
 }
