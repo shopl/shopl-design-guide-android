@@ -70,8 +70,7 @@ fun SDGSelectInput(
     state: SDGSelectInputState,
     inputField: SDGSelectInputField,
     type: SDGSelectInputType,
-    onClickClear: (() -> Unit)?,
-    showClearIcon: Boolean,
+    showClearIcon: SDGSelectInputShowClearIcon,
     marginValues: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
 ) {
@@ -81,30 +80,7 @@ fun SDGSelectInput(
         state = state,
         inputField = inputField,
         type = type,
-        onClickClear = onClickClear,
         showClearIcon = showClearIcon,
-        onClick = onClick,
-    )
-}
-
-@Composable
-fun SDGSelectInput(
-    placeholder: String,
-    state: SDGSelectInputState,
-    inputField: SDGSelectInputField,
-    type: SDGSelectInputType,
-    showClearIcon: SDGSelectInputShowClearIcon,
-    marginValues: PaddingValues = PaddingValues(),
-    onClick: (() -> Unit)? = null,
-) {
-    SDGSelectInput(
-        placeholder = placeholder,
-        state = state,
-        inputField = inputField,
-        type = type,
-        onClickClear = showClearIcon.onClick,
-        showClearIcon = showClearIcon.enabled,
-        marginValues = marginValues,
         onClick = onClick,
     )
 }
@@ -115,8 +91,7 @@ private fun SelectInputField(
     state: SDGSelectInputState,
     inputField: SDGSelectInputField,
     type: SDGSelectInputType,
-    onClickClear: (() -> Unit)?,
-    showClearIcon: Boolean,
+    showClearIcon: SDGSelectInputShowClearIcon,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
@@ -125,7 +100,7 @@ private fun SelectInputField(
     } else {
         SDGSelectInputDefaultHeight
     }
-    val isClearEnabled = state == SDGSelectInputState.Selected && onClickClear != null
+    val isClearEnabled = state == SDGSelectInputState.Selected && showClearIcon.enabled
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -153,7 +128,7 @@ private fun SelectInputField(
             type = type,
         )
 
-        if (showClearIcon) {
+        if (showClearIcon.enabled) {
             Box(
                 modifier = Modifier
                     .size(
@@ -164,7 +139,7 @@ private fun SelectInputField(
                         if (isClearEnabled) {
                             Modifier.clickable(
                                 role = Role.Button,
-                                onClick = { onClickClear?.invoke() },
+                                onClick = showClearIcon.onClick,
                             )
                         } else {
                             Modifier
@@ -214,8 +189,7 @@ fun SDGSelectInput(
         state = state,
         inputField = inputField,
         type = type,
-        onClickClear = null,
-        showClearIcon = false,
+        showClearIcon = SDGSelectInputShowClearIcon.False,
         marginValues = marginValues,
         onClick = onClick,
     )
@@ -246,8 +220,7 @@ fun SDGSelectInput(
             text = text ?: placeholder,
             overflow = overflow,
         ),
-        onClickClear = null,
-        showClearIcon = false,
+        showClearIcon = SDGSelectInputShowClearIcon.False,
         marginValues = marginValues,
         onClick = onClick,
     )
