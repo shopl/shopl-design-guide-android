@@ -332,18 +332,14 @@ private fun SelectedElement(
         }
 
         is SDGSelectInputType.OneImage -> {
-            SelectedElementRow(
+            SelectedImageElement(
                 modifier = modifier,
-                text = text,
-                textColor = state.typographyColor,
-                overflow = type.text.overflow,
-            ) { imageModifier ->
-                SelectedElementImage(
-                    modifier = imageModifier,
-                    image = type.image,
-                    imageSize = type.type,
-                )
-            }
+                placeholder = placeholder,
+                state = state,
+                text = type.text,
+                image = type.image,
+                imageSize = type.type,
+            )
         }
 
         is SDGSelectInputType.TwoImage -> {
@@ -351,20 +347,56 @@ private fun SelectedElement(
                 modifier = modifier,
                 verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
             ) {
-                SelectedElement(
+                SelectedImageElement(
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = placeholder,
                     state = if (state == SDGSelectInputState.Disabled) state else type.first.state ?: state,
-                    type = type.first.toOneImageType(),
+                    text = type.first.text,
+                    image = type.first.image,
+                    imageSize = type.first.type,
                 )
-                SelectedElement(
+                SelectedImageElement(
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = placeholder,
                     state = if (state == SDGSelectInputState.Disabled) state else type.second.state ?: state,
-                    type = type.second.toOneImageType(),
+                    text = type.second.text,
+                    image = type.second.image,
+                    imageSize = type.second.type,
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun SelectedImageElement(
+    placeholder: String,
+    state: SDGSelectInputState,
+    text: SDGSelectInputText,
+    image: SDGSelectInputImage,
+    imageSize: SDGSelectInputImageType,
+    modifier: Modifier = Modifier,
+) {
+    if (state == SDGSelectInputState.Default) {
+        SelectInputText(
+            modifier = modifier,
+            text = placeholder,
+            textColor = state.typographyColor,
+        )
+        return
+    }
+
+    SelectedElementRow(
+        modifier = modifier,
+        text = text.displayText.ifEmpty { placeholder },
+        textColor = state.typographyColor,
+        overflow = text.overflow,
+    ) { imageModifier ->
+        SelectedElementImage(
+            modifier = imageModifier,
+            image = image,
+            imageSize = imageSize,
+        )
     }
 }
 
@@ -482,15 +514,6 @@ private fun SelectInputText(
         typography = SDGTypography.Body1R,
         overflow = overflow,
         maxLines = 1,
-    )
-}
-
-/** [SDGSelectInputImageElement]를 One Image 선택 항목으로 변환합니다. */
-private fun SDGSelectInputImageElement.toOneImageType(): SDGSelectInputType.OneImage {
-    return SDGSelectInputType.OneImage(
-        text = text,
-        image = image,
-        type = type,
     )
 }
 
