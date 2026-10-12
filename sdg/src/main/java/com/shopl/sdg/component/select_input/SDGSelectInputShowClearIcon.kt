@@ -1,17 +1,11 @@
 package com.shopl.sdg.component.select_input
 
-sealed interface SDGSelectInputShowClearIcon {
-    val enabled: Boolean
-    val onClick: () -> Unit
-
+sealed class SDGSelectInputShowClearIcon(
+    open val onClick: (() -> Unit)? = null,
+) {
     data class True(
         override val onClick: () -> Unit,
-    ) : SDGSelectInputShowClearIcon {
-        override val enabled: Boolean = true
-    }
+    ) : SDGSelectInputShowClearIcon(onClick = onClick)
 
-    data object False : SDGSelectInputShowClearIcon {
-        override val enabled: Boolean = false
-        override val onClick: () -> Unit = {}
-    }
+    data object False : SDGSelectInputShowClearIcon()
 }
