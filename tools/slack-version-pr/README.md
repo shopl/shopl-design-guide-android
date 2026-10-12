@@ -54,6 +54,9 @@ GitHub Actions 실행 결과를 먼저 확인합니다.
 최신 릴리스부터 main까지의 변경과 연결된 병합 PR을 조회합니다. `add` 라벨이
 하나라도 있으면 minor, 없으면 patch를 올립니다. 변경사항이 없으면 PR을 만들지
 않으며 열려 있는 버전 PR이 있으면 해당 PR을 안내합니다.
+병합 브랜치가 정확히 `update/icon`인 PR은 `icon`으로 표시하고 버전 계산에서는
+실제 라벨과 관계없이 `update`로 간주합니다. 다른 PR에 `add`가 있으면 minor이며,
+아이콘 업데이트만 있으면 patch입니다.
 
 실제 코드 수정은 GitHub Actions의 `GITHUB_TOKEN`으로 수행합니다. main에서
 새 버전 브랜치를 만들고 `PublishingConfig.VERSION`만 수정한 커밋으로 PR을
