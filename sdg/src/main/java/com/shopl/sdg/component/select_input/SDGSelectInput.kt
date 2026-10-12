@@ -383,6 +383,7 @@ private fun SelectedElementRow(
             imageSize = imageSize,
             image = image,
             clipToCircle = clipImageToCircle,
+            modifier = Modifier.alpha(textColor.alpha),
         )
         SelectInputText(
             modifier = Modifier.weight(1f),
@@ -398,8 +399,9 @@ private fun SelectedElementImage(
     imageSize: SDGSelectInputImageType,
     image: SDGSelectInputImage,
     clipToCircle: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
-    val imageModifier = Modifier
+    val imageModifier = modifier
         .size(
             width = imageSize.width,
             height = imageSize.height,
