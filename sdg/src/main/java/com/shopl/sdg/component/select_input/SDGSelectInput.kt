@@ -88,6 +88,28 @@ fun SDGSelectInput(
 }
 
 @Composable
+fun SDGSelectInput(
+    placeholder: String,
+    state: SDGSelectInputState,
+    inputField: SDGSelectInputField,
+    type: SDGSelectInputType,
+    showClearIcon: SDGSelectInputShowClearIcon,
+    marginValues: PaddingValues = PaddingValues(),
+    onClick: (() -> Unit)? = null,
+) {
+    SDGSelectInput(
+        placeholder = placeholder,
+        state = state,
+        inputField = inputField,
+        type = type,
+        onClickClear = showClearIcon.onClick,
+        showClearIcon = showClearIcon.enabled,
+        marginValues = marginValues,
+        onClick = onClick,
+    )
+}
+
+@Composable
 private fun SelectInputField(
     placeholder: String,
     state: SDGSelectInputState,
