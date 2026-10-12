@@ -25,7 +25,7 @@ sealed interface SDGSelectInputState {
 
     data object Disabled : SDGSelectInputState {
         override val backgroundColor: Color? = null
-        override val typographyColor: Color = SDGColor.Neutral700
+        override val typographyColor: Color = SDGColor.Neutral700_a30
         override val chevronColor: Color = SDGColor.Neutral300
     }
 

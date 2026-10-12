@@ -44,7 +44,6 @@ private val SDGSelectInputIconTouchWidth = 24.dp
 private val SDGSelectInputIconTouchHeight = 28.dp
 private val SDGSelectInputClearIconSize = 18.dp
 private val SDGSelectInputChevronSize = 24.dp
-private const val SDGSelectInputDisabledAlpha = 0.3f
 
 /**
  * SDG - Component - Select Input
@@ -292,13 +291,6 @@ private fun SelectedElement(
     modifier: Modifier = Modifier,
 ) {
     val text = type.text.displayText.ifEmpty { placeholder }
-    val elementModifier = modifier.then(
-        if (state == SDGSelectInputState.Disabled && type !is SDGSelectInputType.TwoImage) {
-            Modifier.alpha(SDGSelectInputDisabledAlpha)
-        } else {
-            Modifier
-        },
-    )
 
     if (state == SDGSelectInputState.Default) {
         SelectInputText(
@@ -312,7 +304,7 @@ private fun SelectedElement(
     when (type) {
         is SDGSelectInputType.Text -> {
             SelectInputText(
-                modifier = elementModifier,
+                modifier = modifier,
                 text = text,
                 textColor = state.typographyColor,
                 overflow = type.text.overflow,
@@ -321,7 +313,7 @@ private fun SelectedElement(
 
         is SDGSelectInputType.Avatar -> {
             SelectedElementRow(
-                modifier = elementModifier,
+                modifier = modifier,
                 text = text,
                 textColor = state.typographyColor,
                 image = type.selectedElementImage,
@@ -333,7 +325,7 @@ private fun SelectedElement(
 
         is SDGSelectInputType.OneImage -> {
             SelectedElementRow(
-                modifier = elementModifier,
+                modifier = modifier,
                 text = text,
                 textColor = state.typographyColor,
                 image = type.image,
