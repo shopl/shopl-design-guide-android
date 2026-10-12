@@ -97,11 +97,12 @@ sealed class SDGSelectInputType {
     }
 }
 
-/** Two Image를 구성하는 독립적인 One Image Input 항목입니다. */
+/** Two Image 필드에 표시하는 이미지 선택 항목입니다. */
 @Immutable
 data class SDGSelectInputImageElement(
     val text: SDGSelectInputText,
     val image: SDGSelectInputImage,
     val type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
+    /** 항목 상태를 재정의하더라도 필드가 Disabled이면 비활성화됩니다. */
     val state: SDGSelectInputState? = null,
 )

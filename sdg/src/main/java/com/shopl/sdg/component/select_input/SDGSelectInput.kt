@@ -2,10 +2,12 @@ package com.shopl.sdg.component.select_input
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -19,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -37,20 +40,24 @@ import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
 private val SDGSelectInputDefaultHeight = 40.dp
+private val SDGSelectInputTwoImageHeight = 80.dp
+private val SDGSelectInputIconTouchWidth = 24.dp
+private val SDGSelectInputIconTouchHeight = 28.dp
+private val SDGSelectInputClearIconSize = 18.dp
 private val SDGSelectInputChevronSize = 24.dp
-private const val SDGSelectInputDisabledAlpha = 0.3f
 
 /**
  * SDG - Component - Select Input
  *
  * 특정 타겟을 선택하는 인풋 컴포넌트
  *
- * @version 2.3.39
+ * @version 2.3.45
  *
  * @param placeholder 선택값이 없을 때 표시할 안내 문구
  * @param state 인풋 상태
  * @param inputField 인풋 필드 배경 유형
  * @param type Selected Element 유형과 선택 텍스트
+ * @param showClearIcon 초기화 아이콘 노출 여부와 Selected 상태의 초기화 클릭 이벤트
  * @param marginValues 컴포넌트 외부 여백
  * @param onClick Input Field 클릭 이벤트
  *
@@ -62,39 +69,19 @@ fun SDGSelectInput(
     state: SDGSelectInputState,
     inputField: SDGSelectInputField,
     type: SDGSelectInputType,
+    showClearIcon: SDGSelectInputShowClearIcon,
     marginValues: PaddingValues = PaddingValues(),
     onClick: (() -> Unit)? = null,
 ) {
-    if (type is SDGSelectInputType.TwoImage) {
-        Column(
-            modifier = Modifier.padding(marginValues),
-            verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
-        ) {
-            SelectInputField(
-                placeholder = placeholder,
-                state = type.first.state ?: state,
-                inputField = inputField,
-                type = type.first.toOneImageType(),
-                onClick = onClick,
-            )
-            SelectInputField(
-                placeholder = placeholder,
-                state = type.second.state ?: state,
-                inputField = inputField,
-                type = type.second.toOneImageType(),
-                onClick = onClick,
-            )
-        }
-    } else {
-        SelectInputField(
-            modifier = Modifier.padding(marginValues),
-            placeholder = placeholder,
-            state = state,
-            inputField = inputField,
-            type = type,
-            onClick = onClick,
-        )
-    }
+    SelectInputField(
+        modifier = Modifier.padding(marginValues),
+        placeholder = placeholder,
+        state = state,
+        inputField = inputField,
+        type = type,
+        showClearIcon = showClearIcon,
+        onClick = onClick,
+    )
 }
 
 @Composable
@@ -103,40 +90,20 @@ private fun SelectInputField(
     state: SDGSelectInputState,
     inputField: SDGSelectInputField,
     type: SDGSelectInputType,
+    showClearIcon: SDGSelectInputShowClearIcon,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    val displayText = if (state == SDGSelectInputState.Default) {
-        placeholder
+    val height = if (type is SDGSelectInputType.TwoImage && state != SDGSelectInputState.Default) {
+        SDGSelectInputTwoImageHeight
     } else {
-        type.text.displayText.ifEmpty { placeholder }
+        SDGSelectInputDefaultHeight
     }
-    val textColor = when (state) {
-        SDGSelectInputState.Default -> SDGColor.Neutral350
-        SDGSelectInputState.Selected,
-        SDGSelectInputState.Disabled,
-        SDGSelectInputState.Error,
-            -> SDGColor.Neutral700
-    }
-    val backgroundColor = when (state) {
-        SDGSelectInputState.Error -> SDGColor.Red300_a10
-        SDGSelectInputState.Default,
-        SDGSelectInputState.Selected,
-        SDGSelectInputState.Disabled,
-            -> inputField.color
-    }
-    val chevronColor = when (state) {
-        SDGSelectInputState.Disabled -> SDGColor.Neutral300
-        SDGSelectInputState.Default,
-        SDGSelectInputState.Selected,
-        SDGSelectInputState.Error,
-            -> SDGColor.Neutral700
-    }
-
     Row(
         modifier = modifier
+            .fillMaxWidth()
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-            .background(color = backgroundColor)
+            .background(color = state.backgroundColor ?: inputField.color)
             .then(
                 if (state != SDGSelectInputState.Disabled && onClick != null) {
                     Modifier.clickable(onClick = onClick)
@@ -144,7 +111,7 @@ private fun SelectInputField(
                     Modifier
                 },
             )
-            .heightIn(min = SDGSelectInputDefaultHeight)
+            .heightIn(min = height)
             .padding(
                 horizontal = SDGSpacing.Spacing12,
                 vertical = SDGSpacing.Spacing5,
@@ -152,36 +119,78 @@ private fun SelectInputField(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
     ) {
-        if (state == SDGSelectInputState.Default) {
-            SelectInputText(
-                modifier = Modifier.weight(1f),
-                text = displayText,
-                textColor = textColor,
-                overflow = TextOverflow.Ellipsis,
-            )
-        } else {
-            SelectedElement(
+        SelectedElement(
+            modifier = Modifier.weight(1f, true),
+            placeholder = placeholder,
+            state = state,
+            type = type,
+        )
+
+        if (showClearIcon is SDGSelectInputShowClearIcon.True) {
+            Box(
                 modifier = Modifier
-                    .weight(1f)
+                    .size(
+                        width = SDGSelectInputIconTouchWidth,
+                        height = SDGSelectInputIconTouchHeight,
+                    )
                     .then(
-                        if (state == SDGSelectInputState.Disabled) {
-                            Modifier.alpha(SDGSelectInputDisabledAlpha)
+                        if (state == SDGSelectInputState.Selected) {
+                            Modifier.clickable(
+                                role = Role.Button,
+                                onClick = showClearIcon.onClick,
+                            )
                         } else {
                             Modifier
                         },
                     ),
-                text = displayText,
-                textColor = textColor,
-                type = type,
-            )
+                contentAlignment = Alignment.Center,
+            ) {
+                SDGImage(
+                    modifier = Modifier.size(SDGSelectInputClearIconSize),
+                    resId = R.drawable.ic_input_delete,
+                    color = null,
+                )
+            }
         }
 
-        SDGImage(
-            modifier = Modifier.size(SDGSelectInputChevronSize),
-            resId = R.drawable.ic_common_next,
-            color = chevronColor,
-        )
+        Box(
+            modifier = Modifier.size(
+                width = SDGSelectInputIconTouchWidth,
+                height = SDGSelectInputIconTouchHeight,
+            ),
+            contentAlignment = Alignment.Center,
+        ) {
+            SDGImage(
+                modifier = Modifier.size(SDGSelectInputChevronSize),
+                resId = R.drawable.ic_common_next,
+                color = state.chevronColor,
+            )
+        }
     }
+}
+
+/** 초기화 아이콘이 없는 기존 Select Input API의 하위 호환성을 유지합니다. */
+@Deprecated(
+    message = "SDGSelectInputShowClearIcon을 지정하는 API를 사용하세요.",
+)
+@Composable
+fun SDGSelectInput(
+    placeholder: String,
+    state: SDGSelectInputState,
+    inputField: SDGSelectInputField,
+    type: SDGSelectInputType,
+    marginValues: PaddingValues = PaddingValues(),
+    onClick: (() -> Unit)? = null,
+) {
+    SDGSelectInput(
+        placeholder = placeholder,
+        state = state,
+        inputField = inputField,
+        type = type,
+        showClearIcon = SDGSelectInputShowClearIcon.False,
+        marginValues = marginValues,
+        onClick = onClick,
+    )
 }
 
 /**
@@ -209,6 +218,7 @@ fun SDGSelectInput(
             text = text ?: placeholder,
             overflow = overflow,
         ),
+        showClearIcon = SDGSelectInputShowClearIcon.False,
         marginValues = marginValues,
         onClick = onClick,
     )
@@ -231,28 +241,17 @@ fun SDGSelectInput(
     onClick: (() -> Unit)? = null,
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
-    val background = if (state == SDGSelectInputState.Error) {
-        SDGColor.Red300_a10
-    } else {
-        backgroundColor
-    }
     val textColor = when {
         state == SDGSelectInputState.Disabled -> SDGColor.Neutral300
         !text.isNullOrEmpty() -> SDGColor.Neutral700
         else -> SDGColor.Neutral300
     }
-    val chevronColor = if (state == SDGSelectInputState.Disabled) {
-        SDGColor.Neutral300
-    } else {
-        SDGColor.Neutral700
-    }
-
     Row(
         modifier = Modifier
             .padding(marginValues)
             .height(SDGSelectInputDefaultHeight)
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-            .background(color = background)
+            .background(color = state.backgroundColor ?: backgroundColor)
             .clickable(
                 hasRipple = true,
                 rippleColor = SDGColor.Neutral350,
@@ -280,24 +279,35 @@ fun SDGSelectInput(
         )
         SDGImage(
             resId = R.drawable.ic_common_next,
-            color = chevronColor,
+            color = state.chevronColor,
         )
     }
 }
 
 @Composable
 private fun SelectedElement(
-    text: String,
-    textColor: Color,
+    placeholder: String,
+    state: SDGSelectInputState,
     type: SDGSelectInputType,
     modifier: Modifier = Modifier,
 ) {
+    val text = type.text.displayText.ifEmpty { placeholder }
+
+    if (state == SDGSelectInputState.Default) {
+        SelectInputText(
+            modifier = modifier,
+            text = placeholder,
+            textColor = state.typographyColor,
+        )
+        return
+    }
+
     when (type) {
         is SDGSelectInputType.Text -> {
             SelectInputText(
                 modifier = modifier,
                 text = text,
-                textColor = textColor,
+                textColor = state.typographyColor,
                 overflow = type.text.overflow,
             )
         }
@@ -306,7 +316,7 @@ private fun SelectedElement(
             SelectedElementRow(
                 modifier = modifier,
                 text = text,
-                textColor = textColor,
+                textColor = state.typographyColor,
                 image = type.selectedElementImage,
                 imageSize = SDGSelectInputImageType.Normal1,
                 clipImageToCircle = true,
@@ -318,7 +328,7 @@ private fun SelectedElement(
             SelectedElementRow(
                 modifier = modifier,
                 text = text,
-                textColor = textColor,
+                textColor = state.typographyColor,
                 image = type.image,
                 imageSize = type.type,
                 overflow = type.text.overflow,
@@ -326,7 +336,23 @@ private fun SelectedElement(
         }
 
         is SDGSelectInputType.TwoImage -> {
-            error("TwoImage는 독립적인 One Image Input으로 렌더링되어야 합니다.")
+            Column(
+                modifier = modifier,
+                verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
+            ) {
+                SelectedElement(
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = placeholder,
+                    state = if (state == SDGSelectInputState.Disabled) state else type.first.state ?: state,
+                    type = type.first.toOneImageType(),
+                )
+                SelectedElement(
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = placeholder,
+                    state = if (state == SDGSelectInputState.Disabled) state else type.second.state ?: state,
+                    type = type.second.toOneImageType(),
+                )
+            }
         }
     }
 }
@@ -350,6 +376,7 @@ private fun SelectedElementRow(
             imageSize = imageSize,
             image = image,
             clipToCircle = clipImageToCircle,
+            modifier = Modifier.alpha(textColor.alpha),
         )
         SelectInputText(
             modifier = Modifier.weight(1f),
@@ -365,8 +392,9 @@ private fun SelectedElementImage(
     imageSize: SDGSelectInputImageType,
     image: SDGSelectInputImage,
     clipToCircle: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
-    val imageModifier = Modifier
+    val imageModifier = modifier
         .size(
             width = imageSize.width,
             height = imageSize.height,
@@ -447,29 +475,7 @@ private fun SelectInputText(
     )
 }
 
-@Preview(
-    showBackground = true,
-    widthDp = 375,
-)
-@Composable
-private fun PreviewSDGSelectInput(
-    @PreviewParameter(SDGSelectInputPreviewParameterProvider::class)
-    parameter: SDGSelectInputPreviewParameter,
-) {
-    with(parameter) {
-        val selectedElementType = parameter.toSelectInputType()
-
-        SDGSelectInput(
-            placeholder = placeholder,
-            state = state,
-            inputField = inputField,
-            type = selectedElementType,
-            marginValues = PaddingValues(SDGSpacing.Spacing20),
-        )
-    }
-}
-
-/** [SDGSelectInputImageElement]를 독립적인 One Image Input 유형으로 변환합니다. */
+/** [SDGSelectInputImageElement]를 One Image 선택 항목으로 변환합니다. */
 private fun SDGSelectInputImageElement.toOneImageType(): SDGSelectInputType.OneImage {
     return SDGSelectInputType.OneImage(
         text = text,
@@ -494,6 +500,29 @@ private fun SDGSelectInputType.withText(
         is SDGSelectInputType.OneImage -> copy(text = legacyText)
         is SDGSelectInputType.TwoImage -> copy(
             first = first.copy(text = legacyText),
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    widthDp = 375,
+)
+@Composable
+private fun PreviewSDGSelectInput(
+    @PreviewParameter(SDGSelectInputPreviewParameterProvider::class)
+    parameter: SDGSelectInputPreviewParameter,
+) {
+    with(parameter) {
+        val selectedElementType = parameter.toSelectInputType()
+
+        SDGSelectInput(
+            placeholder = placeholder,
+            state = state,
+            inputField = inputField,
+            type = selectedElementType,
+            showClearIcon = showClearIcon,
+            marginValues = PaddingValues(SDGSpacing.Spacing20),
         )
     }
 }
