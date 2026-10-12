@@ -99,14 +99,6 @@ private fun SelectInputField(
     } else {
         SDGSelectInputDefaultHeight
     }
-    val chevronColor = when (state) {
-        SDGSelectInputState.Disabled -> SDGColor.Neutral300
-        SDGSelectInputState.Default,
-        SDGSelectInputState.Selected,
-        SDGSelectInputState.Error,
-            -> SDGColor.Neutral700
-    }
-
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -171,7 +163,7 @@ private fun SelectInputField(
             SDGImage(
                 modifier = Modifier.size(SDGSelectInputChevronSize),
                 resId = R.drawable.ic_common_next,
-                color = chevronColor,
+                color = state.chevronColor,
             )
         }
     }
@@ -254,12 +246,6 @@ fun SDGSelectInput(
         !text.isNullOrEmpty() -> SDGColor.Neutral700
         else -> SDGColor.Neutral300
     }
-    val chevronColor = if (state == SDGSelectInputState.Disabled) {
-        SDGColor.Neutral300
-    } else {
-        SDGColor.Neutral700
-    }
-
     Row(
         modifier = Modifier
             .padding(marginValues)
@@ -293,7 +279,7 @@ fun SDGSelectInput(
         )
         SDGImage(
             resId = R.drawable.ic_common_next,
-            color = chevronColor,
+            color = state.chevronColor,
         )
     }
 }
