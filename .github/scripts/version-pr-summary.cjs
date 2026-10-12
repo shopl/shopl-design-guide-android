@@ -65,7 +65,7 @@ async function getVersionChanges({ github, context, release, headSha, excludePul
     startMarker,
     '## 버전 변경 요약',
     `- 이전 릴리스: [${release.tag_name}](${release.html_url})`,
-    `- 권장 버전: **${nextVersion}** (\`${bump}\`)`,
+    `- 변경 버전: **${nextVersion}** (\`${bump}\`)`,
     `- 판정 근거: \`add\` 라벨 PR ${addCount}개 → \`${bump}\``,
     '',
     '## 포함된 PR',
