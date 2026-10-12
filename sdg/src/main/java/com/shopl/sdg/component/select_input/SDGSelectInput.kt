@@ -171,121 +171,6 @@ private fun SelectInputField(
     }
 }
 
-/** 초기화 아이콘이 없는 기존 Select Input API의 하위 호환성을 유지합니다. */
-@Deprecated(
-    message = "SDGSelectInputShowClearIcon을 지정하는 API를 사용하세요.",
-)
-@Composable
-fun SDGSelectInput(
-    placeholder: String,
-    state: SDGSelectInputState,
-    inputField: SDGSelectInputField,
-    type: SDGSelectInputType,
-    marginValues: PaddingValues = PaddingValues(),
-    onClick: (() -> Unit)? = null,
-) {
-    SDGSelectInput(
-        placeholder = placeholder,
-        state = state,
-        inputField = inputField,
-        type = type,
-        showClearIcon = SDGSelectInputShowClearIcon.False,
-        marginValues = marginValues,
-        onClick = onClick,
-    )
-}
-
-/**
- * [SDGSelectInputType]에 텍스트를 전달하는 신규 API와의 하위 호환성을 위한 API입니다.
- */
-@Deprecated(
-    message = "text 대신 SDGSelectInputType의 text를 사용하세요.",
-)
-@Composable
-fun SDGSelectInput(
-    text: String?,
-    placeholder: String,
-    state: SDGSelectInputState,
-    inputField: SDGSelectInputField,
-    type: SDGSelectInputType,
-    marginValues: PaddingValues = PaddingValues(),
-    onClick: (() -> Unit)? = null,
-    overflow: TextOverflow = TextOverflow.Ellipsis,
-) {
-    SDGSelectInput(
-        placeholder = placeholder,
-        state = state,
-        inputField = inputField,
-        type = type.withText(
-            text = text ?: placeholder,
-            overflow = overflow,
-        ),
-        showClearIcon = SDGSelectInputShowClearIcon.False,
-        marginValues = marginValues,
-        onClick = onClick,
-    )
-}
-
-/**
- * 신규 Select Input API와의 하위 호환성을 위한 레거시 API입니다.
- */
-@Deprecated(
-    message = "SDGSelectInput의 state, inputField, type 기반 API를 사용하세요.",
-)
-@Composable
-fun SDGSelectInput(
-    text: String? = null,
-    placeholder: String = stringResource(id = R.string.select),
-    state: SDGSelectInputState = SDGSelectInputState.Default,
-    marginValues: PaddingValues = PaddingValues(0.dp),
-    icon: @Composable (() -> Unit)? = null,
-    backgroundColor: Color = SDGColor.Neutral0,
-    onClick: (() -> Unit)? = null,
-    overflow: TextOverflow = TextOverflow.Ellipsis,
-) {
-    val textColor = when {
-        state == SDGSelectInputState.Disabled -> SDGColor.Neutral300
-        !text.isNullOrEmpty() -> SDGColor.Neutral700
-        else -> SDGColor.Neutral300
-    }
-    Row(
-        modifier = Modifier
-            .padding(marginValues)
-            .height(SDGSelectInputDefaultHeight)
-            .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-            .background(color = state.backgroundColor ?: backgroundColor)
-            .clickable(
-                hasRipple = true,
-                rippleColor = SDGColor.Neutral350,
-                onClick = {
-                    if (state != SDGSelectInputState.Disabled) {
-                        onClick?.invoke()
-                    }
-                },
-            )
-            .padding(
-                horizontal = SDGSpacing.Spacing12,
-                vertical = SDGSpacing.Spacing4,
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
-    ) {
-        icon?.invoke()
-        SDGText(
-            modifier = Modifier.weight(1f),
-            text = if (!text.isNullOrEmpty()) text else placeholder,
-            textColor = textColor,
-            typography = SDGTypography.Body1R,
-            overflow = overflow,
-            maxLines = 1,
-        )
-        SDGImage(
-            resId = R.drawable.ic_common_next,
-            color = state.chevronColor,
-        )
-    }
-}
-
 @Composable
 private fun SelectedElement(
     placeholder: String,
@@ -533,6 +418,121 @@ private fun SDGSelectInputType.withText(
         is SDGSelectInputType.OneImage -> copy(text = legacyText)
         is SDGSelectInputType.TwoImage -> copy(
             first = first.copy(text = legacyText),
+        )
+    }
+}
+
+/** 초기화 아이콘이 없는 기존 Select Input API의 하위 호환성을 유지합니다. */
+@Deprecated(
+    message = "SDGSelectInputShowClearIcon을 지정하는 API를 사용하세요.",
+)
+@Composable
+fun SDGSelectInput(
+    placeholder: String,
+    state: SDGSelectInputState,
+    inputField: SDGSelectInputField,
+    type: SDGSelectInputType,
+    marginValues: PaddingValues = PaddingValues(),
+    onClick: (() -> Unit)? = null,
+) {
+    SDGSelectInput(
+        placeholder = placeholder,
+        state = state,
+        inputField = inputField,
+        type = type,
+        showClearIcon = SDGSelectInputShowClearIcon.False,
+        marginValues = marginValues,
+        onClick = onClick,
+    )
+}
+
+/**
+ * [SDGSelectInputType]에 텍스트를 전달하는 신규 API와의 하위 호환성을 위한 API입니다.
+ */
+@Deprecated(
+    message = "text 대신 SDGSelectInputType의 text를 사용하세요.",
+)
+@Composable
+fun SDGSelectInput(
+    text: String?,
+    placeholder: String,
+    state: SDGSelectInputState,
+    inputField: SDGSelectInputField,
+    type: SDGSelectInputType,
+    marginValues: PaddingValues = PaddingValues(),
+    onClick: (() -> Unit)? = null,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
+) {
+    SDGSelectInput(
+        placeholder = placeholder,
+        state = state,
+        inputField = inputField,
+        type = type.withText(
+            text = text ?: placeholder,
+            overflow = overflow,
+        ),
+        showClearIcon = SDGSelectInputShowClearIcon.False,
+        marginValues = marginValues,
+        onClick = onClick,
+    )
+}
+
+/**
+ * 신규 Select Input API와의 하위 호환성을 위한 레거시 API입니다.
+ */
+@Deprecated(
+    message = "SDGSelectInput의 state, inputField, type 기반 API를 사용하세요.",
+)
+@Composable
+fun SDGSelectInput(
+    text: String? = null,
+    placeholder: String = stringResource(id = R.string.select),
+    state: SDGSelectInputState = SDGSelectInputState.Default,
+    marginValues: PaddingValues = PaddingValues(0.dp),
+    icon: @Composable (() -> Unit)? = null,
+    backgroundColor: Color = SDGColor.Neutral0,
+    onClick: (() -> Unit)? = null,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
+) {
+    val textColor = when {
+        state == SDGSelectInputState.Disabled -> SDGColor.Neutral300
+        !text.isNullOrEmpty() -> SDGColor.Neutral700
+        else -> SDGColor.Neutral300
+    }
+    Row(
+        modifier = Modifier
+            .padding(marginValues)
+            .height(SDGSelectInputDefaultHeight)
+            .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
+            .background(color = state.backgroundColor ?: backgroundColor)
+            .clickable(
+                hasRipple = true,
+                rippleColor = SDGColor.Neutral350,
+                onClick = {
+                    if (state != SDGSelectInputState.Disabled) {
+                        onClick?.invoke()
+                    }
+                },
+            )
+            .padding(
+                horizontal = SDGSpacing.Spacing12,
+                vertical = SDGSpacing.Spacing4,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
+    ) {
+        icon?.invoke()
+        SDGText(
+            modifier = Modifier.weight(1f),
+            text = if (!text.isNullOrEmpty()) text else placeholder,
+            textColor = textColor,
+            typography = SDGTypography.Body1R,
+            overflow = overflow,
+            maxLines = 1,
+        )
+        SDGImage(
+            resId = R.drawable.ic_common_next,
+            color = state.chevronColor,
         )
     }
 }
