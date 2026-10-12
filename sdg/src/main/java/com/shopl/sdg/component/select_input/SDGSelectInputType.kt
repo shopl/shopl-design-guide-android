@@ -46,7 +46,7 @@ sealed class SDGSelectInputType {
     data class OneImage(
         override val text: SDGSelectInputText,
         val image: SDGSelectInputImage,
-        val type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
+        val type: SDGSelectInputImageType = SDGSelectInputImageType.WithCircular,
     ) : SDGSelectInputType() {
         override val typeName: String = "1 Image"
 
@@ -56,7 +56,7 @@ sealed class SDGSelectInputType {
         constructor(
             text: String,
             image: SDGSelectInputImage,
-            type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
+            type: SDGSelectInputImageType = SDGSelectInputImageType.WithCircular,
         ) : this(
             text = SDGSelectInputText.Single(value = text),
             image = image,
@@ -81,7 +81,7 @@ sealed class SDGSelectInputType {
             image: SDGSelectInputImage,
             secondText: String,
             secondImage: SDGSelectInputImage,
-            imageSize: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
+            imageSize: SDGSelectInputImageType = SDGSelectInputImageType.WithCircular,
         ) : this(
             first = SDGSelectInputImageElement(
                 text = SDGSelectInputText.Single(value = text),
@@ -102,7 +102,7 @@ sealed class SDGSelectInputType {
 data class SDGSelectInputImageElement(
     val text: SDGSelectInputText,
     val image: SDGSelectInputImage,
-    val type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,
+    val type: SDGSelectInputImageType = SDGSelectInputImageType.WithCircular,
     /** 항목 상태를 재정의하더라도 필드가 Disabled이면 비활성화됩니다. */
     val state: SDGSelectInputState? = null,
 )

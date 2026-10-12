@@ -318,7 +318,7 @@ private fun SelectedElement(
                 text = text,
                 textColor = state.typographyColor,
                 image = type.selectedElementImage,
-                imageSize = SDGSelectInputImageType.Normal1,
+                imageSize = SDGSelectInputImageType.WithCircular,
                 clipImageToCircle = true,
                 overflow = type.text.overflow,
             )
