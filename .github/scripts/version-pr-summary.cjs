@@ -71,7 +71,6 @@ async function getVersionChanges({ github, context, release, headSha, excludePul
     '## 포함된 PR',
     ...(changes.length ? changes : ['- 포함된 변경 PR이 없습니다.']),
     '',
-    `[전체 변경사항 비교](https://github.com/${owner}/${repo}/compare/${release.tag_name}...${headSha})`,
     endMarker,
   ].join('\n');
   return { body, pulls, bump, nextVersion, releaseSha, commitShas };
