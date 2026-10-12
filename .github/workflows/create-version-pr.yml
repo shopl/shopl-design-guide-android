@@ -28,7 +28,6 @@ permissions:
   pull-requests: read
 
 concurrency:
-  # ponytail: 저장소별 직렬 처리로 버튼 중복 클릭을 처리합니다. 저장소가 나뉘면 그룹도 분리합니다.
   group: create-version-pr-${{ github.repository }}
   cancel-in-progress: false
 

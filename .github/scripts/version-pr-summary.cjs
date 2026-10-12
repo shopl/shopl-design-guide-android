@@ -40,7 +40,6 @@ async function getVersionChanges({ github, context, release, headSha, excludePul
 
   const commitShas = new Set(commits.map(commit => commit.sha));
   const included = new Map();
-  // ponytail: 커밋마다 PR을 조회합니다. 릴리스당 커밋이 많아지면 GraphQL 배치로 전환합니다.
   for (const commit of commits) {
     const associated = await github.paginate('GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls', {
       owner, repo, commit_sha: commit.sha, per_page: 100,

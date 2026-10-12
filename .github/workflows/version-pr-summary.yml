@@ -16,7 +16,6 @@ permissions:
   pull-requests: write
 
 concurrency:
-  # ponytail: 저장소별 직렬 처리, 동시 버전 PR이 많아지면 PR별 그룹으로 분리합니다.
   group: version-pr-summary-${{ github.repository }}
   cancel-in-progress: false
 
