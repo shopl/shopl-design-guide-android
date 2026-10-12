@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.avatar.SDGAvatarSize
 import com.shopl.sdg.component.select_input.preview.SDGSelectInputPreviewParameter
 import com.shopl.sdg.component.select_input.preview.SDGSelectInputPreviewParameterProvider
 import com.shopl.sdg.component.select_input.preview.toSelectInputType
@@ -318,11 +319,16 @@ private fun SelectedElement(
                 modifier = modifier,
                 text = text,
                 textColor = state.typographyColor,
-                image = type.selectedElementImage,
-                imageSize = SDGSelectInputImageType.WithCircular,
-                clipImageToCircle = true,
                 overflow = type.text.overflow,
-            )
+            ) { imageModifier ->
+                SelectInputImage(
+                    modifier = imageModifier
+                        .size(SDGAvatarSize.S.size)
+                        .clip(CircleShape),
+                    image = type.selectedElementImage,
+                    contentScale = ContentScale.Crop,
+                )
+            }
         }
 
         is SDGSelectInputType.OneImage -> {
@@ -330,10 +336,14 @@ private fun SelectedElement(
                 modifier = modifier,
                 text = text,
                 textColor = state.typographyColor,
-                image = type.image,
-                imageSize = type.type,
                 overflow = type.text.overflow,
-            )
+            ) { imageModifier ->
+                SelectedElementImage(
+                    modifier = imageModifier,
+                    image = type.image,
+                    imageSize = type.type,
+                )
+            }
         }
 
         is SDGSelectInputType.TwoImage -> {
@@ -362,23 +372,16 @@ private fun SelectedElement(
 private fun SelectedElementRow(
     text: String,
     textColor: Color,
-    image: SDGSelectInputImage,
-    imageSize: SDGSelectInputImageType,
     modifier: Modifier = Modifier,
-    clipImageToCircle: Boolean = false,
     overflow: TextOverflow = TextOverflow.Ellipsis,
+    imageContent: @Composable (Modifier) -> Unit,
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
     ) {
-        SelectedElementImage(
-            imageSize = imageSize,
-            image = image,
-            clipToCircle = clipImageToCircle,
-            modifier = Modifier.alpha(textColor.alpha),
-        )
+        imageContent(Modifier.alpha(textColor.alpha))
         SelectInputText(
             modifier = Modifier.weight(1f),
             text = text,
@@ -392,27 +395,14 @@ private fun SelectedElementRow(
 private fun SelectedElementImage(
     imageSize: SDGSelectInputImageType,
     image: SDGSelectInputImage,
-    clipToCircle: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
-    val isWithCircular = imageSize == SDGSelectInputImageType.WithCircular && !clipToCircle
+    val isWithCircular = imageSize == SDGSelectInputImageType.WithCircular
     val imageModifier = Modifier
         .size(
             width = if (isWithCircular) SDGSelectInputCircularIconSize else imageSize.width,
             height = if (isWithCircular) SDGSelectInputCircularIconSize else imageSize.height,
         )
-        .then(
-            if (clipToCircle) {
-                Modifier.clip(CircleShape)
-            } else {
-                Modifier
-            },
-        )
-    val contentScale = if (clipToCircle) {
-        ContentScale.Crop
-    } else {
-        ContentScale.Fit
-    }
 
     Box(
         modifier = modifier
@@ -426,49 +416,54 @@ private fun SelectedElementImage(
             ),
         contentAlignment = Alignment.Center,
     ) {
-        when (image) {
-            is SDGSelectInputImage.Resource -> {
-                SDGImage(
-                    modifier = imageModifier,
-                    resId = image.resId,
-                    color = null,
-                    contentScale = contentScale,
-                )
-            }
+        SelectInputImage(
+            modifier = imageModifier,
+            image = image,
+            contentScale = ContentScale.Fit,
+        )
+    }
+}
 
-            is SDGSelectInputImage.Url -> {
-                SDGAsyncImage(
-                    modifier = imageModifier,
-                    imageModel = image.url,
-                    contentScale = contentScale,
-                    failureImage = {
-                        image.failureImageResId?.let { resId ->
-                            SDGImage(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .then(
-                                        if (clipToCircle) {
-                                            Modifier.clip(CircleShape)
-                                        } else {
-                                            Modifier
-                                        },
-                                    ),
-                                resId = resId,
-                                color = null,
-                                contentScale = contentScale,
-                            )
-                        }
-                    },
-                    previewContent = {
+@Composable
+private fun SelectInputImage(
+    image: SDGSelectInputImage,
+    contentScale: ContentScale,
+    modifier: Modifier = Modifier,
+) {
+    when (image) {
+        is SDGSelectInputImage.Resource -> {
+            SDGImage(
+                modifier = modifier,
+                resId = image.resId,
+                color = null,
+                contentScale = contentScale,
+            )
+        }
+
+        is SDGSelectInputImage.Url -> {
+            SDGAsyncImage(
+                modifier = modifier,
+                imageModel = image.url,
+                contentScale = contentScale,
+                failureImage = {
+                    image.failureImageResId?.let { resId ->
                         SDGImage(
-                            modifier = imageModifier,
-                            resId = image.failureImageResId ?: R.drawable.ic_common_photo,
+                            modifier = Modifier.fillMaxSize(),
+                            resId = resId,
                             color = null,
                             contentScale = contentScale,
                         )
-                    },
-                )
-            }
+                    }
+                },
+                previewContent = {
+                    SDGImage(
+                        modifier = modifier,
+                        resId = image.failureImageResId ?: R.drawable.ic_common_photo,
+                        color = null,
+                        contentScale = contentScale,
+                    )
+                },
+            )
         }
     }
 }
