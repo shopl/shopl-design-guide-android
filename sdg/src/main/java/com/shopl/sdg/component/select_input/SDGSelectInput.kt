@@ -99,11 +99,19 @@ private fun SelectInputField(
     } else {
         SDGSelectInputDefaultHeight
     }
+    val backgroundColor = when (state) {
+        SDGSelectInputState.Error -> SDGColor.Red300_a10
+        SDGSelectInputState.Default,
+        SDGSelectInputState.Selected,
+        SDGSelectInputState.Disabled,
+            -> inputField.color
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-            .background(color = state.backgroundColor ?: inputField.color)
+            .background(color = backgroundColor)
             .then(
                 if (state != SDGSelectInputState.Disabled && onClick != null) {
                     Modifier.clickable(onClick = onClick)
@@ -242,6 +250,11 @@ fun SDGSelectInput(
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
     // 레거시는 텍스트 유무에 따른 기존 색상 규칙을 유지합니다.
+    val background = if (state == SDGSelectInputState.Error) {
+        SDGColor.Red300_a10
+    } else {
+        backgroundColor
+    }
     val textColor = when {
         state == SDGSelectInputState.Disabled -> SDGColor.Neutral300
         !text.isNullOrEmpty() -> SDGColor.Neutral700
@@ -252,7 +265,7 @@ fun SDGSelectInput(
             .padding(marginValues)
             .height(SDGSelectInputDefaultHeight)
             .clip(shape = SDGCornerRadius.BoxRadius.Radius12)
-            .background(color = state.backgroundColor ?: backgroundColor)
+            .background(color = background)
             .clickable(
                 hasRipple = true,
                 rippleColor = SDGColor.Neutral350,
