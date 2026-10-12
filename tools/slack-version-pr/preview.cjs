@@ -21,7 +21,7 @@ async function read(route, params = {}, paginate = false) {
   if (paginate) args.push('--paginate', '--slurp');
   try {
     const { stdout } = await execute('gh', args, { maxBuffer: 8 * 1024 * 1024, timeout: 30000 });
-    const data = JSON.parse(stdout);
+    const data = stdout.trim() ? JSON.parse(stdout) : null;
     return paginate ? data.flat() : { data };
   } catch (error) {
     if (error.stderr?.includes('(HTTP 404)')) error.status = 404;
@@ -49,7 +49,7 @@ const slackMarkdown = body => body.replace(/<!--[^>]*-->/g, '').trim()
   .replace(/#(\d+)\b/g, `<${repoUrl}/pull/$1|#$1>`);
 
 (async () => {
-  const current = await createVersionPr({ github, context, dryRun: true });
+  const current = await createVersionPr({ github, context, dryRun: true, assignee: process.argv[2] });
   const messages = ['*SDG 버전 PR 병합 전 테스트*', 'GitHub 조회와 버전 계산만 수행합니다. 브랜치·PR·라벨은 변경하지 않습니다.', '', '*현재 main 미리보기*',
     current.status === 'existing' ? `열린 버전 PR: ${current.url}` :
       current.status === 'empty' ? '최신 릴리스 이후 변경사항이 없어 PR을 만들지 않습니다.' : slackMarkdown(current.body)];

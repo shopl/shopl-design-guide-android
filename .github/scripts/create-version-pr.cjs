@@ -1,9 +1,15 @@
 const { getVersionChanges } = require('./version-pr-summary.cjs');
 const versionPath = 'build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt';
 
-module.exports = async ({ github, context, dryRun = false }) => {
+module.exports = async ({ github, context, dryRun = false, assignee = '', requesterSlackId = '' }) => {
   const { owner, repo } = context.repo;
   if (context.ref !== 'refs/heads/main') throw new Error('버전 PR 생성은 main에서 실행해주세요.');
+  if (requesterSlackId && (!/^[UW][A-Z0-9]+$/.test(requesterSlackId) || !assignee)) {
+    throw new Error('Slack 요청자와 GitHub 담당자 설정을 확인해주세요.');
+  }
+  if (assignee && (typeof assignee !== 'string' || !/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(assignee))) {
+    throw new Error('GitHub 담당자 계정 형식을 확인해주세요.');
+  }
 
   const findOpenVersionPr = async () => (await github.paginate(github.rest.pulls.list, {
     owner, repo, state: 'open', base: 'main', per_page: 100,
@@ -61,8 +67,17 @@ module.exports = async ({ github, context, dryRun = false }) => {
   const concurrent = await findOpenVersionPr();
   if (concurrent) return reuse(concurrent);
 
+  if (assignee) {
+    try {
+      await github.request('GET /repos/{owner}/{repo}/assignees/{assignee}', { owner, repo, assignee });
+    } catch (error) {
+      if (error.status !== 404) throw error;
+      throw new Error(`${assignee} 계정을 이 저장소의 담당자로 지정할 수 없습니다.`);
+    }
+  }
+
   if (dryRun) return { status: 'preview', version: changes.nextVersion, bump: changes.bump,
-    branch, body: changes.body, path: versionPath, content: updated };
+    branch, body: changes.body, path: versionPath, content: updated, assignee };
 
   if (!branchRef) {
     const { data: parent } = await github.rest.git.getCommit({ owner, repo, commit_sha: mainSha });
@@ -76,7 +91,14 @@ module.exports = async ({ github, context, dryRun = false }) => {
 
   const { data: pr } = await github.rest.pulls.create({ owner, repo, base: 'main', head: branch,
     title: `${changes.nextVersion} 버전 업데이트`, body: changes.body });
+  if (assignee) {
+    const { data: assigned } = await github.rest.issues.addAssignees({ owner, repo,
+      issue_number: pr.number, assignees: [assignee] });
+    if (!assigned.assignees.some(user => user.login.toLowerCase() === assignee.toLowerCase())) {
+      throw new Error(`${pr.html_url}의 담당자 지정에 실패했습니다. GitHub 쓰기 권한을 확인해주세요.`);
+    }
+  }
   await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels: [changes.bump] });
   await github.rest.pulls.requestReviewers({ owner, repo, pull_number: pr.number, team_reviewers: ['android'] });
-  return { status: 'created', url: pr.html_url, number: pr.number, version: changes.nextVersion, bump: changes.bump };
+  return { status: 'created', url: pr.html_url, number: pr.number, version: changes.nextVersion, bump: changes.bump, assignee };
 };

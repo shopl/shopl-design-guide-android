@@ -22,6 +22,34 @@ Actions를 요청하므로 별도 서버를 운영하지 않습니다.
 하나라도 있으면 minor, 없으면 patch를 올립니다. VERSION 변경, 버전 PR 생성, 버전
 라벨 및 Android 팀 리뷰 요청까지 수행합니다. 열려 있는 버전 PR이 있으면 해당 PR
 링크를 반환합니다. 결과는 기존 `SLACK_SDG_ANDROID_WEB_HOOK`으로 채널에 알립니다.
+요청 접수와 결과 알림에는 버튼을 누른 Slack 사용자를 멘션하며, 새 PR의 Assignee는
+그 사용자에 연결된 GitHub 계정으로 지정합니다. 기존 PR을 재사용할 때는 담당자를
+바꾸지 않습니다.
+
+## Slack 사용자와 GitHub 계정 연결
+
+운영 앱의 `SDG_GITHUB_USER_MAP`에 Slack 사용자 ID와 GitHub 로그인을 JSON으로
+등록합니다. 표시 이름이나 이메일로 추측하지 않으며 Slack 프로필 조회 권한을
+추가하지 않습니다. 현재 확인한 Scott 계정의 연결 예시는 다음과 같습니다.
+
+```json
+{"U07SM8410PP":"Songgyubin"}
+```
+
+운영 담당자가 `slack env set SDG_GITHUB_USER_MAP --app A0C7SN83G8G`로 전체 연결
+목록을 입력합니다. 팀원을 추가할 때는 기존 연결을 유지합니다. 미등록 사용자나
+잘못된 연결 설정은 GitHub 실행 요청 전에 오류로 안내합니다. GitHub Actions는
+연결된 계정이 저장소의 Assignee가 될 수 있는지 쓰기 전에 확인하고, PR 생성 후
+실제 지정 결과도 확인합니다. 생성·지정 도중 오류가 났다면 실행 로그와 이미
+생성된 PR을 확인해야 합니다.
+
+새 매니페스트를 배포한 뒤 기존 생성 트리거를 다음과 같이 갱신해야 버튼과 `/SDG`
+모두 실제 실행자의 `user_id`를 전달합니다. 안내를 게시한 사람의 ID를 사용하지
+않습니다.
+
+```sh
+slack trigger update --trigger-id Ft0C6H0H2CUF --trigger-def triggers/create-version-pr.ts --app A0C7SN83G8G
+```
 
 ## 설치된 운영 앱 (2026-10-06)
 
@@ -101,8 +129,11 @@ PR의 `validate` 작업은 쓰기 권한 없이 버전 계산·중복 실행·�
 필요하며, GitHub API는 이 저장소의 GET 요청만 허용합니다.
 
 ```sh
-node preview.cjs
+node preview.cjs Songgyubin
 ```
+
+GitHub 로그인을 전달하면 Assignee 가능 여부와 예정 담당자도 읽기 전용으로
+확인합니다. 인자를 생략하면 기존 버전 계산 미리보기만 실행합니다.
 
 2026-10-07 당시의
 [Slack 실행 결과](https://shopl-workspace.slack.com/archives/C093TU3CCBG/p1791357253801889)에서
@@ -131,6 +162,7 @@ patch, 당시 main의 변경사항 없음 결과를 확인했습니다. 브랜�
    `SDG_GITHUB_ACTIONS_TOKEN` 환경 변수에 설정합니다.
    `slack env set SDG_GITHUB_ACTIONS_TOKEN --app <배포된 앱 ID>`로 숨김 입력창에
    직접 입력합니다. 토큰 입력은 운영 담당자가 로컬에서 수행합니다.
+   위 **Slack 사용자와 GitHub 계정 연결**에 따라 `SDG_GITHUB_USER_MAP`도 설정합니다.
 5. `#sdg-android-deploy` 채널에 **SDG Version PR** 앱을 초대합니다.
 6. `slack trigger create --trigger-def triggers/create-version-pr.ts --app <배포된 앱 ID>`로
    운영용 링크를 생성합니다.

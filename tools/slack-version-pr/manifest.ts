@@ -7,12 +7,16 @@ export const VersionPrWorkflow = DefineWorkflow({
   title: "SDG 버전 PR 만들기",
   description: "이전 릴리스 이후 PR 라벨로 버전을 계산하고 버전 PR을 만듭니다.",
   input_parameters: {
-    properties: { channel_id: { type: Schema.slack.types.channel_id } },
-    required: ["channel_id"],
+    properties: {
+      channel_id: { type: Schema.slack.types.channel_id },
+      user_id: { type: Schema.slack.types.user_id },
+    },
+    required: ["channel_id", "user_id"],
   },
 });
 VersionPrWorkflow.addStep(CreateVersionPr, {
   channel_id: VersionPrWorkflow.inputs.channel_id,
+  user_id: VersionPrWorkflow.inputs.user_id,
 });
 
 export const VersionPrGuideWorkflow = DefineWorkflow({

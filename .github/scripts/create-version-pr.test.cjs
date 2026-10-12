@@ -10,8 +10,8 @@ const existingPr = { number: 459, html_url: 'https://example.test/459', labels: 
 
 async function run({ add = true, existing = false, concurrent = false, empty = false, mainChanged = false,
   releaseChanged = false, currentVersion = '1.22.0', branchExists = false, branchChanged = false, wrongRef = false,
-  fail = false, missingLabel = false, dryRun = false } = {}) {
-  const writes = [];
+  fail = false, missingLabel = false, dryRun = false, assignee = '', requesterSlackId = '',
+  unassignable = false, assignmentIgnored = false, assignmentFailure = false, writes = [] } = {}) {
   let mainReads = 0;
   let releaseReads = 0;
   let listReads = 0;
@@ -25,7 +25,14 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
         create: async params => { writes.push(['pr', params]); return { data: { number: 461, html_url: 'https://example.test/461' } }; },
         requestReviewers: async params => { writes.push(['reviewers', params]); },
       },
-      issues: { addLabels: async params => { writes.push(['labels', params]); } },
+      issues: {
+        addLabels: async params => { writes.push(['labels', params]); },
+        addAssignees: async params => {
+          writes.push(['assignee', params]);
+          if (assignmentFailure) throw new Error('assignee API failure');
+          return { data: { assignees: assignmentIgnored ? [] : params.assignees.map(login => ({ login: login.toLowerCase() })) } };
+        },
+      },
       repos: {
         getLatestRelease: async () => ({ data: { tag_name: ++releaseReads > 1 && releaseChanged ? 'v1.23.0' : 'v1.22.0', html_url: 'https://example.test/v1.22.0' } }),
         getContent: async ({ path, ref }) => {
@@ -47,7 +54,13 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
         createRef: async params => { writes.push(['ref', params]); },
       },
     },
-    request: async (_, { basehead }) => {
+    request: async (route, { basehead, assignee: login }) => {
+      if (route === 'GET /repos/{owner}/{repo}/assignees/{assignee}') {
+        assert.equal(login, assignee);
+        assert.equal(writes.length, 0);
+        if (unassignable) throw Object.assign(new Error('not assignable'), { status: 404 });
+        return { status: 204 };
+      }
       if (fail) throw new Error('GitHub API failure');
       if (basehead.endsWith('branch-sha')) return { data: { status: 'ahead', ahead_by: 1, files: [{ filename: branchChanged ? 'other.kt' : versionPath }] } };
       assert.equal(basehead, 'v1.22.0...main-sha');
@@ -65,7 +78,8 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
         base: { ref: 'main' }, head: { ref: 'add/scott/task' }, labels: [{ name: add ? 'add' : 'update' }] }];
     },
   };
-  const result = await createVersionPr({ github, context: { ...context, ref: wrongRef ? 'refs/heads/other' : context.ref }, dryRun });
+  const result = await createVersionPr({ github, context: { ...context, ref: wrongRef ? 'refs/heads/other' : context.ref },
+    dryRun, assignee, requesterSlackId });
   return { result, writes };
 }
 
@@ -78,6 +92,25 @@ async function run({ add = true, existing = false, concurrent = false, empty = f
   assert.equal(minor.writes[4][1].head, 'version/automation/minor-1.23.0');
   assert.match(minor.writes[4][1].body, /^- #458 \*\*add\*\*$/m);
   assert.deepEqual(minor.writes[5][1].labels, ['minor']);
+  const assigned = await run({ assignee: 'Songgyubin', requesterSlackId: 'UTEST' });
+  assert.equal(assigned.result.assignee, 'Songgyubin');
+  assert.deepEqual(assigned.writes.map(([kind]) => kind), ['blob', 'tree', 'commit', 'ref', 'pr', 'assignee', 'labels', 'reviewers']);
+  assert.deepEqual(assigned.writes[5][1], { owner: 'shopl', repo: 'shopl-design-guide-android', issue_number: 461, assignees: ['Songgyubin'] });
+  assert.equal((await run({ assignee: 'other-member', existing: true })).writes.length, 0);
+  assert.equal((await run({ assignee: 'other-member', concurrent: true })).writes.length, 0);
+  assert.equal((await run({ assignee: 'Songgyubin', empty: true })).writes.length, 0);
+  const assignmentPreview = await run({ assignee: 'Songgyubin', requesterSlackId: 'UTEST', dryRun: true });
+  assert.equal(assignmentPreview.result.assignee, 'Songgyubin');
+  assert.equal(assignmentPreview.writes.length, 0);
+  assert.deepEqual((await run({ assignee: 'Songgyubin', branchExists: true })).writes.map(([kind]) => kind), ['pr', 'assignee', 'labels', 'reviewers']);
+  const blockedWrites = [];
+  await assert.rejects(run({ assignee: 'unknown-member', unassignable: true, writes: blockedWrites }), /지정할 수 없습니다/);
+  assert.equal(blockedWrites.length, 0);
+  await assert.rejects(run({ assignee: 'Songgyubin', assignmentIgnored: true }), /담당자 지정에 실패/);
+  await assert.rejects(run({ assignee: 'Songgyubin', assignmentFailure: true }), /assignee API failure/);
+  await assert.rejects(run({ assignee: 'bad<@UTEST>' }), /계정 형식/);
+  await assert.rejects(run({ requesterSlackId: 'UTEST' }), /요청자와 GitHub 담당자/);
+  await assert.rejects(run({ requesterSlackId: '<@UOTHER>', assignee: 'Songgyubin' }), /요청자와 GitHub 담당자/);
   assert.equal((await run({ add: false })).result.version, '1.22.1');
   assert.equal((await run({ existing: true })).writes.length, 0);
   assert.equal((await run({ concurrent: true })).writes.length, 0);
