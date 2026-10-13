@@ -44,7 +44,6 @@ jobs:
         run: |
           node --check .github/scripts/version-pr-summary.cjs
           node --check .github/scripts/create-version-pr.cjs
-          node --check tools/slack-version-pr/preview.cjs
 
       - uses: denoland/setup-deno@v2
         with:
