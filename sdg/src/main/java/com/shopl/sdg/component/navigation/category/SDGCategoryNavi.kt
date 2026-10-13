@@ -36,6 +36,7 @@ import kotlinx.collections.immutable.PersistentList
 
 private const val MAX_RIGHT_ICON_COUNT = 3
 private const val TITLE_MAX_LINES = 1
+private const val PREVIEW_WIDTH_DP = 375
 
 private val NAVI_HEIGHT = 48.dp
 private val NAVI_ICON_SIZE = 40.dp
@@ -147,7 +148,7 @@ private fun SDGCategoryNaviIcon(icon: SDGCategoryNaviIconItem) {
     }
 }
 
-@Preview(showBackground = true, widthDp = 375)
+@Preview(showBackground = true, widthDp = PREVIEW_WIDTH_DP)
 @Composable
 private fun PreviewSDGCategoryNavi(
     @PreviewParameter(SDGCategoryNaviPreviewParameterProvider::class)
