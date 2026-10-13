@@ -1,0 +1,160 @@
+package com.shopl.sdg.component.navigation.category
+
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
+import com.shopl.sdg_common.ext.clickable
+import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing10
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
+import com.shopl.sdg_common.foundation.typography.SDGTypography
+import com.shopl.sdg_common.ui.components.SDGImage
+import com.shopl.sdg_common.ui.components.SDGText
+import com.shopl.sdg_resource.R
+import kotlinx.collections.immutable.PersistentList
+
+/**
+ * SDG - Navigation - Category Navi
+ *
+ * 화면의 상단에 위치하여 현재 위치를 알려주는 유형 변경이 가능한 타이틀과 고 사용자가 필요한 것을 찾도록 도와주는 아이콘으로 조합한 컴포넌트
+ *
+ * @param onDropdownClick 드롭다운 아이콘 선택 시 List Popup을 표시하는 콜백
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19797-22031&m=dev">Figma</a>
+ */
+@Composable
+fun SDGCategoryNavi(
+    title: String?,
+    leftIcon: SDGCategoryNaviIconItem?,
+    rightIcons: PersistentList<SDGCategoryNaviIconItem>?,
+    backgroundColor: Color,
+    onDropdownClick: () -> Unit,
+    hasDropdown: Boolean = true,
+    titleColor: Color = SDGColor.Neutral900,
+    marginValues: PaddingValues = PaddingValues(),
+) {
+    require((rightIcons?.size ?: 0) <= 3) {
+        "우측 아이콘은 최대 3개까지만 사용 가능합니다."
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(marginValues)
+            .height(48.dp)
+            .background(backgroundColor)
+            .padding(horizontal = Spacing10, vertical = Spacing4),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        leftIcon?.let { SDGCategoryNaviIcon(icon = it) }
+
+        Row(
+            modifier = Modifier
+                .weight(1f, true)
+                .padding(start = Spacing2),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            title?.let {
+                SDGText(
+                    text = it,
+                    typography = SDGTypography.NaviTitle,
+                    textColor = titleColor,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    softWrap = false,
+                    modifier = Modifier.weight(1f, false),
+                )
+            }
+
+            if (hasDropdown) {
+                SDGImage(
+                    resId = R.drawable.ic_common_dropdown,
+                    color = titleColor,
+                    contentDescription = title ?: stringResource(R.string.select),
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable(
+                            role = Role.Button,
+                            onClickLabel = stringResource(R.string.select),
+                            onClick = onDropdownClick,
+                        ),
+                )
+            }
+        }
+
+        if (!rightIcons.isNullOrEmpty()) {
+            Spacer(Modifier.width(Spacing8))
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(Spacing2, Alignment.End),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                rightIcons.forEach { SDGCategoryNaviIcon(icon = it) }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SDGCategoryNaviIcon(icon: SDGCategoryNaviIconItem) {
+    Box {
+        SDGImage(
+            resId = icon.iconResId,
+            color = icon.iconColor,
+            contentDescription = icon.contentDescription,
+            modifier = Modifier
+                .size(40.dp)
+                .clickable(role = Role.Button, onClick = icon.onClick),
+        )
+
+        if (icon.showDot) {
+            Canvas(
+                modifier = Modifier
+                    .padding(Spacing8)
+                    .size(8.dp)
+                    .align(Alignment.TopEnd),
+            ) {
+                drawCircle(color = SDGColor.Red350)
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, widthDp = 375)
+@Composable
+private fun PreviewSDGCategoryNavi(
+    @PreviewParameter(SDGCategoryNaviPreviewParameterProvider::class)
+    parameter: SDGCategoryNaviPreviewParameter,
+) {
+    with(parameter) {
+        SDGCategoryNavi(
+            title = title,
+            leftIcon = leftIcon,
+            rightIcons = rightIcons,
+            backgroundColor = backgroundColor,
+            onDropdownClick = {},
+            hasDropdown = hasDropdown,
+            titleColor = titleColor,
+        )
+    }
+}
