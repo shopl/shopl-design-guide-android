@@ -22,6 +22,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.navigation.category.preview.SDGCategoryNaviPreviewParameter
+import com.shopl.sdg.component.navigation.category.preview.SDGCategoryNaviPreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ext.orDefault
 import com.shopl.sdg_common.foundation.SDGColor

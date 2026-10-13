@@ -1,6 +1,10 @@
-package com.shopl.sdg.component.navigation.category
+package com.shopl.sdg.component.navigation.category.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.shopl.sdg.component.navigation.category.SDGCategoryNaviHasDropdown
+import com.shopl.sdg.component.navigation.category.SDGCategoryNaviIconItem
+import com.shopl.sdg.component.navigation.category.SDGCategoryNaviLabel
+import com.shopl.sdg.component.navigation.category.SDGCategoryNaviLeftIconItem
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_resource.R
 import kotlinx.collections.immutable.persistentListOf
