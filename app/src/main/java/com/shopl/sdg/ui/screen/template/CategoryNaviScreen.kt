@@ -70,7 +70,7 @@ internal fun CategoryNaviScreen(
 
     SDGSampleBaseScaffold(
         name = TemplateScene.Navigation.CategoryNavi.displayLabel,
-        description = "화면의 상단에 위치하여 현재 위치를 알려주는 유형 변경이 가능한 타이틀과 고 사용자가 필요한 것을 찾도록 도와주는 아이콘으로 조합한 컴포넌트",
+        description = "화면의 상단에 위치하여 현재 위치를 알려주는 유형 변경이 가능한 타이틀과 사용자가 필요한 것을 찾도록 도와주는 아이콘으로 조합한 컴포넌트",
         onClickBack = onClickBack,
         onClickMenu = onClickMenu,
         bodyContent = {
@@ -89,7 +89,6 @@ internal fun CategoryNaviScreen(
                 guideLineDescriptions = persistentListOf(
                     "Status Bar 영역을 제외한 모바일 화면의 최상단에 배치합니다.",
                     "모든 구성 요소는 수평으로 중앙 정렬합니다.",
-                    "드롭다운을 선택하면 List Popup이 노출됩니다.",
                 ),
             )
         },
