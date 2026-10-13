@@ -86,7 +86,7 @@ async function getVersionChanges({ github, context, release, headSha, excludePul
   return { body, pulls, bump, nextVersion, releaseSha, commitShas };
 }
 
-module.exports = async ({ github, context }) => {
+module.exports = async ({ github, context, syncReleaseLabels = false }) => {
   const { owner, repo } = context.repo;
   const eventPull = context.payload.pull_request;
   let numbers = [];
@@ -124,7 +124,17 @@ module.exports = async ({ github, context }) => {
     // API 조회 중 작성한 메모를 보존하고, 변경된 머지 결과에는 이전 결과를 쓰지 않습니다.
     const { data: current } = await github.rest.pulls.get({ owner, repo, pull_number: number });
     if (current.state !== 'open' || current.head.sha !== pr.head.sha || current.base.ref !== pr.base.ref || current.base.sha !== pr.base.sha || current.merge_commit_sha !== pr.merge_commit_sha) continue;
-    const releaseLabels = current.labels.map(label => label.name).filter(name => ['major', 'minor', 'patch'].includes(name));
+    let releaseLabels = current.labels.map(label => label.name).filter(name => ['major', 'minor', 'patch'].includes(name));
+    if (syncReleaseLabels) {
+      for (const name of releaseLabels.filter(name => name !== bump)) {
+        await github.rest.issues.removeLabel({ owner, repo, issue_number: number, name });
+      }
+      if (!releaseLabels.includes(bump)) {
+        await github.rest.issues.addLabels({ owner, repo, issue_number: number, labels: [bump] });
+      }
+      const labels = await github.paginate(github.rest.issues.listLabelsOnIssue, { owner, repo, issue_number: number, per_page: 100 });
+      releaseLabels = labels.map(label => label.name).filter(name => ['major', 'minor', 'patch'].includes(name));
+    }
     const valid = version === nextVersion && releaseLabels.length === 1 && releaseLabels[0] === bump;
     // 다른 PR의 병합·라벨 변경으로 실행돼도 결과는 버전 PR에 표시합니다.
     await github.rest.repos.createCommitStatus({ owner, repo, sha: pr.head.sha,

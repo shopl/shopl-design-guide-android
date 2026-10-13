@@ -1,4 +1,5 @@
-const { getVersionChanges, getPublishingConfig, versionPath } = require('./version-pr-summary.cjs');
+const summarizeVersionPr = require('./version-pr-summary.cjs');
+const { getVersionChanges, getPublishingConfig, versionPath } = summarizeVersionPr;
 const requestMarker = '<!-- sdg-version-request:';
 
 async function resolveAssignee(github, { assignee, assigneeId }) {
@@ -54,7 +55,7 @@ module.exports = async ({ github, context, dryRun = false, assignee = '', assign
         throw new Error(`${pr.html_url}의 담당자 지정에 실패했습니다. GitHub 쓰기 권한을 확인해주세요.`);
       }
     }
-    if (!pr.labels.some(label => label.name === bump)) {
+    if (bump && !pr.labels.some(label => label.name === bump)) {
       await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels: [bump] });
     }
     if (pr.requested_teams?.length || pr.requested_reviewers?.length) return;
@@ -71,25 +72,33 @@ module.exports = async ({ github, context, dryRun = false, assignee = '', assign
     if (dryRun) return { status: 'existing', url: pr.html_url, number: pr.number };
     ({ data: pr } = await github.rest.pulls.get({ owner, repo, pull_number: pr.number }));
     if (pr.state !== 'open') throw new Error('기존 버전 PR이 닫혔습니다. 다시 실행해주세요.');
-    const versionBranch = pr.head.ref.match(/^version\/[^/]+\/(minor|patch)-\d+\.\d+\.\d+$/);
-    const body = pr.body || '';
-    if (versionBranch && body.includes(requestMarker)) {
-      const markers = [...body.matchAll(/<!-- sdg-version-request:\s*([\s\S]*?)\s*-->/g)];
-      let request;
-      try {
-        if (markers.length !== 1 || body.split(requestMarker).length !== 2) throw new Error();
-        request = JSON.parse(markers[0][1]);
-        if (typeof request?.assignee !== 'string' || typeof request?.assigneeId !== 'string') throw new Error();
-      } catch {
-        throw new Error('버전 PR에 저장된 최초 요청자 정보를 확인해주세요.');
+    const setStatus = state => github.rest.repos.createCommitStatus({ owner, repo, sha: pr.head.sha,
+      context: 'SDG 버전 검증', state, description: '기존 버전 PR 재검증' });
+    await setStatus('pending');
+    try {
+      const versionBranch = pr.head.ref.match(/^version\/[^/]+\/(minor|patch)-\d+\.\d+\.\d+$/);
+      const body = pr.body || '';
+      if (versionBranch && body.includes(requestMarker)) {
+        const markers = [...body.matchAll(/<!-- sdg-version-request:\s*([\s\S]*?)\s*-->/g)];
+        let request;
+        try {
+          if (markers.length !== 1 || body.split(requestMarker).length !== 2) throw new Error();
+          request = JSON.parse(markers[0][1]);
+          if (typeof request?.assignee !== 'string' || typeof request?.assigneeId !== 'string') throw new Error();
+        } catch {
+          throw new Error('버전 PR에 저장된 최초 요청자 정보를 확인해주세요.');
+        }
+        if (!pr.assignees?.length) {
+          request.assignee = await resolveAssignee(github, request);
+          await checkAssignee(request.assignee);
+        }
+        await ensureMetadata(pr, request);
       }
-      if (!pr.assignees?.length) {
-        request.assignee = await resolveAssignee(github, request);
-        await checkAssignee(request.assignee);
-      }
-      await ensureMetadata(pr, request, versionBranch[1]);
-    } else if (versionBranch && !pr.labels.some(label => label.name === versionBranch[1])) {
-      await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels: [versionBranch[1]] });
+      await summarizeVersionPr({ github, context: { ...context, eventName: 'workflow_dispatch',
+        payload: { inputs: { pr_number: pr.number } } }, syncReleaseLabels: true });
+    } catch (error) {
+      await setStatus('failure');
+      throw error;
     }
     return { status: 'existing', url: pr.html_url, number: pr.number };
   };
