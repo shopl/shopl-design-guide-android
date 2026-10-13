@@ -51,7 +51,7 @@ private val SDGSelectInputCircularIconSize = 14.dp
 /**
  * SDG - Component - Select Input
  *
- * 특정 타켓을 선택하는 인풋 컴포넌트
+ * 특정 타겟을 선택하는 인풋 컴포넌트
  *
  * @version 2.3.51
  *
