@@ -16,10 +16,6 @@ permissions:
   pull-requests: write
   statuses: write
 
-concurrency:
-  group: version-pr-summary-${{ github.repository }}
-  cancel-in-progress: false
-
 jobs:
   summarize:
     if: >-
@@ -28,6 +24,10 @@ jobs:
        (startsWith(github.event.pull_request.head.ref, 'version/') ||
         github.event.action == 'labeled' || github.event.action == 'unlabeled' ||
         (github.event.action == 'closed' && github.event.pull_request.merged)))
+    concurrency:
+      group: version-pr-summary-${{ github.repository }}
+      cancel-in-progress: false
+      queue: max
     runs-on: ubuntu-latest
     steps:
       - name: 기준 브랜치 소스 체크아웃
