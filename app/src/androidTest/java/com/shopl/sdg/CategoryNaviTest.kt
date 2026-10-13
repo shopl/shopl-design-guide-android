@@ -28,6 +28,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.shopl.sdg.component.navigation.category.SDGCategoryNavi
 import com.shopl.sdg.component.navigation.category.SDGCategoryNaviHasDropdown
 import com.shopl.sdg.component.navigation.category.SDGCategoryNaviIconItem
+import com.shopl.sdg.component.navigation.category.SDGCategoryNaviLeftIconItem
 import com.shopl.sdg.ui.screen.template.CategoryNaviScreen
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_resource.R as SDGResource
@@ -46,11 +47,18 @@ class CategoryNaviTest {
     @Test
     fun shortTitleKeepsDropdownAdjacentAndDispatchesEachAction() {
         val clicks = IntArray(3)
+        val leftIcon = mutableStateOf<SDGCategoryNaviLeftIconItem?>(
+            SDGCategoryNaviLeftIconItem(
+                onClick = { clicks[0]++ },
+                iconColor = null,
+                contentDescription = "back",
+            ),
+        )
         rule.setContent {
             Box(Modifier.width(375.dp).testTag("navi")) {
                 SDGCategoryNavi(
                     title = "Label",
-                    leftIcon = icon("back") { clicks[0]++ },
+                    leftIcon = leftIcon.value,
                     rightIcons = persistentListOf(icon("right") { clicks[1]++ }),
                     backgroundColor = SDGColor.Neutral100,
                     hasDropdown = SDGCategoryNaviHasDropdown.True(onClick = { clicks[2]++ }),
@@ -67,6 +75,13 @@ class CategoryNaviTest {
         val titleBounds = rule.onNodeWithText("Label").getUnclippedBoundsInRoot()
         assertEquals(titleBounds.right, dropdown.getUnclippedBoundsInRoot().left)
         assertEquals(listOf(1, 1, 1), clicks.toList())
+        val naviBounds = rule.onNodeWithTag("navi").getUnclippedBoundsInRoot()
+        assertEquals(naviBounds.left + 52.dp, titleBounds.left)
+
+        rule.runOnIdle { leftIcon.value = null }
+        rule.onNodeWithContentDescription("back").assertDoesNotExist()
+        val titleWithoutBack = rule.onNodeWithText("Label").getUnclippedBoundsInRoot()
+        assertEquals(naviBounds.left + 12.dp, titleWithoutBack.left)
     }
 
     @Test
@@ -77,7 +92,11 @@ class CategoryNaviTest {
             Box(Modifier.width(320.dp).testTag("navi")) {
                 SDGCategoryNavi(
                     title = longTitle,
-                    leftIcon = icon("back"),
+                    leftIcon = SDGCategoryNaviLeftIconItem(
+                        onClick = {},
+                        iconColor = null,
+                        contentDescription = "back",
+                    ),
                     rightIcons = List(count.value) { icon("right$it") }.toPersistentList(),
                     backgroundColor = SDGColor.Neutral100,
                     hasDropdown = SDGCategoryNaviHasDropdown.True(onClick = {}),
