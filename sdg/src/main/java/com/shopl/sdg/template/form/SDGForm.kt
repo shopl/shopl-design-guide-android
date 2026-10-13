@@ -681,7 +681,7 @@ private fun selectInputType(
         SDGSelectInputType.OneImage(
             text = SDGSelectInputText.Single(value = text),
             image = selectedElementImage,
-            type = SDGSelectInputImageType.Normal2,
+            type = SDGSelectInputImageType.Square,
         )
     }
 }

@@ -23,9 +23,11 @@ internal class SDGSelectInputPreviewParameterProvider :
         선택_Text_다중선택(),
         선택_Text_다중선택_5명(),
         선택_Avatar(),
-        선택_OneImage_Normal1(),
-        선택_OneImage_Normal2(),
-        선택_OneImage_Special1(),
+        선택_OneImage_WithCircular(),
+        선택_OneImage_WithCircular().copy(state = SDGSelectInputState.Disabled),
+        선택_OneImage_WithCircular().copy(type = SDGSelectInputPreviewType.OneImageWithCircularUrl),
+        선택_OneImage_Square(),
+        선택_OneImage_Rectangle(),
         선택_TwoImage(),
         선택_TwoImage().copy(state = SDGSelectInputState.Default),
         선택_TwoImage().copy(state = SDGSelectInputState.Disabled),
@@ -70,22 +72,22 @@ internal class SDGSelectInputPreviewParameterProvider :
         type = SDGSelectInputPreviewType.Avatar,
     )
 
-    private fun 선택_OneImage_Normal1() = SDGSelectInputPreviewParameter(
+    private fun 선택_OneImage_WithCircular() = SDGSelectInputPreviewParameter(
         text = SDGSelectInputText.Single(value = "Selected Text"),
         state = SDGSelectInputState.Selected,
-        type = SDGSelectInputPreviewType.OneImageNormal1,
+        type = SDGSelectInputPreviewType.OneImageWithCircular,
     )
 
-    private fun 선택_OneImage_Normal2() = SDGSelectInputPreviewParameter(
+    private fun 선택_OneImage_Square() = SDGSelectInputPreviewParameter(
         text = SDGSelectInputText.Single(value = "Selected Text"),
         state = SDGSelectInputState.Selected,
-        type = SDGSelectInputPreviewType.OneImageNormal2,
+        type = SDGSelectInputPreviewType.OneImageSquare,
     )
 
-    private fun 선택_OneImage_Special1() = SDGSelectInputPreviewParameter(
+    private fun 선택_OneImage_Rectangle() = SDGSelectInputPreviewParameter(
         text = SDGSelectInputText.Single(value = "Selected Text"),
         state = SDGSelectInputState.Selected,
-        type = SDGSelectInputPreviewType.OneImageSpecial1,
+        type = SDGSelectInputPreviewType.OneImageRectangle,
     )
 
     private fun 선택_TwoImage() = SDGSelectInputPreviewParameter(
@@ -119,9 +121,10 @@ internal data class SDGSelectInputPreviewParameter(
 internal enum class SDGSelectInputPreviewType {
     Text,
     Avatar,
-    OneImageNormal1,
-    OneImageNormal2,
-    OneImageSpecial1,
+    OneImageWithCircular,
+    OneImageWithCircularUrl,
+    OneImageSquare,
+    OneImageRectangle,
     TwoImage,
 }
 
@@ -136,29 +139,38 @@ internal fun SDGSelectInputPreviewParameter.toSelectInputType(): SDGSelectInputT
             ),
         )
 
-        SDGSelectInputPreviewType.OneImageNormal1 -> SDGSelectInputType.OneImage(
+        SDGSelectInputPreviewType.OneImageWithCircular -> SDGSelectInputType.OneImage(
             text = text,
             image = SDGSelectInputImage.Resource(
                 resId = R.drawable.ic_common_photo,
             ),
-            type = SDGSelectInputImageType.Normal1,
+            type = SDGSelectInputImageType.WithCircular,
         )
 
-        SDGSelectInputPreviewType.OneImageNormal2 -> SDGSelectInputType.OneImage(
+        SDGSelectInputPreviewType.OneImageWithCircularUrl -> SDGSelectInputType.OneImage(
             text = text,
             image = SDGSelectInputImage.Url(
                 url = "https://example.com/image.png",
                 failureImageResId = R.drawable.ic_common_photo,
             ),
-            type = SDGSelectInputImageType.Normal2,
+            type = SDGSelectInputImageType.WithCircular,
         )
 
-        SDGSelectInputPreviewType.OneImageSpecial1 -> SDGSelectInputType.OneImage(
+        SDGSelectInputPreviewType.OneImageSquare -> SDGSelectInputType.OneImage(
+            text = text,
+            image = SDGSelectInputImage.Url(
+                url = "https://example.com/image.png",
+                failureImageResId = R.drawable.ic_common_photo,
+            ),
+            type = SDGSelectInputImageType.Square,
+        )
+
+        SDGSelectInputPreviewType.OneImageRectangle -> SDGSelectInputType.OneImage(
             text = text,
             image = SDGSelectInputImage.Resource(
                 resId = R.drawable.ic_common_photo,
             ),
-            type = SDGSelectInputImageType.Special1,
+            type = SDGSelectInputImageType.Rectangle,
         )
 
         SDGSelectInputPreviewType.TwoImage -> SDGSelectInputType.TwoImage(
