@@ -109,7 +109,6 @@ fun SDGCategoryNavi(
                 SDGImage(
                     resId = R.drawable.ic_common_dropdown,
                     color = titleColor,
-                    contentDescription = title ?: stringResource(R.string.select),
                     modifier = Modifier
                         .size(DROPDOWN_ICON_SIZE)
                         .clickable(
