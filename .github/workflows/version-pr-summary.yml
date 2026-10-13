@@ -1,7 +1,9 @@
 name: 버전 PR 변경사항 자동 생성
 
 on:
-  pull_request:
+  push:
+    branches: [main]
+  pull_request_target:
     types: [opened, reopened, synchronize, edited, ready_for_review, labeled, unlabeled, closed]
     branches: [main]
   workflow_dispatch:
@@ -19,11 +21,11 @@ permissions:
 jobs:
   summarize:
     if: >-
-      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'workflow_dispatch' || github.event_name == 'push' ||
+      github.event.action == 'labeled' || github.event.action == 'unlabeled' ||
+      (github.event.action == 'closed' && github.event.pull_request.merged) ||
       (github.event.pull_request.head.repo.full_name == github.repository &&
-       (startsWith(github.event.pull_request.head.ref, 'version/') ||
-        github.event.action == 'labeled' || github.event.action == 'unlabeled' ||
-        (github.event.action == 'closed' && github.event.pull_request.merged)))
+       startsWith(github.event.pull_request.head.ref, 'version/'))
     concurrency:
       group: version-pr-summary-${{ github.repository }}
       cancel-in-progress: false
@@ -33,7 +35,7 @@ jobs:
       - name: 기준 브랜치 소스 체크아웃
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.base.sha || github.sha }}
+          ref: ${{ github.sha }}
           persist-credentials: false
 
       - name: JavaScript 구문 확인

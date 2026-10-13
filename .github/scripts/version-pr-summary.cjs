@@ -94,9 +94,9 @@ module.exports = async ({ github, context }) => {
     const number = Number(context.payload.inputs.pr_number);
     if (!Number.isSafeInteger(number) || number < 1) throw new Error('유효한 PR 번호를 입력해주세요.');
     numbers = [number];
-  } else if (eventPull?.head.ref.startsWith('version/') && context.payload.action !== 'closed') {
+  } else if (eventPull?.head.repo?.full_name === `${owner}/${repo}` && eventPull.head.ref.startsWith('version/') && context.payload.action !== 'closed') {
     numbers = [eventPull.number];
-  } else if (['labeled', 'unlabeled'].includes(context.payload.action) || (context.payload.action === 'closed' && eventPull.merged)) {
+  } else if (context.eventName === 'push' || ['labeled', 'unlabeled'].includes(context.payload.action) || (context.payload.action === 'closed' && eventPull.merged)) {
     const openPulls = await github.paginate(github.rest.pulls.list, { owner, repo, state: 'open', base: 'main', per_page: 100 });
     numbers = openPulls.filter(pr => pr.head.ref.startsWith('version/')).map(pr => pr.number);
   }
