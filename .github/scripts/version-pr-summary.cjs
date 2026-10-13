@@ -1,5 +1,15 @@
 const startMarker = '<!-- sdg-version-summary:start -->';
 const endMarker = '<!-- sdg-version-summary:end -->';
+const versionPath = 'build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt';
+
+async function getPublishingConfig({ github, context, ref }) {
+  const { data: file } = await github.rest.repos.getContent({ ...context.repo, path: versionPath, ref });
+  if (file.type !== 'file' || file.encoding !== 'base64') throw new Error('버전 설정 파일을 확인해주세요.');
+  const content = Buffer.from(file.content, 'base64').toString('utf8');
+  const versions = [...content.matchAll(/\bconst val VERSION = "([^"]+)"/g)];
+  if (versions.length !== 1) throw new Error('버전 설정 파일에 VERSION이 하나인지 확인해주세요.');
+  return { content, version: versions[0][1] };
+}
 
 function mergeSummary(body, summary) {
   const start = body.indexOf(startMarker);
@@ -105,14 +115,24 @@ module.exports = async ({ github, context }) => {
     if (pr.state !== 'open') continue;
     if (!pr.mergeable || !pr.merge_commit_sha) throw new Error(`#${number}의 머지 가능 여부를 확인한 뒤 다시 실행해주세요.`);
 
-    const { body: summary, releaseSha, commitShas } = await getVersionChanges({
+    const { body: summary, nextVersion, releaseSha, commitShas } = await getVersionChanges({
       github, context, release, headSha: pr.merge_commit_sha, excludePullNumber: number,
     });
     if (pr.base.sha !== releaseSha && !commitShas.has(pr.base.sha)) throw new Error('GitHub의 머지 결과에 최신 main이 반영된 뒤 다시 실행해주세요.');
+    const { version } = await getPublishingConfig({ github, context, ref: pr.head.sha });
 
     // API 조회 중 작성한 메모를 보존하고, 변경된 머지 결과에는 이전 결과를 쓰지 않습니다.
     const { data: current } = await github.rest.pulls.get({ owner, repo, pull_number: number });
     if (current.state !== 'open' || current.head.sha !== pr.head.sha || current.base.ref !== pr.base.ref || current.base.sha !== pr.base.sha || current.merge_commit_sha !== pr.merge_commit_sha) continue;
+    // 다른 PR의 병합·라벨 변경으로 실행돼도 결과는 버전 PR에 표시합니다.
+    await github.rest.repos.createCommitStatus({ owner, repo, sha: pr.head.sha,
+      context: 'SDG 버전 검증', state: version === nextVersion ? 'success' : 'failure',
+      description: version === nextVersion ? `VERSION ${version} 검증 완료` : `VERSION ${version} · 필요한 버전 ${nextVersion}`,
+      ...(context.runId ? { target_url: `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}` } : {}),
+    });
+    if (version !== nextVersion) {
+      throw new Error(`#${number}의 VERSION은 ${version}이지만 필요한 버전은 ${nextVersion}입니다. 버전 PR을 수정한 뒤 다시 실행해주세요.`);
+    }
     const body = mergeSummary(current.body || '', summary);
     if (body !== (current.body || '')) {
       await github.rest.pulls.update({ owner, repo, pull_number: number, body });
@@ -121,3 +141,5 @@ module.exports = async ({ github, context }) => {
 };
 
 module.exports.getVersionChanges = getVersionChanges;
+module.exports.getPublishingConfig = getPublishingConfig;
+module.exports.versionPath = versionPath;

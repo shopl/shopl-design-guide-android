@@ -1,5 +1,4 @@
-const { getVersionChanges } = require('./version-pr-summary.cjs');
-const versionPath = 'build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt';
+const { getVersionChanges, getPublishingConfig, versionPath } = require('./version-pr-summary.cjs');
 
 module.exports = async ({ github, context, dryRun = false, assignee = '', assigneeId = '', requesterSlackId = '', branchAuthor = '' }) => {
   const { owner, repo } = context.repo;
@@ -50,15 +49,11 @@ module.exports = async ({ github, context, dryRun = false, assignee = '', assign
   const changes = await getVersionChanges({ github, context, release, headSha: mainSha });
   if (!changes.commitShas.size) return { status: 'empty', ...(dryRun ? { body: changes.body } : {}) };
 
-  const { data: file } = await github.rest.repos.getContent({ owner, repo, path: versionPath, ref: mainSha });
-  if (file.type !== 'file' || file.encoding !== 'base64') throw new Error('버전 설정 파일을 확인해주세요.');
-  const content = Buffer.from(file.content, 'base64').toString('utf8');
-  const pattern = /\bconst val VERSION = "([^"]+)"/g;
-  const versions = [...content.matchAll(pattern)];
-  if (versions.length !== 1 || versions[0][1] !== release.tag_name.replace(/^v/, '')) {
+  const { content, version } = await getPublishingConfig({ github, context, ref: mainSha });
+  if (version !== release.tag_name.replace(/^v/, '')) {
     throw new Error('main의 VERSION과 이전 릴리스 버전이 다릅니다. 진행 중인 릴리스를 확인해주세요.');
   }
-  const updated = content.replace(pattern, `const val VERSION = "${changes.nextVersion}"`);
+  const updated = content.replace(/\bconst val VERSION = "[^"]+"/, `const val VERSION = "${changes.nextVersion}"`);
   const branch = `version/${branchAuthor}/${changes.bump}-${changes.nextVersion}`;
   let branchRef;
   try {
