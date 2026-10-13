@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.ext.clickable
+import com.shopl.sdg_common.ext.orDefault
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing10
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
@@ -61,7 +62,7 @@ fun SDGCategoryNavi(
     titleColor: Color = SDGColor.Neutral900,
     marginValues: PaddingValues = PaddingValues(),
 ) {
-    require((rightIcons?.size ?: 0) <= MAX_RIGHT_ICON_COUNT) {
+    require((rightIcons?.size.orDefault()) <= MAX_RIGHT_ICON_COUNT) {
         "우측 아이콘은 최대 ${MAX_RIGHT_ICON_COUNT}개까지만 사용 가능합니다."
     }
 
