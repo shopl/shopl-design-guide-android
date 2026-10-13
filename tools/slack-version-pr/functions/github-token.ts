@@ -1,10 +1,16 @@
 import type { SlackAPI } from "deno-slack-api/mod.ts";
-import { decryptToken, loadToken, saveToken } from "./token-store.ts";
+import {
+  decryptToken,
+  isBranchAuthor,
+  loadToken,
+  saveToken,
+} from "./token-store.ts";
 
 export const tokenView = (
   preview = false,
-  saved: { github_login: string } | null = null,
+  saved: { github_login: string; branch_author?: string } | null = null,
   notice = "",
+  branchAuthor = saved?.branch_author || "",
 ) => ({
   type: "modal" as const,
   callback_id: "sdg_version_pr_token",
@@ -35,7 +41,25 @@ export const tokenView = (
             ? "*테스트: GitHub 조회만 수행하며 실제 PR을 생성하지 않습니다.*\n"
             : "개인 토큰으로 GitHub Actions 실행을 요청합니다.\n") +
           "<https://github.com/settings/personal-access-tokens/new?name=SDG+Version+PR&target_name=shopl&expires_in=30&actions=write|개인 토큰 생성>에서 *shopl/shopl-design-guide-android 저장소만* 선택하고 *Actions: Read and write* 권한으로 발급하세요.\n" +
-          "토큰 소유자를 새 PR의 Assignee로 지정합니다. 토큰은 Slack 사용자별로 암호화해 보관하고 다음 실행부터 재사용합니다. 만료·폐기되면 새 토큰을 입력합니다. 이 화면은 본인에게만 표시됩니다.",
+          "토큰 소유자를 새 PR의 Assignee로 지정합니다. 브랜치는 `version/입력한 이름/minor-버전` 또는 `version/입력한 이름/patch-버전`으로 생성합니다. 토큰은 Slack 사용자별로 암호화해 보관하고 다음 실행부터 재사용합니다. 만료·폐기되면 새 토큰을 입력합니다. 이 화면은 본인에게만 표시됩니다.",
+      },
+    },
+    {
+      type: "input" as const,
+      block_id: "branch_author",
+      label: { type: "plain_text" as const, text: "브랜치 작성자 이름" },
+      hint: {
+        type: "plain_text" as const,
+        text:
+          "scott처럼 영문 소문자로 시작하고 숫자·하이픈을 사용할 수 있습니다. 저장한 이름은 다음 실행에 자동으로 채워집니다.",
+      },
+      element: {
+        type: "plain_text_input" as const,
+        action_id: "name",
+        min_length: 1,
+        max_length: 32,
+        placeholder: { type: "plain_text" as const, text: "scott" },
+        ...(branchAuthor ? { initial_value: branchAuthor } : {}),
       },
     },
     ...(saved
@@ -79,9 +103,12 @@ export const tokenView = (
   ],
 });
 
-export const tokenError = (text: string) => ({
+export const tokenError = (
+  text: string,
+  field: "github_token" | "branch_author" = "github_token",
+) => ({
   response_action: "errors" as const,
-  errors: { github_token: text },
+  errors: { [field]: text },
 });
 
 export async function getTokenOwner(token: string): Promise<
@@ -122,12 +149,21 @@ export async function getTokenOwner(token: string): Promise<
 }
 
 export const tokenFeedback = (
-  view: { private_metadata?: string },
+  view: {
+    private_metadata?: string;
+    state?: {
+      values: { branch_author?: { name?: { value?: string | null } } };
+    };
+  },
   text: string,
   preview = false,
   reset = false,
+  field: "github_token" | "branch_author" = "github_token",
 ) => {
-  if (!reset && !view.private_metadata) return tokenError(text);
+  if (
+    (field === "branch_author" && view.state?.values.branch_author) ||
+    (field === "github_token" && !reset && !view.private_metadata)
+  ) return tokenError(text, field);
   const saved = !reset &&
       /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(
         view.private_metadata || "",
@@ -136,7 +172,12 @@ export const tokenFeedback = (
     : null;
   return {
     response_action: "update" as const,
-    view: tokenView(preview, saved, text),
+    view: tokenView(
+      preview,
+      saved,
+      text,
+      view.state?.values.branch_author?.name?.value || "",
+    ),
   };
 };
 
@@ -146,12 +187,21 @@ export async function resolveToken(
   team: string,
   user: string,
   provided: string,
+  branchAuthor: string,
 ): Promise<
-  { token: string; owner: { id: number; login: string } } | {
+  { token: string; owner: { id: number; login: string }; branchAuthor: string } | {
     error: string;
     reset?: boolean;
+    field?: "branch_author";
   }
 > {
+  if (!isBranchAuthor(branchAuthor)) {
+    return {
+      error:
+        "브랜치 작성자 이름은 영문 소문자로 시작하고 소문자·숫자·하이픈으로 32자 이내로 입력해주세요. 예: scott",
+      field: "branch_author",
+    };
+  }
   try {
     const saved = provided ? null : await loadToken(client, team, user);
     if (!provided && !saved) {
@@ -179,8 +229,10 @@ export async function resolveToken(
           "저장된 토큰의 GitHub 계정이 일치하지 않습니다. 토큰을 변경해주세요.",
       };
     }
-    if (provided) await saveToken(client, key, team, user, token, owner);
-    return { token, owner };
+    if (provided || saved?.branch_author !== branchAuthor) {
+      await saveToken(client, key, team, user, token, owner, branchAuthor);
+    }
+    return { token, owner, branchAuthor };
   } catch {
     return {
       error:

@@ -7,8 +7,11 @@ export type TokenRecord = {
   id: string;
   github_id: number;
   github_login: string;
+  branch_author?: string;
   encrypted_token: string;
 };
+export const isBranchAuthor = (value: unknown): value is string =>
+  typeof value === "string" && /^[a-z][a-z0-9-]{0,31}$/.test(value);
 const encode = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes));
 const decode = (value: string) =>
   Uint8Array.from(atob(value), (c) => c.charCodeAt(0));
@@ -102,7 +105,9 @@ export async function loadToken(
     !/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(
       saved.item.github_login,
     ) ||
-    typeof saved.item.encrypted_token !== "string"
+    typeof saved.item.encrypted_token !== "string" ||
+    (saved.item.branch_author !== undefined &&
+      !isBranchAuthor(saved.item.branch_author))
   ) {
     throw new Error("저장된 개인 토큰의 계정 정보를 확인해주세요.");
   }
@@ -116,7 +121,11 @@ export async function saveToken(
   user: string,
   token: string,
   owner: Owner,
+  branchAuthor: string,
 ) {
+  if (!isBranchAuthor(branchAuthor)) {
+    throw new Error("브랜치 작성자 이름을 확인해주세요.");
+  }
   const id = recordId(team, user);
   const encrypted_token = await encryptToken(token, key, id, owner.id);
   const saved = await client.apps.datastore.put<typeof GitHubTokens.definition>(
@@ -126,6 +135,7 @@ export async function saveToken(
         id,
         github_id: owner.id,
         github_login: owner.login,
+        branch_author: branchAuthor,
         encrypted_token,
       },
     },

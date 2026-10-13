@@ -65,17 +65,26 @@ export default SlackFunction(
     }
     // 원문 토큰은 개인 입력 또는 복호화 결과로만 읽으며 함수 결과·메타데이터·로그에 넣지 않습니다.
     const provided = view.state.values.github_token?.token?.value?.trim() || "";
+    const name = view.state.values.branch_author?.name?.value?.trim()
+      .toLowerCase() || "";
     const resolved = await resolveToken(
       client,
       env.SDG_TOKEN_ENCRYPTION_KEY || "",
       team_id,
       inputs.user_id,
       provided,
+      name,
     );
     if ("error" in resolved) {
-      return tokenFeedback(view, resolved.error, false, resolved.reset);
+      return tokenFeedback(
+        view,
+        resolved.error,
+        false,
+        resolved.reset,
+        resolved.field,
+      );
     }
-    const { token, owner } = resolved;
+    const { token, owner, branchAuthor } = resolved;
     try {
       const response = await fetch(
         "https://api.github.com/repos/shopl/shopl-design-guide-android/actions/workflows/create-version-pr.yml/dispatches",
@@ -92,6 +101,7 @@ export default SlackFunction(
             inputs: {
               requester_slack_id: inputs.user_id,
               assignee_id: String(owner.id),
+              branch_author: branchAuthor,
             },
           }),
           redirect: "error",
@@ -113,7 +123,7 @@ export default SlackFunction(
         );
       }
       const message =
-        `<@${inputs.user_id}>님이 SDG 버전 PR 생성을 요청했습니다. 새 PR의 담당자는 ${owner.login}입니다. 완료되면 이 채널에 PR 링크를 알려드립니다.`;
+        `<@${inputs.user_id}>님이 SDG 버전 PR 생성을 요청했습니다. 브랜치 작성자 이름은 ${branchAuthor}, 새 PR의 담당자는 ${owner.login}입니다. 완료되면 이 채널에 PR 링크를 알려드립니다.`;
       const completed = await client.functions.completeSuccess({
         function_execution_id: body.function_data.execution_id,
         outputs: { message },
@@ -156,6 +166,7 @@ export default SlackFunction(
           action.action_id === "sdg_token_delete"
             ? "앱에 저장된 토큰을 삭제했습니다."
             : "새 토큰으로 변경합니다. 새 토큰을 확인하기 전까지 기존 토큰은 유지합니다.",
+          body.view.state.values.branch_author?.name?.value || "",
         ),
       });
       if (!updated.ok) throw new Error();

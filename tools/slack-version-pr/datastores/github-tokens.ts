@@ -7,6 +7,7 @@ export default DefineDatastore({
     id: { type: Schema.types.string },
     github_id: { type: Schema.types.number },
     github_login: { type: Schema.types.string },
+    branch_author: { type: Schema.types.string },
     encrypted_token: { type: Schema.types.string },
   },
 });
