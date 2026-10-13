@@ -425,6 +425,15 @@ private fun SDGSelectInputType.withText(
 /** 초기화 아이콘이 없는 기존 Select Input API의 하위 호환성을 유지합니다. */
 @Deprecated(
     message = "SDGSelectInputShowClearIcon을 지정하는 API를 사용하세요.",
+    replaceWith = ReplaceWith(
+        expression = "SDGSelectInput(placeholder = placeholder, state = state, inputField = inputField, " +
+            "type = type, showClearIcon = SDGSelectInputShowClearIcon.False, " +
+            "marginValues = marginValues, onClick = onClick)",
+        imports = [
+            "com.shopl.sdg.component.select_input.SDGSelectInput",
+            "com.shopl.sdg.component.select_input.SDGSelectInputShowClearIcon",
+        ],
+    ),
 )
 @Composable
 fun SDGSelectInput(
