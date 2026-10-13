@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.navigation.category.SDGCategoryNavi
 import com.shopl.sdg.component.navigation.category.SDGCategoryNaviHasDropdown
 import com.shopl.sdg.component.navigation.category.SDGCategoryNaviIconItem
+import com.shopl.sdg.component.navigation.category.SDGCategoryNaviLabel
 import com.shopl.sdg.component.navigation.category.SDGCategoryNaviLeftIconItem
 import com.shopl.sdg.scene.TemplateScene
 import com.shopl.sdg.template.popup.list.anatomy.SDGListBottomSheet
@@ -35,7 +36,7 @@ internal fun CategoryNaviScreen(
     onClickBack: () -> Unit,
     onClickMenu: () -> Unit,
 ) {
-    var selectedTitle by remember { mutableStateOf("Label") }
+    var selectedLabelText by remember { mutableStateOf("Label") }
     var showPopup by remember { mutableStateOf(false) }
     var showDot by remember { mutableStateOf(true) }
     val onDropdownClick = { showPopup = true }
@@ -75,7 +76,10 @@ internal fun CategoryNaviScreen(
         onClickMenu = onClickMenu,
         bodyContent = {
             CategoryNaviContent(
-                selectedTitle = selectedTitle,
+                label = SDGCategoryNaviLabel(
+                    text = selectedLabelText,
+                    color = SDGColor.Neutral900,
+                ),
                 backIcon = backIcon,
                 rightIcons = rightIcons,
                 hasDropdown = SDGCategoryNaviHasDropdown.True(onClick = onDropdownClick),
@@ -99,9 +103,9 @@ internal fun CategoryNaviScreen(
                 "다른 카테고리",
                 "긴 카테고리 이름이 들어가는 경우 말줄임표시 확인 필요",
             ).map {
-                SDGListPopupItemUiState.create(title = it, shouldSelect = it == selectedTitle)
+                SDGListPopupItemUiState.create(title = it, shouldSelect = it == selectedLabelText)
             }.toPersistentList(),
-            onSelected = { selectedTitle = it.title },
+            onSelected = { selectedLabelText = it.title },
             onDismissRequest = { showPopup = false },
         )
     }
@@ -109,7 +113,7 @@ internal fun CategoryNaviScreen(
 
 @Composable
 private fun CategoryNaviContent(
-    selectedTitle: String,
+    label: SDGCategoryNaviLabel,
     backIcon: SDGCategoryNaviLeftIconItem,
     rightIcons: PersistentList<SDGCategoryNaviIconItem>,
     hasDropdown: SDGCategoryNaviHasDropdown,
@@ -121,48 +125,47 @@ private fun CategoryNaviContent(
         verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing20),
     ) {
         SDGCategoryNavi(
-            title = selectedTitle,
+            label = label,
             leftIcon = backIcon,
             rightIcons = rightIcons,
             backgroundColor = SDGColor.Neutral100,
             hasDropdown = hasDropdown,
         )
         SDGCategoryNavi(
-            title = "뒤로가기 아이콘이 없는 경우",
+            label = label.copy(text = "뒤로가기 아이콘이 없는 경우"),
             leftIcon = null,
             rightIcons = persistentListOf(rightIcons[1]),
             backgroundColor = SDGColor.Neutral100,
             hasDropdown = hasDropdown,
         )
         SDGCategoryNavi(
-            title = "드롭다운이 없는 경우",
+            label = label.copy(text = "드롭다운이 없는 경우"),
             leftIcon = backIcon,
             rightIcons = persistentListOf(rightIcons[0], rightIcons[1]),
             backgroundColor = SDGColor.Neutral100,
             hasDropdown = SDGCategoryNaviHasDropdown.False,
         )
         SDGCategoryNavi(
-            title = "긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요",
+            label = label.copy(text = "긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요"),
             leftIcon = backIcon,
             rightIcons = rightIcons,
             backgroundColor = SDGColor.Neutral100,
             hasDropdown = hasDropdown,
         )
         SDGCategoryNavi(
-            title = "우측 아이콘이 없는 긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요",
+            label = label.copy(text = "우측 아이콘이 없는 긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요"),
             leftIcon = backIcon,
             rightIcons = null,
             backgroundColor = SDGColor.Neutral100,
             hasDropdown = hasDropdown,
         )
         SDGCategoryNavi(
-            title = selectedTitle,
+            label = label.copy(color = SDGColor.Neutral0),
             leftIcon = backIcon.copy(iconColor = SDGColor.Neutral0),
             rightIcons = rightIcons.map {
                 it.copy(iconColor = SDGColor.Neutral0)
             }.toPersistentList(),
             backgroundColor = SDGColor.Primary300,
-            titleColor = SDGColor.Neutral0,
             hasDropdown = hasDropdown,
         )
     }

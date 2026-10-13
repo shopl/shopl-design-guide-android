@@ -9,12 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertHeightIsEqualTo
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertWidthIsEqualTo
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -28,6 +28,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.shopl.sdg.component.navigation.category.SDGCategoryNavi
 import com.shopl.sdg.component.navigation.category.SDGCategoryNaviHasDropdown
 import com.shopl.sdg.component.navigation.category.SDGCategoryNaviIconItem
+import com.shopl.sdg.component.navigation.category.SDGCategoryNaviLabel
 import com.shopl.sdg.component.navigation.category.SDGCategoryNaviLeftIconItem
 import com.shopl.sdg.ui.screen.template.CategoryNaviScreen
 import com.shopl.sdg_common.foundation.SDGColor
@@ -45,7 +46,7 @@ class CategoryNaviTest {
     val rule = createComposeRule()
 
     @Test
-    fun shortTitleKeepsDropdownAdjacentAndDispatchesEachAction() {
+    fun shortLabelKeepsDropdownAdjacentAndDispatchesEachAction() {
         val clicks = IntArray(3)
         val leftIcon = mutableStateOf<SDGCategoryNaviLeftIconItem?>(
             SDGCategoryNaviLeftIconItem(
@@ -57,7 +58,7 @@ class CategoryNaviTest {
         rule.setContent {
             Box(Modifier.width(375.dp).testTag("navi")) {
                 SDGCategoryNavi(
-                    title = "Label",
+                    label = SDGCategoryNaviLabel(text = "Label", color = SDGColor.Neutral900),
                     leftIcon = leftIcon.value,
                     rightIcons = persistentListOf(icon("right") { clicks[1]++ }),
                     backgroundColor = SDGColor.Neutral100,
@@ -70,28 +71,28 @@ class CategoryNaviTest {
             .assertHeightIsEqualTo(40.dp).performClick()
         rule.onNodeWithContentDescription("right").assertWidthIsEqualTo(40.dp)
             .assertHeightIsEqualTo(40.dp).performClick()
-        val dropdown = rule.onNodeWithContentDescription("Label")
+        val dropdown = rule.onNode(dropdownMatcher())
         dropdown.assertWidthIsEqualTo(20.dp).assertHeightIsEqualTo(20.dp).performClick()
-        val titleBounds = rule.onNodeWithText("Label").getUnclippedBoundsInRoot()
-        assertEquals(titleBounds.right, dropdown.getUnclippedBoundsInRoot().left)
+        val labelBounds = rule.onNodeWithText("Label").getUnclippedBoundsInRoot()
+        assertEquals(labelBounds.right, dropdown.getUnclippedBoundsInRoot().left)
         assertEquals(listOf(1, 1, 1), clicks.toList())
         val naviBounds = rule.onNodeWithTag("navi").getUnclippedBoundsInRoot()
-        assertEquals(naviBounds.left + 52.dp, titleBounds.left)
+        assertEquals(naviBounds.left + 52.dp, labelBounds.left)
 
         rule.runOnIdle { leftIcon.value = null }
         rule.onNodeWithContentDescription("back").assertDoesNotExist()
-        val titleWithoutBack = rule.onNodeWithText("Label").getUnclippedBoundsInRoot()
-        assertEquals(naviBounds.left + 12.dp, titleWithoutBack.left)
+        val labelWithoutBack = rule.onNodeWithText("Label").getUnclippedBoundsInRoot()
+        assertEquals(naviBounds.left + 12.dp, labelWithoutBack.left)
     }
 
     @Test
-    fun longTitleEllipsizesWithoutDisplacingDropdownOrRightIcons() {
+    fun longLabelEllipsizesWithoutDisplacingDropdownOrRightIcons() {
         val count = mutableStateOf(3)
-        val longTitle = "긴 카테고리 이름이 들어가는 경우 말줄임표시 확인 필요 ".repeat(4)
+        val longLabelText = "긴 카테고리 이름이 들어가는 경우 말줄임표시 확인 필요 ".repeat(4)
         rule.setContent {
             Box(Modifier.width(320.dp).testTag("navi")) {
                 SDGCategoryNavi(
-                    title = longTitle,
+                    label = SDGCategoryNaviLabel(text = longLabelText, color = SDGColor.Neutral900),
                     leftIcon = SDGCategoryNaviLeftIconItem(
                         onClick = {},
                         iconColor = null,
@@ -106,15 +107,15 @@ class CategoryNaviTest {
         var previousWidth = 0.dp
         for (iconCount in 3 downTo 0) {
             rule.runOnIdle { count.value = iconCount }
-            val title = rule.onNodeWithText(longTitle)
+            val label = rule.onNodeWithText(longLabelText)
             val layouts = mutableListOf<TextLayoutResult>()
-            title.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
+            label.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
             assertEquals(1, layouts.single().lineCount)
             assertTrue(layouts.single().isLineEllipsized(0))
-            val bounds = title.getUnclippedBoundsInRoot()
+            val bounds = label.getUnclippedBoundsInRoot()
             assertTrue(bounds.right - bounds.left > previousWidth)
             previousWidth = bounds.right - bounds.left
-            val dropdown = rule.onNodeWithContentDescription(longTitle)
+            val dropdown = rule.onNode(dropdownMatcher())
             dropdown.assertIsDisplayed().assertWidthIsEqualTo(20.dp)
             assertEquals(bounds.right, dropdown.getUnclippedBoundsInRoot().left)
             for (index in 0 until iconCount) {
@@ -131,13 +132,13 @@ class CategoryNaviTest {
     }
 
     @Test
-    fun hiddenControlsAndMarginsKeepTitleAtDesignInsetWithLargeFont() {
+    fun hiddenControlsAndMarginsKeepLabelAtDesignInsetWithLargeFont() {
         rule.setContent {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, 1.5f)) {
                 Box(Modifier.width(375.dp).testTag("navi")) {
                     SDGCategoryNavi(
-                        title = "Label",
+                        label = SDGCategoryNaviLabel(text = "Label", color = SDGColor.Neutral900),
                         leftIcon = null,
                         rightIcons = persistentListOf(),
                         backgroundColor = SDGColor.Neutral100,
@@ -147,29 +148,27 @@ class CategoryNaviTest {
                 }
             }
         }
-        rule.onNodeWithContentDescription("Label").assertDoesNotExist()
+        rule.onNode(dropdownMatcher()).assertDoesNotExist()
         rule.onNodeWithTag("navi").assertHeightIsEqualTo(64.dp)
-        val titleBounds = rule.onNodeWithText("Label").getUnclippedBoundsInRoot()
+        val labelBounds = rule.onNodeWithText("Label").getUnclippedBoundsInRoot()
         val naviBounds = rule.onNodeWithTag("navi").getUnclippedBoundsInRoot()
-        assertEquals(naviBounds.left + 28.dp, titleBounds.left)
-        assertTrue(titleBounds.top >= naviBounds.top + 8.dp)
-        assertTrue(titleBounds.bottom <= naviBounds.bottom - 8.dp)
+        assertEquals(naviBounds.left + 28.dp, labelBounds.left)
+        assertTrue(labelBounds.top >= naviBounds.top + 8.dp)
+        assertTrue(labelBounds.bottom <= naviBounds.bottom - 8.dp)
     }
 
     @Test
-    fun dropdownRemainsVisibleWhenTitleAndIconsAreHidden() {
+    fun dropdownRemainsVisibleWhenLabelAndIconsAreHidden() {
         rule.setContent {
             SDGCategoryNavi(
-                title = null,
+                label = SDGCategoryNaviLabel(text = null, color = SDGColor.Neutral900),
                 leftIcon = null,
                 rightIcons = null,
                 backgroundColor = SDGColor.Neutral100,
                 hasDropdown = SDGCategoryNaviHasDropdown.True(onClick = {}),
             )
         }
-        val selectDescription = InstrumentationRegistry.getInstrumentation().targetContext
-            .getString(SDGResource.string.select)
-        rule.onNodeWithContentDescription(selectDescription).assertIsDisplayed()
+        rule.onNode(dropdownMatcher()).assertIsDisplayed()
             .assertWidthIsEqualTo(20.dp).assertHeightIsEqualTo(20.dp)
     }
 
@@ -178,7 +177,7 @@ class CategoryNaviTest {
         assertThrows(IllegalArgumentException::class.java) {
             rule.setContent {
                 SDGCategoryNavi(
-                    title = "Label",
+                    label = SDGCategoryNaviLabel(text = "Label", color = SDGColor.Neutral900),
                     leftIcon = null,
                     rightIcons = List(4) { icon("right$it") }.toPersistentList(),
                     backgroundColor = SDGColor.Neutral100,
@@ -189,12 +188,21 @@ class CategoryNaviTest {
     }
 
     @Test
-    fun sampleDropdownShowsListPopupAndUpdatesTitle() {
+    fun sampleDropdownShowsListPopupAndUpdatesLabel() {
         rule.setContent { CategoryNaviScreen(onClickBack = {}, onClickMenu = {}) }
-        rule.onAllNodesWithContentDescription("Label")[0].performClick()
+        rule.onAllNodes(dropdownMatcher())[0].performClick()
         rule.onNodeWithText("다른 카테고리").assertIsDisplayed().performClick()
         rule.onAllNodesWithText("다른 카테고리")[0].assertIsDisplayed()
-        rule.onAllNodesWithContentDescription("다른 카테고리")[0].assertIsDisplayed()
+        rule.onAllNodes(dropdownMatcher())[0].assertIsDisplayed()
+    }
+
+    private fun dropdownMatcher(): SemanticsMatcher {
+        val selectLabel = InstrumentationRegistry.getInstrumentation().targetContext
+            .getString(SDGResource.string.select)
+        return SemanticsMatcher("드롭다운 선택 액션") {
+            it.config.contains(SemanticsActions.OnClick) &&
+                it.config[SemanticsActions.OnClick].label == selectLabel
+        }
     }
 
     private fun icon(description: String, onClick: () -> Unit = {}) = SDGCategoryNaviIconItem(

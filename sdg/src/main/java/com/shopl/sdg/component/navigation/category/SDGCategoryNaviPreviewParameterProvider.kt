@@ -39,7 +39,7 @@ internal class SDGCategoryNaviPreviewParameterProvider :
         ),
     )
     private val defaultParameter = SDGCategoryNaviPreviewParameter(
-        title = "Label",
+        label = SDGCategoryNaviLabel(text = "Label", color = SDGColor.Neutral900),
         leftIcon = backIcon,
         rightIcons = rightIcons,
     )
@@ -47,21 +47,25 @@ internal class SDGCategoryNaviPreviewParameterProvider :
     override val values: Sequence<SDGCategoryNaviPreviewParameter> = sequenceOf(
         defaultParameter,
         defaultParameter.copy(leftIcon = null),
-        defaultParameter.copy(title = null),
+        defaultParameter.copy(label = defaultParameter.label.copy(text = null)),
         defaultParameter.copy(hasDropdown = SDGCategoryNaviHasDropdown.False),
         defaultParameter.copy(rightIcons = persistentListOf(rightIcons[0])),
         defaultParameter.copy(rightIcons = persistentListOf(rightIcons[0], rightIcons[1])),
         defaultParameter.copy(
-            title = "긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요",
+            label = defaultParameter.label.copy(
+                text = "긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요",
+            ),
         ),
         defaultParameter.copy(
-            title = "우측 아이콘이 없는 긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요",
+            label = defaultParameter.label.copy(
+                text = "우측 아이콘이 없는 긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요",
+            ),
             rightIcons = null,
         ),
         defaultParameter.copy(rightIcons = persistentListOf()),
         defaultParameter.copy(
             backgroundColor = SDGColor.Primary300,
-            titleColor = SDGColor.Neutral0,
+            label = defaultParameter.label.copy(color = SDGColor.Neutral0),
             leftIcon = backIcon.copy(iconColor = SDGColor.Neutral0),
             rightIcons = persistentListOf(
                 rightIcons[0].copy(iconColor = SDGColor.Neutral0),
@@ -73,10 +77,9 @@ internal class SDGCategoryNaviPreviewParameterProvider :
 }
 
 internal data class SDGCategoryNaviPreviewParameter(
-    val title: String?,
+    val label: SDGCategoryNaviLabel,
     val leftIcon: SDGCategoryNaviLeftIconItem?,
     val rightIcons: PersistentList<SDGCategoryNaviIconItem>?,
     val backgroundColor: Color = SDGColor.Neutral100,
-    val titleColor: Color = SDGColor.Neutral900,
     val hasDropdown: SDGCategoryNaviHasDropdown = SDGCategoryNaviHasDropdown.True(onClick = {}),
 )

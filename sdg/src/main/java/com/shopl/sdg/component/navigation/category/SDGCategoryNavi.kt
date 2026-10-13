@@ -36,7 +36,7 @@ import com.shopl.sdg_resource.R
 import kotlinx.collections.immutable.PersistentList
 
 private const val MAX_RIGHT_ICON_COUNT = 3
-private const val TITLE_MAX_LINES = 1
+private const val LABEL_MAX_LINES = 1
 private const val PREVIEW_WIDTH_DP = 375
 
 private val NAVI_HEIGHT = 48.dp
@@ -49,18 +49,18 @@ private val DOT_BADGE_SIZE = 8.dp
  *
  * 화면의 상단에 위치하여 현재 위치를 알려주는 유형 변경이 가능한 타이틀과 고 사용자가 필요한 것을 찾도록 도와주는 아이콘으로 조합한 컴포넌트
  *
+ * @param label 표시할 텍스트와 색상. 텍스트가 null이면 드롭다운만 표시할 수 있습니다.
  * @param leftIcon 40×40dp의 ic_navi_back_android 아이콘. null이면 표시하지 않습니다.
  * @param hasDropdown 드롭다운 표시 여부와 선택 시 List Popup을 표시하는 콜백
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19797-22031&m=dev">Figma</a>
  */
 @Composable
 fun SDGCategoryNavi(
-    title: String?,
+    label: SDGCategoryNaviLabel,
     leftIcon: SDGCategoryNaviLeftIconItem?,
     rightIcons: PersistentList<SDGCategoryNaviIconItem>?,
     backgroundColor: Color,
     hasDropdown: SDGCategoryNaviHasDropdown,
-    titleColor: Color = SDGColor.Neutral900,
     marginValues: PaddingValues = PaddingValues(),
 ) {
     require((rightIcons?.size.orDefault()) <= MAX_RIGHT_ICON_COUNT) {
@@ -93,12 +93,12 @@ fun SDGCategoryNavi(
                 .padding(start = Spacing2),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            title?.let {
+            label.text?.let {
                 SDGText(
                     text = it,
                     typography = SDGTypography.NaviTitle,
-                    textColor = titleColor,
-                    maxLines = TITLE_MAX_LINES,
+                    textColor = label.color,
+                    maxLines = LABEL_MAX_LINES,
                     overflow = TextOverflow.Ellipsis,
                     softWrap = false,
                     modifier = Modifier.weight(1f, false),
@@ -108,7 +108,7 @@ fun SDGCategoryNavi(
             if (hasDropdown is SDGCategoryNaviHasDropdown.True) {
                 SDGImage(
                     resId = R.drawable.ic_common_dropdown,
-                    color = titleColor,
+                    color = label.color,
                     modifier = Modifier
                         .size(DROPDOWN_ICON_SIZE)
                         .clickable(
@@ -166,12 +166,11 @@ private fun PreviewSDGCategoryNavi(
 ) {
     with(parameter) {
         SDGCategoryNavi(
-            title = title,
+            label = label,
             leftIcon = leftIcon,
             rightIcons = rightIcons,
             backgroundColor = backgroundColor,
             hasDropdown = hasDropdown,
-            titleColor = titleColor,
         )
     }
 }
