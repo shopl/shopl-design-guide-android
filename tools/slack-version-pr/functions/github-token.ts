@@ -1,10 +1,24 @@
 import type { SlackAPI } from "deno-slack-api/mod.ts";
+import type { View } from "deno-slack-sdk/functions/interactivity/view_types.ts";
 import {
   decryptToken,
   isBranchAuthor,
   loadToken,
   saveToken,
 } from "./token-store.ts";
+
+const branchExample = (value: string) => {
+  const name = value.trim().toLowerCase();
+  return {
+    type: "context" as const,
+    block_id: "branch_example",
+    elements: [{
+      type: "mrkdwn" as const,
+      text:
+        `브랜치명 예시: \`version/${isBranchAuthor(name) ? name : "이름"}/patch-1.23.3\`\n실제 버전은 릴리스 변경사항에 따라 결정됩니다.`,
+    }],
+  };
+};
 
 export const tokenView = (
   preview = false,
@@ -47,6 +61,7 @@ export const tokenView = (
     {
       type: "input" as const,
       block_id: "branch_author",
+      dispatch_action: true,
       label: { type: "plain_text" as const, text: "브랜치 작성자 이름" },
       hint: {
         type: "plain_text" as const,
@@ -56,12 +71,16 @@ export const tokenView = (
       element: {
         type: "plain_text_input" as const,
         action_id: "name",
+        dispatch_action_config: {
+          trigger_actions_on: ["on_character_entered"],
+        },
         min_length: 1,
         max_length: 32,
         placeholder: { type: "plain_text" as const, text: "scott" },
         ...(branchAuthor ? { initial_value: branchAuthor } : {}),
       },
     },
+    branchExample(branchAuthor),
     ...(saved
       ? [
         {
@@ -102,6 +121,43 @@ export const tokenView = (
       }]),
   ],
 });
+
+export async function updateBranchExample(
+  client: ReturnType<typeof SlackAPI>,
+  view: View,
+  name: string,
+) {
+  try {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const updated = await client.views.update({
+        view_id: view.id,
+        hash: view.hash,
+        view: {
+          type: "modal",
+          callback_id: view.callback_id,
+          title: view.title,
+          close: view.close,
+          submit: view.submit,
+          notify_on_close: view.notify_on_close,
+          private_metadata: view.private_metadata,
+          blocks: view.blocks.map((block) =>
+            block.block_id === "branch_example" ? branchExample(name) : block
+          ),
+        },
+      });
+      if (updated.ok) return;
+      if (
+        updated.error !== "hash_conflict" ||
+        updated.view?.callback_id !== "sdg_version_pr_token" ||
+        !updated.view.state?.values.branch_author?.name
+      ) return;
+      view = updated.view as View;
+      name = view.state.values.branch_author.name.value || "";
+    }
+  } catch {
+    console.warn("브랜치명 예시를 갱신하지 못했습니다.");
+  }
+}
 
 export const tokenError = (
   text: string,

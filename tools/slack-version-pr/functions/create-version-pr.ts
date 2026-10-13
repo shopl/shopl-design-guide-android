@@ -1,5 +1,10 @@
 import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
-import { resolveToken, tokenFeedback, tokenView } from "./github-token.ts";
+import {
+  resolveToken,
+  tokenFeedback,
+  tokenView,
+  updateBranchExample,
+} from "./github-token.ts";
 import { deleteToken, loadToken } from "./token-store.ts";
 
 export const CreateVersionPr = DefineFunction({
@@ -141,6 +146,16 @@ export default SlackFunction(
         "GitHub 요청의 접수 여부를 확인하지 못했습니다. GitHub Actions 실행 결과를 확인한 뒤 다시 시도해주세요.",
       );
     }
+  },
+).addBlockActionsHandler(
+  { block_id: "branch_author", action_id: "name" },
+  async ({ inputs, client, body, action, team_id }) => {
+    if (
+      !allowed(team_id, inputs.channel_id, inputs.user_id) ||
+      body.user.id !== inputs.user_id ||
+      body.view?.callback_id !== "sdg_version_pr_token"
+    ) return;
+    await updateBranchExample(client, body.view, action.value || "");
   },
 ).addBlockActionsHandler(
   ["sdg_token_change", "sdg_token_delete"],
