@@ -182,6 +182,7 @@ class CategoryNaviTest {
         iconResId = SDGResource.drawable.ic_navi_filter,
         onClick = onClick,
         iconColor = null,
+        showDot = false,
         contentDescription = description,
     )
 }

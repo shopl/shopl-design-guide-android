@@ -7,6 +7,6 @@ data class SDGCategoryNaviIconItem(
     @param:DrawableRes val iconResId: Int,
     val onClick: () -> Unit,
     val iconColor: Color?,
-    val showDot: Boolean = false,
+    val showDot: Boolean,
     val contentDescription: String? = null,
 )

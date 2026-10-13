@@ -14,6 +14,7 @@ internal class SDGCategoryNaviPreviewParameterProvider :
         iconResId = R.drawable.ic_navi_back_android,
         onClick = {},
         iconColor = null,
+        showDot = false,
         contentDescription = "뒤로가기",
     )
     private val rightIcons = persistentListOf(
@@ -21,6 +22,7 @@ internal class SDGCategoryNaviPreviewParameterProvider :
             iconResId = R.drawable.ic_navi_search,
             onClick = {},
             iconColor = null,
+            showDot = false,
             contentDescription = "검색",
         ),
         SDGCategoryNaviIconItem(
@@ -34,6 +36,7 @@ internal class SDGCategoryNaviPreviewParameterProvider :
             iconResId = R.drawable.ic_navi_chat,
             onClick = {},
             iconColor = null,
+            showDot = false,
             contentDescription = "채팅",
         ),
     )
