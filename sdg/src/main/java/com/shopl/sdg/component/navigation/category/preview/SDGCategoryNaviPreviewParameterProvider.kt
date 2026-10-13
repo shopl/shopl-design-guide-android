@@ -22,21 +22,18 @@ internal class SDGCategoryNaviPreviewParameterProvider :
             onClick = {},
             iconColor = null,
             showDot = false,
-            contentDescription = "검색",
         ),
         SDGCategoryNaviIconItem(
             iconResId = R.drawable.ic_navi_filter,
             onClick = {},
             iconColor = null,
             showDot = true,
-            contentDescription = "필터",
         ),
         SDGCategoryNaviIconItem(
             iconResId = R.drawable.ic_navi_chat,
             onClick = {},
             iconColor = null,
             showDot = false,
-            contentDescription = "채팅",
         ),
     )
     private val defaultParameter = SDGCategoryNaviPreviewParameter(

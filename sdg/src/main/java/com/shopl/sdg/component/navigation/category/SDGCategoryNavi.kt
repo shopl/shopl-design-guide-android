@@ -139,7 +139,6 @@ private fun SDGCategoryNaviIcon(icon: SDGCategoryNaviIconItem) {
         SDGImage(
             resId = icon.iconResId,
             color = icon.iconColor,
-            contentDescription = icon.contentDescription,
             modifier = Modifier
                 .size(NAVI_ICON_SIZE)
                 .clickable(role = Role.Button, onClick = icon.onClick),

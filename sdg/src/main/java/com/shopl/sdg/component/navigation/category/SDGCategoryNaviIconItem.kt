@@ -8,5 +8,4 @@ data class SDGCategoryNaviIconItem(
     val onClick: () -> Unit,
     val iconColor: Color?,
     val showDot: Boolean,
-    val contentDescription: String? = null,
 )

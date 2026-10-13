@@ -50,21 +50,18 @@ internal fun CategoryNaviScreen(
             onClick = onDropdownClick,
             iconColor = null,
             showDot = false,
-            contentDescription = "검색",
         ),
         SDGCategoryNaviIconItem(
             iconResId = R.drawable.ic_navi_filter,
             onClick = { showDot = !showDot },
             iconColor = null,
             showDot = showDot,
-            contentDescription = "필터",
         ),
         SDGCategoryNaviIconItem(
             iconResId = R.drawable.ic_navi_option,
             onClick = onClickMenu,
             iconColor = null,
             showDot = false,
-            contentDescription = "메뉴",
         ),
     )
 
