@@ -115,7 +115,7 @@ module.exports = async ({ github, context }) => {
     if (pr.state !== 'open') continue;
     if (!pr.mergeable || !pr.merge_commit_sha) throw new Error(`#${number}의 머지 가능 여부를 확인한 뒤 다시 실행해주세요.`);
 
-    const { body: summary, nextVersion, releaseSha, commitShas } = await getVersionChanges({
+    const { body: summary, nextVersion, bump, releaseSha, commitShas } = await getVersionChanges({
       github, context, release, headSha: pr.merge_commit_sha, excludePullNumber: number,
     });
     if (pr.base.sha !== releaseSha && !commitShas.has(pr.base.sha)) throw new Error('GitHub의 머지 결과에 최신 main이 반영된 뒤 다시 실행해주세요.');
@@ -124,15 +124,18 @@ module.exports = async ({ github, context }) => {
     // API 조회 중 작성한 메모를 보존하고, 변경된 머지 결과에는 이전 결과를 쓰지 않습니다.
     const { data: current } = await github.rest.pulls.get({ owner, repo, pull_number: number });
     if (current.state !== 'open' || current.head.sha !== pr.head.sha || current.base.ref !== pr.base.ref || current.base.sha !== pr.base.sha || current.merge_commit_sha !== pr.merge_commit_sha) continue;
+    const releaseLabels = current.labels.map(label => label.name).filter(name => ['major', 'minor', 'patch'].includes(name));
+    const valid = version === nextVersion && releaseLabels.length === 1 && releaseLabels[0] === bump;
     // 다른 PR의 병합·라벨 변경으로 실행돼도 결과는 버전 PR에 표시합니다.
     await github.rest.repos.createCommitStatus({ owner, repo, sha: pr.head.sha,
-      context: 'SDG 버전 검증', state: version === nextVersion ? 'success' : 'failure',
-      description: version === nextVersion ? `VERSION ${version} 검증 완료` : `VERSION ${version} · 필요한 버전 ${nextVersion}`,
+      context: 'SDG 버전 검증', state: valid ? 'success' : 'failure',
+      description: valid ? `VERSION ${version} / ${bump} 검증 완료` : `VERSION ${nextVersion} 및 배포 라벨 ${bump} 확인 필요`,
       ...(context.runId ? { target_url: `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}` } : {}),
     });
     if (version !== nextVersion) {
       throw new Error(`#${number}의 VERSION은 ${version}이지만 필요한 버전은 ${nextVersion}입니다. 버전 PR을 수정한 뒤 다시 실행해주세요.`);
     }
+    if (!valid) throw new Error(`#${number}의 배포 라벨은 ${releaseLabels.join(', ') || '없음'}입니다. ${bump} 라벨 하나만 지정한 뒤 다시 실행해주세요.`);
     const body = mergeSummary(current.body || '', summary);
     if (body !== (current.body || '')) {
       await github.rest.pulls.update({ owner, repo, pull_number: number, body });
