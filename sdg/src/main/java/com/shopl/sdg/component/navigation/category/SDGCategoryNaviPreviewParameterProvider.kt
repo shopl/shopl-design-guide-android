@@ -12,7 +12,6 @@ internal class SDGCategoryNaviPreviewParameterProvider :
 
     private val backIcon = SDGCategoryNaviLeftIconItem(
         onClick = {},
-        iconColor = null,
         contentDescription = "뒤로가기",
     )
     private val rightIcons = persistentListOf(
@@ -66,7 +65,6 @@ internal class SDGCategoryNaviPreviewParameterProvider :
         defaultParameter.copy(
             backgroundColor = SDGColor.Primary300,
             label = defaultParameter.label.copy(color = SDGColor.Neutral0),
-            leftIcon = backIcon.copy(iconColor = SDGColor.Neutral0),
             rightIcons = persistentListOf(
                 rightIcons[0].copy(iconColor = SDGColor.Neutral0),
                 rightIcons[1].copy(iconColor = SDGColor.Neutral0),

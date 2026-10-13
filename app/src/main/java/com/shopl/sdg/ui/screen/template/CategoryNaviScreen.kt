@@ -42,7 +42,6 @@ internal fun CategoryNaviScreen(
     val onDropdownClick = { showPopup = true }
     val backIcon = SDGCategoryNaviLeftIconItem(
         onClick = onClickBack,
-        iconColor = null,
         contentDescription = "뒤로가기",
     )
     val rightIcons = persistentListOf(
@@ -161,7 +160,7 @@ private fun CategoryNaviContent(
         )
         SDGCategoryNavi(
             label = label.copy(color = SDGColor.Neutral0),
-            leftIcon = backIcon.copy(iconColor = SDGColor.Neutral0),
+            leftIcon = backIcon,
             rightIcons = rightIcons.map {
                 it.copy(iconColor = SDGColor.Neutral0)
             }.toPersistentList(),

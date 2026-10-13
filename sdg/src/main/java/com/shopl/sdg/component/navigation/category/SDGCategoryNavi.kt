@@ -79,7 +79,7 @@ fun SDGCategoryNavi(
         leftIcon?.let {
             SDGImage(
                 resId = R.drawable.ic_navi_back_android,
-                color = it.iconColor,
+                color = SDGColor.Neutral700,
                 contentDescription = it.contentDescription,
                 modifier = Modifier
                     .size(NAVI_ICON_SIZE)

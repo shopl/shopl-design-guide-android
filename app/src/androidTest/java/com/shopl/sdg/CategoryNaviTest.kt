@@ -51,7 +51,6 @@ class CategoryNaviTest {
         val leftIcon = mutableStateOf<SDGCategoryNaviLeftIconItem?>(
             SDGCategoryNaviLeftIconItem(
                 onClick = { clicks[0]++ },
-                iconColor = null,
                 contentDescription = "back",
             ),
         )
@@ -95,7 +94,6 @@ class CategoryNaviTest {
                     label = SDGCategoryNaviLabel(text = longLabelText, color = SDGColor.Neutral900),
                     leftIcon = SDGCategoryNaviLeftIconItem(
                         onClick = {},
-                        iconColor = null,
                         contentDescription = "back",
                     ),
                     rightIcons = List(count.value) { icon("right$it") }.toPersistentList(),
