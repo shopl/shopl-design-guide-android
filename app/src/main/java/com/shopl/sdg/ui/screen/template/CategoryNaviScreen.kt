@@ -41,23 +41,27 @@ internal fun CategoryNaviScreen(
     val backIcon = SDGCategoryNaviIconItem(
         iconResId = R.drawable.ic_navi_back_android,
         onClick = onClickBack,
+        iconColor = null,
         contentDescription = "뒤로가기",
     )
     val rightIcons = persistentListOf(
         SDGCategoryNaviIconItem(
             iconResId = R.drawable.ic_navi_search,
             onClick = onDropdownClick,
+            iconColor = null,
             contentDescription = "검색",
         ),
         SDGCategoryNaviIconItem(
             iconResId = R.drawable.ic_navi_filter,
             onClick = { showDot = !showDot },
+            iconColor = null,
             showDot = showDot,
             contentDescription = "필터",
         ),
         SDGCategoryNaviIconItem(
             iconResId = R.drawable.ic_navi_option,
             onClick = onClickMenu,
+            iconColor = null,
             contentDescription = "메뉴",
         ),
     )

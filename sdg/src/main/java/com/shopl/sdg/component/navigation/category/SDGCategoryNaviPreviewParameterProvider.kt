@@ -13,23 +13,27 @@ internal class SDGCategoryNaviPreviewParameterProvider :
     private val backIcon = SDGCategoryNaviIconItem(
         iconResId = R.drawable.ic_navi_back_android,
         onClick = {},
+        iconColor = null,
         contentDescription = "뒤로가기",
     )
     private val rightIcons = persistentListOf(
         SDGCategoryNaviIconItem(
             iconResId = R.drawable.ic_navi_search,
             onClick = {},
+            iconColor = null,
             contentDescription = "검색",
         ),
         SDGCategoryNaviIconItem(
             iconResId = R.drawable.ic_navi_filter,
             onClick = {},
+            iconColor = null,
             showDot = true,
             contentDescription = "필터",
         ),
         SDGCategoryNaviIconItem(
             iconResId = R.drawable.ic_navi_chat,
             onClick = {},
+            iconColor = null,
             contentDescription = "채팅",
         ),
     )
