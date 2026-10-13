@@ -10,11 +10,9 @@ import kotlinx.collections.immutable.persistentListOf
 internal class SDGCategoryNaviPreviewParameterProvider :
     PreviewParameterProvider<SDGCategoryNaviPreviewParameter> {
 
-    private val backIcon = SDGCategoryNaviIconItem(
-        iconResId = R.drawable.ic_navi_back_android,
+    private val backIcon = SDGCategoryNaviLeftIconItem(
         onClick = {},
         iconColor = null,
-        showDot = false,
         contentDescription = "뒤로가기",
     )
     private val rightIcons = persistentListOf(
@@ -76,7 +74,7 @@ internal class SDGCategoryNaviPreviewParameterProvider :
 
 internal data class SDGCategoryNaviPreviewParameter(
     val title: String?,
-    val leftIcon: SDGCategoryNaviIconItem?,
+    val leftIcon: SDGCategoryNaviLeftIconItem?,
     val rightIcons: PersistentList<SDGCategoryNaviIconItem>?,
     val backgroundColor: Color = SDGColor.Neutral100,
     val titleColor: Color = SDGColor.Neutral900,

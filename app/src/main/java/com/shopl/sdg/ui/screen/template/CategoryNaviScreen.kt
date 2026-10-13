@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.navigation.category.SDGCategoryNavi
 import com.shopl.sdg.component.navigation.category.SDGCategoryNaviHasDropdown
 import com.shopl.sdg.component.navigation.category.SDGCategoryNaviIconItem
+import com.shopl.sdg.component.navigation.category.SDGCategoryNaviLeftIconItem
 import com.shopl.sdg.scene.TemplateScene
 import com.shopl.sdg.template.popup.list.anatomy.SDGListBottomSheet
 import com.shopl.sdg.template.popup.list.anatomy.extension.SDGListPopupItemUiState
@@ -38,11 +39,9 @@ internal fun CategoryNaviScreen(
     var showPopup by remember { mutableStateOf(false) }
     var showDot by remember { mutableStateOf(true) }
     val onDropdownClick = { showPopup = true }
-    val backIcon = SDGCategoryNaviIconItem(
-        iconResId = R.drawable.ic_navi_back_android,
+    val backIcon = SDGCategoryNaviLeftIconItem(
         onClick = onClickBack,
         iconColor = null,
-        showDot = false,
         contentDescription = "뒤로가기",
     )
     val rightIcons = persistentListOf(
@@ -111,7 +110,7 @@ internal fun CategoryNaviScreen(
 @Composable
 private fun CategoryNaviContent(
     selectedTitle: String,
-    backIcon: SDGCategoryNaviIconItem,
+    backIcon: SDGCategoryNaviLeftIconItem,
     rightIcons: PersistentList<SDGCategoryNaviIconItem>,
     hasDropdown: SDGCategoryNaviHasDropdown,
 ) {
