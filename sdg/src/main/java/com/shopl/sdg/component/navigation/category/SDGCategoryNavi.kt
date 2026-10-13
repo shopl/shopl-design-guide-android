@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -39,7 +39,7 @@ private const val MAX_RIGHT_ICON_COUNT = 3
 private const val LABEL_MAX_LINES = 1
 private const val PREVIEW_WIDTH_DP = 375
 
-private val NAVI_HEIGHT = 48.dp
+private val NAVI_MIN_HEIGHT = 48.dp
 private val NAVI_ICON_SIZE = 40.dp
 private val DROPDOWN_ICON_SIZE = 20.dp
 private val DOT_BADGE_SIZE = 8.dp
@@ -71,7 +71,7 @@ fun SDGCategoryNavi(
         modifier = Modifier
             .fillMaxWidth()
             .padding(marginValues)
-            .height(NAVI_HEIGHT)
+            .heightIn(min = NAVI_MIN_HEIGHT)
             .background(backgroundColor)
             .padding(horizontal = Spacing10, vertical = Spacing4),
         verticalAlignment = Alignment.CenterVertically,
