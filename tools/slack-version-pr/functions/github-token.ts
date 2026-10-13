@@ -52,10 +52,14 @@ export const tokenView = (
         type: "mrkdwn" as const,
         text:
           (preview
-            ? "*테스트: GitHub 조회만 수행하며 실제 PR을 생성하지 않습니다.*\n"
-            : "개인 토큰으로 GitHub Actions 실행을 요청합니다.\n") +
-          "<https://github.com/settings/personal-access-tokens/new?name=SDG+Version+PR&target_name=shopl&expires_in=30&actions=write|개인 토큰 생성>에서 *shopl/shopl-design-guide-android 저장소만* 선택하고 *Actions: Read and write* 권한으로 발급하세요.\n" +
-          "토큰 소유자를 새 PR의 Assignee로 지정합니다. 브랜치는 `version/입력한 이름/minor-버전` 또는 `version/입력한 이름/patch-버전`으로 생성합니다. 토큰은 Slack 사용자별로 암호화해 보관하고 다음 실행부터 재사용합니다. 만료·폐기되면 새 토큰을 입력합니다. 이 화면은 본인에게만 표시됩니다.",
+            ? "*미리보기 전용입니다. 실제 PR은 생성하지 않습니다.*\n\n"
+            : "") +
+          "<https://github.com/settings/personal-access-tokens/new?name=SDG+Version+PR&target_name=shopl&expires_in=30&actions=write|개인 토큰 생성>에서 아래 항목을 설정하세요.\n" +
+          "• 저장소: *shopl/shopl-design-guide-android*\n" +
+          "• 권한: *Actions: Read and write*\n\n" +
+          "토큰 계정이 PR 담당자로 지정됩니다.\n" +
+          "토큰은 암호화해 저장하고 재사용합니다. 만료·폐기 시 다시 등록하세요.\n" +
+          "이 화면은 본인에게만 표시됩니다.",
       },
     },
     {
