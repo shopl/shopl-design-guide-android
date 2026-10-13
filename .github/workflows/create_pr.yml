@@ -124,12 +124,14 @@ jobs:
 
             // assignee 지정
             try {
-              await github.rest.issues.addAssignees({
-                owner,
-                repo,
-                issue_number: prNumber,
-                assignees: [prAuthor],
-              });
+              if (!(branchName.startsWith('version/') && prAuthor === 'github-actions[bot]')) {
+                await github.rest.issues.addAssignees({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  assignees: [prAuthor],
+                });
+              }
             } catch (e) {
               console.log('Assignees 지정 실패:', e);
             }
