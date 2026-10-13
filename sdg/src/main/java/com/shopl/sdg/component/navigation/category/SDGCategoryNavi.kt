@@ -34,6 +34,14 @@ import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 import kotlinx.collections.immutable.PersistentList
 
+private const val MAX_RIGHT_ICON_COUNT = 3
+private const val TITLE_MAX_LINES = 1
+
+private val NAVI_HEIGHT = 48.dp
+private val NAVI_ICON_SIZE = 40.dp
+private val DROPDOWN_ICON_SIZE = 20.dp
+private val DOT_BADGE_SIZE = 8.dp
+
 /**
  * SDG - Navigation - Category Navi
  *
@@ -52,15 +60,15 @@ fun SDGCategoryNavi(
     titleColor: Color = SDGColor.Neutral900,
     marginValues: PaddingValues = PaddingValues(),
 ) {
-    require((rightIcons?.size ?: 0) <= 3) {
-        "우측 아이콘은 최대 3개까지만 사용 가능합니다."
+    require((rightIcons?.size ?: 0) <= MAX_RIGHT_ICON_COUNT) {
+        "우측 아이콘은 최대 ${MAX_RIGHT_ICON_COUNT}개까지만 사용 가능합니다."
     }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(marginValues)
-            .height(48.dp)
+            .height(NAVI_HEIGHT)
             .background(backgroundColor)
             .padding(horizontal = Spacing10, vertical = Spacing4),
         verticalAlignment = Alignment.CenterVertically,
@@ -78,7 +86,7 @@ fun SDGCategoryNavi(
                     text = it,
                     typography = SDGTypography.NaviTitle,
                     textColor = titleColor,
-                    maxLines = 1,
+                    maxLines = TITLE_MAX_LINES,
                     overflow = TextOverflow.Ellipsis,
                     softWrap = false,
                     modifier = Modifier.weight(1f, false),
@@ -91,7 +99,7 @@ fun SDGCategoryNavi(
                     color = titleColor,
                     contentDescription = title ?: stringResource(R.string.select),
                     modifier = Modifier
-                        .size(20.dp)
+                        .size(DROPDOWN_ICON_SIZE)
                         .clickable(
                             role = Role.Button,
                             onClickLabel = stringResource(R.string.select),
@@ -122,7 +130,7 @@ private fun SDGCategoryNaviIcon(icon: SDGCategoryNaviIconItem) {
             color = icon.iconColor,
             contentDescription = icon.contentDescription,
             modifier = Modifier
-                .size(40.dp)
+                .size(NAVI_ICON_SIZE)
                 .clickable(role = Role.Button, onClick = icon.onClick),
         )
 
@@ -130,7 +138,7 @@ private fun SDGCategoryNaviIcon(icon: SDGCategoryNaviIconItem) {
             Canvas(
                 modifier = Modifier
                     .padding(Spacing8)
-                    .size(8.dp)
+                    .size(DOT_BADGE_SIZE)
                     .align(Alignment.TopEnd),
             ) {
                 drawCircle(color = SDGColor.Red350)
