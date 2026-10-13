@@ -3,6 +3,10 @@ name: SDG 버전 PR 만들기
 on:
   workflow_dispatch:
     inputs:
+      branch_author:
+        description: '브랜치 작성자 이름 (예: scott)'
+        type: string
+        required: true
       requester_slack_id:
         description: '버튼을 누른 Slack 사용자 ID (Slack 앱에서 전달)'
         type: string
@@ -58,7 +62,7 @@ jobs:
         with:
           script: |
             const createVersionPr = require('./.github/scripts/create-version-pr.cjs');
-            const result = await createVersionPr({ github, context: { repo: context.repo, ref: 'refs/heads/main' }, dryRun: true });
+            const result = await createVersionPr({ github, context: { repo: context.repo, ref: 'refs/heads/main' }, dryRun: true, branchAuthor: 'preview' });
             const text = result.status === 'existing' ? `열린 버전 PR: ${result.url}` :
               result.status === 'empty' ? '최신 릴리스 이후 변경사항이 없습니다.' : result.body;
             await core.summary.addRaw(`## 읽기 전용 검증\n${text}\n\n버전 브랜치·PR·라벨은 변경하지 않았습니다.`).write();
@@ -86,12 +90,13 @@ jobs:
           REQUESTER_SLACK_ID: ${{ inputs.requester_slack_id }}
           PR_ASSIGNEE: ${{ inputs.assignee }}
           PR_ASSIGNEE_ID: ${{ inputs.assignee_id }}
+          BRANCH_AUTHOR: ${{ inputs.branch_author }}
         with:
           script: |
             const createVersionPr = require('./.github/scripts/create-version-pr.cjs');
             const result = await createVersionPr({ github, context,
               assignee: process.env.PR_ASSIGNEE, assigneeId: process.env.PR_ASSIGNEE_ID,
-              requesterSlackId: process.env.REQUESTER_SLACK_ID });
+              requesterSlackId: process.env.REQUESTER_SLACK_ID, branchAuthor: process.env.BRANCH_AUTHOR });
             core.setOutput('status', result.status);
             core.setOutput('url', result.url || '');
             const text = result.status === 'created' ? `${result.version} 버전 PR을 만들었습니다.` :

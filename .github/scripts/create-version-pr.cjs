@@ -1,9 +1,12 @@
 const { getVersionChanges } = require('./version-pr-summary.cjs');
 const versionPath = 'build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt';
 
-module.exports = async ({ github, context, dryRun = false, assignee = '', assigneeId = '', requesterSlackId = '' }) => {
+module.exports = async ({ github, context, dryRun = false, assignee = '', assigneeId = '', requesterSlackId = '', branchAuthor = '' }) => {
   const { owner, repo } = context.repo;
   if (context.ref !== 'refs/heads/main') throw new Error('버전 PR 생성은 main에서 실행해주세요.');
+  if (typeof branchAuthor !== 'string' || !/^[a-z][a-z0-9-]{0,31}$/.test(branchAuthor)) {
+    throw new Error('브랜치 작성자 이름은 영문 소문자로 시작하고 소문자·숫자·하이픈으로 32자 이내로 입력해주세요.');
+  }
   if (requesterSlackId && (!/^[UW][A-Z0-9]+$/.test(requesterSlackId) || (!assignee && !assigneeId))) {
     throw new Error('Slack 요청자와 GitHub 담당자 설정을 확인해주세요.');
   }
@@ -32,9 +35,9 @@ module.exports = async ({ github, context, dryRun = false, assignee = '', assign
     owner, repo, state: 'open', base: 'main', per_page: 100,
   })).find(pr => pr.head.ref.startsWith('version/') && pr.head.repo?.full_name === `${owner}/${repo}`);
   const reuse = async pr => {
-    const automationBranch = pr.head.ref.match(/^version\/automation\/(minor|patch)-\d+\.\d+\.\d+$/);
-    if (!dryRun && automationBranch && !pr.labels.some(label => label.name === automationBranch[1])) {
-      await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels: [automationBranch[1]] });
+    const versionBranch = pr.head.ref.match(/^version\/[^/]+\/(minor|patch)-\d+\.\d+\.\d+$/);
+    if (!dryRun && versionBranch && !pr.labels.some(label => label.name === versionBranch[1])) {
+      await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels: [versionBranch[1]] });
     }
     return { status: 'existing', url: pr.html_url, number: pr.number };
   };
@@ -56,7 +59,7 @@ module.exports = async ({ github, context, dryRun = false, assignee = '', assign
     throw new Error('main의 VERSION과 이전 릴리스 버전이 다릅니다. 진행 중인 릴리스를 확인해주세요.');
   }
   const updated = content.replace(pattern, `const val VERSION = "${changes.nextVersion}"`);
-  const branch = `version/automation/${changes.bump}-${changes.nextVersion}`;
+  const branch = `version/${branchAuthor}/${changes.bump}-${changes.nextVersion}`;
   let branchRef;
   try {
     ({ data: branchRef } = await github.rest.git.getRef({ owner, repo, ref: `heads/${branch}` }));

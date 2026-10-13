@@ -124,7 +124,7 @@ jobs:
 
             // assignee 지정
             try {
-              if (!/^version\/automation\//.test(branchName)) {
+              if (!(branchName.startsWith('version/') && prAuthor === 'github-actions[bot]')) {
                 await github.rest.issues.addAssignees({
                   owner,
                   repo,
