@@ -49,9 +49,8 @@ private val DOT_BADGE_SIZE = 8.dp
  *
  * 화면의 상단에 위치하여 현재 위치를 알려주는 유형 변경이 가능한 타이틀과 고 사용자가 필요한 것을 찾도록 도와주는 아이콘으로 조합한 컴포넌트
  *
- * @param label 표시할 텍스트와 색상. 텍스트가 null이면 드롭다운만 표시할 수 있습니다.
- * @param leftIcon 40×40dp의 ic_navi_back_android 아이콘. null이면 표시하지 않습니다.
- * @param hasDropdown 드롭다운 표시 여부와 선택 시 List Popup을 표시하는 콜백
+ * @version 2.1.21
+ *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19797-22031&m=dev">Figma</a>
  */
 @Composable
@@ -100,7 +99,6 @@ fun SDGCategoryNavi(
                     textColor = label.color,
                     maxLines = LABEL_MAX_LINES,
                     overflow = TextOverflow.Ellipsis,
-                    softWrap = false,
                     modifier = Modifier.weight(1f, false),
                 )
             }
