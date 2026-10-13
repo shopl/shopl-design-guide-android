@@ -43,7 +43,7 @@ internal class SDGCategoryNaviPreviewParameterProvider :
         defaultParameter,
         defaultParameter.copy(leftIcon = null),
         defaultParameter.copy(title = null),
-        defaultParameter.copy(hasDropdown = false),
+        defaultParameter.copy(hasDropdown = SDGCategoryNaviHasDropdown.False),
         defaultParameter.copy(rightIcons = persistentListOf(rightIcons[0])),
         defaultParameter.copy(rightIcons = persistentListOf(rightIcons[0], rightIcons[1])),
         defaultParameter.copy(
@@ -73,5 +73,5 @@ internal data class SDGCategoryNaviPreviewParameter(
     val rightIcons: PersistentList<SDGCategoryNaviIconItem>?,
     val backgroundColor: Color = SDGColor.Neutral100,
     val titleColor: Color = SDGColor.Neutral900,
-    val hasDropdown: Boolean = true,
+    val hasDropdown: SDGCategoryNaviHasDropdown = SDGCategoryNaviHasDropdown.True(onClick = {}),
 )

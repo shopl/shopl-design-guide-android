@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.navigation.category.SDGCategoryNavi
+import com.shopl.sdg.component.navigation.category.SDGCategoryNaviHasDropdown
 import com.shopl.sdg.component.navigation.category.SDGCategoryNaviIconItem
 import com.shopl.sdg.scene.TemplateScene
 import com.shopl.sdg.template.popup.list.anatomy.SDGListBottomSheet
@@ -71,7 +72,7 @@ internal fun CategoryNaviScreen(
                 selectedTitle = selectedTitle,
                 backIcon = backIcon,
                 rightIcons = rightIcons,
-                onDropdownClick = onDropdownClick,
+                hasDropdown = SDGCategoryNaviHasDropdown.True(onClick = onDropdownClick),
             )
         },
         usageGuideLinesContent = {
@@ -105,7 +106,7 @@ private fun CategoryNaviContent(
     selectedTitle: String,
     backIcon: SDGCategoryNaviIconItem,
     rightIcons: PersistentList<SDGCategoryNaviIconItem>,
-    onDropdownClick: () -> Unit,
+    hasDropdown: SDGCategoryNaviHasDropdown,
 ) {
     Column(
         modifier = Modifier
@@ -118,36 +119,35 @@ private fun CategoryNaviContent(
             leftIcon = backIcon,
             rightIcons = rightIcons,
             backgroundColor = SDGColor.Neutral100,
-            onDropdownClick = onDropdownClick,
+            hasDropdown = hasDropdown,
         )
         SDGCategoryNavi(
             title = "뒤로가기 아이콘이 없는 경우",
             leftIcon = null,
             rightIcons = persistentListOf(rightIcons[1]),
             backgroundColor = SDGColor.Neutral100,
-            onDropdownClick = onDropdownClick,
+            hasDropdown = hasDropdown,
         )
         SDGCategoryNavi(
             title = "드롭다운이 없는 경우",
             leftIcon = backIcon,
             rightIcons = persistentListOf(rightIcons[0], rightIcons[1]),
             backgroundColor = SDGColor.Neutral100,
-            onDropdownClick = onDropdownClick,
-            hasDropdown = false,
+            hasDropdown = SDGCategoryNaviHasDropdown.False,
         )
         SDGCategoryNavi(
             title = "긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요",
             leftIcon = backIcon,
             rightIcons = rightIcons,
             backgroundColor = SDGColor.Neutral100,
-            onDropdownClick = onDropdownClick,
+            hasDropdown = hasDropdown,
         )
         SDGCategoryNavi(
             title = "우측 아이콘이 없는 긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요",
             leftIcon = backIcon,
             rightIcons = null,
             backgroundColor = SDGColor.Neutral100,
-            onDropdownClick = onDropdownClick,
+            hasDropdown = hasDropdown,
         )
         SDGCategoryNavi(
             title = selectedTitle,
@@ -157,7 +157,7 @@ private fun CategoryNaviContent(
             }.toPersistentList(),
             backgroundColor = SDGColor.Primary300,
             titleColor = SDGColor.Neutral0,
-            onDropdownClick = onDropdownClick,
+            hasDropdown = hasDropdown,
         )
     }
 }

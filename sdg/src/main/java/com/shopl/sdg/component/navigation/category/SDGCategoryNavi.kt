@@ -39,7 +39,7 @@ import kotlinx.collections.immutable.PersistentList
  *
  * 화면의 상단에 위치하여 현재 위치를 알려주는 유형 변경이 가능한 타이틀과 고 사용자가 필요한 것을 찾도록 도와주는 아이콘으로 조합한 컴포넌트
  *
- * @param onDropdownClick 드롭다운 아이콘 선택 시 List Popup을 표시하는 콜백
+ * @param hasDropdown 드롭다운 표시 여부와 선택 시 List Popup을 표시하는 콜백
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19797-22031&m=dev">Figma</a>
  */
 @Composable
@@ -48,8 +48,7 @@ fun SDGCategoryNavi(
     leftIcon: SDGCategoryNaviIconItem?,
     rightIcons: PersistentList<SDGCategoryNaviIconItem>?,
     backgroundColor: Color,
-    onDropdownClick: () -> Unit,
-    hasDropdown: Boolean = true,
+    hasDropdown: SDGCategoryNaviHasDropdown,
     titleColor: Color = SDGColor.Neutral900,
     marginValues: PaddingValues = PaddingValues(),
 ) {
@@ -86,7 +85,7 @@ fun SDGCategoryNavi(
                 )
             }
 
-            if (hasDropdown) {
+            if (hasDropdown is SDGCategoryNaviHasDropdown.True) {
                 SDGImage(
                     resId = R.drawable.ic_common_dropdown,
                     color = titleColor,
@@ -96,7 +95,7 @@ fun SDGCategoryNavi(
                         .clickable(
                             role = Role.Button,
                             onClickLabel = stringResource(R.string.select),
-                            onClick = onDropdownClick,
+                            onClick = hasDropdown.onClick,
                         ),
                 )
             }
@@ -152,7 +151,6 @@ private fun PreviewSDGCategoryNavi(
             leftIcon = leftIcon,
             rightIcons = rightIcons,
             backgroundColor = backgroundColor,
-            onDropdownClick = {},
             hasDropdown = hasDropdown,
             titleColor = titleColor,
         )

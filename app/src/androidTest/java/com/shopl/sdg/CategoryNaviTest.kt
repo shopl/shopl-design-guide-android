@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
 import com.shopl.sdg.component.navigation.category.SDGCategoryNavi
+import com.shopl.sdg.component.navigation.category.SDGCategoryNaviHasDropdown
 import com.shopl.sdg.component.navigation.category.SDGCategoryNaviIconItem
 import com.shopl.sdg.ui.screen.template.CategoryNaviScreen
 import com.shopl.sdg_common.foundation.SDGColor
@@ -52,7 +53,7 @@ class CategoryNaviTest {
                     leftIcon = icon("back") { clicks[0]++ },
                     rightIcons = persistentListOf(icon("right") { clicks[1]++ }),
                     backgroundColor = SDGColor.Neutral100,
-                    onDropdownClick = { clicks[2]++ },
+                    hasDropdown = SDGCategoryNaviHasDropdown.True(onClick = { clicks[2]++ }),
                 )
             }
         }
@@ -79,7 +80,7 @@ class CategoryNaviTest {
                     leftIcon = icon("back"),
                     rightIcons = List(count.value) { icon("right$it") }.toPersistentList(),
                     backgroundColor = SDGColor.Neutral100,
-                    onDropdownClick = {},
+                    hasDropdown = SDGCategoryNaviHasDropdown.True(onClick = {}),
                 )
             }
         }
@@ -121,8 +122,7 @@ class CategoryNaviTest {
                         leftIcon = null,
                         rightIcons = persistentListOf(),
                         backgroundColor = SDGColor.Neutral100,
-                        onDropdownClick = {},
-                        hasDropdown = false,
+                        hasDropdown = SDGCategoryNaviHasDropdown.False,
                         marginValues = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                     )
                 }
@@ -145,7 +145,7 @@ class CategoryNaviTest {
                 leftIcon = null,
                 rightIcons = null,
                 backgroundColor = SDGColor.Neutral100,
-                onDropdownClick = {},
+                hasDropdown = SDGCategoryNaviHasDropdown.True(onClick = {}),
             )
         }
         val selectDescription = InstrumentationRegistry.getInstrumentation().targetContext
@@ -163,7 +163,7 @@ class CategoryNaviTest {
                     leftIcon = null,
                     rightIcons = List(4) { icon("right$it") }.toPersistentList(),
                     backgroundColor = SDGColor.Neutral100,
-                    onDropdownClick = {},
+                    hasDropdown = SDGCategoryNaviHasDropdown.True(onClick = {}),
                 )
             }
         }
