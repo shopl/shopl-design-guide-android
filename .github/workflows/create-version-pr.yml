@@ -34,6 +34,7 @@ permissions:
 concurrency:
   group: create-version-pr-${{ github.repository }}
   cancel-in-progress: false
+  queue: max
 
 jobs:
   validate:
