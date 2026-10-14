@@ -101,9 +101,35 @@ jobs:
               requesterSlackId: process.env.REQUESTER_SLACK_ID, branchAuthor: process.env.BRANCH_AUTHOR });
             core.setOutput('status', result.status);
             core.setOutput('url', result.url || '');
+            core.setOutput('number', result.number || '');
             const text = result.status === 'created' ? `${result.version} 버전 PR을 만들었습니다.` :
               result.status === 'existing' ? '이미 열려 있는 버전 PR을 확인해주세요.' : '이전 릴리스 이후 변경사항이 없습니다.';
             await core.summary.addRaw(text).addEOL().addLink('버전 PR', result.url || context.serverUrl + '/' + context.repo.owner + '/' + context.repo.repo).write();
+
+      - name: 버전 PR 리뷰어 지정
+        id: reviewers
+        if: steps.create.outputs.number != ''
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ steps.create.outputs.number }}
+        with:
+          github-token: ${{ secrets.GIT_DEV_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const pull_number = Number(process.env.PR_NUMBER);
+            const { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number });
+            if (!/^version\/[^/]+\/(minor|patch)-\d+\.\d+\.\d+$/.test(pr.head.ref) ||
+                !pr.body?.includes('<!-- sdg-version-request:')) return;
+            if (pr.requested_teams.length || pr.requested_reviewers.length) return;
+            const reviews = await github.paginate(github.rest.pulls.listReviews, { owner, repo, pull_number, per_page: 100 });
+            if (reviews.some(review => review.submitted_at)) return;
+            const members = await github.paginate(github.rest.teams.listMembersInOrg, {
+              org: owner, team_slug: 'android', per_page: 100,
+            });
+            const reviewers = members.map(member => member.login).filter(login =>
+              login !== pr.user.login && !pr.assignees.some(assignee => assignee.login === login));
+            if (!reviewers.length) throw new Error('Android 팀에 지정 가능한 리뷰어가 없습니다.');
+            await github.rest.pulls.requestReviewers({ owner, repo, pull_number, reviewers });
 
       - name: SDG Android 배포 채널에 결과 알림
         if: always()
