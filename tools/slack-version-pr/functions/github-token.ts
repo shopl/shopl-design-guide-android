@@ -54,9 +54,9 @@ export const tokenView = (
           (preview
             ? "*미리보기 전용입니다. 실제 PR은 생성하지 않습니다.*\n\n"
             : "") +
-          "<https://github.com/settings/personal-access-tokens/new?name=SDG+Version+PR&target_name=shopl&expires_in=30&actions=write|개인 토큰 생성>에서 아래 항목을 설정하세요.\n" +
-          "• 저장소: *shopl/shopl-design-guide-android*\n" +
-          "• 권한: *Actions: Read and write*\n\n" +
+          "<https://github.com/settings/tokens/new?description=SDG+Version+PR&scopes=repo|Classic PAT 생성>에서 아래 항목을 설정하세요.\n" +
+          "• 종류: *Tokens (classic)*\n" +
+          "• 권한: *repo*\n\n" +
           "토큰 계정이 PR 담당자로 지정됩니다.\n" +
           "토큰은 암호화해 저장하고 재사용합니다. 만료·폐기 시 다시 등록하세요.\n" +
           "이 화면은 본인에게만 표시됩니다.",
@@ -115,12 +115,12 @@ export const tokenView = (
       : [{
         type: "input" as const,
         block_id: "github_token",
-        label: { type: "plain_text" as const, text: "Personal access token" },
+        label: { type: "plain_text" as const, text: "Personal access token (classic)" },
         element: {
           type: "plain_text_input" as const,
           action_id: "token",
           max_length: 255,
-          placeholder: { type: "plain_text" as const, text: "github_pat_…" },
+          placeholder: { type: "plain_text" as const, text: "ghp_…" },
         },
       }]),
   ],
