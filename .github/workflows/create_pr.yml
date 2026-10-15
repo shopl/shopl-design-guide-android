@@ -91,6 +91,10 @@ jobs:
             const teamSlug = "android";
             const prAuthor = context.payload.pull_request.user.login;
 
+            // 자동 생성 버전 PR의 리뷰어·담당자는 버전 PR 워크플로에서 관리합니다.
+            if (/^version\/[^/]+\/(minor|patch)-\d+\.\d+\.\d+$/.test(branchName) &&
+                context.payload.pull_request.body?.includes('<!-- sdg-version-request:')) return;
+
             // 팀 멤버 목록 가져오기
             let teamMembers = [];
             try {

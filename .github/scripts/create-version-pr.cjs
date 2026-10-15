@@ -58,11 +58,6 @@ module.exports = async ({ github, context, dryRun = false, assignee = '', assign
     if (bump && !pr.labels.some(label => label.name === bump)) {
       await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels: [bump] });
     }
-    if (pr.requested_teams?.length || pr.requested_reviewers?.length) return;
-    const reviews = await github.paginate(github.rest.pulls.listReviews, { owner, repo, pull_number: pr.number, per_page: 100 });
-    if (!reviews.some(review => review.submitted_at)) {
-      await github.rest.pulls.requestReviewers({ owner, repo, pull_number: pr.number, team_reviewers: ['android'] });
-    }
   };
 
   const findOpenVersionPr = async () => (await github.paginate(github.rest.pulls.list, {
