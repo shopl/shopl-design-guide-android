@@ -124,7 +124,7 @@ export default SlackFunction(
         }
         return tokenFeedback(
           view,
-          `GitHub 실행 요청 실패: HTTP ${response.status}. main의 워크플로 설치, 토큰의 SDG 저장소 선택·Actions 쓰기 권한·조직 승인을 확인해주세요.`,
+          `GitHub 실행 요청 실패: HTTP ${response.status}. main의 워크플로 설치, Classic PAT의 repo 권한, 계정의 SDG 저장소 쓰기 권한과 조직의 토큰 허용·SSO 설정을 확인해주세요.`,
         );
       }
       const message =
