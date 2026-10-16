@@ -11,11 +11,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -53,7 +51,6 @@ private val LABEL_MIN_HEIGHT = 16.dp
  * @param type 진행률에 따라 채워지는 Determinate 또는 좌우로 반복 이동하는 Indeterminate
  * @param label 진행 상태를 안내하는 문구. null이면 라벨과 하단 간격을 표시하지 않습니다.
  * @param labelColor 라벨 색상
- * @param marginValues 컴포넌트 외부 여백
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=29803-7716&m=dev">Figma</a>
  */
@@ -62,7 +59,6 @@ fun SDGLinearProgress(
     type: SDGLinearProgressType,
     label: String?,
     labelColor: Color,
-    marginValues: PaddingValues = PaddingValues(),
 ) {
     val indicatorPosition = if (type == SDGLinearProgressType.Indeterminate) {
         val transition = rememberInfiniteTransition(label = "SDGLinearProgress")
@@ -81,7 +77,6 @@ fun SDGLinearProgress(
 
     Column(
         modifier = Modifier
-            .padding(marginValues)
             .width(PROGRESS_WIDTH),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
