@@ -85,7 +85,7 @@ fun SDGLinearProgress(
         Canvas(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(SDGSpacing.Spacing4)
+                .height(4.dp)
                 .background(SDGColor.Neutral300, SDGCornerRadius.BoxRadius.Radius2),
         ) {
             val indicatorWidth = size.width * when (type) {
