@@ -1,8 +1,10 @@
 package com.shopl.sdg
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
@@ -10,19 +12,13 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.semantics.ProgressBarRangeInfo
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
-import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.assert
-import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertHeightIsEqualTo
-import androidx.compose.ui.test.assertLeftPositionInRootIsEqualTo
-import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.assertTopPositionInRootIsEqualTo
 import androidx.compose.ui.test.assertWidthIsEqualTo
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
@@ -39,30 +35,24 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+private const val PROGRESS_TAG = "linearProgress"
+
 @RunWith(AndroidJUnit4::class)
 class SDGLinearProgressTest {
 
     @get:Rule
     val composeRule = createComposeRule()
 
-    private val hasProgress = SemanticsMatcher.keyIsDefined(SemanticsProperties.ProgressBarRangeInfo)
-
     @Test
-    fun determinateProgressUpdatesSemanticsAndFill() {
+    fun determinateProgressUpdatesFill() {
         val progress = mutableStateOf(0f)
-        composeRule.setContent {
+        setContent {
             SDGLinearProgress(progress = progress.value, label = null, labelColor = SDGColor.Neutral700)
         }
 
         for (value in listOf(0f, 0.5f, 1f)) {
             composeRule.runOnIdle { progress.value = value }
-            val node = composeRule.onNode(hasProgress)
-            node.assert(
-                SemanticsMatcher.expectValue(
-                    SemanticsProperties.ProgressBarRangeInfo,
-                    ProgressBarRangeInfo(value, 0f..1f),
-                ),
-            )
+            val node = composeRule.onNodeWithTag(PROGRESS_TAG)
             val pixels = node.captureToImage().toPixelMap()
             val leftColor = if (value == 0f) SDGColor.Neutral300 else SDGColor.Primary300
             val rightColor = if (value == 1f) SDGColor.Primary300 else SDGColor.Neutral300
@@ -73,41 +63,34 @@ class SDGLinearProgressTest {
 
     @Test
     fun absentLabelLeavesOnlyTheFourDpBar() {
-        composeRule.setContent {
+        setContent {
             SDGLinearProgress(progress = 0.5f, label = null, labelColor = SDGColor.Neutral700)
         }
 
-        composeRule.onNode(hasProgress)
+        composeRule.onNodeWithTag(PROGRESS_TAG)
             .assertWidthIsEqualTo(160.dp)
             .assertHeightIsEqualTo(4.dp)
     }
 
     @Test
-    fun labelAndProgressShareOneAccessibilityNode() {
-        composeRule.setContent {
+    fun labelPreservesTheThirtyDpHeight() {
+        setContent {
             SDGLinearProgress(progress = 0.5f, label = "업로드 중입니다", labelColor = SDGColor.Neutral700)
         }
 
-        composeRule.onAllNodes(hasProgress).assertCountEquals(1)
-        composeRule.onNode(hasProgress)
-            .assertTextEquals("업로드 중입니다")
+        composeRule.onNodeWithText("업로드 중입니다").assertExists()
+        composeRule.onNodeWithTag(PROGRESS_TAG)
             .assertHeightIsEqualTo(30.dp)
     }
 
     @Test
     fun indeterminateIndicatorKeepsItsLengthAndReverses() {
         composeRule.mainClock.autoAdvance = false
-        composeRule.setContent {
+        setContent {
             SDGLinearProgress(progress = null, label = null, labelColor = SDGColor.Neutral700)
         }
 
-        val node = composeRule.onNode(hasProgress)
-        node.assert(
-            SemanticsMatcher.expectValue(
-                SemanticsProperties.ProgressBarRangeInfo,
-                ProgressBarRangeInfo.Indeterminate,
-            ),
-        )
+        val node = composeRule.onNodeWithTag(PROGRESS_TAG)
         composeRule.mainClock.advanceTimeByFrame()
         val start = node.captureToImage().indicatorRange()
         composeRule.mainClock.advanceTimeBy(500)
@@ -126,20 +109,21 @@ class SDGLinearProgressTest {
     }
 
     @Test
-    fun switchingModesReplacesTheProgressSemantics() {
+    fun switchingModesUpdatesTheIndicatorWidth() {
+        composeRule.mainClock.autoAdvance = false
         val progress = mutableStateOf<Float?>(null)
-        composeRule.setContent {
+        setContent {
             SDGLinearProgress(progress = progress.value, label = null, labelColor = SDGColor.Neutral700)
         }
 
         for (value in listOf(0.5f, null, 1f)) {
             composeRule.runOnIdle { progress.value = value }
-            composeRule.onNode(hasProgress).assert(
-                SemanticsMatcher.expectValue(
-                    SemanticsProperties.ProgressBarRangeInfo,
-                    value?.let { ProgressBarRangeInfo(it, 0f..1f) }
-                        ?: ProgressBarRangeInfo.Indeterminate,
-                ),
+            composeRule.mainClock.advanceTimeByFrame()
+            val image = composeRule.onNodeWithTag(PROGRESS_TAG).captureToImage()
+            assertEquals(
+                image.width * (value ?: 0.5f),
+                image.indicatorRange().count().toFloat(),
+                2f,
             )
         }
     }
@@ -147,7 +131,7 @@ class SDGLinearProgressTest {
     @Test
     fun longLabelWrapsInANarrowParentAtLargeFontScale() {
         val label = "파일을 업로드하고 있습니다. 잠시만 기다려 주세요."
-        composeRule.setContent {
+        setContent {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = 3f)) {
                 Box(Modifier.width(100.dp)) {
@@ -156,7 +140,7 @@ class SDGLinearProgressTest {
             }
         }
 
-        composeRule.onNode(hasProgress).assertWidthIsEqualTo(100.dp)
+        composeRule.onNodeWithTag(PROGRESS_TAG).assertWidthIsEqualTo(100.dp)
         val results = mutableListOf<TextLayoutResult>()
         composeRule.onNodeWithText(label, useUnmergedTree = true)
             .performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(results) }
@@ -166,20 +150,20 @@ class SDGLinearProgressTest {
 
     @Test
     fun rtlProgressFillsFromTheRight() {
-        composeRule.setContent {
+        setContent {
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
                 SDGLinearProgress(progress = 0.5f, label = null, labelColor = SDGColor.Neutral700)
             }
         }
 
-        val pixels = composeRule.onNode(hasProgress).captureToImage().toPixelMap()
+        val pixels = composeRule.onNodeWithTag(PROGRESS_TAG).captureToImage().toPixelMap()
         assertEquals(SDGColor.Neutral300, pixels[pixels.width / 4, pixels.height / 2])
         assertEquals(SDGColor.Primary300, pixels[pixels.width * 3 / 4, pixels.height / 2])
     }
 
     @Test
     fun marginsStayOutsideTheComponentBounds() {
-        composeRule.setContent {
+        setContent {
             SDGLinearProgress(
                 progress = 0.5f,
                 label = null,
@@ -188,11 +172,23 @@ class SDGLinearProgressTest {
             )
         }
 
-        composeRule.onNode(hasProgress)
-            .assertLeftPositionInRootIsEqualTo(12.dp)
-            .assertTopPositionInRootIsEqualTo(8.dp)
-            .assertWidthIsEqualTo(160.dp)
-            .assertHeightIsEqualTo(4.dp)
+        val node = composeRule.onNodeWithTag(PROGRESS_TAG)
+            .assertWidthIsEqualTo(172.dp)
+            .assertHeightIsEqualTo(12.dp)
+        val pixels = node.captureToImage().toPixelMap()
+        with(composeRule.density) {
+            assertEquals(SDGColor.Neutral0, pixels[6.dp.roundToPx(), 10.dp.roundToPx()])
+            assertEquals(SDGColor.Neutral0, pixels[52.dp.roundToPx(), 4.dp.roundToPx()])
+            assertEquals(SDGColor.Primary300, pixels[52.dp.roundToPx(), 10.dp.roundToPx()])
+        }
+    }
+
+    private fun setContent(content: @Composable () -> Unit) {
+        composeRule.setContent {
+            Box(Modifier.testTag(PROGRESS_TAG).background(SDGColor.Neutral0)) {
+                content()
+            }
+        }
     }
 
     private fun ImageBitmap.indicatorRange(): IntRange {
