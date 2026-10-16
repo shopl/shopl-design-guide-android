@@ -38,6 +38,8 @@ import com.shopl.sdg_common.ui.components.SDGText
 
 private const val INDETERMINATE_DURATION_MILLIS = 1000
 private const val INDETERMINATE_WIDTH_FRACTION = 0.5f
+private val PROGRESS_WIDTH = 160.dp
+private val PROGRESS_BAR_HEIGHT = 4.dp
 
 /**
  * SDG - Progress - Linear Progress
@@ -78,14 +80,14 @@ fun SDGLinearProgress(
     Column(
         modifier = Modifier
             .padding(marginValues)
-            .width(160.dp),
+            .width(PROGRESS_WIDTH),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10),
     ) {
         Canvas(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(4.dp)
+                .height(PROGRESS_BAR_HEIGHT)
                 .background(SDGColor.Neutral300, SDGCornerRadius.BoxRadius.Radius2),
         ) {
             val indicatorWidth = size.width * when (type) {
