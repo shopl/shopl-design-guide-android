@@ -64,8 +64,6 @@ fun SDGLinearProgress(
     labelColor: Color = SDGColor.Neutral700,
     marginValues: PaddingValues = PaddingValues(),
 ) {
-    require(progress == null || progress in 0f..1f) { "progress는 0f부터 1f 사이여야 합니다." }
-
     val indicatorPosition = if (progress == null) {
         val transition = rememberInfiniteTransition(label = "SDGLinearProgress")
         transition.animateFloat(
