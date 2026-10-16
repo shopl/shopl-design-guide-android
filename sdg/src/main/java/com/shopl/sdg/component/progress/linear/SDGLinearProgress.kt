@@ -105,7 +105,6 @@ fun SDGLinearProgress(
         }
 
         if (label != null) {
-            // 단일 행의 line-height 여백이 생략돼도 Figma의 최소 라벨 높이를 유지합니다.
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
