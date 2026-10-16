@@ -28,8 +28,12 @@ import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.progress.linear.preview.SDGLinearProgressPreviewParameter
+import com.shopl.sdg.component.progress.linear.preview.SDGLinearProgressPreviewParameterProvider
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
@@ -129,5 +133,21 @@ fun SDGLinearProgress(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(name = "Font scale 3", showBackground = true, fontScale = 3f)
+@Composable
+private fun PreviewSDGLinearProgress(
+    @PreviewParameter(SDGLinearProgressPreviewParameterProvider::class)
+    parameter: SDGLinearProgressPreviewParameter,
+) {
+    with(parameter) {
+        SDGLinearProgress(
+            progress = progress,
+            label = label,
+            labelColor = labelColor,
+        )
     }
 }
