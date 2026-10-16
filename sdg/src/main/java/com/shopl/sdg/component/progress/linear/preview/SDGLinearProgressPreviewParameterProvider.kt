@@ -11,7 +11,7 @@ internal class SDGLinearProgressPreviewParameterProvider :
     override val values: Sequence<SDGLinearProgressPreviewParameter> = sequenceOf(
         반복_이동(),
         진행률_0퍼센트(),
-        진행률_50퍼센트(),
+        진행률_30퍼센트(),
         진행률_100퍼센트(),
         라벨_없는_반복_이동(),
         라벨_없는_진행률(),
@@ -27,8 +27,8 @@ internal class SDGLinearProgressPreviewParameterProvider :
         type = Determinate(0f),
     )
 
-    private fun 진행률_50퍼센트() = SDGLinearProgressPreviewParameter(
-        type = Determinate(0.5f),
+    private fun 진행률_30퍼센트() = SDGLinearProgressPreviewParameter(
+        type = Determinate(0.3f),
     )
 
     private fun 진행률_100퍼센트() = SDGLinearProgressPreviewParameter(
