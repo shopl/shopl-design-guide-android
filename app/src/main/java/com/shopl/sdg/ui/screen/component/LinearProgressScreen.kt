@@ -9,6 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.progress.linear.SDGLinearProgress
+import com.shopl.sdg.component.progress.linear.SDGLinearProgressType.Determinate
+import com.shopl.sdg.component.progress.linear.SDGLinearProgressType.Indeterminate
 import com.shopl.sdg.scene.ComponentScene
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
@@ -41,17 +43,17 @@ internal fun LinearProgressScreen(
                     typography = SDGTypography.Body1SB,
                 )
                 SDGLinearProgress(
-                    progress = 0f,
+                    type = Determinate(0f),
                     label = "업로드 준비 중입니다 (0%)",
                     labelColor = SDGColor.Neutral700,
                 )
                 SDGLinearProgress(
-                    progress = HALF_PROGRESS,
+                    type = Determinate(HALF_PROGRESS),
                     label = "업로드 중입니다 (50%)",
                     labelColor = SDGColor.Neutral700,
                 )
                 SDGLinearProgress(
-                    progress = 1f,
+                    type = Determinate(1f),
                     label = "업로드가 완료됐습니다 (100%)",
                     labelColor = SDGColor.Neutral700,
                 )
@@ -62,13 +64,13 @@ internal fun LinearProgressScreen(
                     typography = SDGTypography.Body1SB,
                 )
                 SDGLinearProgress(
-                    progress = null,
+                    type = Indeterminate,
                     label = "업로드 중입니다",
                     labelColor = SDGColor.Neutral700,
                 )
-                SDGLinearProgress(progress = null, label = null, labelColor = SDGColor.Neutral700)
+                SDGLinearProgress(type = Indeterminate, label = null, labelColor = SDGColor.Neutral700)
                 SDGLinearProgress(
-                    progress = null,
+                    type = Indeterminate,
                     label = "파일을 업로드하고 있습니다. 잠시만 기다려 주세요.",
                     labelColor = SDGColor.Primary400,
                 )

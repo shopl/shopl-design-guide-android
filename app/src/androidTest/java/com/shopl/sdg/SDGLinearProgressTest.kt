@@ -27,6 +27,9 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.shopl.sdg.component.progress.linear.SDGLinearProgress
+import com.shopl.sdg.component.progress.linear.SDGLinearProgressType
+import com.shopl.sdg.component.progress.linear.SDGLinearProgressType.Determinate
+import com.shopl.sdg.component.progress.linear.SDGLinearProgressType.Indeterminate
 import com.shopl.sdg_common.foundation.SDGColor
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -47,7 +50,7 @@ class SDGLinearProgressTest {
     fun determinateProgressUpdatesFill() {
         val progress = mutableStateOf(0f)
         setContent {
-            SDGLinearProgress(progress = progress.value, label = null, labelColor = SDGColor.Neutral700)
+            SDGLinearProgress(type = Determinate(progress.value), label = null, labelColor = SDGColor.Neutral700)
         }
 
         for (value in listOf(0f, 0.5f, 1f)) {
@@ -64,7 +67,7 @@ class SDGLinearProgressTest {
     @Test
     fun absentLabelLeavesOnlyTheFourDpBar() {
         setContent {
-            SDGLinearProgress(progress = 0.5f, label = null, labelColor = SDGColor.Neutral700)
+            SDGLinearProgress(type = Determinate(0.5f), label = null, labelColor = SDGColor.Neutral700)
         }
 
         composeRule.onNodeWithTag(PROGRESS_TAG)
@@ -75,7 +78,7 @@ class SDGLinearProgressTest {
     @Test
     fun labelPreservesTheThirtyDpHeight() {
         setContent {
-            SDGLinearProgress(progress = 0.5f, label = "업로드 중입니다", labelColor = SDGColor.Neutral700)
+            SDGLinearProgress(type = Determinate(0.5f), label = "업로드 중입니다", labelColor = SDGColor.Neutral700)
         }
 
         composeRule.onNodeWithText("업로드 중입니다").assertExists()
@@ -87,7 +90,7 @@ class SDGLinearProgressTest {
     fun indeterminateIndicatorKeepsItsLengthAndReverses() {
         composeRule.mainClock.autoAdvance = false
         setContent {
-            SDGLinearProgress(progress = null, label = null, labelColor = SDGColor.Neutral700)
+            SDGLinearProgress(type = Indeterminate, label = null, labelColor = SDGColor.Neutral700)
         }
 
         val node = composeRule.onNodeWithTag(PROGRESS_TAG)
@@ -111,17 +114,21 @@ class SDGLinearProgressTest {
     @Test
     fun switchingModesUpdatesTheIndicatorWidth() {
         composeRule.mainClock.autoAdvance = false
-        val progress = mutableStateOf<Float?>(null)
+        val type = mutableStateOf<SDGLinearProgressType>(Indeterminate)
         setContent {
-            SDGLinearProgress(progress = progress.value, label = null, labelColor = SDGColor.Neutral700)
+            SDGLinearProgress(type = type.value, label = null, labelColor = SDGColor.Neutral700)
         }
 
-        for (value in listOf(0.5f, null, 1f)) {
-            composeRule.runOnIdle { progress.value = value }
+        for ((value, expectedFraction) in listOf(
+            Determinate(0.25f) to 0.25f,
+            Indeterminate to 0.5f,
+            Determinate(1f) to 1f,
+        )) {
+            composeRule.runOnIdle { type.value = value }
             composeRule.mainClock.advanceTimeByFrame()
             val image = composeRule.onNodeWithTag(PROGRESS_TAG).captureToImage()
             assertEquals(
-                image.width * (value ?: 0.5f),
+                image.width * expectedFraction,
                 image.indicatorRange().count().toFloat(),
                 2f,
             )
@@ -135,7 +142,7 @@ class SDGLinearProgressTest {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = 3f)) {
                 Box(Modifier.width(100.dp)) {
-                    SDGLinearProgress(progress = 0.5f, label = label, labelColor = SDGColor.Neutral700)
+                    SDGLinearProgress(type = Determinate(0.5f), label = label, labelColor = SDGColor.Neutral700)
                 }
             }
         }
@@ -152,7 +159,7 @@ class SDGLinearProgressTest {
     fun rtlProgressFillsFromTheRight() {
         setContent {
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-                SDGLinearProgress(progress = 0.5f, label = null, labelColor = SDGColor.Neutral700)
+                SDGLinearProgress(type = Determinate(0.5f), label = null, labelColor = SDGColor.Neutral700)
             }
         }
 
@@ -165,7 +172,7 @@ class SDGLinearProgressTest {
     fun marginsStayOutsideTheComponentBounds() {
         setContent {
             SDGLinearProgress(
-                progress = 0.5f,
+                type = Determinate(0.5f),
                 label = null,
                 labelColor = SDGColor.Neutral700,
                 marginValues = PaddingValues(start = 12.dp, top = 8.dp),
