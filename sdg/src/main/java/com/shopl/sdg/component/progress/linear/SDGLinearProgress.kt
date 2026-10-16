@@ -108,7 +108,7 @@ fun SDGLinearProgress(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = SDGSpacing.Spacing16),
+                    .heightIn(min = 16.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 SDGText(
