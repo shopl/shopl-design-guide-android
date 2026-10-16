@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -49,16 +48,14 @@ private val LABEL_MIN_HEIGHT = 16.dp
  * UI를 불러오거나 사용자가 취한 액션을 처리할 경우 사용하며, 그 처리 과정이 진행 중임을 알려주는 문구가 포함된 바 형태의 컴포넌트
  *
  * @param type 진행률에 따라 채워지는 Determinate 또는 좌우로 반복 이동하는 Indeterminate
- * @param label 진행 상태를 안내하는 문구. null이면 라벨과 하단 간격을 표시하지 않습니다.
- * @param labelColor 라벨 색상
+ * @param showLabel 라벨 표시 여부. True는 문구와 색상을 표시하고 False는 라벨과 간격을 숨깁니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=29803-7716&m=dev">Figma</a>
  */
 @Composable
 fun SDGLinearProgress(
     type: SDGLinearProgressType,
-    label: String?,
-    labelColor: Color,
+    showLabel: SDGLinearProgressShowLabel,
 ) {
     val indicatorPosition = if (type == SDGLinearProgressType.Indeterminate) {
         val transition = rememberInfiniteTransition(label = "SDGLinearProgress")
@@ -103,7 +100,7 @@ fun SDGLinearProgress(
             }
         }
 
-        if (label != null) {
+        if (showLabel is SDGLinearProgressShowLabel.True) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -112,9 +109,9 @@ fun SDGLinearProgress(
             ) {
                 SDGText(
                     modifier = Modifier.fillMaxWidth(),
-                    text = label,
+                    text = showLabel.text,
                     typography = SDGTypography.Body3R,
-                    textColor = labelColor,
+                    textColor = showLabel.textColor,
                     textAlign = TextAlign.Center,
                 )
             }
@@ -132,8 +129,7 @@ private fun PreviewSDGLinearProgress(
     with(parameter) {
         SDGLinearProgress(
             type = type,
-            label = label,
-            labelColor = labelColor,
+            showLabel = showLabel,
         )
     }
 }

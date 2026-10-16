@@ -1,6 +1,7 @@
 package com.shopl.sdg.component.progress.linear.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.shopl.sdg.component.progress.linear.SDGLinearProgressShowLabel
 import com.shopl.sdg.component.progress.linear.SDGLinearProgressType.Determinate
 import com.shopl.sdg.component.progress.linear.SDGLinearProgressType.Indeterminate
 import com.shopl.sdg_common.foundation.SDGColor
@@ -33,26 +34,35 @@ internal class SDGLinearProgressPreviewParameterProvider :
 
     private fun 진행률_100퍼센트() = SDGLinearProgressPreviewParameter(
         type = Determinate(1f),
-        label = "업로드가 완료됐습니다",
+        showLabel = SDGLinearProgressShowLabel.True(
+            text = "업로드가 완료됐습니다",
+            textColor = SDGColor.Neutral700,
+        ),
     )
 
     private fun 라벨_없는_반복_이동() = SDGLinearProgressPreviewParameter(
         type = Indeterminate,
-        label = null,
+        showLabel = SDGLinearProgressShowLabel.False,
     )
 
     private fun 라벨_없는_진행률() = SDGLinearProgressPreviewParameter(
         type = Determinate(0.5f),
-        label = null,
+        showLabel = SDGLinearProgressShowLabel.False,
     )
 
     private fun 긴_라벨() = SDGLinearProgressPreviewParameter(
         type = Indeterminate,
-        label = "파일을 업로드하고 있습니다. 잠시만 기다려 주세요.",
+        showLabel = SDGLinearProgressShowLabel.True(
+            text = "파일을 업로드하고 있습니다. 잠시만 기다려 주세요.",
+            textColor = SDGColor.Neutral700,
+        ),
     )
 
     private fun 라벨_색상_변경() = SDGLinearProgressPreviewParameter(
         type = Indeterminate,
-        labelColor = SDGColor.Primary400,
+        showLabel = SDGLinearProgressShowLabel.True(
+            text = "업로드 중입니다",
+            textColor = SDGColor.Primary400,
+        ),
     )
 }
