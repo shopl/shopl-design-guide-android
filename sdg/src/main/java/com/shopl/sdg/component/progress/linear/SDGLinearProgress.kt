@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.progress.linear.preview.SDGLinearProgressPreviewParameter
 import com.shopl.sdg.component.progress.linear.preview.SDGLinearProgressPreviewParameterProvider
@@ -93,12 +92,7 @@ fun SDGLinearProgress(
                 is SDGLinearProgressType.Determinate -> type.progress
                 SDGLinearProgressType.Indeterminate -> INDETERMINATE_WIDTH_FRACTION
             }
-            val position = (size.width - indicatorWidth) * (indicatorPosition?.value ?: 0f)
-            val start = if (layoutDirection == LayoutDirection.Ltr) {
-                position
-            } else {
-                size.width - indicatorWidth - position
-            }
+            val start = (size.width - indicatorWidth) * (indicatorPosition?.value ?: 0f)
 
             if (indicatorWidth > 0f) {
                 drawRoundRect(

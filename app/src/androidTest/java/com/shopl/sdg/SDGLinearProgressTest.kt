@@ -156,7 +156,7 @@ class SDGLinearProgressTest {
     }
 
     @Test
-    fun rtlProgressFillsFromTheRight() {
+    fun rtlProgressFillsFromTheLeft() {
         setContent {
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
                 SDGLinearProgress(type = Determinate(0.5f), label = null, labelColor = SDGColor.Neutral700)
@@ -164,8 +164,8 @@ class SDGLinearProgressTest {
         }
 
         val pixels = composeRule.onNodeWithTag(PROGRESS_TAG).captureToImage().toPixelMap()
-        assertEquals(SDGColor.Neutral300, pixels[pixels.width / 4, pixels.height / 2])
-        assertEquals(SDGColor.Primary300, pixels[pixels.width * 3 / 4, pixels.height / 2])
+        assertEquals(SDGColor.Primary300, pixels[pixels.width / 4, pixels.height / 2])
+        assertEquals(SDGColor.Neutral300, pixels[pixels.width * 3 / 4, pixels.height / 2])
     }
 
     @Test
