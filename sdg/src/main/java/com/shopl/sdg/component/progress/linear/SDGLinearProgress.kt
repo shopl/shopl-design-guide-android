@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.progress.linear.preview.SDGLinearProgressPreviewParameter
 import com.shopl.sdg.component.progress.linear.preview.SDGLinearProgressPreviewParameterProvider
+import com.shopl.sdg_common.ext.orDefault
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
@@ -95,7 +96,7 @@ fun SDGLinearProgress(
                 is SDGLinearProgressType.Determinate -> type.progress
                 SDGLinearProgressType.Indeterminate -> INDETERMINATE_WIDTH_FRACTION
             }
-            val start = (size.width - indicatorWidth) * (indicatorPosition?.value ?: 0f)
+            val start = (size.width - indicatorWidth) * indicatorPosition?.value.orDefault()
 
             if (indicatorWidth > 0f) {
                 drawRoundRect(
