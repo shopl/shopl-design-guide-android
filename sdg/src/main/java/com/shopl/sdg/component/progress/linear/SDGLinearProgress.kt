@@ -40,6 +40,7 @@ private const val INDETERMINATE_DURATION_MILLIS = 1000
 private const val INDETERMINATE_WIDTH_FRACTION = 0.5f
 private val PROGRESS_WIDTH = 160.dp
 private val PROGRESS_BAR_HEIGHT = 4.dp
+private val LABEL_MIN_HEIGHT = 16.dp
 
 /**
  * SDG - Progress - Linear Progress
@@ -110,7 +111,7 @@ fun SDGLinearProgress(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 16.dp),
+                    .heightIn(min = LABEL_MIN_HEIGHT),
                 contentAlignment = Alignment.Center,
             ) {
                 SDGText(
