@@ -9,6 +9,7 @@ import com.shopl.sdg.ui.screen.component.DropdownScreen
 import com.shopl.sdg.ui.screen.component.FixedTabScreen
 import com.shopl.sdg.ui.screen.component.IconLabelScreen
 import com.shopl.sdg.ui.screen.component.IconTabScreen
+import com.shopl.sdg.ui.screen.component.LinearProgressScreen
 import com.shopl.sdg.ui.screen.component.ScrollTabScreen
 import com.shopl.sdg.ui.screen.component.SelectInputScreen
 import com.shopl.sdg.ui.screen.component.TimeSelectInputScreen
@@ -343,11 +344,14 @@ internal sealed class ComponentScene(
 
         data object LinearProgress : Progress(
             displayLabel = "Linear Progress",
-            implemented = false
+            implemented = true
         ) {
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                throw IllegalStateException("Not implemented")
+                LinearProgressScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = { moveToScene(Menu) },
+                )
             }
         }
     }
