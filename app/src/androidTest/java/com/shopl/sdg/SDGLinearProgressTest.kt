@@ -50,7 +50,9 @@ class SDGLinearProgressTest {
     @Test
     fun determinateProgressUpdatesSemanticsAndFill() {
         val progress = mutableStateOf(0f)
-        composeRule.setContent { SDGLinearProgress(progress = progress.value) }
+        composeRule.setContent {
+            SDGLinearProgress(progress = progress.value, label = null, labelColor = SDGColor.Neutral700)
+        }
 
         for (value in listOf(0f, 0.5f, 1f)) {
             composeRule.runOnIdle { progress.value = value }
@@ -71,7 +73,9 @@ class SDGLinearProgressTest {
 
     @Test
     fun absentLabelLeavesOnlyTheFourDpBar() {
-        composeRule.setContent { SDGLinearProgress(progress = 0.5f) }
+        composeRule.setContent {
+            SDGLinearProgress(progress = 0.5f, label = null, labelColor = SDGColor.Neutral700)
+        }
 
         composeRule.onNode(hasProgress)
             .assertWidthIsEqualTo(160.dp)
@@ -81,7 +85,7 @@ class SDGLinearProgressTest {
     @Test
     fun labelAndProgressShareOneAccessibilityNode() {
         composeRule.setContent {
-            SDGLinearProgress(progress = 0.5f, label = "업로드 중입니다")
+            SDGLinearProgress(progress = 0.5f, label = "업로드 중입니다", labelColor = SDGColor.Neutral700)
         }
 
         composeRule.onAllNodes(hasProgress).assertCountEquals(1)
@@ -93,7 +97,9 @@ class SDGLinearProgressTest {
     @Test
     fun indeterminateIndicatorKeepsItsLengthAndReverses() {
         composeRule.mainClock.autoAdvance = false
-        composeRule.setContent { SDGLinearProgress() }
+        composeRule.setContent {
+            SDGLinearProgress(progress = null, label = null, labelColor = SDGColor.Neutral700)
+        }
 
         val node = composeRule.onNode(hasProgress)
         node.assert(
@@ -122,7 +128,9 @@ class SDGLinearProgressTest {
     @Test
     fun switchingModesReplacesTheProgressSemantics() {
         val progress = mutableStateOf<Float?>(null)
-        composeRule.setContent { SDGLinearProgress(progress = progress.value) }
+        composeRule.setContent {
+            SDGLinearProgress(progress = progress.value, label = null, labelColor = SDGColor.Neutral700)
+        }
 
         for (value in listOf(0.5f, null, 1f)) {
             composeRule.runOnIdle { progress.value = value }
@@ -143,7 +151,7 @@ class SDGLinearProgressTest {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = 3f)) {
                 Box(Modifier.width(100.dp)) {
-                    SDGLinearProgress(progress = 0.5f, label = label)
+                    SDGLinearProgress(progress = 0.5f, label = label, labelColor = SDGColor.Neutral700)
                 }
             }
         }
@@ -160,7 +168,7 @@ class SDGLinearProgressTest {
     fun rtlProgressFillsFromTheRight() {
         composeRule.setContent {
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-                SDGLinearProgress(progress = 0.5f)
+                SDGLinearProgress(progress = 0.5f, label = null, labelColor = SDGColor.Neutral700)
             }
         }
 
@@ -174,6 +182,8 @@ class SDGLinearProgressTest {
         composeRule.setContent {
             SDGLinearProgress(
                 progress = 0.5f,
+                label = null,
+                labelColor = SDGColor.Neutral700,
                 marginValues = PaddingValues(start = 12.dp, top = 8.dp),
             )
         }

@@ -40,18 +40,35 @@ internal fun LinearProgressScreen(
                     textColor = SDGColor.Neutral700,
                     typography = SDGTypography.Body1SB,
                 )
-                SDGLinearProgress(progress = 0f, label = "업로드 준비 중입니다 (0%)")
-                SDGLinearProgress(progress = HALF_PROGRESS, label = "업로드 중입니다 (50%)")
-                SDGLinearProgress(progress = 1f, label = "업로드가 완료됐습니다 (100%)")
+                SDGLinearProgress(
+                    progress = 0f,
+                    label = "업로드 준비 중입니다 (0%)",
+                    labelColor = SDGColor.Neutral700,
+                )
+                SDGLinearProgress(
+                    progress = HALF_PROGRESS,
+                    label = "업로드 중입니다 (50%)",
+                    labelColor = SDGColor.Neutral700,
+                )
+                SDGLinearProgress(
+                    progress = 1f,
+                    label = "업로드가 완료됐습니다 (100%)",
+                    labelColor = SDGColor.Neutral700,
+                )
 
                 SDGText(
                     text = "Indeterminate",
                     textColor = SDGColor.Neutral700,
                     typography = SDGTypography.Body1SB,
                 )
-                SDGLinearProgress(label = "업로드 중입니다")
-                SDGLinearProgress()
                 SDGLinearProgress(
+                    progress = null,
+                    label = "업로드 중입니다",
+                    labelColor = SDGColor.Neutral700,
+                )
+                SDGLinearProgress(progress = null, label = null, labelColor = SDGColor.Neutral700)
+                SDGLinearProgress(
+                    progress = null,
                     label = "파일을 업로드하고 있습니다. 잠시만 기다려 주세요.",
                     labelColor = SDGColor.Primary400,
                 )

@@ -59,9 +59,9 @@ private const val INDETERMINATE_WIDTH_FRACTION = 0.5f
  */
 @Composable
 fun SDGLinearProgress(
-    progress: Float? = null,
-    label: String? = null,
-    labelColor: Color = SDGColor.Neutral700,
+    progress: Float?,
+    label: String?,
+    labelColor: Color,
     marginValues: PaddingValues = PaddingValues(),
 ) {
     val indicatorPosition = if (progress == null) {

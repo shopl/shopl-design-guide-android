@@ -2,6 +2,7 @@ package com.shopl.sdg
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.shopl.sdg.component.progress.linear.SDGLinearProgress
+import com.shopl.sdg_common.foundation.SDGColor
 import org.junit.Assert.assertThrows
 import org.junit.Rule
 import org.junit.Test
@@ -17,7 +18,9 @@ class SDGLinearProgressInvalidValueTest(private val progress: Float) {
     @Test
     fun invalidProgressIsRejected() {
         assertThrows(IllegalArgumentException::class.java) {
-            composeRule.setContent { SDGLinearProgress(progress = progress) }
+            composeRule.setContent {
+                SDGLinearProgress(progress = progress, label = null, labelColor = SDGColor.Neutral700)
+            }
         }
     }
 
