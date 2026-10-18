@@ -2,7 +2,7 @@ package com.shopl.sdg.component.progress.linear
 
 import androidx.compose.runtime.Immutable
 
-/** 선형 진행 표시줄의 동작 방식입니다. */
+/** Progress 동작 방식입니다. */
 @Immutable
 sealed interface SDGLinearProgressType {
 
