@@ -10,7 +10,6 @@ import com.shopl.sdg.component.navigation.text.SDGTextNaviSubItem
 import com.shopl.sdg.template.navigation.SDGTopNaviMenu
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_resource.R
-import kotlinx.collections.immutable.toPersistentList
 
 /**
  * SDG - Top Navigation - Top Text Navi
@@ -38,20 +37,17 @@ fun SDGTopTextNavi(
         } else {
             SDGTextNaviBackButton.False
         },
-        subItems = menu?.let { item ->
-            listOfNotNull(
-                item.iconResId?.let { iconResId ->
-                    SDGTextNaviSubItem.Icon(
-                        iconResId = iconResId,
-                        iconColor = item.iconTint,
-                        onClick = item.onMenuClick,
-                    )
-                },
-                SDGTextNaviSubItem.Label(
-                    text = item.textMenuTitle,
+        subIcon = menu?.let { item ->
+            item.iconResId?.let { iconResId ->
+                SDGTextNaviSubItem.Icon(
+                    iconResId = iconResId,
+                    iconColor = item.iconTint,
                     onClick = item.onMenuClick,
-                ),
-            ).toPersistentList()
+                )
+            }
+        },
+        subLabel = menu?.let {
+            SDGTextNaviSubItem.Label(text = it.textMenuTitle, onClick = it.onMenuClick)
         },
     )
 }

@@ -77,7 +77,6 @@ private fun TextNaviContent(
         iconColor = null,
     )
     val subLabel = SDGTextNaviSubItem.Label(text = "추가", onClick = onClickAction)
-    val subItems = persistentListOf<SDGTextNaviSubItem>(subIcon, subLabel)
 
     Column(
         modifier = Modifier
@@ -94,64 +93,71 @@ private fun TextNaviContent(
         SDGTextNavi(
             label = label,
             backButton = backButton,
-            subItems = subItems,
+            subIcon = subIcon,
+            subLabel = subLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "뒤로가기 아이콘이 없는 경우"),
             backButton = SDGTextNaviBackButton.False,
-            subItems = subItems,
+            subIcon = subIcon,
+            subLabel = subLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = SDGTextNaviLabel.False,
             backButton = backButton,
-            subItems = subItems,
+            subIcon = subIcon,
+            subLabel = subLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "텍스트만 있는 보조 항목"),
             backButton = backButton,
-            subItems = persistentListOf(subLabel),
+            subIcon = null,
+            subLabel = subLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "아이콘만 있는 보조 항목"),
             backButton = backButton,
-            subItems = persistentListOf(subIcon),
+            subIcon = subIcon,
+            subLabel = null,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "보조 항목이 없는 경우"),
             backButton = backButton,
-            subItems = null,
+            subIcon = null,
+            subLabel = null,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요"),
             backButton = backButton,
-            subItems = subItems,
+            subIcon = subIcon,
+            subLabel = subLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label,
             backButton = backButton,
-            subItems = persistentListOf(subIcon, subLabel.copy(text = "변경사항 저장하기")),
+            subIcon = subIcon,
+            subLabel = subLabel.copy(text = "변경사항 저장하기"),
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "파란 배경", textColor = SDGColor.Neutral0),
             backButton = backButton,
-            subItems = persistentListOf(
-                subIcon.copy(iconColor = SDGColor.Neutral0),
-                subLabel,
-            ),
+            subIcon = subIcon.copy(iconColor = SDGColor.Neutral0),
+            subLabel = subLabel,
             backgroundColor = SDGColor.Primary300,
         )
         SDGTextNavi(
             label = label.copy(text = "분홍 배경"),
             backButton = backButton,
-            subItems = subItems,
+            subIcon = subIcon,
+            subLabel = subLabel,
             backgroundColor = SDGColor.Red50,
         )
     }
