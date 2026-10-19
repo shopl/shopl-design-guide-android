@@ -57,6 +57,7 @@ internal fun TextNaviScreen(
                     "모든 구성 요소는 수평으로 중앙 정렬합니다.",
                     "제목은 한 줄로 표시하고, 영역을 벗어나면 말줄임 처리합니다.",
                     "보조 라벨은 필수이며, 라벨 앞의 보조 아이콘은 생략할 수 있습니다.",
+                    "보조 아이콘의 기능에 따라 Dot 형태의 뱃지를 표시할 수 있습니다.",
                 ),
             )
         },
@@ -95,6 +96,13 @@ private fun TextNaviContent(
             label = label,
             backButton = backButton,
             subIcon = subIcon,
+            subLabel = subLabel,
+            backgroundColor = SDGColor.Neutral100,
+        )
+        SDGTextNavi(
+            label = label.copy(text = "Dot 뱃지가 있는 보조 아이콘"),
+            backButton = backButton,
+            subIcon = subIcon.copy(iconResId = R.drawable.ic_navi_filter, showDot = true),
             subLabel = subLabel,
             backgroundColor = SDGColor.Neutral100,
         )

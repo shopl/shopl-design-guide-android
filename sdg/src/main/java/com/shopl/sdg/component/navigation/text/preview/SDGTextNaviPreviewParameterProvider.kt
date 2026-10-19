@@ -10,6 +10,7 @@ import com.shopl.sdg_resource.R
 internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SDGTextNaviPreviewParameter> {
     override val values: Sequence<SDGTextNaviPreviewParameter> = sequenceOf(
         기본_상태(),
+        보조_아이콘_뱃지_노출(),
         뒤로가기_숨김(),
         제목_숨김(),
         보조_아이콘_숨김(),
@@ -33,6 +34,17 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
             ),
             subLabel = SDGTextNaviSubItem.Label(text = "Label", onClick = {}),
             backgroundColor = SDGColor.Neutral100,
+        )
+    }
+
+    private fun 보조_아이콘_뱃지_노출(): SDGTextNaviPreviewParameter {
+        return 기본_상태().copy(
+            subIcon = SDGTextNaviSubItem.Icon(
+                iconResId = R.drawable.ic_navi_filter,
+                onClick = {},
+                iconColor = null,
+                showDot = true,
+            ),
         )
     }
 
