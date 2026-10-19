@@ -38,7 +38,7 @@ private const val PREVIEW_WIDTH_DP = 375
 
 private val NAVI_MIN_HEIGHT = 48.dp
 private val BACK_ICON_SIZE = 40.dp
-private val SUB_ICON_SIZE = 20.dp
+private val SUB_ICON_SIZE = 40.dp
 private val DOT_BADGE_SIZE = 8.dp
 
 /**
@@ -47,9 +47,6 @@ private val DOT_BADGE_SIZE = 8.dp
  * 화면의 상단에 위치하여 현재 위치를 알려주는 타이틀과 우측에 1개 기능을 텍스트로 조합한 컴포넌트
  *
  * @version 2.1.21
- *
- * @param subIcon 보조 아이콘과 showDot에 따른 dot 배지를 표시합니다. null이면 숨깁니다.
- * @param subLabel 항상 표시하는 보조 라벨 한 개입니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19821-30436&m=dev">Figma</a>
  */
@@ -125,6 +122,7 @@ private fun SDGTextNaviSub(
                 if (subIcon.showDot) {
                     Canvas(
                         modifier = Modifier
+                            .padding(Spacing8)
                             .size(DOT_BADGE_SIZE)
                             .align(Alignment.TopEnd),
                     ) {
