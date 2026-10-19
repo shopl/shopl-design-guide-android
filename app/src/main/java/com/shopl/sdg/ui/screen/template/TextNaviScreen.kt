@@ -76,7 +76,7 @@ private fun TextNaviContent(
         onClick = onClickAction,
         iconColor = null,
     )
-    val subLabel = SDGTextNaviSubItem.Label(text = "추가", onClick = onClickAction, textColor = SDGColor.Neutral700)
+    val subLabel = SDGTextNaviSubItem.Label(text = "추가", onClick = onClickAction)
     val subItems = persistentListOf<SDGTextNaviSubItem>(subIcon, subLabel)
 
     Column(
@@ -144,7 +144,7 @@ private fun TextNaviContent(
             backButton = backButton,
             subItems = persistentListOf(
                 subIcon.copy(iconColor = SDGColor.Neutral0),
-                subLabel.copy(textColor = SDGColor.Neutral0),
+                subLabel,
             ),
             backgroundColor = SDGColor.Primary300,
         )

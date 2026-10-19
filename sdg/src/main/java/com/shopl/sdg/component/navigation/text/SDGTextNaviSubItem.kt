@@ -15,6 +15,5 @@ sealed interface SDGTextNaviSubItem {
     data class Label(
         val text: String,
         override val onClick: () -> Unit,
-        val textColor: Color,
     ) : SDGTextNaviSubItem
 }

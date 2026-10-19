@@ -33,7 +33,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
             ),
             subItems = persistentListOf(
                 SDGTextNaviSubItem.Icon(iconResId = R.drawable.ic_common_plus, onClick = {}, iconColor = null),
-                SDGTextNaviSubItem.Label(text = "Label", onClick = {}, textColor = SDGColor.Neutral700),
+                SDGTextNaviSubItem.Label(text = "Label", onClick = {}),
             ),
             backgroundColor = SDGColor.Neutral100,
         )
@@ -50,7 +50,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
     private fun 보조_아이콘_숨김(): SDGTextNaviPreviewParameter {
         return 기본_상태().copy(
             subItems = persistentListOf(
-                SDGTextNaviSubItem.Label(text = "완료", onClick = {}, textColor = SDGColor.Neutral700),
+                SDGTextNaviSubItem.Label(text = "완료", onClick = {}),
             ),
         )
     }
@@ -91,7 +91,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
         return 기본_상태().copy(
             subItems = persistentListOf(
                 SDGTextNaviSubItem.Icon(iconResId = R.drawable.ic_common_plus, onClick = {}, iconColor = null),
-                SDGTextNaviSubItem.Label(text = "변경사항 저장하기", onClick = {}, textColor = SDGColor.Neutral700),
+                SDGTextNaviSubItem.Label(text = "변경사항 저장하기", onClick = {}),
             ),
         )
     }
@@ -99,7 +99,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
     private fun 라벨_다음_아이콘(): SDGTextNaviPreviewParameter {
         return 기본_상태().copy(
             subItems = persistentListOf(
-                SDGTextNaviSubItem.Label(text = "Label", onClick = {}, textColor = SDGColor.Neutral700),
+                SDGTextNaviSubItem.Label(text = "Label", onClick = {}),
                 SDGTextNaviSubItem.Icon(iconResId = R.drawable.ic_common_plus, onClick = {}, iconColor = null),
             ),
         )
@@ -109,9 +109,9 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
         return 기본_상태().copy(
             subItems = persistentListOf(
                 SDGTextNaviSubItem.Icon(iconResId = R.drawable.ic_common_plus, onClick = {}, iconColor = null),
-                SDGTextNaviSubItem.Label(text = "취소", onClick = {}, textColor = SDGColor.Neutral700),
+                SDGTextNaviSubItem.Label(text = "취소", onClick = {}),
                 SDGTextNaviSubItem.Icon(iconResId = R.drawable.ic_common_plus, onClick = {}, iconColor = null),
-                SDGTextNaviSubItem.Label(text = "저장", onClick = {}, textColor = SDGColor.Neutral700),
+                SDGTextNaviSubItem.Label(text = "저장", onClick = {}),
             ),
         )
     }
@@ -130,7 +130,6 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
                 ),
                 SDGTextNaviSubItem.Label(
                     text = "Label",
-                    textColor = SDGColor.Neutral0,
                     onClick = {},
                 ),
             ),
