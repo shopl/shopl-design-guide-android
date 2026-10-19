@@ -105,7 +105,6 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
             label = SDGTextNaviLabel.True(text = "Label", textColor = SDGColor.Neutral0),
             backButton = SDGTextNaviBackButton.True(
                 onClick = {},
-                iconColor = SDGColor.Neutral0,
             ),
             rightItem = SDGTextNaviRightItem(
                 subLabel = SDGTextNaviSubLabel.True(text = "Label", textColor = SDGColor.Neutral0),

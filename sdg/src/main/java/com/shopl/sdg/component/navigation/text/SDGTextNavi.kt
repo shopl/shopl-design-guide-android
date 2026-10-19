@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.shopl.sdg.component.navigation.text.preview.SDGTextNaviPreviewParameter
 import com.shopl.sdg.component.navigation.text.preview.SDGTextNaviPreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
+import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing6
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
@@ -47,7 +48,7 @@ fun SDGTextNavi(
             {
                 SDGImage(
                     resId = R.drawable.ic_navi_back_android,
-                    color = backButton.iconColor,
+                    color = SDGColor.Neutral700,
                     modifier = Modifier
                         .size(SDGTextNaviBackIconSize)
                         .clickable(onClick = backButton.onClick),
