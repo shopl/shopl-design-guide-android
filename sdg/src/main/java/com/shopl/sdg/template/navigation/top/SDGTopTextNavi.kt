@@ -1,29 +1,31 @@
 package com.shopl.sdg.template.navigation.top
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.navigation.text.SDGTextNaviBackIconSize
+import com.shopl.sdg.component.navigation.text.SDGTextNaviLabel
+import com.shopl.sdg.component.navigation.text.SDGTextNaviLayout
+import com.shopl.sdg.component.navigation.text.SDGTextNaviSubIconSize
 import com.shopl.sdg.template.navigation.SDGTopNaviMenu
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing6
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
+
+private const val BACK_CLICK_DEBOUNCE_MILLIS = 1_000L
+private const val MENU_MAX_LINES = 1
 
 /**
  * SDG - Top Navigation - Top Text Navi
@@ -31,6 +33,7 @@ import com.shopl.sdg_resource.R
  * 타이틀과 특정한 동작 또는 정보를 전달하는 텍스트 조합
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6900-15491&t=dgvDUBUeWoMF9Oo1-4">Figma</a>
+ * @see com.shopl.sdg.component.navigation.text.SDGTextNavi
  */
 @Deprecated(message = "제거 예정. SDGTextNavi를 사용하세요.")
 @Composable
@@ -40,67 +43,61 @@ fun SDGTopTextNavi(
     menu: SDGTopNaviMenu.TextMenu? = null,
     backBtn: SDGTopNaviMenu.CommonMenu? = null,
 ) {
-    Row(
-        modifier = Modifier
-            .background(backgroundColor)
-            .height(48.dp)
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        if (backBtn != null) {
-            SDGImage(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable(false, debounceTimeMills = 1000) { backBtn.onMenuClick.invoke() },
-                resId = backBtn.iconResId,
-                color = backBtn.iconTint,
-                contentDescription = null
-            )
-        }
-        Spacer(modifier = Modifier.width(if (backBtn != null) 2.dp else 6.dp))
-        Row(
-            modifier = Modifier
-                .weight(1F)
-                .animateContentSize(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            SDGText(
-                modifier = Modifier.weight(1f, false),
-                text = title,
-                textColor = SDGColor.Neutral900,
-                typography = SDGTypography.NaviTitle,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-        Spacer(modifier = Modifier.width(if (menu != null) 10.dp else 6.dp))
-        if (menu != null) {
-            Row(
-                modifier = Modifier.clickable(false) { menu.onMenuClick() },
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                if (menu.iconResId != null) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.size(size = 20.dp)
-                    ) {
-                        SDGImage(
-                            modifier = Modifier.size(menu.iconSize ?: 20.dp),
-                            resId = menu.iconResId,
-                            color = menu.iconTint,
-                        )
-                    }
-                }
-                SDGText(
-                    text = menu.textMenuTitle,
-                    textColor = SDGColor.Neutral700,
-                    typography = SDGTypography.Body1R,
+    SDGTextNaviLayout(
+        label = SDGTextNaviLabel.True(text = title),
+        backgroundColor = backgroundColor,
+        marginValues = PaddingValues(),
+        backButton = if (backBtn != null) {
+            {
+                SDGImage(
+                    resId = backBtn.iconResId,
+                    color = backBtn.iconTint,
+                    modifier = Modifier
+                        .size(SDGTextNaviBackIconSize)
+                        .clickable(
+                            role = Role.Button,
+                            debounceTimeMills = BACK_CLICK_DEBOUNCE_MILLIS,
+                            onClick = backBtn.onMenuClick,
+                        ),
                 )
             }
-            Spacer(modifier = Modifier.width(6.dp))
-        }
-    }
+        } else {
+            null
+        },
+        rightItem = if (menu != null) {
+            {
+                Row(
+                    modifier = Modifier
+                        .clickable(role = Role.Button, onClick = menu.onMenuClick)
+                        .padding(end = Spacing6),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    if (menu.iconResId != null) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier.size(SDGTextNaviSubIconSize),
+                        ) {
+                            SDGImage(
+                                resId = menu.iconResId,
+                                color = menu.iconTint,
+                                modifier = Modifier.size(menu.iconSize ?: SDGTextNaviSubIconSize),
+                            )
+                        }
+                    }
+
+                    SDGText(
+                        text = menu.textMenuTitle,
+                        textColor = SDGColor.Neutral700,
+                        typography = SDGTypography.Body1R,
+                        maxLines = MENU_MAX_LINES,
+                        softWrap = false,
+                    )
+                }
+            }
+        } else {
+            null
+        },
+    )
 }
 
 @Preview
