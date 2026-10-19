@@ -9,6 +9,6 @@ internal data class SDGTextNaviPreviewParameter(
     val label: SDGTextNaviLabel,
     val backButton: SDGTextNaviBackButton,
     val subIcon: SDGTextNaviSubItem.Icon?,
-    val subLabel: SDGTextNaviSubItem.Label?,
+    val subLabel: SDGTextNaviSubItem.Label,
     val backgroundColor: Color,
 )

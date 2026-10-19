@@ -47,7 +47,7 @@ private val SUB_ICON_SIZE = 20.dp
  * @version 2.1.21
  *
  * @param subIcon 보조 아이콘 한 개를 표시합니다. null이면 숨깁니다.
- * @param subLabel 보조 라벨 한 개를 표시합니다. null이면 숨깁니다.
+ * @param subLabel 항상 표시하는 보조 라벨 한 개입니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19821-30436&m=dev">Figma</a>
  */
@@ -56,7 +56,7 @@ fun SDGTextNavi(
     label: SDGTextNaviLabel,
     backButton: SDGTextNaviBackButton,
     subIcon: SDGTextNaviSubItem.Icon?,
-    subLabel: SDGTextNaviSubItem.Label?,
+    subLabel: SDGTextNaviSubItem.Label,
     backgroundColor: Color,
     marginValues: PaddingValues = PaddingValues(),
 ) {
@@ -96,18 +96,16 @@ fun SDGTextNavi(
             }
         }
 
-        if (subIcon != null || subLabel != null) {
-            Spacer(Modifier.width(Spacing8))
+        Spacer(Modifier.width(Spacing8))
 
-            SDGTextNaviSub(subIcon = subIcon, subLabel = subLabel)
-        }
+        SDGTextNaviSub(subIcon = subIcon, subLabel = subLabel)
     }
 }
 
 @Composable
 private fun SDGTextNaviSub(
     subIcon: SDGTextNaviSubItem.Icon?,
-    subLabel: SDGTextNaviSubItem.Label?,
+    subLabel: SDGTextNaviSubItem.Label,
 ) {
     Row(
         modifier = Modifier.padding(end = Spacing6),
@@ -123,16 +121,14 @@ private fun SDGTextNaviSub(
             )
         }
 
-        if (subLabel != null) {
-            SDGText(
-                text = subLabel.text,
-                typography = SDGTypography.Body1R,
-                textColor = SDGColor.Neutral700,
-                maxLines = LABEL_MAX_LINES,
-                softWrap = false,
-                modifier = Modifier.clickable(onClick = subLabel.onClick),
-            )
-        }
+        SDGText(
+            text = subLabel.text,
+            typography = SDGTypography.Body1R,
+            textColor = SDGColor.Neutral700,
+            maxLines = LABEL_MAX_LINES,
+            softWrap = false,
+            modifier = Modifier.clickable(onClick = subLabel.onClick),
+        )
     }
 }
 

@@ -17,6 +17,7 @@ import com.shopl.sdg_resource.R
  * 타이틀과 특정한 동작 또는 정보를 전달하는 텍스트 조합
  *
  * 뒤로가기 아이콘의 리소스·색상, 메뉴 아이콘 크기와 클릭 제한은 신규 SDGTextNavi 사양을 따릅니다.
+ * menu가 null이면 빈 보조 라벨을 전달하며, 보조 영역의 간격은 유지됩니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6900-15491&t=dgvDUBUeWoMF9Oo1-4">Figma</a>
  * @see com.shopl.sdg.component.navigation.text.SDGTextNavi
@@ -46,9 +47,10 @@ fun SDGTopTextNavi(
                 )
             }
         },
-        subLabel = menu?.let {
-            SDGTextNaviSubItem.Label(text = it.textMenuTitle, onClick = it.onMenuClick)
-        },
+        subLabel = SDGTextNaviSubItem.Label(
+            text = menu?.textMenuTitle.orEmpty(),
+            onClick = { menu?.onMenuClick?.invoke() },
+        ),
     )
 }
 
