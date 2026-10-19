@@ -75,6 +75,7 @@ private fun TextNaviContent(
         iconResId = R.drawable.ic_common_plus,
         onClick = onClickAction,
         iconColor = null,
+        showDot = false,
     )
     val subLabel = SDGTextNaviSubItem.Label(text = "추가", onClick = onClickAction)
 

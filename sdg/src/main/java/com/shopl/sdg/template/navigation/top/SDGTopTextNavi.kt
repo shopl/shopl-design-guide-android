@@ -44,6 +44,7 @@ fun SDGTopTextNavi(
                     iconResId = iconResId,
                     iconColor = item.iconTint,
                     onClick = item.onMenuClick,
+                    showDot = false,
                 )
             }
         },

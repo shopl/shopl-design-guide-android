@@ -10,6 +10,7 @@ sealed interface SDGTextNaviSubItem {
         @param:DrawableRes val iconResId: Int,
         override val onClick: () -> Unit,
         val iconColor: Color?,
+        val showDot: Boolean,
     ) : SDGTextNaviSubItem
 
     data class Label(

@@ -25,7 +25,12 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
             backButton = SDGTextNaviBackButton.True(
                 onClick = {},
             ),
-            subIcon = SDGTextNaviSubItem.Icon(iconResId = R.drawable.ic_common_plus, onClick = {}, iconColor = null),
+            subIcon = SDGTextNaviSubItem.Icon(
+                iconResId = R.drawable.ic_common_plus,
+                onClick = {},
+                iconColor = null,
+                showDot = false,
+            ),
             subLabel = SDGTextNaviSubItem.Label(text = "Label", onClick = {}),
             backgroundColor = SDGColor.Neutral100,
         )
@@ -68,6 +73,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
                 iconResId = R.drawable.ic_common_plus,
                 iconColor = SDGColor.Neutral0,
                 onClick = {},
+                showDot = false,
             ),
             backgroundColor = SDGColor.Primary300,
         )
