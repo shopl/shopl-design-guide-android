@@ -4,6 +4,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
@@ -17,9 +21,8 @@ import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputState
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputStyle
 import com.shopl.sdg.template.popup.center.SDGCenterPopup
 import com.shopl.sdg.template.popup.center.SDGCenterPopupButtonOption
-import com.shopl.sdg.template.popup.center.preview.SDGInputCenterPopupParameterProvider
-import com.shopl.sdg.template.popup.center.preview.SDGInputCenterPopupPreviewBody
-import com.shopl.sdg.template.popup.center.preview.SDGInputCenterPopupPreviewData
+import com.shopl.sdg.template.popup.center.preview.SDGInputCenterPopupPreviewParameter
+import com.shopl.sdg.template.popup.center.preview.SDGInputCenterPopupPreviewParameterProvider
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing16
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing8
@@ -235,8 +238,19 @@ private fun InputPopupBody(
 @Preview
 @Composable
 private fun PreviewSDGInputCenterPopup(
-    @PreviewParameter(SDGInputCenterPopupParameterProvider::class)
-    data: SDGInputCenterPopupPreviewData
+    @PreviewParameter(SDGInputCenterPopupPreviewParameterProvider::class)
+    parameter: SDGInputCenterPopupPreviewParameter
 ) {
-    SDGInputCenterPopupPreviewBody(data = data)
+    var inputContent by remember(parameter) { mutableStateOf(parameter.initialInput) }
+
+    SDGInputCenterPopup(
+        buttonOption = parameter.buttonOption,
+        title = parameter.title,
+        description = parameter.description,
+        showInputLabel = parameter.showInputLabel,
+        inputContent = inputContent,
+        hint = parameter.hint,
+        state = parameter.state,
+        onInputChange = { inputContent = it },
+    )
 }
