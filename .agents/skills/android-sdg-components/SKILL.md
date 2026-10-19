@@ -25,6 +25,7 @@ sdg/src/main/java/com/shopl/sdg/component/
   │   └── [name]/          # 예: box, capsule, ghost
   │       ├── SDG[Name].kt                     # 주 Composable
   │       ├── SDG[Name]Type.kt                 # 변형을 정의하는 sealed 클래스·enum
+  │       ├── SDG[Name]PreviewParameter.kt     # 미리보기 파라미터 데이터
   │       └── SDG[Name]PreviewParameterProvider.kt  # 미리보기 데이터 제공자
 ```
 
@@ -90,20 +91,24 @@ fun SDGScrollTab(...) {
 
 ### 미리보기 파라미터 제공자
 - `PreviewParameterProvider`로 여러 미리보기 상태를 제공한다.
-- 필요한 경우 파라미터용 private/internal 데이터 클래스를 정의한다.
+- `PreviewParameter` 데이터 클래스와 `PreviewParameterProvider` 클래스는 각각 `SDG[Name]PreviewParameter.kt`와 `SDG[Name]PreviewParameterProvider.kt` 파일로 분리한다. 두 선언을 한 파일에 함께 두지 않는다.
+- 서로 다른 파일에서 참조하는 파라미터 타입은 `internal` 등 참조 가능한 접근 수준으로 선언한다.
 - 미리보기 함수는 `private`로 선언한다.
 
-### 파일 구조 (`SDG[Name]PreviewParameterProvider.kt`)
+### 파라미터 파일 (`SDG[Name]PreviewParameter.kt`)
 ```kotlin
-internal class SDGBoxButtonPreviewParameterProvider : PreviewParameterProvider<SDGBoxButtonPreviewParameter> {
-    override val values: Sequence<SDGBoxButtonPreviewParameter> = sequenceOf(...)
-}
-
 internal data class SDGBoxButtonPreviewParameter(
     val size: SDGBoxButtonSize,
     val type: SDGBoxButtonType,
     // ... 미리보기에 필요한 나머지 파라미터
 )
+```
+
+### 제공자 파일 (`SDG[Name]PreviewParameterProvider.kt`)
+```kotlin
+internal class SDGBoxButtonPreviewParameterProvider : PreviewParameterProvider<SDGBoxButtonPreviewParameter> {
+    override val values: Sequence<SDGBoxButtonPreviewParameter> = sequenceOf(...)
+}
 ```
 
 ### 미리보기 함수
