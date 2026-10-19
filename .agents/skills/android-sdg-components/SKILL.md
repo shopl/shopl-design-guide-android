@@ -1,11 +1,11 @@
 ---
 name: android-sdg-components
-description: Apply the supplied Android SDG UI conventions when implementing or updating Kotlin Compose components and sample screens in the automation test repository.
+description: Apply the supplied Android SDG UI conventions when implementing or updating Kotlin Compose components and sample screens in this repository.
 ---
 
 # Android SDG 저장소 규칙
 
-사용자가 제공한 UI Implementation Conventions를 저장소 Skill로 전환했다. 이전 로컬 전용 원본은 변경하지 않는다. 이 Skill은 테스트 저장소 업로드 요청에 따라 새 경로로 관리한다.
+사용자가 제공한 UI Implementation Conventions를 저장소 Skill로 관리한다. 이전 로컬 전용 원본은 변경하지 않는다.
 
 새 구현에는 아래 규칙을 적용한다. 기존 컴포넌트 수정에서는 현재 공개 API와 호출부를 먼저 확인한다. 규칙에 맞춘다는 이유만으로 기존 파라미터·이벤트·호환 API를 제거하지 않는다. 필요한 API 개편은 합의한 범위에서 수행한다.
 
@@ -70,7 +70,7 @@ sdg/src/main/java/com/shopl/sdg/component/
 fun SDGScrollTab(...) {
     // 1. State
     val listState = rememberLazyListState()
-    
+
     // 2. UI
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
@@ -78,7 +78,7 @@ fun SDGScrollTab(...) {
     ) {
         // ...
     }
-    
+
     // 3. Side Effects
     LaunchedEffect(selectedTabIndex) {
         listState.animateScrollToItem(selectedTabIndex)
@@ -136,7 +136,7 @@ private fun PreviewSDGBoxButton(
 ```kotlin
 /**
  * SDG - Tab - Scroll Tab
- * 
+ *
  * 제한없이 나열되는 탭 컴포넌트  // ← Figma에 명시된 설명 그대로 사용
  *
  * @see <a href="https://www.figma.com/design/...">Figma</a>
@@ -184,4 +184,3 @@ fun Modifier.bottomBorder(...)
 - **Icons**:
   - Prefer using existing icons in `sdg-resource`.
   - Common prefixes: `ic_common_`, `ic_navi_`.
-
