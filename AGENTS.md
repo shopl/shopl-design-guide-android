@@ -1,3 +1,3 @@
-# SDG Builder repository guidance
+# SDG Builder 저장소 작업 지침
 
-Read and apply [.agents/skills/android-sdg-components/SKILL.md](.agents/skills/android-sdg-components/SKILL.md) when editing SDG components and sample screens. Repository guidance does not expand the permitted source paths. Preserve public API compatibility, existing user changes and resource-owner boundaries.
+SDG 컴포넌트와 샘플 화면을 수정할 때 [.agents/skills/android-sdg-components/SKILL.md](.agents/skills/android-sdg-components/SKILL.md)를 읽고 적용한다. 저장소 지침은 허용된 소스 경로를 확대하지 않는다. 공개 API 호환성, 기존 사용자 변경, 리소스 담당자의 작업 경계를 유지한다.
