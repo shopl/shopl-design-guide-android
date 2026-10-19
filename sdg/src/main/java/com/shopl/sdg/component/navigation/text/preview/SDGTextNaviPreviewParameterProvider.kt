@@ -29,7 +29,6 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
             label = SDGTextNaviLabel.True(text = "Label"),
             backButton = SDGTextNaviBackButton.True(
                 onClick = {},
-                contentDescription = "뒤로가기",
             ),
             rightItem = SDGTextNaviRightItem(
                 subLabel = SDGTextNaviSubLabel.True(text = "Label"),
@@ -64,7 +63,6 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
                 subLabel = SDGTextNaviSubLabel.False,
                 subIcon = SDGTextNaviSubIcon.True(
                     iconResId = R.drawable.ic_common_plus,
-                    contentDescription = "추가",
                 ),
                 onClick = {},
             ),
@@ -108,7 +106,6 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
             backButton = SDGTextNaviBackButton.True(
                 onClick = {},
                 iconColor = SDGColor.Neutral0,
-                contentDescription = "뒤로가기",
             ),
             rightItem = SDGTextNaviRightItem(
                 subLabel = SDGTextNaviSubLabel.True(text = "Label", textColor = SDGColor.Neutral0),

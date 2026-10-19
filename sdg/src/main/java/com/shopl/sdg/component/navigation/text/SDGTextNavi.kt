@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.shopl.sdg.component.navigation.text.preview.SDGTextNaviPreviewParameter
@@ -49,10 +48,9 @@ fun SDGTextNavi(
                 SDGImage(
                     resId = R.drawable.ic_navi_back_android,
                     color = backButton.iconColor,
-                    contentDescription = backButton.contentDescription,
                     modifier = Modifier
                         .size(SDGTextNaviBackIconSize)
-                        .clickable(role = Role.Button, onClick = backButton.onClick),
+                        .clickable(onClick = backButton.onClick),
                 )
             }
         } else {
@@ -75,7 +73,7 @@ private fun SDGTextNaviRightItemContent(item: SDGTextNaviRightItem) {
 
     Row(
         modifier = Modifier
-            .clickable(role = Role.Button, onClick = item.onClick)
+            .clickable(onClick = item.onClick)
             .padding(end = Spacing6),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -83,7 +81,6 @@ private fun SDGTextNaviRightItemContent(item: SDGTextNaviRightItem) {
             SDGImage(
                 resId = subIcon.iconResId,
                 color = subIcon.iconColor,
-                contentDescription = subIcon.contentDescription,
                 modifier = Modifier.size(SDGTextNaviSubIconSize),
             )
         }

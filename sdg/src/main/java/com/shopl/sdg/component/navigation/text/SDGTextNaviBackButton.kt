@@ -7,7 +7,6 @@ sealed interface SDGTextNaviBackButton {
     data class True(
         val onClick: () -> Unit,
         val iconColor: Color = SDGColor.Neutral700,
-        val contentDescription: String? = null,
     ) : SDGTextNaviBackButton
 
     data object False : SDGTextNaviBackButton

@@ -7,7 +7,6 @@ sealed interface SDGTextNaviSubIcon {
     data class True(
         @param:DrawableRes val iconResId: Int,
         val iconColor: Color? = null,
-        val contentDescription: String? = null,
     ) : SDGTextNaviSubIcon
 
     data object False : SDGTextNaviSubIcon
