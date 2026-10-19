@@ -6,12 +6,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.navigation.text.SDGTextNavi
 import com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton
 import com.shopl.sdg.component.navigation.text.SDGTextNaviLabel
-import com.shopl.sdg.component.navigation.text.SDGTextNaviRightItem
 import com.shopl.sdg.component.navigation.text.SDGTextNaviSubIcon
 import com.shopl.sdg.component.navigation.text.SDGTextNaviSubLabel
 import com.shopl.sdg.template.navigation.SDGTopNaviMenu
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_resource.R
+import kotlinx.collections.immutable.toPersistentList
 
 /**
  * SDG - Top Navigation - Top Text Navi
@@ -39,19 +39,20 @@ fun SDGTopTextNavi(
         } else {
             SDGTextNaviBackButton.False
         },
-        rightItem = menu?.let {
-            SDGTextNaviRightItem(
-                subLabel = SDGTextNaviSubLabel.True(text = it.textMenuTitle),
-                subIcon = if (it.iconResId != null) {
-                    SDGTextNaviSubIcon.True(
-                        iconResId = it.iconResId,
-                        iconColor = it.iconTint,
+        subItems = menu?.let { item ->
+            listOfNotNull(
+                item.iconResId?.let { iconResId ->
+                    SDGTextNaviSubIcon(
+                        iconResId = iconResId,
+                        iconColor = item.iconTint,
+                        onClick = item.onMenuClick,
                     )
-                } else {
-                    SDGTextNaviSubIcon.False
                 },
-                onClick = it.onMenuClick,
-            )
+                SDGTextNaviSubLabel(
+                    text = item.textMenuTitle,
+                    onClick = item.onMenuClick,
+                ),
+            ).toPersistentList()
         },
     )
 }

@@ -31,6 +31,7 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
+import kotlinx.collections.immutable.PersistentList
 
 private const val LABEL_MAX_LINES = 1
 private const val PREVIEW_WIDTH_DP = 375
@@ -46,13 +47,15 @@ private val SUB_ICON_SIZE = 20.dp
  *
  * @version 2.1.21
  *
+ * @param subItems 아이콘과 라벨을 표시 순서대로 전달합니다. null 또는 빈 리스트이면 보조 영역을 숨깁니다.
+ *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19821-30436&m=dev">Figma</a>
  */
 @Composable
 fun SDGTextNavi(
     label: SDGTextNaviLabel,
     backButton: SDGTextNaviBackButton,
-    rightItem: SDGTextNaviRightItem?,
+    subItems: PersistentList<SDGTextNaviSubItem>?,
     backgroundColor: Color,
     marginValues: PaddingValues = PaddingValues(),
 ) {
@@ -92,43 +95,39 @@ fun SDGTextNavi(
             }
         }
 
-        if (rightItem != null &&
-            (rightItem.subIcon is SDGTextNaviSubIcon.True || rightItem.subLabel is SDGTextNaviSubLabel.True)
-        ) {
+        if (!subItems.isNullOrEmpty()) {
             Spacer(Modifier.width(Spacing8))
 
-            SDGTextNaviRightItemContent(rightItem)
+            SDGTextNaviSubItems(subItems)
         }
     }
 }
 
 @Composable
-private fun SDGTextNaviRightItemContent(item: SDGTextNaviRightItem) {
-    val subIcon = item.subIcon
-    val subLabel = item.subLabel
-
+private fun SDGTextNaviSubItems(items: PersistentList<SDGTextNaviSubItem>) {
     Row(
-        modifier = Modifier
-            .clickable(onClick = item.onClick)
-            .padding(end = Spacing6),
+        modifier = Modifier.padding(end = Spacing6),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (subIcon is SDGTextNaviSubIcon.True) {
-            SDGImage(
-                resId = subIcon.iconResId,
-                color = subIcon.iconColor,
-                modifier = Modifier.size(SUB_ICON_SIZE),
-            )
-        }
+        items.forEach { item ->
+            when (item) {
+                is SDGTextNaviSubIcon -> SDGImage(
+                    resId = item.iconResId,
+                    color = item.iconColor,
+                    modifier = Modifier
+                        .size(SUB_ICON_SIZE)
+                        .clickable(onClick = item.onClick),
+                )
 
-        if (subLabel is SDGTextNaviSubLabel.True) {
-            SDGText(
-                text = subLabel.text,
-                typography = SDGTypography.Body1R,
-                textColor = subLabel.textColor,
-                maxLines = LABEL_MAX_LINES,
-                softWrap = false,
-            )
+                is SDGTextNaviSubLabel -> SDGText(
+                    text = item.text,
+                    typography = SDGTypography.Body1R,
+                    textColor = item.textColor,
+                    maxLines = LABEL_MAX_LINES,
+                    softWrap = false,
+                    modifier = Modifier.clickable(onClick = item.onClick),
+                )
+            }
         }
     }
 }
@@ -143,7 +142,7 @@ private fun PreviewSDGTextNavi(
         SDGTextNavi(
             label = label,
             backButton = backButton,
-            rightItem = rightItem,
+            subItems = subItems,
             backgroundColor = backgroundColor,
         )
     }

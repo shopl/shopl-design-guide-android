@@ -3,11 +3,11 @@ package com.shopl.sdg.component.navigation.text.preview
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton
 import com.shopl.sdg.component.navigation.text.SDGTextNaviLabel
-import com.shopl.sdg.component.navigation.text.SDGTextNaviRightItem
 import com.shopl.sdg.component.navigation.text.SDGTextNaviSubIcon
 import com.shopl.sdg.component.navigation.text.SDGTextNaviSubLabel
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_resource.R
+import kotlinx.collections.immutable.persistentListOf
 
 internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SDGTextNaviPreviewParameter> {
     override val values: Sequence<SDGTextNaviPreviewParameter> = sequenceOf(
@@ -16,7 +16,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
         제목_숨김(),
         보조_아이콘_숨김(),
         보조_텍스트_숨김(),
-        우측_기능_숨김(),
+        보조_항목_숨김(),
         모든_보조요소_숨김(),
         긴_제목(),
         긴_보조_텍스트(),
@@ -30,10 +30,9 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
             backButton = SDGTextNaviBackButton.True(
                 onClick = {},
             ),
-            rightItem = SDGTextNaviRightItem(
-                subLabel = SDGTextNaviSubLabel.True(text = "Label"),
-                subIcon = SDGTextNaviSubIcon.True(iconResId = R.drawable.ic_common_plus),
-                onClick = {},
+            subItems = persistentListOf(
+                SDGTextNaviSubIcon(iconResId = R.drawable.ic_common_plus, onClick = {}),
+                SDGTextNaviSubLabel(text = "Label", onClick = {}),
             ),
             backgroundColor = SDGColor.Neutral100,
         )
@@ -49,38 +48,31 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
 
     private fun 보조_아이콘_숨김(): SDGTextNaviPreviewParameter {
         return 기본_상태().copy(
-            rightItem = SDGTextNaviRightItem(
-                subLabel = SDGTextNaviSubLabel.True(text = "완료"),
-                subIcon = SDGTextNaviSubIcon.False,
-                onClick = {},
+            subItems = persistentListOf(
+                SDGTextNaviSubLabel(text = "완료", onClick = {}),
             ),
         )
     }
 
     private fun 보조_텍스트_숨김(): SDGTextNaviPreviewParameter {
         return 기본_상태().copy(
-            rightItem = SDGTextNaviRightItem(
-                subLabel = SDGTextNaviSubLabel.False,
-                subIcon = SDGTextNaviSubIcon.True(
+            subItems = persistentListOf(
+                SDGTextNaviSubIcon(
                     iconResId = R.drawable.ic_common_plus,
+                    onClick = {},
                 ),
-                onClick = {},
             ),
         )
     }
 
-    private fun 우측_기능_숨김(): SDGTextNaviPreviewParameter {
-        return 기본_상태().copy(rightItem = null)
+    private fun 보조_항목_숨김(): SDGTextNaviPreviewParameter {
+        return 기본_상태().copy(subItems = null)
     }
 
     private fun 모든_보조요소_숨김(): SDGTextNaviPreviewParameter {
         return 기본_상태().copy(
             backButton = SDGTextNaviBackButton.False,
-            rightItem = SDGTextNaviRightItem(
-                subLabel = SDGTextNaviSubLabel.False,
-                subIcon = SDGTextNaviSubIcon.False,
-                onClick = {},
-            ),
+            subItems = persistentListOf(),
         )
     }
 
@@ -95,10 +87,9 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
 
     private fun 긴_보조_텍스트(): SDGTextNaviPreviewParameter {
         return 기본_상태().copy(
-            rightItem = SDGTextNaviRightItem(
-                subLabel = SDGTextNaviSubLabel.True(text = "변경사항 저장하기"),
-                subIcon = SDGTextNaviSubIcon.True(iconResId = R.drawable.ic_common_plus),
-                onClick = {},
+            subItems = persistentListOf(
+                SDGTextNaviSubIcon(iconResId = R.drawable.ic_common_plus, onClick = {}),
+                SDGTextNaviSubLabel(text = "변경사항 저장하기", onClick = {}),
             ),
         )
     }
@@ -109,13 +100,17 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
             backButton = SDGTextNaviBackButton.True(
                 onClick = {},
             ),
-            rightItem = SDGTextNaviRightItem(
-                subLabel = SDGTextNaviSubLabel.True(text = "Label", textColor = SDGColor.Neutral0),
-                subIcon = SDGTextNaviSubIcon.True(
+            subItems = persistentListOf(
+                SDGTextNaviSubIcon(
                     iconResId = R.drawable.ic_common_plus,
                     iconColor = SDGColor.Neutral0,
+                    onClick = {},
                 ),
-                onClick = {},
+                SDGTextNaviSubLabel(
+                    text = "Label",
+                    textColor = SDGColor.Neutral0,
+                    onClick = {},
+                ),
             ),
             backgroundColor = SDGColor.Primary300,
         )

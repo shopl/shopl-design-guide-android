@@ -14,8 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.navigation.text.SDGTextNavi
 import com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton
 import com.shopl.sdg.component.navigation.text.SDGTextNaviLabel
-import com.shopl.sdg.component.navigation.text.SDGTextNaviRightItem
 import com.shopl.sdg.component.navigation.text.SDGTextNaviSubIcon
+import com.shopl.sdg.component.navigation.text.SDGTextNaviSubItem
 import com.shopl.sdg.component.navigation.text.SDGTextNaviSubLabel
 import com.shopl.sdg.scene.TemplateScene
 import com.shopl.sdg.ui.base.SDGSampleBaseGuideLinesContent
@@ -58,7 +58,7 @@ internal fun TextNaviScreen(
                     "Status Bar 영역을 제외한 모바일 화면의 최상단에 배치합니다.",
                     "모든 구성 요소는 수평으로 중앙 정렬합니다.",
                     "제목은 한 줄로 표시하고, 영역을 벗어나면 말줄임 처리합니다.",
-                    "우측 아이콘과 텍스트는 하나의 기능으로 동작합니다.",
+                    "보조 항목은 리스트 순서대로 표시하며, 각 항목의 클릭 동작을 설정합니다.",
                 ),
             )
         },
@@ -73,11 +73,12 @@ private fun TextNaviContent(
 ) {
     val label = SDGTextNaviLabel.True(text = "화면 타이틀", textColor = SDGColor.Neutral900)
     val backButton = SDGTextNaviBackButton.True(onClick = onClickBack)
-    val rightItem = SDGTextNaviRightItem(
-        subLabel = SDGTextNaviSubLabel.True(text = "추가"),
-        subIcon = SDGTextNaviSubIcon.True(iconResId = R.drawable.ic_common_plus),
+    val subIcon = SDGTextNaviSubIcon(
+        iconResId = R.drawable.ic_common_plus,
         onClick = onClickAction,
     )
+    val subLabel = SDGTextNaviSubLabel(text = "추가", onClick = onClickAction)
+    val subItems = persistentListOf<SDGTextNaviSubItem>(subIcon, subLabel)
 
     Column(
         modifier = Modifier
@@ -86,7 +87,7 @@ private fun TextNaviContent(
         verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing20),
     ) {
         SDGText(
-            text = "우측 기능 클릭: $actionClickCount",
+            text = "보조 항목 클릭: $actionClickCount",
             typography = SDGTypography.Body2R,
             textColor = SDGColor.Neutral700,
             modifier = Modifier.padding(horizontal = SDGSpacing.Spacing16),
@@ -94,72 +95,64 @@ private fun TextNaviContent(
         SDGTextNavi(
             label = label,
             backButton = backButton,
-            rightItem = rightItem,
+            subItems = subItems,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "뒤로가기 아이콘이 없는 경우"),
             backButton = SDGTextNaviBackButton.False,
-            rightItem = rightItem,
+            subItems = subItems,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = SDGTextNaviLabel.False,
             backButton = backButton,
-            rightItem = rightItem,
+            subItems = subItems,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
-            label = label.copy(text = "텍스트만 있는 우측 기능"),
+            label = label.copy(text = "텍스트만 있는 보조 항목"),
             backButton = backButton,
-            rightItem = rightItem.copy(subIcon = SDGTextNaviSubIcon.False),
+            subItems = persistentListOf(subLabel),
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
-            label = label.copy(text = "아이콘만 있는 우측 기능"),
+            label = label.copy(text = "아이콘만 있는 보조 항목"),
             backButton = backButton,
-            rightItem = rightItem.copy(
-                subLabel = SDGTextNaviSubLabel.False,
-                subIcon = SDGTextNaviSubIcon.True(
-                    iconResId = R.drawable.ic_common_plus,
-                ),
-            ),
+            subItems = persistentListOf(subIcon),
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
-            label = label.copy(text = "우측 기능이 없는 경우"),
+            label = label.copy(text = "보조 항목이 없는 경우"),
             backButton = backButton,
-            rightItem = null,
+            subItems = null,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요"),
             backButton = backButton,
-            rightItem = rightItem,
+            subItems = subItems,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label,
             backButton = backButton,
-            rightItem = rightItem.copy(subLabel = SDGTextNaviSubLabel.True(text = "변경사항 저장하기")),
+            subItems = persistentListOf(subIcon, subLabel.copy(text = "변경사항 저장하기")),
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "파란 배경", textColor = SDGColor.Neutral0),
             backButton = backButton,
-            rightItem = rightItem.copy(
-                subLabel = SDGTextNaviSubLabel.True(text = "추가", textColor = SDGColor.Neutral0),
-                subIcon = SDGTextNaviSubIcon.True(
-                    iconResId = R.drawable.ic_common_plus,
-                    iconColor = SDGColor.Neutral0,
-                ),
+            subItems = persistentListOf(
+                subIcon.copy(iconColor = SDGColor.Neutral0),
+                subLabel.copy(textColor = SDGColor.Neutral0),
             ),
             backgroundColor = SDGColor.Primary300,
         )
         SDGTextNavi(
             label = label.copy(text = "분홍 배경"),
             backButton = backButton,
-            rightItem = rightItem,
+            subItems = subItems,
             backgroundColor = SDGColor.Red50,
         )
     }
