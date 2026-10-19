@@ -27,12 +27,12 @@ require(re.fullmatch(r'[a-f0-9]{40}', base), 'Invalid base commit.')
 # Jira는 이름 형식만 검사한다. 실제 이슈 조회와 브랜치 생성 전환은 연결 프로그램의 후속 작업이다.
 # 팀 작업 브랜치를 허용하고, UUID 형식은 기존 자동화와의 이관 호환으로 남긴다.
 work_branch = re.fullmatch(
-    r'(add|update|document)/[A-Za-z0-9][A-Za-z0-9._-]*/SH-[0-9]+'
+    r'(add|update|document|roadmap)/[A-Za-z0-9][A-Za-z0-9._-]*/SH-[0-9]+'
     r'(?:-[A-Za-z0-9][A-Za-z0-9._-]*)?', branch,
 )
 legacy_branch = re.fullmatch(r'(add|update|automation)/figma-[a-f0-9-]{36}', branch)
 require(work_branch or legacy_branch,
-        'Use add|update|document/author/SH-issue[-summary] for an SDG working branch.')
+        'Use add|update|document|roadmap/author/SH-issue[-summary] for an SDG working branch.')
 subprocess.run(['git', 'check-ref-format', f'refs/heads/{branch}'], check=True)
 if legacy_branch:
     print('기존 UUID 브랜치 호환 형식입니다. 작업자·Jira 기반 브랜치 생성 전환은 별도 진행합니다.', file=sys.stderr)
