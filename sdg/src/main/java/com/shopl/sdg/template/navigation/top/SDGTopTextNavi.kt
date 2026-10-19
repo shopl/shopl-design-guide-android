@@ -32,6 +32,7 @@ import com.shopl.sdg_resource.R
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6900-15491&t=dgvDUBUeWoMF9Oo1-4">Figma</a>
  */
+@Deprecated(message = "제거 예정. SDGTextNavi를 사용하세요.")
 @Composable
 fun SDGTopTextNavi(
     title: String = "",
