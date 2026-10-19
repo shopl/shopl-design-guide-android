@@ -17,7 +17,7 @@ sealed interface SDGBoxTabItemState {
 
     data object Unselected : SDGBoxTabItemState {
         override val labelTypography = SDGTypography.Body2R
-        override val labelTextColor = SDGColor.Neutral300
-        override val twoDepthColor = SDGColor.Neutral300
+        override val labelTextColor = SDGColor.Neutral350
+        override val twoDepthColor = SDGColor.Neutral350
     }
 }
