@@ -27,7 +27,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
                 onClick = {},
             ),
             subIcon = SDGTextNaviSubItem.Icon(
-                iconResId = R.drawable.ic_common_plus,
+                iconResId = R.drawable.ic_navi_search,
                 onClick = {},
                 iconColor = null,
                 showDot = false,
@@ -82,7 +82,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
                 onClick = {},
             ),
             subIcon = SDGTextNaviSubItem.Icon(
-                iconResId = R.drawable.ic_common_plus,
+                iconResId = R.drawable.ic_navi_search,
                 iconColor = SDGColor.Neutral0,
                 onClick = {},
                 showDot = false,
