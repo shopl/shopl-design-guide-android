@@ -1,6 +1,7 @@
 package com.shopl.sdg.template.popup.center.input
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,9 +29,12 @@ import com.shopl.sdg_common.ui.components.SDGText
 /**
  * SDG - Popup - Center Popup - Input
  *
- * 입력이 필요한 [CenterPopup]
+ * 입력이 필요한
  *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19226-12432&t=dilCeVYD7pIRNnAx-4">Figma</a>
+ * 확인 버튼 한 개와 입력 라벨을 표시합니다.
+ *
+ * @version 2.3.4-
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19226-12213&m=dev">Figma</a>
  */
 @Composable
 fun SDGInputCenterPopup(
@@ -50,13 +54,56 @@ fun SDGInputCenterPopup(
     titleAlignment: TextAlign = TextAlign.Left,
     enabled: Boolean = true,
 ) {
-    SDGCenterPopup(
+    SDGInputCenterPopup(
         buttonOption = SDGCenterPopupButtonOption.OneOption(
             label = confirmLabel,
             onClick = onClickConfirm,
             labelColor = confirmLabelColor,
             enabled = enabled
         ),
+        title = title,
+        description = description,
+        showInputLabel = SDGInputCenterPopupShowInputLabel.True(inputLabel),
+        inputContent = inputContent,
+        hint = hint,
+        state = state,
+        onInputChange = onInputChange,
+        focusRequester = focusRequester,
+        inputField = inputField,
+        inputMaxLength = inputMaxLength,
+        titleAlignment = titleAlignment,
+    )
+}
+
+/**
+ * SDG - Popup - Center Popup - Input
+ *
+ * 입력이 필요한
+ *
+ * 본문은 null 또는 공백이면 숨깁니다. 입력 라벨은 [showInputLabel]로 표시 여부를 지정합니다.
+ * 버튼 한 개는 [SDGCenterPopupButtonOption.OneOption], 두 개는 [SDGCenterPopupButtonOption.TwoOption]을 사용합니다.
+ * 팝업 닫기 동작은 [SDGCenterPopup]의 버튼 옵션을 따릅니다.
+ *
+ * @version 2.3.4-
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19226-12213&m=dev">Figma</a>
+ */
+@Composable
+fun SDGInputCenterPopup(
+    buttonOption: SDGCenterPopupButtonOption,
+    title: String?,
+    description: String?,
+    showInputLabel: SDGInputCenterPopupShowInputLabel,
+    inputContent: String,
+    hint: String,
+    state: SDGFixedTextInputState,
+    onInputChange: (String) -> Unit,
+    focusRequester: FocusRequester? = null,
+    inputField: SDGFixedTextInputField = SDGFixedTextInputField.LightGray,
+    inputMaxLength: Int = Int.MAX_VALUE,
+    titleAlignment: TextAlign = TextAlign.Left,
+) {
+    SDGCenterPopup(
+        buttonOption = buttonOption,
         title = title,
         titleAlignment = titleAlignment,
     ) {
@@ -67,7 +114,7 @@ fun SDGInputCenterPopup(
         }
 
         InputPopupBody(
-            inputLabel = inputLabel,
+            showInputLabel = showInputLabel,
             inputContent = inputContent,
             hint = hint,
             state = state,
@@ -142,6 +189,7 @@ fun SDGInputCenterPopup(
 @Composable
 private fun Description(description: String) {
     SDGText(
+        modifier = Modifier.fillMaxWidth(),
         text = description,
         typography = SDGTypography.Body1R,
         textColor = SDGColor.Neutral600
@@ -152,7 +200,7 @@ private fun Description(description: String) {
 
 @Composable
 private fun InputPopupBody(
-    inputLabel: String,
+    showInputLabel: SDGInputCenterPopupShowInputLabel,
     inputContent: String,
     hint: String,
     state: SDGFixedTextInputState,
@@ -161,13 +209,16 @@ private fun InputPopupBody(
     inputMaxLength: Int,
     focusRequester: FocusRequester? = null
 ) {
-    SDGText(
-        text = inputLabel,
-        typography = SDGTypography.Body1R,
-        textColor = SDGColor.Neutral400
-    )
+    if (showInputLabel is SDGInputCenterPopupShowInputLabel.True) {
+        SDGText(
+            modifier = Modifier.fillMaxWidth(),
+            text = showInputLabel.text,
+            typography = SDGTypography.Body1R,
+            textColor = SDGColor.Neutral400
+        )
 
-    Spacer(modifier = Modifier.height(Spacing8))
+        Spacer(modifier = Modifier.height(Spacing8))
+    }
 
     SDGFixedTextInput(
         text = inputContent,
