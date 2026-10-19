@@ -26,7 +26,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
 
     private fun 기본_상태(): SDGTextNaviPreviewParameter {
         return SDGTextNaviPreviewParameter(
-            label = SDGTextNaviLabel.True(text = "Label"),
+            label = SDGTextNaviLabel.True(text = "Label", textColor = SDGColor.Neutral900),
             backButton = SDGTextNaviBackButton.True(
                 onClick = {},
             ),
@@ -86,7 +86,10 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
 
     private fun 긴_제목(): SDGTextNaviPreviewParameter {
         return 기본_상태().copy(
-            label = SDGTextNaviLabel.True(text = "긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요"),
+            label = SDGTextNaviLabel.True(
+                text = "긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요",
+                textColor = SDGColor.Neutral900,
+            ),
         )
     }
 

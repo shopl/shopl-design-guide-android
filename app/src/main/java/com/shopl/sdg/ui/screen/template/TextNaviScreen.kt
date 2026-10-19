@@ -71,7 +71,7 @@ private fun TextNaviContent(
     onClickBack: () -> Unit,
     onClickAction: () -> Unit,
 ) {
-    val label = SDGTextNaviLabel.True(text = "화면 타이틀")
+    val label = SDGTextNaviLabel.True(text = "화면 타이틀", textColor = SDGColor.Neutral900)
     val backButton = SDGTextNaviBackButton.True(onClick = onClickBack)
     val rightItem = SDGTextNaviRightItem(
         subLabel = SDGTextNaviSubLabel.True(text = "추가"),

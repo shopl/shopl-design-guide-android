@@ -32,7 +32,7 @@ fun SDGTopTextNavi(
     backBtn: SDGTopNaviMenu.CommonMenu? = null,
 ) {
     SDGTextNavi(
-        label = SDGTextNaviLabel.True(text = title),
+        label = SDGTextNaviLabel.True(text = title, textColor = SDGColor.Neutral900),
         backgroundColor = backgroundColor,
         backButton = if (backBtn != null) {
             SDGTextNaviBackButton.True(onClick = backBtn.onMenuClick)
