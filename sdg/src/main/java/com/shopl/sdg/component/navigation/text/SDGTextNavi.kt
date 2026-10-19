@@ -108,7 +108,6 @@ private fun SDGTextNaviSub(
     subLabel: SDGTextNaviSubItem.Label,
 ) {
     Row(
-        modifier = Modifier.padding(end = Spacing6),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (subIcon != null) {
@@ -126,8 +125,9 @@ private fun SDGTextNaviSub(
             typography = SDGTypography.Body1R,
             textColor = SDGColor.Neutral700,
             maxLines = LABEL_MAX_LINES,
-            softWrap = false,
-            modifier = Modifier.clickable(onClick = subLabel.onClick),
+            modifier = Modifier
+                .padding(end = Spacing6)
+                .clickable(onClick = subLabel.onClick),
         )
     }
 }
