@@ -282,6 +282,9 @@ internal sealed class ComponentScene(
         }
     }
 
+    // TODO(resource-owner): "Icon Label Builder Test" 전용 문자열 키가 필요합니다.
+    // 등록 후 별도 메뉴/Scene에서 iconlabelbuildertest.IconLabelBuilderTestScreen을 연결합니다.
+    // TODO(resource-owner): "Label" 전용 문자열 키가 필요합니다. 등록 후 새 샘플의 label에 연결합니다.
     data object IconLabel : ComponentScene(
         displayLabel = "Icon Label",
         implemented = true,
