@@ -20,6 +20,8 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
         모든_보조요소_숨김(),
         긴_제목(),
         긴_보조_텍스트(),
+        라벨_다음_아이콘(),
+        여러_보조_항목(),
         파란_배경(),
         분홍_배경(),
     )
@@ -90,6 +92,26 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
             subItems = persistentListOf(
                 SDGTextNaviSubIcon(iconResId = R.drawable.ic_common_plus, onClick = {}),
                 SDGTextNaviSubLabel(text = "변경사항 저장하기", onClick = {}),
+            ),
+        )
+    }
+
+    private fun 라벨_다음_아이콘(): SDGTextNaviPreviewParameter {
+        return 기본_상태().copy(
+            subItems = persistentListOf(
+                SDGTextNaviSubLabel(text = "Label", onClick = {}),
+                SDGTextNaviSubIcon(iconResId = R.drawable.ic_common_plus, onClick = {}),
+            ),
+        )
+    }
+
+    private fun 여러_보조_항목(): SDGTextNaviPreviewParameter {
+        return 기본_상태().copy(
+            subItems = persistentListOf(
+                SDGTextNaviSubIcon(iconResId = R.drawable.ic_common_plus, onClick = {}),
+                SDGTextNaviSubLabel(text = "취소", onClick = {}),
+                SDGTextNaviSubIcon(iconResId = R.drawable.ic_common_plus, onClick = {}),
+                SDGTextNaviSubLabel(text = "저장", onClick = {}),
             ),
         )
     }
