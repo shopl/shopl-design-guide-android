@@ -5,6 +5,7 @@ import androidx.compose.runtime.Stable
 import com.shopl.sdg.ui.screen.template.CategoryNaviScreen
 import com.shopl.sdg.ui.screen.template.CheckboxLabelScreen
 import com.shopl.sdg.ui.screen.template.CustomHistoryScreen
+import com.shopl.sdg.ui.screen.template.TextNaviScreen
 
 /**
  * SDG - Template
@@ -271,11 +272,14 @@ internal sealed class TemplateScene(
 
         data object TextNavi : Navigation(
             displayLabel = "Text Navi",
-            implemented = false
+            implemented = true
         ) {
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                throw IllegalStateException("Not implemented")
+                TextNaviScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = { moveToScene(Menu) },
+                )
             }
         }
 
