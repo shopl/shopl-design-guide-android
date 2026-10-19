@@ -56,7 +56,7 @@ internal fun TextNaviScreen(
                     "Status Bar 영역을 제외한 모바일 화면의 최상단에 배치합니다.",
                     "모든 구성 요소는 수평으로 중앙 정렬합니다.",
                     "제목은 한 줄로 표시하고, 영역을 벗어나면 말줄임 처리합니다.",
-                    "보조 항목은 리스트 순서대로 표시하며, 각 항목의 클릭 동작을 설정합니다.",
+                    "보조 아이콘과 라벨은 각각 하나씩 사용하며, 아이콘 다음 라벨 순서로 표시합니다.",
                 ),
             )
         },
@@ -153,18 +153,6 @@ private fun TextNaviContent(
             backButton = backButton,
             subItems = subItems,
             backgroundColor = SDGColor.Red50,
-        )
-        SDGTextNavi(
-            label = label.copy(text = "라벨 다음 아이콘"),
-            backButton = backButton,
-            subItems = persistentListOf(subLabel, subIcon),
-            backgroundColor = SDGColor.Neutral100,
-        )
-        SDGTextNavi(
-            label = label.copy(text = "여러 보조 항목"),
-            backButton = backButton,
-            subItems = persistentListOf(subIcon, subLabel.copy(text = "취소"), subIcon, subLabel.copy(text = "저장")),
-            backgroundColor = SDGColor.Neutral100,
         )
     }
 }
