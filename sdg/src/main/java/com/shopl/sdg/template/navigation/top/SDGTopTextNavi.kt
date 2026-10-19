@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.navigation.text.SDGTextNaviBackIconSize
 import com.shopl.sdg.component.navigation.text.SDGTextNaviLabel
@@ -55,7 +54,6 @@ fun SDGTopTextNavi(
                     modifier = Modifier
                         .size(SDGTextNaviBackIconSize)
                         .clickable(
-                            role = Role.Button,
                             debounceTimeMills = BACK_CLICK_DEBOUNCE_MILLIS,
                             onClick = backBtn.onMenuClick,
                         ),
@@ -68,7 +66,7 @@ fun SDGTopTextNavi(
             {
                 Row(
                     modifier = Modifier
-                        .clickable(role = Role.Button, onClick = menu.onMenuClick)
+                        .clickable(onClick = menu.onMenuClick)
                         .padding(end = Spacing6),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
