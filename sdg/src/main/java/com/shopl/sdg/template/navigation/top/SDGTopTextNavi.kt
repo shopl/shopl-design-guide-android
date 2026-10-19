@@ -6,8 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.navigation.text.SDGTextNavi
 import com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton
 import com.shopl.sdg.component.navigation.text.SDGTextNaviLabel
-import com.shopl.sdg.component.navigation.text.SDGTextNaviSubIcon
-import com.shopl.sdg.component.navigation.text.SDGTextNaviSubLabel
+import com.shopl.sdg.component.navigation.text.SDGTextNaviSubItem
 import com.shopl.sdg.template.navigation.SDGTopNaviMenu
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_resource.R
@@ -42,13 +41,13 @@ fun SDGTopTextNavi(
         subItems = menu?.let { item ->
             listOfNotNull(
                 item.iconResId?.let { iconResId ->
-                    SDGTextNaviSubIcon(
+                    SDGTextNaviSubItem.Icon(
                         iconResId = iconResId,
                         iconColor = item.iconTint,
                         onClick = item.onMenuClick,
                     )
                 },
-                SDGTextNaviSubLabel(
+                SDGTextNaviSubItem.Label(
                     text = item.textMenuTitle,
                     onClick = item.onMenuClick,
                 ),

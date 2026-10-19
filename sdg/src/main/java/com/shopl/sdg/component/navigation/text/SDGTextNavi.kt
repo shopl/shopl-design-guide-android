@@ -111,7 +111,7 @@ private fun SDGTextNaviSubItems(items: PersistentList<SDGTextNaviSubItem>) {
     ) {
         items.forEach { item ->
             when (item) {
-                is SDGTextNaviSubIcon -> SDGImage(
+                is SDGTextNaviSubItem.Icon -> SDGImage(
                     resId = item.iconResId,
                     color = item.iconColor,
                     modifier = Modifier
@@ -119,7 +119,7 @@ private fun SDGTextNaviSubItems(items: PersistentList<SDGTextNaviSubItem>) {
                         .clickable(onClick = item.onClick),
                 )
 
-                is SDGTextNaviSubLabel -> SDGText(
+                is SDGTextNaviSubItem.Label -> SDGText(
                     text = item.text,
                     typography = SDGTypography.Body1R,
                     textColor = item.textColor,

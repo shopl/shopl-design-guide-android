@@ -14,9 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.navigation.text.SDGTextNavi
 import com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton
 import com.shopl.sdg.component.navigation.text.SDGTextNaviLabel
-import com.shopl.sdg.component.navigation.text.SDGTextNaviSubIcon
 import com.shopl.sdg.component.navigation.text.SDGTextNaviSubItem
-import com.shopl.sdg.component.navigation.text.SDGTextNaviSubLabel
 import com.shopl.sdg.scene.TemplateScene
 import com.shopl.sdg.ui.base.SDGSampleBaseGuideLinesContent
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
@@ -73,11 +71,11 @@ private fun TextNaviContent(
 ) {
     val label = SDGTextNaviLabel.True(text = "화면 타이틀", textColor = SDGColor.Neutral900)
     val backButton = SDGTextNaviBackButton.True(onClick = onClickBack)
-    val subIcon = SDGTextNaviSubIcon(
+    val subIcon = SDGTextNaviSubItem.Icon(
         iconResId = R.drawable.ic_common_plus,
         onClick = onClickAction,
     )
-    val subLabel = SDGTextNaviSubLabel(text = "추가", onClick = onClickAction)
+    val subLabel = SDGTextNaviSubItem.Label(text = "추가", onClick = onClickAction)
     val subItems = persistentListOf<SDGTextNaviSubItem>(subIcon, subLabel)
 
     Column(
