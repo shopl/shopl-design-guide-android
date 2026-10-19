@@ -74,8 +74,9 @@ private fun TextNaviContent(
     val subIcon = SDGTextNaviSubItem.Icon(
         iconResId = R.drawable.ic_common_plus,
         onClick = onClickAction,
+        iconColor = null,
     )
-    val subLabel = SDGTextNaviSubItem.Label(text = "추가", onClick = onClickAction)
+    val subLabel = SDGTextNaviSubItem.Label(text = "추가", onClick = onClickAction, textColor = SDGColor.Neutral700)
     val subItems = persistentListOf<SDGTextNaviSubItem>(subIcon, subLabel)
 
     Column(

@@ -50,6 +50,7 @@ fun SDGTopTextNavi(
                 SDGTextNaviSubItem.Label(
                     text = item.textMenuTitle,
                     onClick = item.onMenuClick,
+                    textColor = SDGColor.Neutral700,
                 ),
             ).toPersistentList()
         },
