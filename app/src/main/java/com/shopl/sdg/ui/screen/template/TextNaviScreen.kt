@@ -146,7 +146,7 @@ private fun TextNaviContent(
         )
         SDGTextNavi(
             label = label.copy(text = "파란 배경", textColor = SDGColor.Neutral0),
-            backButton = backButton.copy(iconColor = SDGColor.Neutral0),
+            backButton = backButton,
             rightItem = rightItem.copy(
                 subLabel = SDGTextNaviSubLabel.True(text = "추가", textColor = SDGColor.Neutral0),
                 subIcon = SDGTextNaviSubIcon.True(
