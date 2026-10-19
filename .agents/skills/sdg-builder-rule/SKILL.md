@@ -1,5 +1,5 @@
 ---
-name: android-sdg-components
+name: sdg-builder-rule
 description: 이 저장소의 Kotlin Compose 컴포넌트와 샘플 화면을 구현하거나 수정할 때 제공된 Android SDG UI 규칙을 적용한다.
 ---
 
