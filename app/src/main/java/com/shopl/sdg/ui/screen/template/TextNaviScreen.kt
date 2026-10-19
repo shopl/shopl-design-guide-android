@@ -155,6 +155,18 @@ private fun TextNaviContent(
             subItems = subItems,
             backgroundColor = SDGColor.Red50,
         )
+        SDGTextNavi(
+            label = label.copy(text = "라벨 다음 아이콘"),
+            backButton = backButton,
+            subItems = persistentListOf(subLabel, subIcon),
+            backgroundColor = SDGColor.Neutral100,
+        )
+        SDGTextNavi(
+            label = label.copy(text = "여러 보조 항목"),
+            backButton = backButton,
+            subItems = persistentListOf(subIcon, subLabel.copy(text = "취소"), subIcon, subLabel.copy(text = "저장")),
+            backgroundColor = SDGColor.Neutral100,
+        )
     }
 }
 
