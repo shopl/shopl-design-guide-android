@@ -56,7 +56,7 @@ internal fun TextNaviScreen(
                     "Status Bar 영역을 제외한 모바일 화면의 최상단에 배치합니다.",
                     "모든 구성 요소는 수평으로 중앙 정렬합니다.",
                     "제목은 한 줄로 표시하고, 영역을 벗어나면 말줄임 처리합니다.",
-                    "보조 아이콘과 라벨은 각각 하나씩 사용하며, 아이콘 다음 라벨 순서로 표시합니다.",
+                    "보조 라벨은 필수이며, 라벨 앞의 보조 아이콘은 생략할 수 있습니다.",
                 ),
             )
         },
@@ -116,20 +116,6 @@ private fun TextNaviContent(
             backButton = backButton,
             subIcon = null,
             subLabel = subLabel,
-            backgroundColor = SDGColor.Neutral100,
-        )
-        SDGTextNavi(
-            label = label.copy(text = "아이콘만 있는 보조 항목"),
-            backButton = backButton,
-            subIcon = subIcon,
-            subLabel = null,
-            backgroundColor = SDGColor.Neutral100,
-        )
-        SDGTextNavi(
-            label = label.copy(text = "보조 항목이 없는 경우"),
-            backButton = backButton,
-            subIcon = null,
-            subLabel = null,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(

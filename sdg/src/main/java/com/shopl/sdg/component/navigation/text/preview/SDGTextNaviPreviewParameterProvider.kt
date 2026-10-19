@@ -13,9 +13,6 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
         뒤로가기_숨김(),
         제목_숨김(),
         보조_아이콘_숨김(),
-        보조_텍스트_숨김(),
-        보조_항목_숨김(),
-        모든_보조요소_숨김(),
         긴_제목(),
         긴_보조_텍스트(),
         파란_배경(),
@@ -44,22 +41,6 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
 
     private fun 보조_아이콘_숨김(): SDGTextNaviPreviewParameter {
         return 기본_상태().copy(subIcon = null)
-    }
-
-    private fun 보조_텍스트_숨김(): SDGTextNaviPreviewParameter {
-        return 기본_상태().copy(subLabel = null)
-    }
-
-    private fun 보조_항목_숨김(): SDGTextNaviPreviewParameter {
-        return 기본_상태().copy(subIcon = null, subLabel = null)
-    }
-
-    private fun 모든_보조요소_숨김(): SDGTextNaviPreviewParameter {
-        return 기본_상태().copy(
-            backButton = SDGTextNaviBackButton.False,
-            subIcon = null,
-            subLabel = null,
-        )
     }
 
     private fun 긴_제목(): SDGTextNaviPreviewParameter {
