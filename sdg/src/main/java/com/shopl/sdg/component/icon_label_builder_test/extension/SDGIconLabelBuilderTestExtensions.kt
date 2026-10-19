@@ -22,6 +22,23 @@ import com.shopl.sdg_common.ui.components.SDGText
 
 /**
  * AnnotatedString을 사용하는 Icon Label입니다.
+ * 라벨과 선택한 좌우 아이콘을 함께 표시하며 크기, 굵기, 간격과 넘침 처리를 지정합니다.
+ *
+ * @version 2.1.29
+ *
+ * @param label 표시할 주석 및 스타일 정보가 포함된 라벨 텍스트
+ * @param labelColor 라벨 텍스트 색상
+ * @param size 라벨 타이포그래피와 아이콘의 세로 여백을 결정하는 크기
+ * @param fontWeight 크기에 따른 라벨 타이포그래피의 굵기
+ * @param gap 아이콘과 라벨 사이의 간격
+ * @param modifier 컴포넌트 전체에 적용할 Modifier
+ * @param leftIc 왼쪽 아이콘의 리소스와 색상 정보. null이면 표시하지 않습니다.
+ * @param rightIc 오른쪽 아이콘의 리소스와 색상 정보. null이면 표시하지 않습니다.
+ * @param labelOverflow 라벨의 최대 줄 수와 넘침 처리 방식
+ * @param isFillMaxWidth 전체 가용 너비를 채우고 라벨에 남은 너비를 할당할지 여부
+ * @param onClick 컴포넌트 클릭 시 호출할 콜백. null이면 클릭 동작을 적용하지 않습니다.
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=10507-19135&m=dev">Figma</a>
  */
 @Composable
 fun SDGIconLabelBuilderTest(
