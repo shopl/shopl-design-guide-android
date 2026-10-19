@@ -48,8 +48,6 @@ jobs:
           persist-credentials: false
 
       - name: Validate dispatched source
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: python3 "$RUNNER_TEMP/sdg-builder-validate.py"
 
       - name: Configure existing Mac build environment
@@ -64,9 +62,7 @@ jobs:
             echo "Android SDK 36 is required on the SDG build runner." >&2
             exit 1
           fi
-          for sdg_tool in python3 gh; do
-            command -v "$sdg_tool" >/dev/null
-          done
+          command -v python3 >/dev/null
           echo "JAVA_HOME=$sdg_java_home" >> "$GITHUB_ENV"
           echo "ANDROID_HOME=$sdg_android_home" >> "$GITHUB_ENV"
           echo "$sdg_java_home/bin" >> "$GITHUB_PATH"

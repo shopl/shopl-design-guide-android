@@ -1,6 +1,5 @@
 """Mac 빌드 전에 Android SDG의 요청 커밋·브랜치·허용 파일 범위를 검사한다."""
 
-import json
 import os
 import re
 import subprocess
@@ -38,10 +37,18 @@ if legacy_branch:
     print('기존 UUID 브랜치 호환 형식입니다. 작업자·Jira 기반 브랜치 생성 전환은 별도 진행합니다.', file=sys.stderr)
 require(re.fullmatch(r'[a-f0-9-]{36}', os.environ['BUILD_ID']), 'Invalid build ID.')
 require(git('rev-parse', 'HEAD') == sha, 'Checkout does not match the requested commit.')
-head = json.loads(subprocess.check_output([
-    'gh', 'api', f'repos/{repository}/git/ref/heads/{branch}',
-]))
-require(head['object']['sha'] == sha, 'The SDG branch changed after build submission.')
+# Shopl QA처럼 러너의 기존 Git을 사용한다. 요청한 SHA는 유지하고 원격 브랜치 이동만 검사한다.
+try:
+    remote = subprocess.run(
+        ['git', 'ls-remote', '--exit-code', 'origin', f'refs/heads/{branch}'],
+        capture_output=True, text=True, timeout=30,
+        env={**os.environ, 'GIT_TERMINAL_PROMPT': '0'},
+    )
+except subprocess.TimeoutExpired:
+    raise SystemExit('Remote branch verification timed out. Check the network connection.') from None
+require(remote.returncode == 0, 'Cannot verify the remote branch. Check branch, repository access and network.')
+require(remote.stdout.strip() == f'{sha}\trefs/heads/{branch}',
+        'The SDG branch changed after build submission.')
 subprocess.run(['git', 'merge-base', '--is-ancestor', base, 'origin/main'], check=True)
 subprocess.run(['git', 'merge-base', '--is-ancestor', base, sha], check=True)
 
