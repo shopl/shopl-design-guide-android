@@ -16,7 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.navigation.text.preview.SDGTextNaviPreviewParameter
+import com.shopl.sdg.component.navigation.text.preview.SDGTextNaviPreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing10
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
@@ -29,6 +33,7 @@ import com.shopl.sdg_common.ui.components.SDGText
 import com.shopl.sdg_resource.R
 
 private const val LABEL_MAX_LINES = 1
+private const val PREVIEW_WIDTH_DP = 375
 
 private val NAVI_MIN_HEIGHT = 48.dp
 private val BACK_ICON_SIZE = 40.dp
@@ -127,5 +132,21 @@ private fun SDGTextNaviRightItemContent(item: SDGTextNaviRightItem) {
                 softWrap = false,
             )
         }
+    }
+}
+
+@Preview(showBackground = true, widthDp = PREVIEW_WIDTH_DP)
+@Composable
+private fun PreviewSDGTextNavi(
+    @PreviewParameter(SDGTextNaviPreviewParameterProvider::class)
+    parameter: SDGTextNaviPreviewParameter,
+) {
+    with(parameter) {
+        SDGTextNavi(
+            label = label,
+            backButton = backButton,
+            rightItem = rightItem,
+            backgroundColor = backgroundColor,
+        )
     }
 }
