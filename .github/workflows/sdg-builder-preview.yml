@@ -1,0 +1,118 @@
+name: SDG Builder preview
+run-name: SDG Builder Android · ${{ inputs.source_branch }} · ${{ inputs.source_sha }} · ${{ inputs.build_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha: {required: true, type: string}
+      source_branch: {required: true, type: string}
+      source_base: {required: true, type: string}
+      design_name: {required: true, type: string}
+      build_id: {required: true, type: string}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sdg-builder-android-${{ inputs.source_branch }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, macOS, ARM64, shopl-android-qa]
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    env:
+      SOURCE_SHA: ${{ inputs.source_sha }}
+      SOURCE_BASE: ${{ inputs.source_base }}
+      SOURCE_BRANCH: ${{ inputs.source_branch }}
+      BUILD_ID: ${{ inputs.build_id }}
+    steps:
+      - name: Checkout trusted validation code
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Save trusted source validator
+        run: cp .github/scripts/sdg-builder-validate.py "$RUNNER_TEMP/sdg-builder-validate.py"
+
+      - name: Checkout exact source commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ inputs.source_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Validate dispatched source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 "$RUNNER_TEMP/sdg-builder-validate.py"
+
+      - name: Configure existing Mac build environment
+        run: |
+          set -euo pipefail
+          sdg_java_home=/Library/Java/JavaVirtualMachines/amazon-corretto-21.jdk/Contents/Home
+          if [ ! -x "$sdg_java_home/bin/java" ]; then
+            sdg_java_home=$(/usr/libexec/java_home -v 21)
+          fi
+          sdg_android_home="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-$HOME/Library/Android/sdk}}"
+          if [ ! -d "$sdg_android_home/platforms/android-36" ]; then
+            echo "Android SDK 36 is required on the SDG build runner." >&2
+            exit 1
+          fi
+          for sdg_tool in python3 gh; do
+            command -v "$sdg_tool" >/dev/null
+          done
+          echo "JAVA_HOME=$sdg_java_home" >> "$GITHUB_ENV"
+          echo "ANDROID_HOME=$sdg_android_home" >> "$GITHUB_ENV"
+          echo "$sdg_java_home/bin" >> "$GITHUB_PATH"
+          echo "$sdg_android_home/platform-tools" >> "$GITHUB_PATH"
+          "$sdg_java_home/bin/java" -version
+
+      # 체크아웃은 정리하고, 러너의 Gradle User Home 캐시는 빌드 간 유지한다.
+      - name: Build sample APK with local Gradle cache
+        run: |
+          set -euo pipefail
+          ./gradlew :app:assembleDebug --build-cache --daemon --parallel --max-workers=4 --console=plain \
+            2>&1 | tee "$RUNNER_TEMP/sdg-builder-android-build.log"
+          mkdir -p preview-output
+          cp app/build/outputs/apk/debug/app-debug.apk preview-output/sdg-builder.apk
+          cp "$RUNNER_TEMP/sdg-builder-android-build.log" preview-output/build.log
+
+      - name: Record source and cache results
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib, json, os, re
+          from pathlib import Path
+
+          output = Path('preview-output')
+          log = (output / 'build.log').read_text()
+          hits = len(re.findall(r'^> Task .* FROM-CACHE$', log, re.MULTILINE))
+          metadata = {
+              'source_sha': os.environ['SOURCE_SHA'],
+              'source_base': os.environ['SOURCE_BASE'],
+              'source_branch': os.environ['SOURCE_BRANCH'],
+              'build_id': os.environ['BUILD_ID'],
+              'run_id': os.environ['GITHUB_RUN_ID'],
+              'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'runner': os.environ['RUNNER_NAME'],
+              'gradle_from_cache_tasks': hits,
+              'apk_sha256': hashlib.sha256((output / 'sdg-builder.apk').read_bytes()).hexdigest(),
+          }
+          (output / 'build-metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write(f"### SDG Android sample build\n\nCommit: `{metadata['source_sha']}`\n\n")
+              summary.write(f"Gradle tasks restored from local cache: **{hits}**\n")
+          PYTHON
+
+      - name: Upload sample APK and build evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sdg-builder-android-${{ inputs.source_sha }}
+          path: preview-output/
+          if-no-files-found: error
+          retention-days: 3
