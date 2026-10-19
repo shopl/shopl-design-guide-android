@@ -4,12 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 import com.shopl.sdg_common.foundation.SDGColor
 
-data class SDGTextNaviRightItem(
-    val subLabel: SDGTextNaviSubLabel,
-    val subIcon: SDGTextNaviSubIcon,
-    val onClick: () -> Unit,
-)
-
 sealed interface SDGTextNaviSubLabel {
     data class True(
         val text: String,
