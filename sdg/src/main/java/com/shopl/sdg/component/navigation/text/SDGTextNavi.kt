@@ -122,7 +122,7 @@ private fun SDGTextNaviSubItems(items: PersistentList<SDGTextNaviSubItem>) {
                 is SDGTextNaviSubItem.Label -> SDGText(
                     text = item.text,
                     typography = SDGTypography.Body1R,
-                    textColor = item.textColor,
+                    textColor = SDGColor.Neutral700,
                     maxLines = LABEL_MAX_LINES,
                     softWrap = false,
                     modifier = Modifier.clickable(onClick = item.onClick),
