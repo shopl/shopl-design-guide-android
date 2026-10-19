@@ -91,6 +91,7 @@ fun SDGScrollTab(...) {
 
 ### 미리보기 파라미터 제공자
 - `PreviewParameterProvider`로 여러 미리보기 상태를 제공한다.
+- 제공자 내부에서 미리보기 상태를 만드는 `private` 팩토리 메서드는 한글로 상태·크기·유형을 설명하는 이름을 사용한다. 단어는 `_`로 구분한다. 예: `활성_Medium_Solid()`, `비활성_Medium_Solid()`. 이 규칙은 공개 API나 일반 구현 함수의 이름을 한글로 바꾸라는 의미가 아니다.
 - `PreviewParameter` 데이터 클래스와 `PreviewParameterProvider` 클래스는 각각 `SDG[Name]PreviewParameter.kt`와 `SDG[Name]PreviewParameterProvider.kt` 파일로 분리한다. 두 선언을 한 파일에 함께 두지 않는다.
 - 서로 다른 파일에서 참조하는 파라미터 타입은 `internal` 등 참조 가능한 접근 수준으로 선언한다.
 - 미리보기 함수는 `private`로 선언한다.
@@ -107,7 +108,13 @@ internal data class SDGBoxButtonPreviewParameter(
 ### 제공자 파일 (`SDG[Name]PreviewParameterProvider.kt`)
 ```kotlin
 internal class SDGBoxButtonPreviewParameterProvider : PreviewParameterProvider<SDGBoxButtonPreviewParameter> {
-    override val values: Sequence<SDGBoxButtonPreviewParameter> = sequenceOf(...)
+    override val values: Sequence<SDGBoxButtonPreviewParameter> = sequenceOf(
+        활성_Medium_Solid(),
+        비활성_Medium_Solid(),
+    )
+
+    private fun 활성_Medium_Solid() = SDGBoxButtonPreviewParameter(...)
+    private fun 비활성_Medium_Solid() = SDGBoxButtonPreviewParameter(...)
 }
 ```
 
@@ -132,6 +139,7 @@ private fun PreviewSDGBoxButton(
   - 주 Composable 함수에 KDoc을 추가한다.
   - **설명**: Figma 디자인 파일의 컴포넌트 이름 아래에 표시된 설명을 그대로 사용한다.
   - `@see`로 Figma 디자인 링크를 포함한다.
+  - `@version`으로 해당 컴포넌트에 적용한 디자인 가이드 버전을 명시한다. Figma 문서와 합의된 작업 요구사항에서 정확한 버전을 확인한다. 코드 수정만으로 임의 증가시키지 않으며, 앱·라이브러리 배포 버전과 구분한다.
 - **유틸리티·확장 함수**:
   - KDoc은 한국어로 작성한다.
   - 함수의 목적과 사용법을 명확하게 설명한다.
@@ -143,6 +151,8 @@ private fun PreviewSDGBoxButton(
  * SDG - Tab - Scroll Tab
  *
  * 제한없이 나열되는 탭 컴포넌트  // ← Figma에 명시된 설명 그대로 사용
+ *
+ * @version 2.3.48
  *
  * @see <a href="https://www.figma.com/design/...">Figma</a>
  */
