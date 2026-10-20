@@ -17,7 +17,11 @@ def git(*args):
 
 repository = os.environ['GITHUB_REPOSITORY']
 require(repository == 'shopl/shopl-design-guide-android', 'Unexpected SDG repository.')
-require(os.environ['GITHUB_REF'] == 'refs/heads/main', 'Dispatch the trusted main workflow.')
+# TEMP #493: YAML의 제한된 검증 실행과 같은 조건이며 검증 후 원복한다.
+premerge_expected = {'GITHUB_EVENT_NAME': 'workflow_dispatch', 'GITHUB_REF': 'refs/heads/roadmap/sangun/SH-24299-android-apk-delivery', 'GITHUB_ACTOR': 'san-gun', 'GITHUB_TRIGGERING_ACTOR': 'san-gun', 'BUILD_ID': '6531a7cc-b6ce-43bb-bd93-a18a638fcdde', 'SOURCE_SHA': 'a60166989b62274f0fb35a91a91b1628555c4901', 'SOURCE_BASE': '1d2ac9fcec6728530352340b1f91bfdc99418178', 'SOURCE_BRANCH': 'update/figma-97e31ee5-475b-4f9e-99ee-9ebd87faacf4'}
+require(os.environ['GITHUB_REF'] == 'refs/heads/main' or
+        all(os.environ.get(key) == value for key, value in premerge_expected.items()),
+        'Dispatch the trusted main workflow or the exact approved #493 test.')
 sha = os.environ['SOURCE_SHA']
 base = os.environ['SOURCE_BASE']
 branch = os.environ['SOURCE_BRANCH']

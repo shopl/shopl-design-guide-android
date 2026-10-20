@@ -20,8 +20,9 @@ concurrency:
 jobs:
   # Shopl QA와 같은 공식 Slack Action을 사용한다. #sdg-builder-build(ID: C0CAC49CLH3).
   # QA의 Lambda 대신 시작 메시지를 만들고, 응답 ts를 완료 작업에 전달한다.
+  # TEMP #493: 지정 실행자·브랜치·소스·build_id만 병합 전 검증한다. 검증 후 원복.
   notify-start:
-    if: github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main'
+    if: github.repository == 'shopl/shopl-design-guide-android' && (github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/roadmap/sangun/SH-24299-android-apk-delivery' && github.actor == 'san-gun' && github.triggering_actor == 'san-gun' && inputs.build_id == '6531a7cc-b6ce-43bb-bd93-a18a638fcdde' && inputs.source_sha == 'a60166989b62274f0fb35a91a91b1628555c4901' && inputs.source_base == '1d2ac9fcec6728530352340b1f91bfdc99418178' && inputs.source_branch == 'update/figma-97e31ee5-475b-4f9e-99ee-9ebd87faacf4'))
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     continue-on-error: true
@@ -56,7 +57,7 @@ jobs:
   build:
     needs: notify-start
     # 알림 오류가 APK 빌드를 막지 않도록 한다. main 전용 실행은 유지한다.
-    if: ${{ always() && !cancelled() && github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main' }}
+    if: ${{ always() && !cancelled() && github.repository == 'shopl/shopl-design-guide-android' && (github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/roadmap/sangun/SH-24299-android-apk-delivery' && github.actor == 'san-gun' && github.triggering_actor == 'san-gun' && inputs.build_id == '6531a7cc-b6ce-43bb-bd93-a18a638fcdde' && inputs.source_sha == 'a60166989b62274f0fb35a91a91b1628555c4901' && inputs.source_base == '1d2ac9fcec6728530352340b1f91bfdc99418178' && inputs.source_branch == 'update/figma-97e31ee5-475b-4f9e-99ee-9ebd87faacf4')) }}
     outputs:
       apk_url: ${{ steps.share_apk.outputs.download_url }}
     runs-on: [self-hosted, macOS, ARM64, shopl-android-qa]
@@ -73,7 +74,7 @@ jobs:
       - name: Checkout trusted validation code
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          ref: main
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || github.sha }}
           persist-credentials: false
 
       - name: Save trusted source validator
@@ -193,7 +194,7 @@ jobs:
   # 토큰은 앱 소스를 실행하지 않는 별도 hosted 알림 작업에서만 사용한다.
   notify-slack:
     needs: [notify-start, build]
-    if: ${{ always() && github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main' }}
+    if: ${{ always() && github.repository == 'shopl/shopl-design-guide-android' && (github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/roadmap/sangun/SH-24299-android-apk-delivery' && github.actor == 'san-gun' && github.triggering_actor == 'san-gun' && inputs.build_id == '6531a7cc-b6ce-43bb-bd93-a18a638fcdde' && inputs.source_sha == 'a60166989b62274f0fb35a91a91b1628555c4901' && inputs.source_base == '1d2ac9fcec6728530352340b1f91bfdc99418178' && inputs.source_branch == 'update/figma-97e31ee5-475b-4f9e-99ee-9ebd87faacf4')) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     continue-on-error: true
