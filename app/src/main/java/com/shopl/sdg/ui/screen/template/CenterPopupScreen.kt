@@ -119,21 +119,15 @@ private fun InputCenterPopupSampleDialog(
         InputCenterPopupSample.Disabled -> SDGFixedTextInputState.Disabled
         else -> if (inputContent.isEmpty()) SDGFixedTextInputState.Default else SDGFixedTextInputState.Completed
     }
-    if (sample == InputCenterPopupSample.OneButton) {
-        SDGInputCenterPopup(
-            title = "팝업 타이틀",
-            description = "입력한 내용을 확인합니다.",
-            confirmLabel = "확인",
-            onClickConfirm = onConfirm,
-            inputLabel = "입력 라벨",
-            inputContent = inputContent,
-            hint = "힌트문구",
-            state = state,
-            onInputChange = onInputChange,
-        )
-    } else {
-        SDGInputCenterPopup(
-            buttonOption = SDGCenterPopupButtonOption.TwoOption(
+    SDGInputCenterPopup(
+        buttonOption = if (sample == InputCenterPopupSample.OneButton) {
+            SDGCenterPopupButtonOption.OneOption(
+                label = "확인",
+                onClick = onConfirm,
+                labelColor = SDGColor.Neutral700,
+            )
+        } else {
+            SDGCenterPopupButtonOption.TwoOption(
                 cancelLabel = "취소",
                 confirmLabel = "확인",
                 onClickCancel = onCancel,
@@ -142,24 +136,25 @@ private fun InputCenterPopupSampleDialog(
                 confirmLabelColor = SDGColor.Neutral700,
                 confirmEnabled = sample != InputCenterPopupSample.ConfirmDisabled,
                 onDismiss = onDismiss,
-            ),
-            title = "팝업 타이틀",
-            description = when (sample) {
-                InputCenterPopupSample.WithoutDescription,
-                InputCenterPopupSample.WithoutInputLabel -> null
-                else -> "Body text 하나의 기능을 설명하기 위한 기본 텍스트영역입니다."
-            },
-            showInputLabel = if (sample == InputCenterPopupSample.WithoutInputLabel) {
-                SDGInputCenterPopupShowInputLabel.False
-            } else {
-                SDGInputCenterPopupShowInputLabel.True("입력 라벨")
-            },
-            inputContent = inputContent,
-            hint = "힌트문구",
-            state = state,
-            onInputChange = onInputChange,
-        )
-    }
+            )
+        },
+        title = "팝업 타이틀",
+        description = when (sample) {
+            InputCenterPopupSample.OneButton -> "입력한 내용을 확인합니다."
+            InputCenterPopupSample.WithoutDescription,
+            InputCenterPopupSample.WithoutInputLabel -> null
+            else -> "Body text 하나의 기능을 설명하기 위한 기본 텍스트영역입니다."
+        },
+        showInputLabel = if (sample == InputCenterPopupSample.WithoutInputLabel) {
+            SDGInputCenterPopupShowInputLabel.False
+        } else {
+            SDGInputCenterPopupShowInputLabel.True("입력 라벨")
+        },
+        inputContent = inputContent,
+        hint = "힌트문구",
+        state = state,
+        onInputChange = onInputChange,
+    )
 }
 
 @Preview(showBackground = true)
