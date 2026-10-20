@@ -39,6 +39,9 @@ import com.shopl.sdg_common.ui.components.SDGText
  * @version 2.3.4-
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19226-12213&m=dev">Figma</a>
  */
+@Deprecated(
+    message = "buttonOption과 showInputLabel을 사용하는 SDGInputCenterPopup을 사용하세요.",
+)
 @Composable
 fun SDGInputCenterPopup(
     title: String?,
@@ -133,7 +136,7 @@ fun SDGInputCenterPopup(
  * 신규 Input Center Popup API와의 하위 호환성을 위한 레거시 API입니다.
  */
 @Deprecated(
-    message = "inputState 대신 state를 사용하는 SDGInputCenterPopup을 사용하세요.",
+    message = "buttonOption, showInputLabel, state를 사용하는 SDGInputCenterPopup을 사용하세요.",
 )
 @Composable
 fun SDGInputCenterPopup(
@@ -167,11 +170,15 @@ fun SDGInputCenterPopup(
     val canChangeInput = inputState !is InputState.Error || enableOnError
 
     SDGInputCenterPopup(
+        buttonOption = SDGCenterPopupButtonOption.OneOption(
+            label = confirmLabel,
+            onClick = onClickConfirm,
+            labelColor = confirmLabelColor,
+            enabled = enabled,
+        ),
         title = title,
         description = description,
-        confirmLabel = confirmLabel,
-        onClickConfirm = onClickConfirm,
-        inputLabel = inputLabel,
+        showInputLabel = SDGInputCenterPopupShowInputLabel.True(inputLabel),
         inputContent = inputContent,
         hint = hint,
         state = state,
@@ -183,9 +190,7 @@ fun SDGInputCenterPopup(
             SDGFixedTextInputField.White
         },
         inputMaxLength = inputMaxLength,
-        confirmLabelColor = confirmLabelColor,
         titleAlignment = titleAlignment,
-        enabled = enabled,
     )
 }
 
