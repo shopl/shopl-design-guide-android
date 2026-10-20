@@ -1,6 +1,7 @@
 package com.shopl.sdg.component.icon_label_builder_test.extension
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,7 +32,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  * @param size 라벨 타이포그래피와 아이콘의 세로 여백을 결정하는 크기
  * @param fontWeight 크기에 따른 라벨 타이포그래피의 굵기
  * @param gap 아이콘과 라벨 사이의 간격
- * @param modifier 컴포넌트 전체에 적용할 Modifier
+ * @param marginValues 컴포넌트 외부 여백
  * @param leftIc 왼쪽 아이콘의 리소스와 색상 정보. null이면 표시하지 않습니다.
  * @param rightIc 오른쪽 아이콘의 리소스와 색상 정보. null이면 표시하지 않습니다.
  * @param labelOverflow 라벨의 최대 줄 수와 넘침 처리 방식
@@ -47,7 +48,7 @@ fun SDGIconLabelBuilderTest(
     size: SDGIconLabelBuilderTestSize,
     fontWeight: SDGIconLabelBuilderTestFontWeight,
     gap: SDGIconLabelBuilderTestGap,
-    modifier: Modifier = Modifier,
+    marginValues: PaddingValues = PaddingValues(),
     leftIc: SDGIconLabelBuilderTestIcon? = null,
     rightIc: SDGIconLabelBuilderTestIcon? = null,
     labelOverflow: SDGIconLabelBuilderTestOverflow = SDGIconLabelBuilderTestOverflow.Full,
@@ -55,7 +56,8 @@ fun SDGIconLabelBuilderTest(
     onClick: (() -> Unit)?,
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
+            .padding(marginValues)
             .then(
                 if (isFillMaxWidth) {
                     Modifier.fillMaxWidth()

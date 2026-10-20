@@ -2,6 +2,7 @@ package com.shopl.sdg.component.icon_label_builder_test
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,6 +27,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  * @version 2.1.29
  *
  * @param labelOverflow Label이 길어지는 경우 노출 방식
+ * @param marginValues 컴포넌트 외부 여백
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=10507-19135&m=dev">Figma</a>
  */
@@ -38,13 +40,14 @@ fun SDGIconLabelBuilderTest(
     gap: SDGIconLabelBuilderTestGap,
     onClick: (() -> Unit)?,
     labelOverflow: SDGIconLabelBuilderTestOverflow,
-    modifier: Modifier = Modifier,
+    marginValues: PaddingValues = PaddingValues(),
     leftIc: SDGIconLabelBuilderTestIcon? = null,
     rightIc: SDGIconLabelBuilderTestIcon? = null,
     isFillMaxWidth: Boolean = false,
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
+            .padding(marginValues)
             .then(
                 if (isFillMaxWidth) {
                     Modifier.fillMaxWidth()
@@ -103,6 +106,8 @@ fun SDGIconLabelBuilderTest(
 
 /**
  * 신규 Icon Label API와의 하위 호환성을 위한 레거시 API입니다.
+ *
+ * @param marginValues 컴포넌트 외부 여백
  */
 @Deprecated(
     message = "text/type/spacing/maxLines 대신 label/fontWeight/gap/labelOverflow를 사용하세요.",
@@ -115,7 +120,7 @@ fun SDGIconLabelBuilderTest(
     size: SDGIconLabelBuilderTestSize,
     type: SDGIconLabelBuilderTestType,
     spacing: SDGIconLabelBuilderTestSpacing,
-    modifier: Modifier = Modifier,
+    marginValues: PaddingValues = PaddingValues(),
     @DrawableRes leftIconResId: Int? = null,
     leftIconTint: Color? = null,
     onClickLeftIcon: (() -> Unit)? = null,
@@ -133,7 +138,7 @@ fun SDGIconLabelBuilderTest(
         gap = spacing.gap,
         onClick = onClickLeftIcon ?: onClickRightIcon,
         labelOverflow = SDGIconLabelBuilderTestOverflow.fromMaxLines(maxLines),
-        modifier = modifier,
+        marginValues = marginValues,
         leftIc = leftIconResId?.let { resId ->
             SDGIconLabelBuilderTestIcon(
                 resId = resId,
@@ -152,6 +157,8 @@ fun SDGIconLabelBuilderTest(
 
 /**
  * 신규 Icon Label API와의 하위 호환성을 위한 레거시 API입니다.
+ *
+ * @param marginValues 컴포넌트 외부 여백
  */
 @Deprecated(
     message = "text/type/spacing/maxLines 대신 label/fontWeight/gap/labelOverflow를 사용하세요.",
@@ -164,7 +171,7 @@ fun SDGIconLabelBuilderTest(
     size: SDGIconLabelBuilderTestSize,
     type: SDGIconLabelBuilderTestType,
     spacing: SDGIconLabelBuilderTestSpacing,
-    modifier: Modifier = Modifier,
+    marginValues: PaddingValues = PaddingValues(),
     @DrawableRes leftIconResId: Int? = null,
     leftIconTint: Color? = null,
     onClickLeftIcon: (() -> Unit)? = null,
@@ -182,7 +189,7 @@ fun SDGIconLabelBuilderTest(
         gap = spacing.gap,
         onClick = onClickLeftIcon ?: onClickRightIcon,
         labelOverflow = SDGIconLabelBuilderTestOverflow.fromMaxLines(maxLines),
-        modifier = modifier,
+        marginValues = marginValues,
         leftIc = leftIconResId?.let { resId ->
             SDGIconLabelBuilderTestIcon(
                 resId = resId,

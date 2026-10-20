@@ -86,7 +86,6 @@ internal fun IconLabelBuilderTestScreen(label: String) {
 @Composable
 private fun PreviewIconLabelBuilderTestScreen() {
     ShoplDesignGuideTheme {
-        // TODO(resource-owner): "Label" 전용 문자열 키가 필요합니다. 등록 후 샘플 label에 연결합니다.
-        IconLabelBuilderTestScreen(label = "")
+        IconLabelBuilderTestScreen(label = "Label")
     }
 }

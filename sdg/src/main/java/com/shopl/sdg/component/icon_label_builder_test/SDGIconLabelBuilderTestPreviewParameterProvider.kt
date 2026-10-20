@@ -15,8 +15,7 @@ internal class SDGIconLabelBuilderTestPreviewParameterProvider : PreviewParamete
     )
 
     private fun 왼쪽_Medium_Normal() = SDGIconLabelBuilderTestPreviewParameter(
-        // TODO(resource-owner): "Medium Normal" 전용 문자열 키가 필요합니다. 등록 후 Preview label에 연결합니다.
-        label = "",
+        label = "Medium Normal",
         labelColor = SDGColor.Neutral900,
         size = SDGIconLabelBuilderTestSize.Medium,
         fontWeight = SDGIconLabelBuilderTestFontWeight.Normal,
@@ -28,8 +27,7 @@ internal class SDGIconLabelBuilderTestPreviewParameterProvider : PreviewParamete
     )
 
     private fun 양쪽_Medium_Bold() = SDGIconLabelBuilderTestPreviewParameter(
-        // TODO(resource-owner): "Medium Bold" 전용 문자열 키가 필요합니다. 등록 후 Preview label에 연결합니다.
-        label = "",
+        label = "Medium Bold",
         labelColor = SDGColor.Neutral900,
         size = SDGIconLabelBuilderTestSize.Medium,
         fontWeight = SDGIconLabelBuilderTestFontWeight.Bold,
@@ -45,8 +43,7 @@ internal class SDGIconLabelBuilderTestPreviewParameterProvider : PreviewParamete
     )
 
     private fun 오른쪽_Small_Normal() = SDGIconLabelBuilderTestPreviewParameter(
-        // TODO(resource-owner): "Small Normal" 전용 문자열 키가 필요합니다. 등록 후 Preview label에 연결합니다.
-        label = "",
+        label = "Small Normal",
         labelColor = SDGColor.Neutral700,
         size = SDGIconLabelBuilderTestSize.Small,
         fontWeight = SDGIconLabelBuilderTestFontWeight.Normal,
@@ -58,8 +55,7 @@ internal class SDGIconLabelBuilderTestPreviewParameterProvider : PreviewParamete
     )
 
     private fun 왼쪽_XSmall_Bold() = SDGIconLabelBuilderTestPreviewParameter(
-        // TODO(resource-owner): "XSmall Bold" 전용 문자열 키가 필요합니다. 등록 후 Preview label에 연결합니다.
-        label = "",
+        label = "XSmall Bold",
         labelColor = SDGColor.Secondary400,
         size = SDGIconLabelBuilderTestSize.XSmall,
         fontWeight = SDGIconLabelBuilderTestFontWeight.Bold,
@@ -71,8 +67,7 @@ internal class SDGIconLabelBuilderTestPreviewParameterProvider : PreviewParamete
     )
 
     private fun 양쪽_Small_전체노출() = SDGIconLabelBuilderTestPreviewParameter(
-        // TODO(resource-owner): "아주 긴 텍스트가 들어가는 경우 전체 텍스트가 줄바꿈되어 노출됩니다." 전용 문자열 키가 필요합니다. 등록 후 Preview label에 연결합니다.
-        label = "",
+        label = "아주 긴 텍스트가 들어가는 경우 전체 텍스트가 줄바꿈되어 노출됩니다.",
         labelColor = SDGColor.Neutral600,
         size = SDGIconLabelBuilderTestSize.Small,
         fontWeight = SDGIconLabelBuilderTestFontWeight.Normal,
@@ -84,8 +79,7 @@ internal class SDGIconLabelBuilderTestPreviewParameterProvider : PreviewParamete
     )
 
     private fun 양쪽_Small_말줄임() = SDGIconLabelBuilderTestPreviewParameter(
-        // TODO(resource-owner): "아주 긴 텍스트가 들어가는 경우 말줄임표 처리 확인용 텍스트입니다." 전용 문자열 키가 필요합니다. 등록 후 Preview label에 연결합니다.
-        label = "",
+        label = "아주 긴 텍스트가 들어가는 경우 말줄임표 처리 확인용 텍스트입니다.",
         labelColor = SDGColor.Neutral600,
         size = SDGIconLabelBuilderTestSize.Small,
         fontWeight = SDGIconLabelBuilderTestFontWeight.Normal,
