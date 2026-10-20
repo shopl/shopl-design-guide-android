@@ -18,38 +18,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Slack 토큰은 앱 소스를 실행하지 않는 별도 GitHub-hosted 작업에만 전달한다.
-  # #sdg-builder-build 채널(ID: C0CAC49CLH3). 시작 메시지 ID를 완료 알림에 넘긴다.
-  notify-start:
-    if: github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 3
-    continue-on-error: true
-    permissions:
-      contents: read
-    outputs:
-      thread_ts: ${{ steps.send.outputs.thread_ts }}
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-      - name: Send build start to Slack
-        id: send
-        env:
-          SDG_BUILDER_SLACK_TOKEN: ${{ secrets.SDG_BUILDER_SLACK_TOKEN }}
-          SDG_NOTIFICATION_PHASE: started
-          SOURCE_SHA: ${{ inputs.source_sha }}
-          SOURCE_BRANCH: ${{ inputs.source_branch }}
-          DESIGN_NAME: ${{ inputs.design_name }}
-        run: python3 .github/scripts/sdg-builder-slack.py
-
   build:
-    needs: notify-start
-    # 시작 알림 오류가 APK 빌드를 막지 않도록 한다.
-    if: ${{ always() && !cancelled() && github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main' }}
-    outputs:
-      apk_url: ${{ steps.share_apk.outputs.download_url }}
+    if: github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main'
     runs-on: [self-hosted, macOS, ARM64, shopl-android-qa]
     timeout-minutes: 30
     defaults:
@@ -143,92 +113,33 @@ jobs:
           if-no-files-found: error
           retention-days: 3
 
-      # Shopl android-qa와 같은 Mac 공유 서버. SDG 전용 경로와 실행별 파일명으로 구분한다.
-      - name: Copy APK to SDG shared folder
-        id: share_apk
-        continue-on-error: true
-        run: |
-          python3 - <<'PYTHON'
-          import hashlib, os, re, shutil, tempfile
-          from pathlib import Path
-          from urllib.request import HTTPRedirectHandler, ProxyHandler, build_opener
-
-          run_id, attempt, sha = os.environ['GITHUB_RUN_ID'], os.environ['GITHUB_RUN_ATTEMPT'], os.environ['SOURCE_SHA']
-          if not run_id.isdigit() or not attempt.isdigit() or not re.fullmatch(r'[0-9a-f]{40}', sha):
-              raise SystemExit('Invalid APK identity')
-          shares = [('/Users/spiderman/qa-apk-share', 'http://192.168.31.112:8080'),
-                    ('/Users/gamora/qa-apk-share', 'http://192.168.31.113:8080')]
-          available = [(Path(folder), url) for folder, url in shares if Path(folder).is_dir()]
-          if len(available) != 1:
-              raise SystemExit('Expected exactly one existing Shopl QA share directory')
-          base, url = available[0]
-          destination = base / 'sdg-builder'
-          destination.mkdir(exist_ok=True)
-          if destination.resolve().parent != base.resolve():
-              raise SystemExit('Unexpected SDG share directory')
-          filename = f'sdg-builder-{run_id}-{attempt}-{sha[:12]}.apk'
-          target = destination / filename
-          source = Path('preview-output/sdg-builder.apk')
-          def digest(stream):
-              result = hashlib.sha256()
-              for chunk in iter(lambda: stream.read(1024 * 1024), b''):
-                  result.update(chunk)
-              return result.hexdigest()
-          with source.open('rb') as original:
-              expected = digest(original)
-          # 복사가 끝난 APK만 공개한다. 기존 파일은 덮어쓰거나 삭제하지 않는다.
-          temporary = None
-          try:
-              with tempfile.NamedTemporaryFile(dir=destination, prefix='.sdg-', suffix='.tmp', delete=False) as staged:
-                  temporary = Path(staged.name)
-                  with source.open('rb') as original:
-                      shutil.copyfileobj(original, staged)
-                  staged.flush()
-                  os.fsync(staged.fileno())
-              temporary.chmod(0o644)
-              os.link(temporary, target)
-          finally:
-              if temporary is not None:
-                  temporary.unlink(missing_ok=True)
-
-          download_url = f'{url}/sdg-builder/{filename}'
-          class NoRedirect(HTTPRedirectHandler):
-              def redirect_request(self, request, file, code, message, headers, new_url):
-                  raise RuntimeError('APK share redirected unexpectedly')
-          # 프록시·다른 호스트로 넘기지 않고 사내 서버가 실제 제공하는 APK를 대조한다.
-          opener = build_opener(ProxyHandler({}), NoRedirect())
-          with opener.open(download_url, timeout=20) as response:
-              actual = digest(response)
-          if actual != expected:
-              raise SystemExit('Shared HTTP APK does not match the built APK')
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
-              output.write(f'download_url={download_url}\n')
-          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
-              summary.write('## SDG APK share verified\nSHOPL_DEV network required. HTTP APK SHA-256 matches the build.\n')
-          PYTHON
-
-  # 완료·실패·취소는 가능하면 시작 메시지의 스레드로 보낸다.
+  # Slack 비밀값은 소스 코드를 실행하지 않는 별도 알림 작업에서만 사용한다.
+  # #sdg-builder-build 채널(ID: C0CAC49CLH3)에 연결된 전용 Incoming Webhook을 사용한다.
   notify-slack:
-    needs: [notify-start, build]
+    needs: build
     if: ${{ always() && github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
+    # 알림 실패가 APK 빌드 성공을 실패로 바꾸지 않도록 한다.
     continue-on-error: true
-    permissions:
-      contents: read
+    permissions: {}
+    env:
+      HAS_SLACK_WEBHOOK: ${{ secrets.SDG_BUILDER_SLACK_WEBHOOK != '' }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
+      - name: Report missing Slack configuration
+        if: env.HAS_SLACK_WEBHOOK != 'true'
+        run: |
+          echo "::warning::Configure SDG_BUILDER_SLACK_WEBHOOK for channel C0CAC49CLH3."
+          echo "Slack notification is not configured for C0CAC49CLH3." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Send build result to Slack
+        if: env.HAS_SLACK_WEBHOOK == 'true'
+        uses: rtCamp/action-slack-notify@33ca3be66c6f378fe1610fd1d5258632dbed5e58 # v2
         env:
-          SDG_BUILDER_SLACK_TOKEN: ${{ secrets.SDG_BUILDER_SLACK_TOKEN }}
-          SDG_NOTIFICATION_PHASE: finished
-          SDG_SLACK_THREAD_TS: ${{ needs.notify-start.outputs.thread_ts }}
-          SDG_BUILD_RESULT: ${{ needs.build.result }}
-          SDG_APK_URL: ${{ needs.build.outputs.apk_url }}
-          SOURCE_SHA: ${{ inputs.source_sha }}
-          SOURCE_BRANCH: ${{ inputs.source_branch }}
-          DESIGN_NAME: ${{ inputs.design_name }}
-        run: python3 .github/scripts/sdg-builder-slack.py
+          SLACK_WEBHOOK: ${{ secrets.SDG_BUILDER_SLACK_WEBHOOK }}
+          SLACK_COLOR: ${{ needs.build.result == 'success' && 'good' || 'danger' }}
+          SLACK_MESSAGE: |
+            *SDG Android 샘플 빌드*
+            결과: ${{ needs.build.result }}
+            <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|APK·빌드 로그 보기>
+          MSG_MINIMAL: "true"
