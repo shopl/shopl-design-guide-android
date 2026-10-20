@@ -103,30 +103,8 @@ private fun InputCenterPopupSampleDialog(
     onCancel: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val state = when (sample) {
-        InputCenterPopupSample.Error -> SDGFixedTextInputState.Error
-        InputCenterPopupSample.Disabled -> SDGFixedTextInputState.Disabled
-        else -> if (inputContent.isEmpty()) SDGFixedTextInputState.Default else SDGFixedTextInputState.Completed
-    }
     SDGInputCenterPopup(
-        buttonOption = if (sample == InputCenterPopupSample.OneButton) {
-            SDGCenterPopupButtonOption.OneOption(
-                label = "확인",
-                onClick = onConfirm,
-                labelColor = SDGColor.Neutral700,
-            )
-        } else {
-            SDGCenterPopupButtonOption.TwoOption(
-                cancelLabel = "취소",
-                confirmLabel = "확인",
-                onClickCancel = onCancel,
-                onClickConfirm = onConfirm,
-                cancelLabelColor = SDGColor.Neutral700,
-                confirmLabelColor = SDGColor.Neutral700,
-                confirmEnabled = sample != InputCenterPopupSample.ConfirmDisabled,
-                onDismiss = onDismiss,
-            )
-        },
+        buttonOption = sample.buttonOption(onConfirm, onCancel, onDismiss),
         title = "팝업 타이틀",
         description = when (sample) {
             InputCenterPopupSample.OneButton -> "입력한 내용을 확인합니다."
@@ -141,8 +119,37 @@ private fun InputCenterPopupSampleDialog(
         },
         inputContent = inputContent,
         hint = "힌트문구",
-        state = state,
+        state = sample.inputState(inputContent),
         onInputChange = onInputChange,
+    )
+}
+
+private fun InputCenterPopupSample.inputState(inputContent: String): SDGFixedTextInputState = when (this) {
+    InputCenterPopupSample.Error -> SDGFixedTextInputState.Error
+    InputCenterPopupSample.Disabled -> SDGFixedTextInputState.Disabled
+    else -> if (inputContent.isEmpty()) SDGFixedTextInputState.Default else SDGFixedTextInputState.Completed
+}
+
+private fun InputCenterPopupSample.buttonOption(
+    onConfirm: () -> Unit,
+    onCancel: () -> Unit,
+    onDismiss: () -> Unit,
+): SDGCenterPopupButtonOption = if (this == InputCenterPopupSample.OneButton) {
+    SDGCenterPopupButtonOption.OneOption(
+        label = "확인",
+        onClick = onConfirm,
+        labelColor = SDGColor.Neutral700,
+    )
+} else {
+    SDGCenterPopupButtonOption.TwoOption(
+        cancelLabel = "취소",
+        confirmLabel = "확인",
+        onClickCancel = onCancel,
+        onClickConfirm = onConfirm,
+        cancelLabelColor = SDGColor.Neutral700,
+        confirmLabelColor = SDGColor.Neutral700,
+        confirmEnabled = this != InputCenterPopupSample.ConfirmDisabled,
+        onDismiss = onDismiss,
     )
 }
 
