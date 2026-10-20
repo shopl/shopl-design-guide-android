@@ -123,15 +123,6 @@ private fun InputPopupBody(
     )
 }
 
-/**
- * SDG - Popup - Center Popup - Input
- *
- * 입력이 필요한
- *
- * 확인 버튼 한 개와 입력 라벨을 표시합니다.
- *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19226-12213&m=dev">Figma</a>
- */
 @Deprecated(
     message = "buttonOption과 showInputLabel을 사용하는 SDGInputCenterPopup을 사용하세요.",
 )
