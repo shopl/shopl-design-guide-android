@@ -18,14 +18,12 @@ import com.shopl.sdg.scene.TemplateScene
 import com.shopl.sdg.template.popup.center.SDGCenterPopupButtonOption
 import com.shopl.sdg.template.popup.center.input.SDGInputCenterPopup
 import com.shopl.sdg.template.popup.center.input.SDGInputCenterPopupShowInputLabel
-import com.shopl.sdg.ui.base.SDGSampleBaseGuideLinesContent
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
-import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun CenterPopupScreen(
@@ -78,15 +76,6 @@ internal fun CenterPopupScreen(
                     typography = SDGTypography.Body1R,
                 )
             }
-        },
-        usageGuideLinesContent = {
-            SDGSampleBaseGuideLinesContent(
-                guideLineDescriptions = persistentListOf(
-                    "타이틀이 길어지면 줄바꿈으로 전체 노출합니다.",
-                    "버튼 라벨이 길어지면 한 줄로 줄임말 처리합니다.",
-                    "본문과 입력 라벨은 숨길 수 있으며, 버튼은 한 개 또는 두 개를 사용합니다.",
-                ),
-            )
         },
     )
 
