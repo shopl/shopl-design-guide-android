@@ -34,58 +34,6 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * 입력이 필요한
  *
- * 확인 버튼 한 개와 입력 라벨을 표시합니다.
- *
- * @version 2.3.4-
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19226-12213&m=dev">Figma</a>
- */
-@Deprecated(
-    message = "buttonOption과 showInputLabel을 사용하는 SDGInputCenterPopup을 사용하세요.",
-)
-@Composable
-fun SDGInputCenterPopup(
-    title: String?,
-    description: String?,
-    confirmLabel: String,
-    onClickConfirm: () -> Unit,
-    inputLabel: String,
-    inputContent: String,
-    hint: String,
-    state: SDGFixedTextInputState,
-    onInputChange: (String) -> Unit,
-    focusRequester: FocusRequester? = null,
-    inputField: SDGFixedTextInputField = SDGFixedTextInputField.LightGray,
-    inputMaxLength: Int = Int.MAX_VALUE,
-    confirmLabelColor: Color = SDGColor.Neutral700,
-    titleAlignment: TextAlign = TextAlign.Left,
-    enabled: Boolean = true,
-) {
-    SDGInputCenterPopup(
-        buttonOption = SDGCenterPopupButtonOption.OneOption(
-            label = confirmLabel,
-            onClick = onClickConfirm,
-            labelColor = confirmLabelColor,
-            enabled = enabled
-        ),
-        title = title,
-        description = description,
-        showInputLabel = SDGInputCenterPopupShowInputLabel.True(inputLabel),
-        inputContent = inputContent,
-        hint = hint,
-        state = state,
-        onInputChange = onInputChange,
-        focusRequester = focusRequester,
-        inputField = inputField,
-        inputMaxLength = inputMaxLength,
-        titleAlignment = titleAlignment,
-    )
-}
-
-/**
- * SDG - Popup - Center Popup - Input
- *
- * 입력이 필요한
- *
  * 본문은 null 또는 공백이면 숨깁니다. 입력 라벨은 [showInputLabel]로 표시 여부를 지정합니다.
  * 버튼 한 개는 [SDGCenterPopupButtonOption.OneOption], 두 개는 [SDGCenterPopupButtonOption.TwoOption]을 사용합니다.
  * 팝업 닫기 동작은 [SDGCenterPopup]의 버튼 옵션을 따릅니다.
@@ -130,6 +78,103 @@ fun SDGInputCenterPopup(
             inputMaxLength = inputMaxLength,
         )
     }
+}
+
+@Composable
+private fun Description(description: String) {
+    SDGText(
+        modifier = Modifier.fillMaxWidth(),
+        text = description,
+        typography = SDGTypography.Body1R,
+        textColor = SDGColor.Neutral600
+    )
+
+    Spacer(modifier = Modifier.height(Spacing16))
+}
+
+@Composable
+private fun InputPopupBody(
+    showInputLabel: SDGInputCenterPopupShowInputLabel,
+    inputContent: String,
+    hint: String,
+    state: SDGFixedTextInputState,
+    onInputChange: (String) -> Unit,
+    inputField: SDGFixedTextInputField,
+    inputMaxLength: Int,
+    focusRequester: FocusRequester? = null
+) {
+    if (showInputLabel is SDGInputCenterPopupShowInputLabel.True) {
+        SDGText(
+            modifier = Modifier.fillMaxWidth(),
+            text = showInputLabel.text,
+            typography = SDGTypography.Body1R,
+            textColor = SDGColor.Neutral400
+        )
+
+        Spacer(modifier = Modifier.height(Spacing8))
+    }
+
+    SDGFixedTextInput(
+        text = inputContent,
+        placeholder = hint,
+        state = state,
+        inputField = inputField,
+        style = SDGFixedTextInputStyle.Solid,
+        onTextChange = onInputChange,
+        focusRequester = focusRequester,
+        maxLength = inputMaxLength,
+    )
+}
+
+/**
+ * SDG - Popup - Center Popup - Input
+ *
+ * 입력이 필요한
+ *
+ * 확인 버튼 한 개와 입력 라벨을 표시합니다.
+ *
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19226-12213&m=dev">Figma</a>
+ */
+@Deprecated(
+    message = "buttonOption과 showInputLabel을 사용하는 SDGInputCenterPopup을 사용하세요.",
+)
+@Composable
+fun SDGInputCenterPopup(
+    title: String?,
+    description: String?,
+    confirmLabel: String,
+    onClickConfirm: () -> Unit,
+    inputLabel: String,
+    inputContent: String,
+    hint: String,
+    state: SDGFixedTextInputState,
+    onInputChange: (String) -> Unit,
+    focusRequester: FocusRequester? = null,
+    inputField: SDGFixedTextInputField = SDGFixedTextInputField.LightGray,
+    inputMaxLength: Int = Int.MAX_VALUE,
+    confirmLabelColor: Color = SDGColor.Neutral700,
+    titleAlignment: TextAlign = TextAlign.Left,
+    enabled: Boolean = true,
+) {
+    SDGInputCenterPopup(
+        buttonOption = SDGCenterPopupButtonOption.OneOption(
+            label = confirmLabel,
+            onClick = onClickConfirm,
+            labelColor = confirmLabelColor,
+            enabled = enabled
+        ),
+        title = title,
+        description = description,
+        showInputLabel = SDGInputCenterPopupShowInputLabel.True(inputLabel),
+        inputContent = inputContent,
+        hint = hint,
+        state = state,
+        onInputChange = onInputChange,
+        focusRequester = focusRequester,
+        inputField = inputField,
+        inputMaxLength = inputMaxLength,
+        titleAlignment = titleAlignment,
+    )
 }
 
 /**
@@ -191,52 +236,6 @@ fun SDGInputCenterPopup(
         },
         inputMaxLength = inputMaxLength,
         titleAlignment = titleAlignment,
-    )
-}
-
-@Composable
-private fun Description(description: String) {
-    SDGText(
-        modifier = Modifier.fillMaxWidth(),
-        text = description,
-        typography = SDGTypography.Body1R,
-        textColor = SDGColor.Neutral600
-    )
-
-    Spacer(modifier = Modifier.height(Spacing16))
-}
-
-@Composable
-private fun InputPopupBody(
-    showInputLabel: SDGInputCenterPopupShowInputLabel,
-    inputContent: String,
-    hint: String,
-    state: SDGFixedTextInputState,
-    onInputChange: (String) -> Unit,
-    inputField: SDGFixedTextInputField,
-    inputMaxLength: Int,
-    focusRequester: FocusRequester? = null
-) {
-    if (showInputLabel is SDGInputCenterPopupShowInputLabel.True) {
-        SDGText(
-            modifier = Modifier.fillMaxWidth(),
-            text = showInputLabel.text,
-            typography = SDGTypography.Body1R,
-            textColor = SDGColor.Neutral400
-        )
-
-        Spacer(modifier = Modifier.height(Spacing8))
-    }
-
-    SDGFixedTextInput(
-        text = inputContent,
-        placeholder = hint,
-        state = state,
-        inputField = inputField,
-        style = SDGFixedTextInputStyle.Solid,
-        onTextChange = onInputChange,
-        focusRequester = focusRequester,
-        maxLength = inputMaxLength,
     )
 }
 
