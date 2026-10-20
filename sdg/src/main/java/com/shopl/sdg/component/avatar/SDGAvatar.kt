@@ -42,7 +42,8 @@ import com.shopl.sdg_resource.R
  *
  * @param avatarSize 얼굴, 테두리 두께, 아이콘 크기를 결정하는 규격
  * @param userRegImg 표시할 프로필 이미지. 비어 있으면 기본 이미지를 표시합니다.
- * @param emptyImage 프로필 미등록 시 표시할 이미지. null이면 SDG 기본 이미지를 사용합니다.
+ * @param emptyImage 프로필 미등록 또는 로딩 실패 시 원형 영역을 채우도록 Crop하는 대체 이미지.
+ * null이면 SDG 기본 이미지를 사용합니다.
  * @param showFace false이면 등록된 이미지 대신 기본 이미지를 표시합니다.
  * @param showOutline 외곽 테두리 표시 여부
  * @param outlineColor 외곽 테두리에 사용할 SDG 컬러
@@ -125,7 +126,14 @@ fun SDGAvatar(
             } else {
                 SDGAsyncImage(
                     imageModel = userRegImg,
-                    failureImageResourceId = empty,
+                    failureImage = {
+                        SDGImage(
+                            resId = empty,
+                            color = null,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop,
+                        )
+                    },
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
                     previewContent = {
