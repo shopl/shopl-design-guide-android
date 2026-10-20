@@ -32,13 +32,10 @@ import com.shopl.sdg_common.ui.components.SDGText
 /**
  * SDG - Popup - Center Popup - Input
  *
- * 입력이 필요한
+ * 입력이 필요한 [CenterPopup]
  *
- * 본문은 null 또는 공백이면 숨깁니다. 입력 라벨은 [showInputLabel]로 표시 여부를 지정합니다.
- * 버튼 한 개는 [SDGCenterPopupButtonOption.OneOption], 두 개는 [SDGCenterPopupButtonOption.TwoOption]을 사용합니다.
- * 팝업 닫기 동작은 [SDGCenterPopup]의 버튼 옵션을 따릅니다.
+ * @version 2.3.40
  *
- * @version 2.3.4-
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19226-12213&m=dev">Figma</a>
  */
 @Composable
