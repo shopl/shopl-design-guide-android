@@ -1,12 +1,16 @@
 package com.shopl.sdg.ui.screen.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.icon_label.SDGIconLabel
 import com.shopl.sdg.component.icon_label.SDGIconLabelFontWeight
 import com.shopl.sdg.component.icon_label.SDGIconLabelGap
@@ -36,7 +40,7 @@ internal fun IconLabelScreen(
 ) {
     SDGSampleBaseScaffold(
         name = ComponentScene.IconLabel.displayLabel,
-        description = "아이콘과 텍스트를 조합하여 정보를 보조적으로 제공하는 컴포넌트",
+        description = "아이콘과 텍스트를 조합하여 보여주는 템플릿",
         bodyContent = {
             IconLabelScreenContent()
         },
@@ -112,8 +116,8 @@ private fun IconLabelSection(
                 resId = R.drawable.ic_common_next_s,
                 tint = SDGColor.Neutral700,
             ),
-            onClick = null,
-            labelOverflow = SDGIconLabelOverflow.SingleLineEllipsis
+            marginValues = PaddingValues(),
+            labelOverflow = SDGIconLabelOverflow.SingleLineEllipsis,
         )
 
         SDGIconLabel(
@@ -126,8 +130,21 @@ private fun IconLabelSection(
                 resId = R.drawable.ic_common_help,
                 tint = SDGColor.Primary400,
             ),
-            onClick = null,
-            labelOverflow = SDGIconLabelOverflow.SingleLineEllipsis
+            marginValues = PaddingValues(),
+            labelOverflow = SDGIconLabelOverflow.SingleLineEllipsis,
+        )
+
+        SDGIconLabel(
+            label = "Right icon / Spacing4",
+            labelColor = SDGColor.Secondary400,
+            size = size,
+            fontWeight = SDGIconLabelFontWeight.Normal,
+            gap = SDGIconLabelGap.Spacing4,
+            marginValues = PaddingValues(),
+            rightIc = SDGIconLabelIcon(
+                resId = R.drawable.ic_common_next_s,
+                tint = SDGColor.Secondary400,
+            ),
         )
     }
 }
@@ -144,18 +161,29 @@ private fun IconLabelOverflowContent() {
             typography = SDGTypography.Body1SB,
         )
 
-        SDGIconLabel(
-            label = "아주 긴 텍스트가 들어가는 경우 가용 범위 내에서 말줄임표로 표시됩니다.",
-            labelColor = SDGColor.Neutral700,
-            size = SDGIconLabelSize.Small,
-            fontWeight = SDGIconLabelFontWeight.Normal,
-            gap = SDGIconLabelGap.Spacing4,
-            leftIc = SDGIconLabelIcon(resId = R.drawable.ic_common_list),
-            rightIc = SDGIconLabelIcon(resId = R.drawable.ic_common_next_s),
-            labelOverflow = SDGIconLabelOverflow.SingleLineEllipsis,
-            isFillMaxWidth = true,
-            onClick = null,
-        )
+        Box(modifier = Modifier.widthIn(max = 240.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing8)) {
+                SDGIconLabelOverflow.entries.forEach { overflow ->
+                    SDGText(
+                        text = overflow.name,
+                        textColor = SDGColor.Neutral600,
+                        typography = SDGTypography.Body3R,
+                    )
+                    SDGIconLabel(
+                        label = "긴 라벨의 전체 노출과 한 줄 말줄임을 같은 너비에서 확인합니다.",
+                        labelColor = SDGColor.Neutral700,
+                        size = SDGIconLabelSize.Small,
+                        fontWeight = SDGIconLabelFontWeight.Normal,
+                        gap = SDGIconLabelGap.Spacing4,
+                        marginValues = PaddingValues(),
+                        leftIc = SDGIconLabelIcon(resId = R.drawable.ic_common_list),
+                        rightIc = SDGIconLabelIcon(resId = R.drawable.ic_common_next_s),
+                        labelOverflow = overflow,
+                        isFillMaxWidth = true,
+                    )
+                }
+            }
+        }
     }
 }
 
