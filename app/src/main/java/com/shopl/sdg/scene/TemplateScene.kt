@@ -3,6 +3,7 @@ package com.shopl.sdg.scene
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import com.shopl.sdg.ui.screen.template.CategoryNaviScreen
+import com.shopl.sdg.ui.screen.template.CenterPopupScreen
 import com.shopl.sdg.ui.screen.template.CheckboxLabelScreen
 import com.shopl.sdg.ui.screen.template.CustomHistoryScreen
 
@@ -297,11 +298,14 @@ internal sealed class TemplateScene(
     ) : TemplateScene(displayLabel, implemented) {
         data object CenterPopup : Popup(
             displayLabel = "Center Popup",
-            implemented = false
+            implemented = true
         ) {
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                throw IllegalStateException("Not implemented")
+                CenterPopupScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = { moveToScene(Menu) },
+                )
             }
         }
 
