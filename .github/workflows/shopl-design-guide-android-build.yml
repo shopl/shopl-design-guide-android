@@ -114,7 +114,7 @@ jobs:
           retention-days: 3
 
   # Slack 비밀값은 소스 코드를 실행하지 않는 별도 알림 작업에서만 사용한다.
-  # C0CAC49CLH3 채널에 연결된 전용 Incoming Webhook을 사용한다.
+  # #sdg-builder-build 채널(ID: C0CAC49CLH3)에 연결된 전용 Incoming Webhook을 사용한다.
   notify-slack:
     needs: build
     if: ${{ always() && github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main' }}
