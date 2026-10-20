@@ -13,6 +13,17 @@ sealed class SDGAvatarSize(
     val badgeSize: Dp,
     val borderSize: Dp,
 ) {
+    /** 재시도 아이콘의 크기. Avatar 2.3.50의 크기별 규격을 따릅니다. */
+    val retryIconSize: Dp
+        get() = when (this) {
+            XXS -> 10.dp
+            XS -> 12.dp
+            S -> 16.dp
+            M -> 20.dp
+            L -> 22.dp
+            XL -> 28.dp
+        }
+
     @Stable
     data object XXS: SDGAvatarSize(size = 20.dp, badgeSize = 8.dp, borderSize = 1.5.dp)
     @Stable
