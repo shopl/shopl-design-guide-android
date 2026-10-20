@@ -3,6 +3,7 @@ package com.shopl.sdg.scene
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import com.shopl.sdg.ui.screen.component.AttachmentElementScreen
+import com.shopl.sdg.ui.screen.component.AvatarScreen
 import com.shopl.sdg.ui.screen.component.BoxBadgeScreen
 import com.shopl.sdg.ui.screen.component.BoxTabScreen
 import com.shopl.sdg.ui.screen.component.DropdownScreen
@@ -34,11 +35,14 @@ internal sealed class ComponentScene(
 
     data object Avatar : ComponentScene(
         displayLabel = "Avatar",
-        implemented = false
+        implemented = true
     ) {
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-            throw IllegalStateException("Not implemented")
+            AvatarScreen(
+                onClickBack = backToScene,
+                onClickMenu = { moveToScene(Menu) },
+            )
         }
     }
 
