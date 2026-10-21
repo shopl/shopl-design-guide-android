@@ -20,10 +20,13 @@ import com.shopl.sdg.template.popup.center.input.SDGInputCenterPopup
 import com.shopl.sdg.template.popup.center.input.SDGInputCenterPopupShowInputLabel
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
+import com.shopl.sdg_common.ext.withColor
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+
+private const val REJECTION_REASON_MAX_LENGTH = 200
 
 @Composable
 internal fun CenterPopupScreen(
@@ -103,46 +106,63 @@ private fun InputCenterPopupSampleDialog(
     onCancel: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val state = when (sample) {
-        InputCenterPopupSample.Error -> SDGFixedTextInputState.Error
-        InputCenterPopupSample.Disabled -> SDGFixedTextInputState.Disabled
-        else -> if (inputContent.isEmpty()) SDGFixedTextInputState.Default else SDGFixedTextInputState.Completed
-    }
+    val isRejectionReason = sample == InputCenterPopupSample.RejectionReason
     SDGInputCenterPopup(
-        buttonOption = if (sample == InputCenterPopupSample.OneButton) {
-            SDGCenterPopupButtonOption.OneOption(
-                label = "확인",
-                onClick = onConfirm,
-                labelColor = SDGColor.Neutral700,
-            )
-        } else {
-            SDGCenterPopupButtonOption.TwoOption(
-                cancelLabel = "취소",
-                confirmLabel = "확인",
-                onClickCancel = onCancel,
-                onClickConfirm = onConfirm,
-                cancelLabelColor = SDGColor.Neutral700,
-                confirmLabelColor = SDGColor.Neutral700,
-                confirmEnabled = sample != InputCenterPopupSample.ConfirmDisabled,
-                onDismiss = onDismiss,
-            )
-        },
-        title = "팝업 타이틀",
+        buttonOption = sample.buttonOption(inputContent, onConfirm, onCancel, onDismiss),
+        title = if (isRejectionReason) "반려하시겠습니까?" else "팝업 타이틀",
         description = when (sample) {
             InputCenterPopupSample.OneButton -> "입력한 내용을 확인합니다."
+            InputCenterPopupSample.RejectionReason -> "한 번 반려하면 되돌릴 수 없으며, 즉시 결재가 중단됩니다."
             InputCenterPopupSample.WithoutDescription,
             InputCenterPopupSample.WithoutInputLabel -> null
             else -> "Body text 하나의 기능을 설명하기 위한 기본 텍스트영역입니다."
         },
-        showInputLabel = if (sample == InputCenterPopupSample.WithoutInputLabel) {
-            SDGInputCenterPopupShowInputLabel.False
-        } else {
-            SDGInputCenterPopupShowInputLabel.True("입력 라벨")
+        showInputLabel = when (sample) {
+            InputCenterPopupSample.WithoutInputLabel -> SDGInputCenterPopupShowInputLabel.False
+            InputCenterPopupSample.RejectionReason -> SDGInputCenterPopupShowInputLabel.True(
+                "사유*".withColor(SDGColor.Red300, "*"),
+            )
+            else -> SDGInputCenterPopupShowInputLabel.True("입력 라벨")
         },
         inputContent = inputContent,
-        hint = "힌트문구",
-        state = state,
+        hint = if (isRejectionReason) "입력" else "힌트문구",
+        state = sample.inputState(inputContent),
         onInputChange = onInputChange,
+        inputMaxLength = if (isRejectionReason) REJECTION_REASON_MAX_LENGTH else Int.MAX_VALUE,
+    )
+}
+
+private fun InputCenterPopupSample.inputState(inputContent: String): SDGFixedTextInputState = when (this) {
+    InputCenterPopupSample.Error -> SDGFixedTextInputState.Error
+    InputCenterPopupSample.Disabled -> SDGFixedTextInputState.Disabled
+    else -> if (inputContent.isEmpty()) SDGFixedTextInputState.Default else SDGFixedTextInputState.Completed
+}
+
+private fun InputCenterPopupSample.buttonOption(
+    inputContent: String,
+    onConfirm: () -> Unit,
+    onCancel: () -> Unit,
+    onDismiss: () -> Unit,
+): SDGCenterPopupButtonOption = if (this == InputCenterPopupSample.OneButton) {
+    SDGCenterPopupButtonOption.OneOption(
+        label = "확인",
+        onClick = onConfirm,
+        labelColor = SDGColor.Neutral700,
+    )
+} else {
+    SDGCenterPopupButtonOption.TwoOption(
+        cancelLabel = "취소",
+        confirmLabel = if (this == InputCenterPopupSample.RejectionReason) "반려" else "확인",
+        onClickCancel = onCancel,
+        onClickConfirm = onConfirm,
+        cancelLabelColor = SDGColor.Neutral700,
+        confirmLabelColor = SDGColor.Neutral700,
+        confirmEnabled = when (this) {
+            InputCenterPopupSample.ConfirmDisabled -> false
+            InputCenterPopupSample.RejectionReason -> inputContent.isNotEmpty()
+            else -> true
+        },
+        onDismiss = onDismiss,
     )
 }
 

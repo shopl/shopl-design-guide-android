@@ -4,11 +4,14 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.shopl.sdg.component.text_input.fixed.SDGFixedTextInputState
 import com.shopl.sdg.template.popup.center.SDGCenterPopupButtonOption
 import com.shopl.sdg.template.popup.center.input.SDGInputCenterPopupShowInputLabel
+import com.shopl.sdg_common.ext.withColor
 import com.shopl.sdg_common.foundation.SDGColor
 
 internal class SDGInputCenterPopupPreviewParameterProvider : PreviewParameterProvider<SDGInputCenterPopupPreviewParameter> {
     override val values = sequenceOf(
         버튼_두개(),
+        필수_사유_입력_전(),
+        필수_사유_입력_완료(),
         본문_없음(),
         입력_라벨_없음(),
         버튼_한개(),
@@ -39,6 +42,20 @@ internal class SDGInputCenterPopupPreviewParameterProvider : PreviewParameterPro
     )
 
     private fun 본문_없음() = 버튼_두개().copy(description = null)
+
+    private fun 필수_사유_입력_전() = 버튼_두개().copy(
+        title = "반려하시겠습니까?",
+        description = "한 번 반려하면 되돌릴 수 없으며, 즉시 결재가 중단됩니다.",
+        buttonOption = 버튼_옵션(confirmEnabled = false, confirmLabel = "반려"),
+        showInputLabel = SDGInputCenterPopupShowInputLabel.True("사유*".withColor(SDGColor.Red300, "*")),
+        hint = "입력",
+    )
+
+    private fun 필수_사유_입력_완료() = 필수_사유_입력_전().copy(
+        buttonOption = 버튼_옵션(confirmLabel = "반려"),
+        initialInput = "보고서 내용을 다시 확인해 주세요.",
+        state = SDGFixedTextInputState.Completed,
+    )
 
     private fun 입력_라벨_없음() = 본문_없음().copy(
         showInputLabel = SDGInputCenterPopupShowInputLabel.False,
