@@ -21,7 +21,8 @@ jobs:
   # Shopl QA와 같은 공식 Slack Action을 사용한다. #sdg-builder-build(ID: C0CAC49CLH3).
   # QA의 Lambda 대신 시작 메시지를 만들고, 응답 ts를 완료 작업에 전달한다.
   notify-start:
-    if: github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main'
+    if: >-
+      github.event_name == 'workflow_dispatch' && github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/roadmap/sangun/SH-24299-slack-message-format' && github.actor == 'san-gun' && github.triggering_actor == 'san-gun' && inputs.source_sha == 'dd414d90ab9d09890714cf1e9a93d2fb0b0c20e1' && inputs.source_base == 'dd414d90ab9d09890714cf1e9a93d2fb0b0c20e1' && inputs.source_branch == 'roadmap/sangun/SH-24299-slack-format-validation' && inputs.build_id == 'dac054ba-9287-4205-8b99-865f3125538b'
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     continue-on-error: true
@@ -56,7 +57,8 @@ jobs:
   build:
     needs: notify-start
     # 알림 오류가 APK 빌드를 막지 않도록 한다. main 전용 실행은 유지한다.
-    if: ${{ always() && !cancelled() && github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main' }}
+    if: >-
+      always() && !cancelled() && github.event_name == 'workflow_dispatch' && github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/roadmap/sangun/SH-24299-slack-message-format' && github.actor == 'san-gun' && github.triggering_actor == 'san-gun' && inputs.source_sha == 'dd414d90ab9d09890714cf1e9a93d2fb0b0c20e1' && inputs.source_base == 'dd414d90ab9d09890714cf1e9a93d2fb0b0c20e1' && inputs.source_branch == 'roadmap/sangun/SH-24299-slack-format-validation' && inputs.build_id == 'dac054ba-9287-4205-8b99-865f3125538b'
     outputs:
       apk_url: ${{ steps.share_apk.outputs.download_url }}
     runs-on: [self-hosted, macOS, ARM64, shopl-android-qa]
@@ -73,7 +75,7 @@ jobs:
       - name: Checkout trusted validation code
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          ref: main
+          ref: ${{ github.sha }} # restricted test workflow snapshot
           persist-credentials: false
 
       - name: Save trusted source validator
@@ -193,7 +195,8 @@ jobs:
   # 토큰은 앱 소스를 실행하지 않는 별도 hosted 알림 작업에서만 사용한다.
   notify-slack:
     needs: [notify-start, build]
-    if: ${{ always() && github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main' }}
+    if: >-
+      always() && github.event_name == 'workflow_dispatch' && github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/roadmap/sangun/SH-24299-slack-message-format' && github.actor == 'san-gun' && github.triggering_actor == 'san-gun' && inputs.source_sha == 'dd414d90ab9d09890714cf1e9a93d2fb0b0c20e1' && inputs.source_base == 'dd414d90ab9d09890714cf1e9a93d2fb0b0c20e1' && inputs.source_branch == 'roadmap/sangun/SH-24299-slack-format-validation' && inputs.build_id == 'dac054ba-9287-4205-8b99-865f3125538b'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     continue-on-error: true
