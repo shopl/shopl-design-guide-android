@@ -17,7 +17,7 @@ def git(*args):
 
 repository = os.environ['GITHUB_REPOSITORY']
 require(repository == 'shopl/shopl-design-guide-android', 'Unexpected SDG repository.')
-require(os.environ['GITHUB_REF'] == 'refs/heads/roadmap/sangun/SH-24299-slack-message-format' and os.environ.get('GITHUB_ACTOR') == 'san-gun' and os.environ.get('GITHUB_TRIGGERING_ACTOR') == 'san-gun' and os.environ.get('SOURCE_SHA') == 'dd414d90ab9d09890714cf1e9a93d2fb0b0c20e1' and os.environ.get('SOURCE_BASE') == 'dd414d90ab9d09890714cf1e9a93d2fb0b0c20e1' and os.environ.get('SOURCE_BRANCH') == 'roadmap/sangun/SH-24299-slack-format-validation' and os.environ.get('BUILD_ID') == 'dac054ba-9287-4205-8b99-865f3125538b', 'Restricted notification format test only.')
+require(os.environ['GITHUB_REF'] == 'refs/heads/main', 'Dispatch the trusted main workflow.')
 sha = os.environ['SOURCE_SHA']
 base = os.environ['SOURCE_BASE']
 branch = os.environ['SOURCE_BRANCH']
