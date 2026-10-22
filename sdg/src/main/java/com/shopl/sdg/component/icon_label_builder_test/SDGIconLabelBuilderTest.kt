@@ -27,6 +27,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  * @version 2.1.29
  *
  * @param labelOverflow Label이 길어지는 경우 노출 방식
+ * @param isFillMaxWidth 전체 가용 너비를 채울지 여부. 한쪽 아이콘만 사용하면 항상 채웁니다.
  * @param marginValues 컴포넌트 외부 여백
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=10507-19135&m=dev">Figma</a>
@@ -45,11 +46,13 @@ fun SDGIconLabelBuilderTest(
     rightIc: SDGIconLabelBuilderTestIcon? = null,
     isFillMaxWidth: Boolean = false,
 ) {
+    val fillAvailableWidth = isFillMaxWidth || ((leftIc != null) xor (rightIc != null))
+
     Row(
         modifier = Modifier
             .padding(marginValues)
             .then(
-                if (isFillMaxWidth) {
+                if (fillAvailableWidth) {
                     Modifier.fillMaxWidth()
                 } else {
                     Modifier
@@ -77,10 +80,9 @@ fun SDGIconLabelBuilderTest(
 
         SDGText(
             modifier = Modifier
-                .align(Alignment.CenterVertically)
                 .then(
-                    if (isFillMaxWidth) {
-                        Modifier.weight(1f)
+                    if (fillAvailableWidth) {
+                        Modifier.weight(1f, true)
                     } else {
                         Modifier
                     },
@@ -206,7 +208,7 @@ fun SDGIconLabelBuilderTest(
     )
 }
 
-private val SDGIconLabelBuilderTestIconSize = 14.dp
+private val SDGIconLabelBuilderTestIconSize = 16.dp
 
 @Preview(showBackground = true)
 @Composable

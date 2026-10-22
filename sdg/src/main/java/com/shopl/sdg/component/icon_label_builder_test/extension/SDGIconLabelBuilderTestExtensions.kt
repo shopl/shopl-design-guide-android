@@ -36,7 +36,7 @@ import com.shopl.sdg_common.ui.components.SDGText
  * @param leftIc 왼쪽 아이콘의 리소스와 색상 정보. null이면 표시하지 않습니다.
  * @param rightIc 오른쪽 아이콘의 리소스와 색상 정보. null이면 표시하지 않습니다.
  * @param labelOverflow 라벨의 최대 줄 수와 넘침 처리 방식
- * @param isFillMaxWidth 전체 가용 너비를 채우고 라벨에 남은 너비를 할당할지 여부
+ * @param isFillMaxWidth 전체 가용 너비를 채울지 여부. 한쪽 아이콘만 사용하면 항상 채웁니다.
  * @param onClick 컴포넌트 클릭 시 호출할 콜백. null이면 클릭 동작을 적용하지 않습니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=10507-19135&m=dev">Figma</a>
@@ -55,11 +55,13 @@ fun SDGIconLabelBuilderTest(
     isFillMaxWidth: Boolean = false,
     onClick: (() -> Unit)?,
 ) {
+    val fillAvailableWidth = isFillMaxWidth || ((leftIc != null) xor (rightIc != null))
+
     Row(
         modifier = Modifier
             .padding(marginValues)
             .then(
-                if (isFillMaxWidth) {
+                if (fillAvailableWidth) {
                     Modifier.fillMaxWidth()
                 } else {
                     Modifier
@@ -87,10 +89,9 @@ fun SDGIconLabelBuilderTest(
 
         SDGText(
             modifier = Modifier
-                .align(Alignment.CenterVertically)
                 .then(
-                    if (isFillMaxWidth) {
-                        Modifier.weight(1f)
+                    if (fillAvailableWidth) {
+                        Modifier.weight(1f, true)
                     } else {
                         Modifier
                     },
@@ -114,4 +115,4 @@ fun SDGIconLabelBuilderTest(
     }
 }
 
-private val SDGIconLabelBuilderTestIconSize = 14.dp
+private val SDGIconLabelBuilderTestIconSize = 16.dp
