@@ -18,8 +18,47 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  # Shopl QA와 같은 공식 Slack Action을 사용한다. #sdg-builder-build(ID: C0CAC49CLH3).
+  # QA의 Lambda 대신 시작 메시지를 만들고, 응답 ts를 완료 작업에 전달한다.
+  notify-start:
     if: github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    continue-on-error: true
+    permissions: {}
+    outputs:
+      thread_ts: ${{ steps.slack_start.outputs.ts }}
+    steps:
+      - name: Prepare build start message
+        shell: bash
+        env:
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          DESIGN_NAME: ${{ inputs.design_name }}
+        run: |
+          set -euo pipefail
+          jq -cn --arg branch "$SOURCE_BRANCH" --arg design "$DESIGN_NAME" \
+            --arg url "https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" '
+            {channel:"C0CAC49CLH3",text:"🤖 [Android] 빌드 시작",mrkdwn:false,parse:"none",
+             unfurl_links:false,unfurl_media:false,blocks:[
+              {type:"section",text:{type:"plain_text",text:("🤖 [Android] 빌드 시작\n디자인: "+$design[:200]+"\n브랜치: "+$branch[:300]+"\n러너 배정 후 빌드합니다. 완료 결과는 이 스레드에 안내합니다.")}},
+              {type:"actions",elements:[{type:"button",text:{type:"plain_text",text:"Actions 실행 보기"},url:$url}]}
+             ]}' > "$RUNNER_TEMP/sdg-start.json"
+      - name: Send build start to Slack
+        id: slack_start
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3, Shopl QA와 동일
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SDG_BUILDER_SLACK_TOKEN }}
+          errors: true
+          retries: 0
+          payload-file-path: ${{ runner.temp }}/sdg-start.json
+
+  build:
+    needs: notify-start
+    # 알림 오류가 APK 빌드를 막지 않도록 한다. main 전용 실행은 유지한다.
+    if: ${{ always() && !cancelled() && github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main' }}
+    outputs:
+      apk_url: ${{ steps.share_apk.outputs.download_url }}
     runs-on: [self-hosted, macOS, ARM64, shopl-android-qa]
     timeout-minutes: 30
     defaults:
@@ -113,33 +152,89 @@ jobs:
           if-no-files-found: error
           retention-days: 3
 
-  # Slack 비밀값은 소스 코드를 실행하지 않는 별도 알림 작업에서만 사용한다.
-  # #sdg-builder-build 채널(ID: C0CAC49CLH3)에 연결된 전용 Incoming Webhook을 사용한다.
+      # Shopl QA의 Bash 복사를 사용한다. SDG 폴더·실행별 파일명으로 QA와 충돌하지 않게 한다.
+      - name: Copy APK to SDG shared folder
+        id: share_apk
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_RUN_ID" =~ ^[0-9]+$ && "$GITHUB_RUN_ATTEMPT" =~ ^[0-9]+$ && "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]] || exit 1
+          if [ -d /Users/spiderman/qa-apk-share ] && [ ! -d /Users/gamora/qa-apk-share ]; then
+            sdg_share_dir=/Users/spiderman/qa-apk-share
+            sdg_share_url=http://192.168.31.112:8080
+          elif [ -d /Users/gamora/qa-apk-share ] && [ ! -d /Users/spiderman/qa-apk-share ]; then
+            sdg_share_dir=/Users/gamora/qa-apk-share
+            sdg_share_url=http://192.168.31.113:8080
+          else
+            echo 'Expected one existing Shopl QA share directory.' >&2
+            exit 1
+          fi
+          mkdir -p "$sdg_share_dir/sdg-builder"
+          [[ "$(cd "$sdg_share_dir/sdg-builder" && pwd -P)" == "$(cd "$sdg_share_dir" && pwd -P)/sdg-builder" ]] || exit 1
+          sdg_apk_name="sdg-builder-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT-${SOURCE_SHA:0:12}.apk"
+          sdg_download_url="$sdg_share_url/sdg-builder/$sdg_apk_name"
+          sdg_staged=$(mktemp "$sdg_share_dir/sdg-builder/.sdg-XXXXXX")
+          sdg_downloaded=$(mktemp "$RUNNER_TEMP/sdg-downloaded-XXXXXX")
+          trap 'rm -f -- "$sdg_staged" "$sdg_downloaded"' EXIT
+          cp preview-output/sdg-builder.apk "$sdg_staged"
+          chmod 644 "$sdg_staged"
+          # 복사 완료 후 공개하며 기존 파일은 덮어쓰지 않는다.
+          ln "$sdg_staged" "$sdg_share_dir/sdg-builder/$sdg_apk_name"
+          sdg_http_status=$(curl --silent --show-error --fail --noproxy '*' \
+            --connect-timeout 5 --max-time 30 --proto '=http' \
+            --output "$sdg_downloaded" --write-out '%{http_code}' "$sdg_download_url")
+          [[ "$sdg_http_status" == 200 ]] || exit 1
+          sdg_expected=$(shasum -a 256 preview-output/sdg-builder.apk | awk '{print $1}')
+          sdg_actual=$(shasum -a 256 "$sdg_downloaded" | awk '{print $1}')
+          [[ "$sdg_expected" == "$sdg_actual" ]] || exit 1
+          echo "download_url=$sdg_download_url" >> "$GITHUB_OUTPUT"
+          echo 'SDG APK download verified. SHOPL_DEV network required.' >> "$GITHUB_STEP_SUMMARY"
+
+  # 토큰은 앱 소스를 실행하지 않는 별도 hosted 알림 작업에서만 사용한다.
   notify-slack:
-    needs: build
+    needs: [notify-start, build]
     if: ${{ always() && github.repository == 'shopl/shopl-design-guide-android' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
-    # 알림 실패가 APK 빌드 성공을 실패로 바꾸지 않도록 한다.
     continue-on-error: true
     permissions: {}
-    env:
-      HAS_SLACK_WEBHOOK: ${{ secrets.SDG_BUILDER_SLACK_WEBHOOK != '' }}
     steps:
-      - name: Report missing Slack configuration
-        if: env.HAS_SLACK_WEBHOOK != 'true'
-        run: |
-          echo "::warning::Configure SDG_BUILDER_SLACK_WEBHOOK for channel C0CAC49CLH3."
-          echo "Slack notification is not configured for C0CAC49CLH3." >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Send build result to Slack
-        if: env.HAS_SLACK_WEBHOOK == 'true'
-        uses: rtCamp/action-slack-notify@33ca3be66c6f378fe1610fd1d5258632dbed5e58 # v2
+      - name: Prepare build result message
+        shell: bash
         env:
-          SLACK_WEBHOOK: ${{ secrets.SDG_BUILDER_SLACK_WEBHOOK }}
-          SLACK_COLOR: ${{ needs.build.result == 'success' && 'good' || 'danger' }}
-          SLACK_MESSAGE: |
-            *SDG Android 샘플 빌드*
-            결과: ${{ needs.build.result }}
-            <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|APK·빌드 로그 보기>
-          MSG_MINIMAL: "true"
+          BUILD_RESULT: ${{ needs.build.result }}
+          PARENT_TS: ${{ needs.notify-start.outputs.thread_ts }}
+          APK_URL: ${{ needs.build.outputs.apk_url }}
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          set -euo pipefail
+          [[ "$BUILD_RESULT" =~ ^(success|failure|cancelled|skipped)$ ]] || exit 1
+          [[ -z "$PARENT_TS" || "$PARENT_TS" =~ ^[0-9]+\.[0-9]+$ ]] || exit 1
+          if [[ "$BUILD_RESULT" == success && -n "$APK_URL" ]]; then
+            [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]] || exit 1
+            sdg_filename="sdg-builder-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT-${SOURCE_SHA:0:12}.apk"
+            [[ "$APK_URL" == "http://192.168.31.112:8080/sdg-builder/$sdg_filename" || "$APK_URL" == "http://192.168.31.113:8080/sdg-builder/$sdg_filename" ]] || exit 1
+          else
+            APK_URL=''
+          fi
+          jq -cn --arg result "$BUILD_RESULT" --arg thread "$PARENT_TS" --arg apk "$APK_URL" \
+            --arg url "https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" '
+            (if $result=="success" then
+               if $apk!="" then "🤖 [Android] 빌드 완료 ✅\nSHOPL_DEV에서 APK를 내려받아 설치하세요."
+               else "🤖 [Android] 빌드 완료 ⚠️\nAPK 공유는 미완료입니다. 공유 단계 로그를 확인하세요." end
+             elif $result=="failure" then "🤖 [Android] 빌드 실패 ❌"
+             elif $result=="cancelled" then "🤖 [Android] 빌드 취소 ⏹️" else "🤖 [Android] 빌드 미실행 ⏭️" end) as $text |
+            {channel:"C0CAC49CLH3",text:$text,mrkdwn:false,parse:"none",unfurl_links:false,unfurl_media:false,
+             blocks:[{type:"section",text:{type:"plain_text",text:$text}},
+               {type:"actions",elements:((if $apk!="" then [{type:"button",text:{type:"plain_text",text:"APK 다운로드"},url:$apk}] else [] end)
+                 +[{type:"button",text:{type:"plain_text",text:"Actions 실행 보기"},url:$url}])}]}
+             + (if $thread!="" then {thread_ts:$thread,reply_broadcast:false} else {} end)
+            ' > "$RUNNER_TEMP/sdg-result.json"
+      - name: Send build result to Slack
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SDG_BUILDER_SLACK_TOKEN }}
+          errors: true
+          retries: 0
+          payload-file-path: ${{ runner.temp }}/sdg-result.json
