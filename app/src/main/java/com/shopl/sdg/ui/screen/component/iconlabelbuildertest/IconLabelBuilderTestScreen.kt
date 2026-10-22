@@ -38,6 +38,12 @@ internal fun IconLabelBuilderTestScreen(label: String) {
         )
 
         for (size in SDGIconLabelBuilderTestSize.entries) {
+            SDGText(
+                text = size.name,
+                textColor = SDGColor.Neutral700,
+                typography = SDGTypography.Body1SB,
+            )
+
             SDGIconLabelBuilderTest(
                 label = label,
                 labelColor = SDGColor.Neutral700,
@@ -96,7 +102,7 @@ internal fun IconLabelBuilderTestScreen(label: String) {
                 leftIc = SDGIconLabelBuilderTestIcon(resId = R.drawable.ic_common_list),
                 rightIc = SDGIconLabelBuilderTestIcon(resId = R.drawable.ic_common_next_s),
                 labelOverflow = overflow,
-                isFillMaxWidth = true,
+                isFillMaxWidth = false,
                 onClick = null,
             )
         }

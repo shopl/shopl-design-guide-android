@@ -88,14 +88,8 @@ fun SDGIconLabelBuilderTest(
         }
 
         SDGText(
-            modifier = Modifier
-                .then(
-                    if (fillAvailableWidth) {
-                        Modifier.weight(1f, true)
-                    } else {
-                        Modifier
-                    },
-                ),
+            // 아이콘을 먼저 측정해 긴 라벨에서도 오른쪽 아이콘의 공간을 확보합니다.
+            modifier = Modifier.weight(1f, fill = fillAvailableWidth),
             text = label,
             textColor = labelColor,
             typography = fontWeight.typography(size),
