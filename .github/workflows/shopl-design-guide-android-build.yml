@@ -38,9 +38,9 @@ jobs:
           set -euo pipefail
           jq -cn --arg branch "$SOURCE_BRANCH" --arg design "$DESIGN_NAME" \
             --arg url "https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" '
-            {channel:"C0CAC49CLH3",text:"SDG Android 빌드 시작",mrkdwn:false,parse:"none",
+            {channel:"C0CAC49CLH3",text:"🤖 [Android] 빌드 시작",mrkdwn:false,parse:"none",
              unfurl_links:false,unfurl_media:false,blocks:[
-              {type:"section",text:{type:"plain_text",text:("SDG Android 빌드 시작\n디자인: "+$design[:200]+"\n브랜치: "+$branch[:300]+"\n러너 배정 후 빌드합니다. 완료 결과는 이 스레드에 안내합니다.")}},
+              {type:"section",text:{type:"plain_text",text:("🤖 [Android] 빌드 시작\n디자인: "+$design[:200]+"\n브랜치: "+$branch[:300]+"\n러너 배정 후 빌드합니다. 완료 결과는 이 스레드에 안내합니다.")}},
               {type:"actions",elements:[{type:"button",text:{type:"plain_text",text:"Actions 실행 보기"},url:$url}]}
              ]}' > "$RUNNER_TEMP/sdg-start.json"
       - name: Send build start to Slack
@@ -220,10 +220,10 @@ jobs:
           jq -cn --arg result "$BUILD_RESULT" --arg thread "$PARENT_TS" --arg apk "$APK_URL" \
             --arg url "https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" '
             (if $result=="success" then
-               if $apk!="" then "SDG Android 빌드 완료 · SHOPL_DEV에서 APK를 내려받아 설치하세요."
-               else "SDG Android 빌드 완료 · APK 공유는 미완료입니다. 공유 단계 로그를 확인하세요." end
-             elif $result=="failure" then "SDG Android 빌드 실패"
-             elif $result=="cancelled" then "SDG Android 빌드 취소" else "SDG Android 빌드 미실행" end) as $text |
+               if $apk!="" then "🤖 [Android] 빌드 완료 ✅\nSHOPL_DEV에서 APK를 내려받아 설치하세요."
+               else "🤖 [Android] 빌드 완료 ⚠️\nAPK 공유는 미완료입니다. 공유 단계 로그를 확인하세요." end
+             elif $result=="failure" then "🤖 [Android] 빌드 실패 ❌"
+             elif $result=="cancelled" then "🤖 [Android] 빌드 취소 ⏹️" else "🤖 [Android] 빌드 미실행 ⏭️" end) as $text |
             {channel:"C0CAC49CLH3",text:$text,mrkdwn:false,parse:"none",unfurl_links:false,unfurl_media:false,
              blocks:[{type:"section",text:{type:"plain_text",text:$text}},
                {type:"actions",elements:((if $apk!="" then [{type:"button",text:{type:"plain_text",text:"APK 다운로드"},url:$apk}] else [] end)
