@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +42,8 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * @param iconDownSize [SDGBoxButtonSize] 별 icon size down 여부(기존 사이즈에서 2dp만 down)
  * @param debounceTimeMills 중복 클릭 방지 시간
+ * @param maxWidth 외부 여백을 제외한 버튼의 최대 너비. 지정하면 아이콘 공간을 확보하고 남은 너비에서 라벨을 말줄임한다.
+ * null이면 기존 너비 동작을 유지하며, 부모의 최소 너비 제약은 우선한다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=7102-15102&m=dev">Figma</a>
  */
@@ -61,17 +64,19 @@ fun SDGBoxButton(
     rightIconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
     debounceTimeMills: Long = 500,
+    maxWidth: Dp? = null,
 ) {
     Box(
-        modifier = if (isFillMaxWidth) {
-            Modifier
-                .padding(marginValues)
-                .fillMaxWidth()
-        } else {
-            Modifier
-                .padding(marginValues)
-                .width(IntrinsicSize.Max)
-        }
+        modifier = Modifier
+            .padding(marginValues)
+            .then(if (maxWidth != null) Modifier.widthIn(max = maxWidth) else Modifier)
+            .then(
+                if (isFillMaxWidth) {
+                    Modifier.fillMaxWidth()
+                } else {
+                    Modifier.width(IntrinsicSize.Max)
+                }
+            )
     ) {
         Row(
             modifier = Modifier
@@ -189,7 +194,8 @@ private fun PreviewSDGBoxButton(
             leftIconTint = leftIconTint,
             rightIcon = rightIcon,
             rightIconTint = rightIconTint,
-            marginValues = marginValues
+            marginValues = marginValues,
+            maxWidth = maxWidth,
         )
     }
 }
