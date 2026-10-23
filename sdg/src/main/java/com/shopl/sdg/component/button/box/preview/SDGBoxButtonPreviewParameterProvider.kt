@@ -1,8 +1,6 @@
 package com.shopl.sdg.component.button.box.preview
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.box.SDGBoxButtonSize
@@ -23,6 +21,14 @@ internal class SDGBoxButtonPreviewParameterProvider :
         비활성_Medium_Solid(),
         흰색_비활성_Medium_Solid(),
         긴_활성_XSmall_Line(),
+        최대너비_짧은_라벨(),
+        최대너비_한글_오른쪽_아이콘(),
+        최대너비_영문_넓은_글자(),
+        최대너비_영문_좁은_글자(),
+        최대너비_아랍어_양쪽_아이콘(),
+        최대너비_일본어_왼쪽_아이콘(),
+        최대너비_아이콘_없음(),
+        최대너비_전체너비_양쪽_아이콘(),
     )
 
     private fun 활성_Medium_Solid() = SDGBoxButtonPreviewParameter(
@@ -91,20 +97,86 @@ internal class SDGBoxButtonPreviewParameterProvider :
         iconDownSize = true,
         isFillMaxWidth = false,
     )
-}
 
-internal data class SDGBoxButtonPreviewParameter(
-    val size: SDGBoxButtonSize,
-    val type: SDGBoxButtonType,
-    val label: String,
-    val labelColor: Color,
-    val backgroundColor: Color,
-    val iconDownSize: Boolean = false,
-    val enable: Boolean = true,
-    val isFillMaxWidth: Boolean = false,
-    @DrawableRes val leftIcon: Int? = null,
-    val leftIconTint: Color? = null,
-    @DrawableRes val rightIcon: Int? = null,
-    val rightIconTint: Color? = null,
-    val marginValues: PaddingValues = PaddingValues(0.dp),
-)
+    private fun 최대너비_짧은_라벨() = SDGBoxButtonPreviewParameter(
+        label = "A",
+        labelColor = SDGColor.Neutral700,
+        backgroundColor = SDGColor.Neutral100,
+        size = SDGBoxButtonSize.XSmall,
+        type = SDGBoxButtonType.Solid,
+        maxWidth = 120.dp,
+        rightIcon = R.drawable.ic_common_help2,
+    )
+
+    private fun 최대너비_한글_오른쪽_아이콘() = SDGBoxButtonPreviewParameter(
+        label = "가나다라마바사아자차카타파하",
+        labelColor = SDGColor.Neutral700,
+        backgroundColor = SDGColor.Neutral100,
+        size = SDGBoxButtonSize.XSmall,
+        type = SDGBoxButtonType.Solid,
+        maxWidth = 120.dp,
+        rightIcon = R.drawable.ic_common_help2,
+    )
+
+    private fun 최대너비_영문_넓은_글자() = SDGBoxButtonPreviewParameter(
+        label = "WWWWWWWWWWWWWW",
+        labelColor = SDGColor.Neutral700,
+        backgroundColor = SDGColor.Neutral100,
+        size = SDGBoxButtonSize.XSmall,
+        type = SDGBoxButtonType.Solid,
+        maxWidth = 120.dp,
+        rightIcon = R.drawable.ic_common_help2,
+    )
+
+    private fun 최대너비_영문_좁은_글자() = SDGBoxButtonPreviewParameter(
+        label = "iiiiiiiiiiiiiiiiiiiiiiiiiiii",
+        labelColor = SDGColor.Neutral700,
+        backgroundColor = SDGColor.Neutral100,
+        size = SDGBoxButtonSize.XSmall,
+        type = SDGBoxButtonType.Solid,
+        maxWidth = 120.dp,
+        rightIcon = R.drawable.ic_common_help2,
+    )
+
+    private fun 최대너비_아랍어_양쪽_아이콘() = SDGBoxButtonPreviewParameter(
+        label = "المستوى الممتاز للمبيعات",
+        labelColor = SDGColor.Neutral700,
+        backgroundColor = SDGColor.Neutral100,
+        size = SDGBoxButtonSize.XSmall,
+        type = SDGBoxButtonType.Solid,
+        maxWidth = 120.dp,
+        leftIcon = R.drawable.ic_common_prev_s,
+        rightIcon = R.drawable.ic_common_help2,
+    )
+
+    private fun 최대너비_일본어_왼쪽_아이콘() = SDGBoxButtonPreviewParameter(
+        label = "販売目標達成の最高等級",
+        labelColor = SDGColor.Neutral700,
+        backgroundColor = SDGColor.Neutral100,
+        size = SDGBoxButtonSize.XSmall,
+        type = SDGBoxButtonType.Solid,
+        maxWidth = 120.dp,
+        leftIcon = R.drawable.ic_common_prev_s,
+    )
+
+    private fun 최대너비_아이콘_없음() = SDGBoxButtonPreviewParameter(
+        label = "International sales grade",
+        labelColor = SDGColor.Neutral700,
+        backgroundColor = SDGColor.Neutral100,
+        size = SDGBoxButtonSize.XSmall,
+        type = SDGBoxButtonType.Solid,
+        maxWidth = 120.dp,
+    )
+
+    private fun 최대너비_전체너비_양쪽_아이콘() = SDGBoxButtonPreviewParameter(
+        label = "International sales grade",
+        labelColor = SDGColor.Neutral700,
+        backgroundColor = SDGColor.Neutral100,
+        size = SDGBoxButtonSize.XSmall,
+        type = SDGBoxButtonType.Solid,
+        maxWidth = 120.dp,
+        leftIcon = R.drawable.ic_common_prev_s,
+        rightIcon = R.drawable.ic_common_help2,
+        isFillMaxWidth = true,
+    )
+}
