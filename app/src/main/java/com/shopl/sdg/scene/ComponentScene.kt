@@ -7,6 +7,7 @@ import com.shopl.sdg.ui.screen.component.AvatarScreen
 import com.shopl.sdg.ui.screen.component.BoxBadgeScreen
 import com.shopl.sdg.ui.screen.component.BoxTabScreen
 import com.shopl.sdg.ui.screen.component.DropdownScreen
+import com.shopl.sdg.ui.screen.component.EmptyIconScreen
 import com.shopl.sdg.ui.screen.component.FixedTabScreen
 import com.shopl.sdg.ui.screen.component.IconLabelScreen
 import com.shopl.sdg.ui.screen.component.IconTabScreen
@@ -230,12 +231,15 @@ internal sealed class ComponentScene(
         override val implemented: Boolean,
     ) : ComponentScene(displayLabel, implemented) {
         data object BasicEmptyIcon : EmptyIcon(
-            displayLabel = "Basic Empty Icon",
-            implemented = false
+            displayLabel = "Empty Icon",
+            implemented = true
         ) {
             @Composable
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
-                throw IllegalStateException("Not implemented")
+                EmptyIconScreen(
+                    onClickBack = backToScene,
+                    onClickMenu = { moveToScene(Menu) },
+                )
             }
         }
 
