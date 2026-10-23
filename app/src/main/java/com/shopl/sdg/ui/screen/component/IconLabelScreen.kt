@@ -16,6 +16,7 @@ import com.shopl.sdg.component.icon_label.SDGIconLabelSize
 import com.shopl.sdg.scene.ComponentScene
 import com.shopl.sdg.ui.base.SDGSampleBaseGuideLinesContent
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
+import com.shopl.sdg.ui.screen.component.iconlabelbuildertest.IconLabelBuilderTestScreen
 import com.shopl.sdg.ui.theme.ShoplDesignGuideTheme
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
@@ -39,6 +40,7 @@ internal fun IconLabelScreen(
         description = "아이콘과 텍스트를 조합하여 정보를 보조적으로 제공하는 컴포넌트",
         bodyContent = {
             IconLabelScreenContent()
+            IconLabelBuilderTestScreen(label = "Label")
         },
         usageGuideLinesContent = {
             SDGSampleBaseGuideLinesContent(
