@@ -51,7 +51,7 @@ private val ACTION_ICON_SIZE = 20.dp
 fun SDGTextNavi(
     label: SDGTextNaviLabel,
     backButton: SDGTextNaviBackButton,
-    actionIcon: SDGTextNaviActionItem.Icon?,
+    showActionIc: SDGTextNaviShowActionIc,
     actionLabel: SDGTextNaviActionItem.Label,
     backgroundColor: Color,
     marginValues: PaddingValues = PaddingValues(),
@@ -94,13 +94,13 @@ fun SDGTextNavi(
 
         Spacer(Modifier.width(Spacing8))
 
-        SDGTextNaviAction(actionIcon = actionIcon, actionLabel = actionLabel)
+        SDGTextNaviAction(showActionIc = showActionIc, actionLabel = actionLabel)
     }
 }
 
 @Composable
 private fun SDGTextNaviAction(
-    actionIcon: SDGTextNaviActionItem.Icon?,
+    showActionIc: SDGTextNaviShowActionIc,
     actionLabel: SDGTextNaviActionItem.Label,
 ) {
     Row(
@@ -109,10 +109,10 @@ private fun SDGTextNaviAction(
             .padding(end = Spacing6),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (actionIcon != null) {
+        if (showActionIc is SDGTextNaviShowActionIc.True) {
             SDGImage(
-                resId = actionIcon.iconResId,
-                color = actionIcon.iconColor,
+                resId = showActionIc.iconResId,
+                color = showActionIc.iconColor,
                 modifier = Modifier.size(ACTION_ICON_SIZE),
             )
         }
@@ -137,7 +137,7 @@ private fun PreviewSDGTextNavi(
         SDGTextNavi(
             label = label,
             backButton = backButton,
-            actionIcon = actionIcon,
+            showActionIc = showActionIc,
             actionLabel = actionLabel,
             backgroundColor = backgroundColor,
         )

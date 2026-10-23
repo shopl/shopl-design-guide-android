@@ -4,6 +4,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.shopl.sdg.component.navigation.text.SDGTextNaviActionItem
 import com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton
 import com.shopl.sdg.component.navigation.text.SDGTextNaviLabel
+import com.shopl.sdg.component.navigation.text.SDGTextNaviShowActionIc
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_resource.R
 
@@ -27,7 +28,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
                 onClick = {},
                 iconColor = SDGColor.Neutral700,
             ),
-            actionIcon = SDGTextNaviActionItem.Icon(
+            showActionIc = SDGTextNaviShowActionIc.True(
                 iconResId = R.drawable.ic_common_plus,
                 iconColor = null,
             ),
@@ -45,7 +46,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
     }
 
     private fun 액션_아이콘_숨김(): SDGTextNaviPreviewParameter {
-        return 기본_상태().copy(actionIcon = null)
+        return 기본_상태().copy(showActionIc = SDGTextNaviShowActionIc.False)
     }
 
     private fun 긴_제목(): SDGTextNaviPreviewParameter {
@@ -74,7 +75,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
                 onClick = {},
                 iconColor = SDGColor.Neutral0,
             ),
-            actionIcon = SDGTextNaviActionItem.Icon(
+            showActionIc = SDGTextNaviShowActionIc.True(
                 iconResId = R.drawable.ic_common_plus,
                 iconColor = SDGColor.Neutral0,
             ),

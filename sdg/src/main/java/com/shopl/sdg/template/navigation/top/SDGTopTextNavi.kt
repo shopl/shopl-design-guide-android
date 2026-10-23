@@ -7,6 +7,7 @@ import com.shopl.sdg.component.navigation.text.SDGTextNavi
 import com.shopl.sdg.component.navigation.text.SDGTextNaviActionItem
 import com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton
 import com.shopl.sdg.component.navigation.text.SDGTextNaviLabel
+import com.shopl.sdg.component.navigation.text.SDGTextNaviShowActionIc
 import com.shopl.sdg.template.navigation.SDGTopNaviMenu
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_resource.R
@@ -39,14 +40,14 @@ fun SDGTopTextNavi(
         } else {
             SDGTextNaviBackButton.False
         },
-        actionIcon = menu?.let { item ->
+        showActionIc = menu?.let { item ->
             item.iconResId?.let { iconResId ->
-                SDGTextNaviActionItem.Icon(
+                SDGTextNaviShowActionIc.True(
                     iconResId = iconResId,
                     iconColor = item.iconTint,
                 )
             }
-        },
+        } ?: SDGTextNaviShowActionIc.False,
         actionLabel = SDGTextNaviActionItem.Label(
             text = menu?.textMenuTitle.orEmpty(),
             textColor = SDGColor.Neutral700,
