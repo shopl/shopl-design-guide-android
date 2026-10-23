@@ -15,7 +15,7 @@ import com.shopl.sdg.component.navigation.text.SDGTextNavi
 import com.shopl.sdg.component.navigation.text.SDGTextNaviActionItem
 import com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton
 import com.shopl.sdg.component.navigation.text.SDGTextNaviLabel
-import com.shopl.sdg.component.navigation.text.SDGTextNaviShowActionIc
+import com.shopl.sdg.component.navigation.text.ShowActionIcon
 import com.shopl.sdg.scene.TemplateScene
 import com.shopl.sdg.ui.base.SDGSampleBaseGuideLinesContent
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
@@ -73,7 +73,7 @@ private fun TextNaviContent(
 ) {
     val label = SDGTextNaviLabel.True(text = "화면 타이틀", textColor = SDGColor.Neutral900)
     val backButton = SDGTextNaviBackButton.True(onClick = onClickBack, iconColor = SDGColor.Neutral700)
-    val showActionIc = SDGTextNaviShowActionIc.True(
+    val showActionIcon = ShowActionIcon.True(
         iconResId = R.drawable.ic_common_plus,
         iconColor = null,
     )
@@ -94,63 +94,63 @@ private fun TextNaviContent(
         SDGTextNavi(
             label = label,
             backButton = backButton,
-            showActionIc = showActionIc,
+            showActionIcon = showActionIcon,
             actionLabel = actionLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "뒤로가기 아이콘이 없는 경우"),
             backButton = SDGTextNaviBackButton.False,
-            showActionIc = showActionIc,
+            showActionIcon = showActionIcon,
             actionLabel = actionLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = SDGTextNaviLabel.False,
             backButton = backButton,
-            showActionIc = showActionIc,
+            showActionIcon = showActionIcon,
             actionLabel = actionLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "아이콘 없이 라벨만 있는 Action"),
             backButton = backButton,
-            showActionIc = SDGTextNaviShowActionIc.False,
+            showActionIcon = ShowActionIcon.False,
             actionLabel = actionLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요"),
             backButton = backButton,
-            showActionIc = showActionIc,
+            showActionIcon = showActionIcon,
             actionLabel = actionLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label,
             backButton = backButton,
-            showActionIc = showActionIc,
+            showActionIcon = showActionIcon,
             actionLabel = actionLabel.copy(text = "변경사항 저장하기"),
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "파란 배경", textColor = SDGColor.Neutral0),
             backButton = backButton.copy(iconColor = SDGColor.Neutral0),
-            showActionIc = showActionIc.copy(iconColor = SDGColor.Neutral0),
+            showActionIcon = showActionIcon.copy(iconColor = SDGColor.Neutral0),
             actionLabel = actionLabel.copy(textColor = SDGColor.Neutral0),
             backgroundColor = SDGColor.Primary300,
         )
         SDGTextNavi(
             label = label.copy(text = "분홍 배경"),
             backButton = backButton,
-            showActionIc = showActionIc,
+            showActionIcon = showActionIcon,
             actionLabel = actionLabel,
             backgroundColor = SDGColor.Red300_a10,
         )
         SDGTextNavi(
             label = label.copy(text = "투명 배경"),
             backButton = backButton,
-            showActionIc = showActionIc,
+            showActionIcon = showActionIcon,
             actionLabel = actionLabel,
             backgroundColor = SDGColor.Transparent,
         )
