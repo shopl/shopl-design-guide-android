@@ -31,10 +31,6 @@ private val SDGEmptyIconSize = 76.dp
  *
  * @version 2.3.35
  *
- * @param iconResId 아이콘 리소스 ID. 76×76dp 영역에 Neutral300 색상으로 표시합니다.
- * @param label 중앙 정렬하며 길어지면 자동 줄바꿈으로 전체를 표시하는 라벨
- * @param marginValues 외부 여백. 화면에서는 상단 60dp, 좌우 28dp로 지정합니다.
- *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=8638-35877&m=dev">Figma</a>
  */
 @Composable
