@@ -46,24 +46,34 @@ internal fun IconLabelBuilderTestScreen(label: String) {
                 typography = SDGTypography.Body1SB,
             )
 
-            SDGIconLabelBuilderTest(
-                label = label,
-                labelColor = SDGColor.Neutral700,
-                size = size,
-                fontWeight = SDGIconLabelBuilderTestFontWeight.Normal,
-                gap = SDGIconLabelBuilderTestGap.Spacing4,
-                leftIc = SDGIconLabelBuilderTestIcon(
-                    resId = R.drawable.ic_common_help,
-                    tint = SDGColor.Primary400,
-                ),
-                rightIc = SDGIconLabelBuilderTestIcon(
-                    resId = R.drawable.ic_common_next_s,
-                    tint = SDGColor.Neutral700,
-                ),
-                isFillMaxWidth = true,
-                labelOverflow = SDGIconLabelBuilderTestOverflow.SingleLineEllipsis,
-                onClick = null,
-            )
+            for (fontWeight in SDGIconLabelBuilderTestFontWeight.entries) {
+                for (gap in SDGIconLabelBuilderTestGap.entries) {
+                    SDGText(
+                        text = "${fontWeight.name} / ${gap.name}",
+                        textColor = SDGColor.Neutral700,
+                        typography = SDGTypography.Body3R,
+                    )
+
+                    SDGIconLabelBuilderTest(
+                        label = label,
+                        labelColor = SDGColor.Neutral700,
+                        size = size,
+                        fontWeight = fontWeight,
+                        gap = gap,
+                        leftIc = SDGIconLabelBuilderTestIcon(
+                            resId = R.drawable.ic_common_help,
+                            tint = SDGColor.Primary400,
+                        ),
+                        rightIc = SDGIconLabelBuilderTestIcon(
+                            resId = R.drawable.ic_common_next_s,
+                            tint = SDGColor.Neutral700,
+                        ),
+                        isFillMaxWidth = true,
+                        labelOverflow = SDGIconLabelBuilderTestOverflow.SingleLineEllipsis,
+                        onClick = null,
+                    )
+                }
+            }
 
             SDGIconLabelBuilderTest(
                 label = label,
