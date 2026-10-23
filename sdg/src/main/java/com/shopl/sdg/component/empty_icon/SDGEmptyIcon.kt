@@ -11,7 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.empty_icon.preview.SDGEmptyIconPreviewParameter
+import com.shopl.sdg.component.empty_icon.preview.SDGEmptyIconPreviewParameterProvider
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
@@ -56,6 +60,21 @@ fun SDGEmptyIcon(
             textColor = SDGColor.Neutral300,
             typography = SDGTypography.Body1R,
             textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 375)
+@Composable
+private fun PreviewSDGEmptyIcon(
+    @PreviewParameter(SDGEmptyIconPreviewParameterProvider::class)
+    parameter: SDGEmptyIconPreviewParameter,
+) {
+    with(parameter) {
+        SDGEmptyIcon(
+            iconResId = iconResId,
+            label = label,
+            marginValues = marginValues,
         )
     }
 }
