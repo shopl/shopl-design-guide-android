@@ -1,21 +1,20 @@
 package com.shopl.sdg.component.navigation.text.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.shopl.sdg.component.navigation.text.SDGTextNaviActionItem
 import com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton
 import com.shopl.sdg.component.navigation.text.SDGTextNaviLabel
-import com.shopl.sdg.component.navigation.text.SDGTextNaviSubItem
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_resource.R
 
 internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SDGTextNaviPreviewParameter> {
     override val values: Sequence<SDGTextNaviPreviewParameter> = sequenceOf(
         기본_상태(),
-        보조_아이콘_뱃지_노출(),
         뒤로가기_숨김(),
         제목_숨김(),
-        보조_아이콘_숨김(),
+        액션_아이콘_숨김(),
         긴_제목(),
-        긴_보조_텍스트(),
+        긴_액션_라벨(),
         파란_배경(),
         분홍_배경(),
     )
@@ -25,26 +24,14 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
             label = SDGTextNaviLabel.True(text = "Label", textColor = SDGColor.Neutral900),
             backButton = SDGTextNaviBackButton.True(
                 onClick = {},
+                iconColor = SDGColor.Neutral700,
             ),
-            subIcon = SDGTextNaviSubItem.Icon(
-                iconResId = R.drawable.ic_navi_search,
-                onClick = {},
+            actionIcon = SDGTextNaviActionItem.Icon(
+                iconResId = R.drawable.ic_common_plus,
                 iconColor = null,
-                showDot = false,
             ),
-            subLabel = SDGTextNaviSubItem.Label(text = "Label", onClick = {}),
+            actionLabel = SDGTextNaviActionItem.Label(text = "Label", textColor = SDGColor.Neutral700, onClick = {}),
             backgroundColor = SDGColor.Neutral100,
-        )
-    }
-
-    private fun 보조_아이콘_뱃지_노출(): SDGTextNaviPreviewParameter {
-        return 기본_상태().copy(
-            subIcon = SDGTextNaviSubItem.Icon(
-                iconResId = R.drawable.ic_navi_filter,
-                onClick = {},
-                iconColor = null,
-                showDot = true,
-            ),
         )
     }
 
@@ -56,8 +43,8 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
         return 기본_상태().copy(label = SDGTextNaviLabel.False)
     }
 
-    private fun 보조_아이콘_숨김(): SDGTextNaviPreviewParameter {
-        return 기본_상태().copy(subIcon = null)
+    private fun 액션_아이콘_숨김(): SDGTextNaviPreviewParameter {
+        return 기본_상태().copy(actionIcon = null)
     }
 
     private fun 긴_제목(): SDGTextNaviPreviewParameter {
@@ -69,9 +56,13 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
         )
     }
 
-    private fun 긴_보조_텍스트(): SDGTextNaviPreviewParameter {
+    private fun 긴_액션_라벨(): SDGTextNaviPreviewParameter {
         return 기본_상태().copy(
-            subLabel = SDGTextNaviSubItem.Label(text = "변경사항 저장하기", onClick = {}),
+            actionLabel = SDGTextNaviActionItem.Label(
+                text = "변경사항 저장하기",
+                textColor = SDGColor.Neutral700,
+                onClick = {},
+            ),
         )
     }
 
@@ -80,12 +71,16 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
             label = SDGTextNaviLabel.True(text = "Label", textColor = SDGColor.Neutral0),
             backButton = SDGTextNaviBackButton.True(
                 onClick = {},
-            ),
-            subIcon = SDGTextNaviSubItem.Icon(
-                iconResId = R.drawable.ic_navi_search,
                 iconColor = SDGColor.Neutral0,
+            ),
+            actionIcon = SDGTextNaviActionItem.Icon(
+                iconResId = R.drawable.ic_common_plus,
+                iconColor = SDGColor.Neutral0,
+            ),
+            actionLabel = SDGTextNaviActionItem.Label(
+                text = "Label",
+                textColor = SDGColor.Neutral0,
                 onClick = {},
-                showDot = false,
             ),
             backgroundColor = SDGColor.Primary300,
         )

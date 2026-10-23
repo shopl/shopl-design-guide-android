@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.shopl.sdg.component.navigation.text.SDGTextNavi
 import com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton
 import com.shopl.sdg.component.navigation.text.SDGTextNaviLabel
-import com.shopl.sdg.component.navigation.text.SDGTextNaviSubItem
+import com.shopl.sdg.component.navigation.text.SDGTextNaviActionItem
 import com.shopl.sdg.scene.TemplateScene
 import com.shopl.sdg.ui.base.SDGSampleBaseGuideLinesContent
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
@@ -29,7 +29,7 @@ import kotlinx.collections.immutable.persistentListOf
 /**
  * SDG Sample App - Navigation - Text Navi
  *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19821-30436&m=dev">Figma</a>
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=30016-9273&m=dev">Figma</a>
  */
 @Composable
 internal fun TextNaviScreen(
@@ -40,7 +40,7 @@ internal fun TextNaviScreen(
 
     SDGSampleBaseScaffold(
         name = TemplateScene.Navigation.TextNavi.displayLabel,
-        description = "화면의 상단에 위치하여 현재 위치를 알려주는 타이틀과 우측에 1개 기능을 텍스트로 조합한 컴포넌트",
+        description = "화면 상단에서 현재 위치를 나타내는 타이틀과 화면 이동, 우측 주요 실행 기능을 제공하는 내비게이션 컴포넌트",
         onClickBack = onClickBack,
         onClickMenu = onClickMenu,
         bodyContent = {
@@ -54,7 +54,7 @@ internal fun TextNaviScreen(
             SDGSampleBaseGuideLinesContent(
                 guideLineDescriptions = persistentListOf(
                     "Status Bar 영역을 제외한 모바일 화면의 최상단에 배치합니다.",
-                    "모든 구성 요소는 수평으로 중앙 정렬합니다.",
+                    "모든 구성 요소는 세로 중앙 정렬합니다.",
                 ),
             )
         },
@@ -68,14 +68,12 @@ private fun TextNaviContent(
     onClickAction: () -> Unit,
 ) {
     val label = SDGTextNaviLabel.True(text = "화면 타이틀", textColor = SDGColor.Neutral900)
-    val backButton = SDGTextNaviBackButton.True(onClick = onClickBack)
-    val subIcon = SDGTextNaviSubItem.Icon(
+    val backButton = SDGTextNaviBackButton.True(onClick = onClickBack, iconColor = SDGColor.Neutral700)
+    val actionIcon = SDGTextNaviActionItem.Icon(
         iconResId = R.drawable.ic_common_plus,
-        onClick = onClickAction,
         iconColor = null,
-        showDot = false,
     )
-    val subLabel = SDGTextNaviSubItem.Label(text = "추가", onClick = onClickAction)
+    val actionLabel = SDGTextNaviActionItem.Label(text = "저장", textColor = SDGColor.Neutral700, onClick = onClickAction)
 
     Column(
         modifier = Modifier
@@ -84,7 +82,7 @@ private fun TextNaviContent(
         verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing20),
     ) {
         SDGText(
-            text = "보조 항목 클릭: $actionClickCount",
+            text = "Action 클릭: $actionClickCount",
             typography = SDGTypography.Body2R,
             textColor = SDGColor.Neutral700,
             modifier = Modifier.padding(horizontal = SDGSpacing.Spacing16),
@@ -92,64 +90,57 @@ private fun TextNaviContent(
         SDGTextNavi(
             label = label,
             backButton = backButton,
-            subIcon = subIcon,
-            subLabel = subLabel,
-            backgroundColor = SDGColor.Neutral100,
-        )
-        SDGTextNavi(
-            label = label.copy(text = "Dot 뱃지가 있는 보조 아이콘"),
-            backButton = backButton,
-            subIcon = subIcon.copy(iconResId = R.drawable.ic_navi_filter, showDot = true),
-            subLabel = subLabel,
+            actionIcon = actionIcon,
+            actionLabel = actionLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "뒤로가기 아이콘이 없는 경우"),
             backButton = SDGTextNaviBackButton.False,
-            subIcon = subIcon,
-            subLabel = subLabel,
+            actionIcon = actionIcon,
+            actionLabel = actionLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = SDGTextNaviLabel.False,
             backButton = backButton,
-            subIcon = subIcon,
-            subLabel = subLabel,
+            actionIcon = actionIcon,
+            actionLabel = actionLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
-            label = label.copy(text = "텍스트만 있는 보조 항목"),
+            label = label.copy(text = "아이콘 없이 라벨만 있는 Action"),
             backButton = backButton,
-            subIcon = null,
-            subLabel = subLabel,
+            actionIcon = null,
+            actionLabel = actionLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "긴 화면 타이틀이 들어가는 경우 말줄임표시 확인 필요"),
             backButton = backButton,
-            subIcon = subIcon,
-            subLabel = subLabel,
+            actionIcon = actionIcon,
+            actionLabel = actionLabel,
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label,
             backButton = backButton,
-            subIcon = subIcon,
-            subLabel = subLabel.copy(text = "변경사항 저장하기"),
+            actionIcon = actionIcon,
+            actionLabel = actionLabel.copy(text = "변경사항 저장하기"),
             backgroundColor = SDGColor.Neutral100,
         )
         SDGTextNavi(
             label = label.copy(text = "파란 배경", textColor = SDGColor.Neutral0),
-            backButton = backButton,
-            subIcon = subIcon.copy(iconColor = SDGColor.Neutral0),
-            subLabel = subLabel,
+            backButton = backButton.copy(iconColor = SDGColor.Neutral0),
+            actionIcon = actionIcon.copy(iconColor = SDGColor.Neutral0),
+            actionLabel = actionLabel.copy(textColor = SDGColor.Neutral0),
             backgroundColor = SDGColor.Primary300,
         )
         SDGTextNavi(
             label = label.copy(text = "분홍 배경"),
             backButton = backButton,
-            subIcon = subIcon,
-            subLabel = subLabel,
+            actionIcon = actionIcon,
+            actionLabel = actionLabel,
             backgroundColor = SDGColor.Red50,
         )
     }

@@ -1,13 +1,12 @@
 package com.shopl.sdg.component.navigation.text
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.navigation.text.preview.SDGTextNaviPreviewParameter
 import com.shopl.sdg.component.navigation.text.preview.SDGTextNaviPreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
-import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing10
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing2
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing4
@@ -36,26 +34,25 @@ import com.shopl.sdg_resource.R
 private const val LABEL_MAX_LINES = 1
 private const val PREVIEW_WIDTH_DP = 375
 
-private val NAVI_MIN_HEIGHT = 48.dp
+private val NAVI_HEIGHT = 48.dp
 private val BACK_ICON_SIZE = 40.dp
-private val SUB_ICON_SIZE = 40.dp
-private val DOT_BADGE_SIZE = 8.dp
+private val ACTION_ICON_SIZE = 20.dp
 
 /**
  * SDG - Navigation - Text Navi
  *
- * 화면의 상단에 위치하여 현재 위치를 알려주는 타이틀과 우측에 1개 기능을 텍스트로 조합한 컴포넌트
+ * 화면 상단에서 현재 위치를 나타내는 타이틀과 화면 이동, 우측 주요 실행 기능을 제공하는 내비게이션 컴포넌트
  *
- * @version 2.1.21
+ * @version 2.3.53
  *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19821-30436&m=dev">Figma</a>
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=30016-9273&m=dev">Figma</a>
  */
 @Composable
 fun SDGTextNavi(
     label: SDGTextNaviLabel,
     backButton: SDGTextNaviBackButton,
-    subIcon: SDGTextNaviSubItem.Icon?,
-    subLabel: SDGTextNaviSubItem.Label,
+    actionIcon: SDGTextNaviActionItem.Icon?,
+    actionLabel: SDGTextNaviActionItem.Label,
     backgroundColor: Color,
     marginValues: PaddingValues = PaddingValues(),
 ) {
@@ -63,7 +60,7 @@ fun SDGTextNavi(
         modifier = Modifier
             .fillMaxWidth()
             .padding(marginValues)
-            .heightIn(min = NAVI_MIN_HEIGHT)
+            .height(NAVI_HEIGHT)
             .background(backgroundColor)
             .padding(horizontal = Spacing10, vertical = Spacing4),
         verticalAlignment = Alignment.CenterVertically,
@@ -71,7 +68,7 @@ fun SDGTextNavi(
         if (backButton is SDGTextNaviBackButton.True) {
             SDGImage(
                 resId = R.drawable.ic_navi_back_android,
-                color = SDGColor.Neutral700,
+                color = backButton.iconColor,
                 modifier = Modifier
                     .size(BACK_ICON_SIZE)
                     .clickable(onClick = backButton.onClick),
@@ -97,49 +94,35 @@ fun SDGTextNavi(
 
         Spacer(Modifier.width(Spacing8))
 
-        SDGTextNaviSub(subIcon = subIcon, subLabel = subLabel)
+        SDGTextNaviAction(actionIcon = actionIcon, actionLabel = actionLabel)
     }
 }
 
 @Composable
-private fun SDGTextNaviSub(
-    subIcon: SDGTextNaviSubItem.Icon?,
-    subLabel: SDGTextNaviSubItem.Label,
+private fun SDGTextNaviAction(
+    actionIcon: SDGTextNaviActionItem.Icon?,
+    actionLabel: SDGTextNaviActionItem.Label,
 ) {
     Row(
+        modifier = Modifier
+            .clickable(onClick = actionLabel.onClick)
+            .padding(end = Spacing6),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (subIcon != null) {
-            Box {
-                SDGImage(
-                    resId = subIcon.iconResId,
-                    color = subIcon.iconColor,
-                    modifier = Modifier
-                        .size(SUB_ICON_SIZE)
-                        .clickable(onClick = subIcon.onClick),
-                )
-
-                if (subIcon.showDot) {
-                    Canvas(
-                        modifier = Modifier
-                            .padding(Spacing8)
-                            .size(DOT_BADGE_SIZE)
-                            .align(Alignment.TopEnd),
-                    ) {
-                        drawCircle(color = SDGColor.Red350)
-                    }
-                }
-            }
+        if (actionIcon != null) {
+            SDGImage(
+                resId = actionIcon.iconResId,
+                color = actionIcon.iconColor,
+                modifier = Modifier.size(ACTION_ICON_SIZE),
+            )
         }
 
         SDGText(
-            text = subLabel.text,
+            text = actionLabel.text,
             typography = SDGTypography.Body1R,
-            textColor = SDGColor.Neutral700,
+            textColor = actionLabel.textColor,
             maxLines = LABEL_MAX_LINES,
-            modifier = Modifier
-                .padding(end = Spacing6)
-                .clickable(onClick = subLabel.onClick),
+            softWrap = false,
         )
     }
 }
@@ -154,8 +137,8 @@ private fun PreviewSDGTextNavi(
         SDGTextNavi(
             label = label,
             backButton = backButton,
-            subIcon = subIcon,
-            subLabel = subLabel,
+            actionIcon = actionIcon,
+            actionLabel = actionLabel,
             backgroundColor = backgroundColor,
         )
     }

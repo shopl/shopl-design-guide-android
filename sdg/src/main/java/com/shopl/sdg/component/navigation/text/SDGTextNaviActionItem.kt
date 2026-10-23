@@ -3,18 +3,15 @@ package com.shopl.sdg.component.navigation.text
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 
-sealed interface SDGTextNaviSubItem {
-    val onClick: () -> Unit
-
+sealed interface SDGTextNaviActionItem {
     data class Icon(
         @param:DrawableRes val iconResId: Int,
-        override val onClick: () -> Unit,
         val iconColor: Color?,
-        val showDot: Boolean,
-    ) : SDGTextNaviSubItem
+    ) : SDGTextNaviActionItem
 
     data class Label(
         val text: String,
-        override val onClick: () -> Unit,
-    ) : SDGTextNaviSubItem
+        val textColor: Color,
+        val onClick: () -> Unit,
+    ) : SDGTextNaviActionItem
 }
