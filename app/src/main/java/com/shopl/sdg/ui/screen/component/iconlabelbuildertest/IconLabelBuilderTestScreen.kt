@@ -104,38 +104,43 @@ internal fun IconLabelBuilderTestScreen(label: String) {
             )
         }
 
-        Column(
-            modifier = Modifier.widthIn(max = 200.dp),
-            verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing8),
-        ) {
-            val leftIcon = SDGIconLabelBuilderTestIcon(resId = R.drawable.ic_common_list)
-            val rightIcon = SDGIconLabelBuilderTestIcon(resId = R.drawable.ic_common_next_s)
+        IconLabelBuilderTestOverflowContent()
+    }
+}
 
-            for (overflow in SDGIconLabelBuilderTestOverflow.entries) {
-                SDGText(
-                    text = overflow.name,
-                    textColor = SDGColor.Neutral700,
-                    typography = SDGTypography.Body2SB,
+@Composable
+private fun IconLabelBuilderTestOverflowContent() {
+    Column(
+        modifier = Modifier.widthIn(max = 200.dp),
+        verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing8),
+    ) {
+        val leftIcon = SDGIconLabelBuilderTestIcon(resId = R.drawable.ic_common_list)
+        val rightIcon = SDGIconLabelBuilderTestIcon(resId = R.drawable.ic_common_next_s)
+
+        for (overflow in SDGIconLabelBuilderTestOverflow.entries) {
+            SDGText(
+                text = overflow.name,
+                textColor = SDGColor.Neutral700,
+                typography = SDGTypography.Body2SB,
+            )
+
+            for ((leftIc, rightIc) in listOf(
+                leftIcon to null,
+                null to rightIcon,
+                leftIcon to rightIcon,
+            )) {
+                SDGIconLabelBuilderTest(
+                    label = "아주 긴 텍스트가 들어가는 경우 전체 노출과 한 줄 말줄임을 비교할 수 있는 라벨입니다.",
+                    labelColor = SDGColor.Neutral700,
+                    size = SDGIconLabelBuilderTestSize.Small,
+                    fontWeight = SDGIconLabelBuilderTestFontWeight.Normal,
+                    gap = SDGIconLabelBuilderTestGap.Spacing4,
+                    leftIc = leftIc,
+                    rightIc = rightIc,
+                    labelOverflow = overflow,
+                    isFillMaxWidth = false,
+                    onClick = null,
                 )
-
-                for ((leftIc, rightIc) in listOf(
-                    leftIcon to null,
-                    null to rightIcon,
-                    leftIcon to rightIcon,
-                )) {
-                    SDGIconLabelBuilderTest(
-                        label = "아주 긴 텍스트가 들어가는 경우 전체 노출과 한 줄 말줄임을 비교할 수 있는 라벨입니다.",
-                        labelColor = SDGColor.Neutral700,
-                        size = SDGIconLabelBuilderTestSize.Small,
-                        fontWeight = SDGIconLabelBuilderTestFontWeight.Normal,
-                        gap = SDGIconLabelBuilderTestGap.Spacing4,
-                        leftIc = leftIc,
-                        rightIc = rightIc,
-                        labelOverflow = overflow,
-                        isFillMaxWidth = false,
-                        onClick = null,
-                    )
-                }
             }
         }
     }
