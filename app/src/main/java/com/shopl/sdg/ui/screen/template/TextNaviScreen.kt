@@ -56,9 +56,8 @@ internal fun TextNaviScreen(
                 guideLineDescriptions = persistentListOf(
                     "Status Bar 영역을 제외한 모바일 화면의 최상단에 배치합니다.",
                     "모든 구성 요소는 세로 중앙 정렬합니다.",
-                    "Action 아이콘과 라벨은 하나의 터치 영역으로 동작합니다.",
-                    "Action 라벨은 완료, 저장, 편집 같은 짧은 동사형 문구로 작성합니다.",
-                    "Action 라벨은 줄이지 않고 제목을 말줄임 처리합니다. 긴 제목과 긴 Action 라벨을 함께 쓰지 않습니다.",
+                    "Sub Label 문구는 동사형 단어로 짧게 작성합니다.",
+                    "Label이 길 때 Sub Label은 줄이지 않고 Label이 말줄임 처리됩니다. 긴 타이틀과 긴 Sub Label을 함께 쓰지 않습니다.",
                 ),
             )
         },
