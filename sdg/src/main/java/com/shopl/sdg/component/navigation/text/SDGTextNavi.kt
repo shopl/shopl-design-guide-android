@@ -122,7 +122,6 @@ private fun SDGTextNaviAction(
             typography = SDGTypography.Body1R,
             textColor = actionLabel.textColor,
             maxLines = LABEL_MAX_LINES,
-            softWrap = false,
         )
     }
 }
