@@ -17,6 +17,7 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
         긴_액션_라벨(),
         파란_배경(),
         분홍_배경(),
+        투명_배경(),
     )
 
     private fun 기본_상태(): SDGTextNaviPreviewParameter {
@@ -87,6 +88,10 @@ internal class SDGTextNaviPreviewParameterProvider : PreviewParameterProvider<SD
     }
 
     private fun 분홍_배경(): SDGTextNaviPreviewParameter {
-        return 기본_상태().copy(backgroundColor = SDGColor.Red50)
+        return 기본_상태().copy(backgroundColor = SDGColor.Red300_a10)
+    }
+
+    private fun 투명_배경(): SDGTextNaviPreviewParameter {
+        return 기본_상태().copy(backgroundColor = SDGColor.Transparent)
     }
 }
