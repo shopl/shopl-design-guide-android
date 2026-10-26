@@ -4,6 +4,16 @@
 
 배포 SHA: `6b2ed256ac7ba7a03c4a8b6fc9ae4cfc865ff8e2` · [공식 PUBLISHED 배포](https://github.com/shopl/shopl-design-guide-android/actions/runs/40254557428)
 
+## 소비 앱 / SDG 자체 개발 범위 검토
+
+이 변경은 SDG Builder와의 사전 충돌 예방입니다. 실제 Builder 빌드 실패가 재현된 것은 아닙니다.
+
+- 명시된 요구사항 기반 변경: 세 Skill의 발견 설명과 본문을 소비 앱 개발로 한정했습니다. SDG 자체 개발에는 저장소 AGENTS.md·Builder 규칙과 실제 체크아웃을 우선하며, 내부 AI의 Kotlin 변경 범위와 Builder의 Git·빌드·PR 관리를 명시했습니다. 문자열·리소스 정책은 대상 저장소에 위임했습니다. 서버 instructions와 모든 도구 응답에도 배포 참조와 현재 브랜치의 구분을 적용했습니다.
+- 추론·해석으로 구현한 부분: `sdg_resolve_context`에 요청별 `workContext`를 추가했습니다. 기본 `consumer_app`은 기존 비교 흐름을 유지합니다. `sdg_source`는 소비 앱용 setup을 반환하지 않고 `compatibility: not_assessed`, `checkoutInspected: false`로 로컬 소스를 검사하지 않았음을 표시합니다. 세션 모드나 API 조회 대상을 바꾸지는 않습니다. 공통 정책은 `src/usage-policy.ts`에서 관리합니다.
+- 검증: TypeScript 검사·빌드, Skill 3개 형식 검사, 독립 설치 플러그인 144회 호출, 개발 서버/번들 × 두 프로토콜의 사용 목적별 84회 호출이 통과했습니다. 소비 앱의 기본 조회·구버전 경고·해석 근거·component/template 재사용 흐름과 SDG 자체 개발의 다른 버전·SHA·dirty 근거, 미배포 후보 조회 실패 시 체크아웃 우선 안내, 요청 간 목적 격리를 확인했습니다. 의존성·미배포 소스 근거는 진단용 가상 입력입니다.
+- 생성물: 기존 `plugin:pack` 절차로 실행 번들·release.json 파일 해시·설치 압축 파일과 SHA-256을 갱신했습니다. 재생성 해시 일치를 확인했습니다.
+- 유지: 정식 배포 후 데이터 동기화, CI·빌드 스크립트, Builder 규칙, Kotlin 소스와 배포 카탈로그는 변경하지 않았습니다. catalogId와 검증 receipt도 동일합니다. 새 Android 컴파일·Builder 내부 AI 실행·샘플 빌드·호스트 앱 UI 검증은 하지 않았습니다. 제품 레이어 하네스는 대상이 없습니다.
+
 ## 이번 축소 후 재검증
 
 | 항목 | 결과·범위 |

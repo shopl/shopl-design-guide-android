@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import { aliases } from './guidance.js';
+import { referenceBoundary, sourceWorkflow } from './usage-policy.js';
 import { currentCatalog, currentUpdate, availableCatalogs, sourceSchema, type Source } from './catalog.js';
 
 import { updateSchema } from './catalog-update.js';
@@ -18,6 +19,7 @@ export function response(status: Response['status'], data: Response['data'], sou
   const catalog = currentCatalog();
   const update = currentUpdate();
   const commonWarnings = [
+    referenceBoundary, sourceWorkflow,
     ...(update.state === 'current' ? [] : [update.detail ?? '최신 원격 SDG 정보 확인에 실패했습니다. 마지막 검증 정보를 사용하며 최신 여부는 보장하지 않습니다.']),
     ...(update.cacheWarning ? [update.cacheWarning] : []),
     ...(catalog.provenance.artifactVerified ? [] : ['배포 아티팩트와의 일치는 미검증입니다.']),

@@ -3,6 +3,7 @@ import { McpServer } from '@modelcontextprotocol/server';
 import { currentCatalog, inCatalog, assetKind, type Component } from './catalog.js';
 import { relatedTypes, exampleMatches } from './references.js';
 import { recipes } from './guidance.js';
+import { referenceBoundary, sourceWorkflow, consumerWorkflow } from './usage-policy.js';
 import { available, catalogField, checkCatalog, page, pageFields, response, responseSchema, score, type Response } from './query.js';
 
 const evidenceSchema = z.object({
@@ -29,9 +30,10 @@ function exampleSummaries(components: Component[]) {
 
 export function registerTools(server: McpServer) {
   server.registerTool('sdg_resolve_context', {
-    description: '최신 배포 SDG 카탈로그와 설정 안내를 반환합니다. 의존성 근거를 전달하면 소비 앱과 최신 버전의 차이를 확인합니다. 버전을 선택하지 않습니다. 파일이나 Gradle을 직접 읽거나 실행하지 않습니다.',
+    description: '최신 배포 SDG 카탈로그와 설정 안내를 반환합니다. 기본 consumer_app에서는 의존성 근거로 소비 앱과 비교합니다. SDG 자체 개발의 배포 참조에는 workContext: sdg_source를 지정하며 현재 브랜치와의 호환성을 판정하지 않습니다. 버전을 선택하지 않습니다. 파일이나 Gradle을 직접 읽거나 실행하지 않습니다.',
     annotations, outputSchema: responseSchema,
     inputSchema: z.object({
+      workContext: z.enum(['consumer_app', 'sdg_source']).default('consumer_app').describe('현재 요청의 사용 목적입니다. SDG 자체의 컴포넌트·샘플 개발은 sdg_source. 서버는 체크아웃을 읽거나 세션 모드를 변경하지 않습니다.'),
       projectKey: z.string().max(300).optional(), module: z.string().max(300).optional(), variant: z.string().max(100).optional(),
       dependencyEvidence: z.array(evidenceSchema).max(20).default([]),
       environment: z.object({ minSdk: z.number().int().positive().optional(), kotlin: z.string().optional(), compose: z.string().optional() }).strict().optional(),
@@ -39,10 +41,16 @@ export function registerTools(server: McpServer) {
   }, async args => inCatalog(async () => {
     const catalog = currentCatalog();
     const scope = { projectKey: args.projectKey, module: args.module, variant: args.variant };
+    if (args.workContext === 'sdg_source') return result(response('ok', {
+      policy: 'latest_only', workContext: args.workContext, scope, available: available(),
+      referenceScope: 'latest_release_reference', sourceOfTruth: 'actual_checkout', checkoutInspected: false,
+      evidence: args.dependencyEvidence, evidenceTrust: 'caller_supplied', compatibility: 'not_assessed',
+      nextSteps: [referenceBoundary, sourceWorkflow],
+    }));
     const evidence = args.dependencyEvidence.filter(e => e.group === catalog.artifact.group && e.artifact === catalog.artifact.artifact);
-    const base = { policy: 'latest_only', reuse: { catalogCategories: ['component', 'template'], projectKit: { source: 'consumer_repository', path: 'ui/src/main/java/me/planetory/io/ui/sdg_kit', indexedByMcp: false }, preference: '도메인 조합은 기존 kit, 공통 패턴은 template, 기본 요소는 component를 우선 재사용합니다.' }, scope, available: available(), evidence, evidenceTrust: 'caller_supplied',
+    const base = { policy: 'latest_only', workContext: args.workContext, referenceScope: 'latest_release_reference', reuse: { catalogCategories: ['component', 'template'], projectKit: { source: 'consumer_repository', path: 'ui/src/main/java/me/planetory/io/ui/sdg_kit', indexedByMcp: false }, preference: '도메인 조합은 기존 kit, 공통 패턴은 template, 기본 요소는 component를 우선 재사용합니다.' }, scope, available: available(), evidence, evidenceTrust: 'caller_supplied',
       setup: { dependency: `${catalog.artifact.group}:${catalog.artifact.artifact}:${catalog.version}`, repository: 'mavenCentral()',
-        steps: ['대상 모듈과 convention plugin의 기존 SDG 의존성을 확인하세요.', 'SDG component·template는 MCP에서, 본 레포 kit의 component·template와 호출부는 ui/sdg_kit에서 검색하여 우선 재사용하세요.', '소비 앱 버전이 낮으면 중앙 SDG 버전 선언을 최신 배포로 맞추고 SDG·Common·Resource의 실제 해석과 소비 모듈 컴파일을 확인하세요.', 'Compose 설정과 문자열 리소스 정책은 저장소 지침을 따르세요.'],
+        steps: ['대상 모듈과 convention plugin의 기존 SDG 의존성을 확인하세요.', 'SDG component·template는 MCP에서, 소비 앱 kit의 선언과 호출부는 대상 저장소에서(Shopl 앱: ui/sdg_kit) 검색하여 우선 재사용하세요.', consumerWorkflow, 'Compose 설정과 문자열 리소스 정책은 저장소 지침을 따르세요.'],
         environment: {
           minSdk: { requiredBySource: catalog.setup.minSdk, supplied: args.environment?.minSdk ?? null,
             status: args.environment?.minSdk === undefined ? 'unknown' : args.environment.minSdk < catalog.setup.minSdk ? 'below_source_minimum' : 'meets_source_minimum',
@@ -60,7 +68,7 @@ export function registerTools(server: McpServer) {
     const target = selected[0]!;
     if (target.dirty || (target.kind === 'source' && target.sourceSha !== catalog.sourceSha)
         || (target.sourceSha && target.sourceSha !== catalog.sourceSha) || target.version !== catalog.version) {
-      return result(response('version_mismatch', { ...base, compatibility: 'mismatch', selected }, [], ['최신 배포 버전의 API만 제공합니다. 입력한 의존성 또는 소스와 다르므로 적용 전 프로젝트의 SDG 업데이트와 컴파일 확인이 필요합니다.']));
+      return result(response('version_mismatch', { ...base, compatibility: 'mismatch', selected }, [], ['최신 배포 버전의 API만 제공합니다. 입력한 의존성 또는 소스와 다릅니다. 소비 앱에 최신 API를 적용하려면 저장소가 허용한 범위와 실행 절차로 SDG 의존성 업데이트·컴파일을 확인하세요. SDG 자체 개발의 체크아웃을 배포본에 맞춰 바꾸라는 의미는 아닙니다.']));
     }
     const companionArtifacts = ['SDG-Android-Common', 'SDG-Android-Resource'];
     const companionEvidence = args.dependencyEvidence.filter(e => e.group === catalog.artifact.group && companionArtifacts.includes(e.artifact));
@@ -79,7 +87,7 @@ export function registerTools(server: McpServer) {
   }));
 
   server.registerTool('sdg_search_components', {
-    description: '한글 목적 또는 Kotlin 이름으로 SDG component·template의 공개 Composable 후보를 찾습니다. category는 component·template 또는 패키지 구간입니다. 본 레포 kit은 ui/sdg_kit에서 직접 검색하세요. 검색 결과는 요약이며 호출 전 get_component에서 정확한 오버로드를 확인하세요.',
+    description: '최신 배포 SDG에서 한글 목적 또는 Kotlin 이름으로 SDG component·template의 공개 Composable 후보를 찾습니다. category는 component·template 또는 패키지 구간입니다. 소비 앱 kit은 대상 저장소에서 직접 검색하세요. Shopl 앱의 경로는 ui/sdg_kit입니다. 검색 결과는 요약이며 호출 전 get_component에서 정확한 오버로드를 확인하세요.',
     annotations, outputSchema: responseSchema,
     inputSchema: z.object({ catalogId: catalogField, query: z.string().trim().min(1).max(300), category: z.string().max(100).optional(), ...pageFields }).strict(),
   }, async args => inCatalog(async () => {
@@ -93,7 +101,7 @@ export function registerTools(server: McpServer) {
   }));
 
   server.registerTool('sdg_get_component', {
-    description: '정확한 Kotlin 시그니처, receiver, 인자, 기본값, 관련 타입과 사용 예제 ID를 반환합니다. 여러 오버로드가 있으면 선택지를 반환합니다. typeId로 큰 관련 타입을 별도 조회할 수 있습니다.',
+    description: '최신 배포 SDG의 정확한 Kotlin 시그니처, receiver, 인자, 기본값, 관련 타입과 사용 예제 ID를 반환합니다. 여러 오버로드가 있으면 선택지를 반환합니다. typeId로 큰 관련 타입을 별도 조회할 수 있습니다.',
     annotations, outputSchema: responseSchema,
     inputSchema: z.object({ catalogId: catalogField, componentId: z.string().min(1).max(500).optional(), overloadId: z.string().min(1).max(100).optional(), typeId: z.string().min(1).max(500).optional() }).strict()
       .refine(a => Number(!!a.componentId) + Number(!!a.typeId) === 1 && !(a.typeId && a.overloadId), 'componentId 또는 typeId 중 하나만 지정하고 overloadId는 componentId와 함께 사용하세요.'),
@@ -118,18 +126,18 @@ export function registerTools(server: McpServer) {
   }));
 
   server.registerTool('sdg_get_example', {
-    description: 'Kotlin 예제와 문맥을 반환합니다. compile_verified는 전체 파일의 소비 환경 컴파일, source_context_compiled는 원본 모듈에서의 컴파일입니다. 런타임 검증은 아닙니다.',
+    description: '최신 배포 SDG의 Kotlin 예제와 문맥을 반환합니다. compile_verified는 전체 파일의 소비 환경 컴파일, source_context_compiled는 원본 모듈에서의 컴파일입니다. 런타임 검증은 아닙니다.',
     annotations, outputSchema: responseSchema,
     inputSchema: z.object({ catalogId: catalogField, exampleId: z.string().min(1).max(500) }).strict(),
   }, async args => inCatalog(async () => {
     const catalog = currentCatalog();
     const error = checkCatalog(args.catalogId); if (error) return result(error);
     const example = [...catalog.curatedExamples, ...catalog.examples].find(e => e.id === args.exampleId);
-    return result(response(example ? 'ok' : 'example_unavailable', { example: example ?? null }, example ? [example.source] : [], example ? [example.origin === 'curated' ? '소비 프로젝트용 전체 파일 예제입니다. verification과 verifiedAgainst를 확인하고 앱의 상태·이벤트·문자열 정책에 맞춰 연결하세요. 런타임 동작은 검증하지 않았습니다.' : '원본 모듈의 보조 선언·리소스가 필요한 예제 단편입니다. source_context_compiled는 단편의 독립 컴파일을 의미하지 않습니다.'] : []));
+    return result(response(example ? 'ok' : 'example_unavailable', { example: example ?? null }, example ? [example.source] : [], example ? [example.origin === 'curated' ? '소비 프로젝트용 전체 파일 예제입니다. 소비 앱에 적용할 때 verification과 verifiedAgainst를 확인하고 대상 저장소의 상태·이벤트·문자열·리소스 정책에 맞춰 연결하세요. 런타임 동작은 검증하지 않았습니다.' : '원본 모듈의 보조 선언·리소스가 필요한 예제 단편입니다. source_context_compiled는 단편의 독립 컴파일을 의미하지 않습니다.'] : []));
   }));
 
   server.registerTool('sdg_search_assets', {
-    description: '색상, typography, 간격, radius 또는 아이콘의 정확한 Kotlin 참조를 검색합니다. assetId로 한 항목을 조회하고, 검색어를 생략하면 페이지 목록을 반환합니다. 값은 원본 표현식입니다.',
+    description: '최신 배포 SDG의 색상, typography, 간격, radius 또는 아이콘의 정확한 Kotlin 참조를 검색합니다. assetId로 한 항목을 조회하고, 검색어를 생략하면 페이지 목록을 반환합니다. 값은 원본 표현식입니다.',
     annotations, outputSchema: responseSchema,
     inputSchema: z.object({ catalogId: catalogField, kind: assetKind, query: z.string().max(300).optional(), assetId: z.string().min(1).max(500).optional(), ...pageFields }).strict()
       .refine(a => !(a.query !== undefined && a.assetId !== undefined), 'query와 assetId는 함께 지정할 수 없습니다.'),
@@ -144,7 +152,7 @@ export function registerTools(server: McpServer) {
   }));
 
   server.registerTool('sdg_get_recipe', {
-    description: '입력·선택·팝업·탭·목록 상태의 UI 조합 안내를 조회합니다. recipeId 생략 시 목록을 반환합니다. 조합 안내는 제품 정책이나 완성 화면 코드가 아닙니다.',
+    description: '소비 앱용 최신 배포 SDG의 입력·선택·팝업·탭·목록 상태의 UI 조합 안내를 조회합니다. recipeId 생략 시 목록을 반환합니다. 조합 안내는 제품 정책이나 완성 화면 코드가 아닙니다.',
     annotations, outputSchema: responseSchema,
     inputSchema: z.object({ catalogId: catalogField, recipeId: z.string().min(1).max(100).optional() }).strict(),
   }, async args => inCatalog(async () => {

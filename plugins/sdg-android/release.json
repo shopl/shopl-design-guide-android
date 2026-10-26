@@ -17,12 +17,12 @@
     ".codex.mcp.json": "15852650123677fc1a577fbea16fd0e277bc1b73c18c817be85c65322617a3a3",
     ".cursor-plugin/plugin.json": "ab8f4cf9984e9287763ae5b517dcff91dfc8bfdc73d93918a34a5e90f7ea516a",
     "LICENSE": "94ff4af51928a934636eb7df6ee766583821f0c3f7560cd91d724ae0738df712",
-    "README.md": "0eee5dc46f3af87ee7aa573df5b771d626cec58fc35abf34c7c29af8b410550c",
+    "README.md": "fa753a56c0c9db33f580f2aa8230c391f9ca9d29cb641da0b51e6cfbef88517a",
     "server/data/1.26.0-2753de67bba13d7a.json": "7f9ddfebaee519f353d1f8dd13c4adbf117c1f8446fc05e043ddb9cd94092624",
     "server/data/registry.json": "5f615f43c31c18ed03f2359003f0bf4b6654b2b23dd83c23447d7c7ef1c9cd00",
-    "server/index.mjs": "ecdd6e9fe818dbc0881d436e9bffa65e2750f182e54fd4518f45d4093672aa35",
-    "skills/sdg-android-components/SKILL.md": "a461232cdf05ad5d0818120f65f1053d1f54c182d37006c191203e904662ac6e",
-    "skills/sdg-android-foundation/SKILL.md": "e2e25143fa3df7e72f51cbb2a2200e1dd6c5511406d3fb5869a39dc5d62a95e8",
-    "skills/sdg-android-setup/SKILL.md": "fb9450282938a5fa6b8fcd65f7d663d96386ad38c52327663c3d7322fad379fd"
+    "server/index.mjs": "7e8171292b213203bc72157f6cf7b3c988445f0c346eaef17e325508d948debc",
+    "skills/sdg-android-components/SKILL.md": "04038a061ab7313b7d71a0b2f738ea9e99c77b1c4a9878e7cb92bd29a7ff66e6",
+    "skills/sdg-android-foundation/SKILL.md": "209337651b25cf779daaa3037a04a5c187bd5602ed16b1136f64031553359747",
+    "skills/sdg-android-setup/SKILL.md": "ee15820cb232992ae142f68366cbd17f7d6176c8fa767c382bf6cfcae524003c"
   }
 }

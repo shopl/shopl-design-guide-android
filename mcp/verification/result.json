@@ -87,5 +87,57 @@
       ]
     }
   ],
-  "scope": "Local compilation, manifest launches, actual MCP processes and isolated local Git publication. Production GitHub publication and host UI acceptance remain separate."
+  "scope": "Local compilation, manifest launches, actual MCP processes and isolated local Git publication. Production GitHub publication and host UI acceptance remain separate.",
+  "scopeReview": {
+    "status": "passed",
+    "scope": "Actual MCP stdio calls with synthetic consumer and unpublished-source evidence; no Builder AI execution or sample build",
+    "sessions": [
+      {
+        "entry": "mcp/dist/index.js",
+        "protocol": "2025-11-25",
+        "status": "passed",
+        "calls": 21,
+        "consumer": "default context, old-version mismatch, resolved evidence, component/template and all six tools preserved",
+        "sdgSource": "release-only reference; differing/dirty synthetic branch not judged incompatible; no consumer setup; missing API warnings preserve checkout authority",
+        "contextIsolation": "source request does not alter following consumer request",
+        "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+      },
+      {
+        "entry": "mcp/dist/index.js",
+        "protocol": "2026-07-28",
+        "status": "passed",
+        "calls": 21,
+        "consumer": "default context, old-version mismatch, resolved evidence, component/template and all six tools preserved",
+        "sdgSource": "release-only reference; differing/dirty synthetic branch not judged incompatible; no consumer setup; missing API warnings preserve checkout authority",
+        "contextIsolation": "source request does not alter following consumer request",
+        "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+      },
+      {
+        "entry": "plugins/sdg-android/server/index.mjs",
+        "protocol": "2025-11-25",
+        "status": "passed",
+        "calls": 21,
+        "consumer": "default context, old-version mismatch, resolved evidence, component/template and all six tools preserved",
+        "sdgSource": "release-only reference; differing/dirty synthetic branch not judged incompatible; no consumer setup; missing API warnings preserve checkout authority",
+        "contextIsolation": "source request does not alter following consumer request",
+        "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+      },
+      {
+        "entry": "plugins/sdg-android/server/index.mjs",
+        "protocol": "2026-07-28",
+        "status": "passed",
+        "calls": 21,
+        "consumer": "default context, old-version mismatch, resolved evidence, component/template and all six tools preserved",
+        "sdgSource": "release-only reference; differing/dirty synthetic branch not judged incompatible; no consumer setup; missing API warnings preserve checkout authority",
+        "contextIsolation": "source request does not alter following consumer request",
+        "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+      }
+    ],
+    "pluginCalls": 144,
+    "skillValidation": "3 passed",
+    "bundleReproducible": true,
+    "catalogAndBuildFlowUnchanged": true,
+    "builderExecutionVerified": false,
+    "newAndroidCompilation": false
+  }
 }
