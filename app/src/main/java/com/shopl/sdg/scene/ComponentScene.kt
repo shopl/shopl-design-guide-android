@@ -9,6 +9,7 @@ import com.shopl.sdg.ui.screen.component.BoxTabScreen
 import com.shopl.sdg.ui.screen.component.DropdownScreen
 import com.shopl.sdg.ui.screen.component.EmptyIconScreen
 import com.shopl.sdg.ui.screen.component.FixedTabScreen
+import com.shopl.sdg.ui.screen.component.IconLabelBuilderTestScreen
 import com.shopl.sdg.ui.screen.component.IconLabelScreen
 import com.shopl.sdg.ui.screen.component.IconTabScreen
 import com.shopl.sdg.ui.screen.component.LinearProgressScreen
@@ -287,6 +288,19 @@ internal sealed class ComponentScene(
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
+        }
+    }
+
+    data object IconLabelBuilderTest : ComponentScene(
+        displayLabel = "Icon Label Builder Test",
+        implemented = true,
+    ) {
+        @Composable
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+            IconLabelBuilderTestScreen(
+                onClickBack = backToScene,
+                onClickMenu = { moveToScene(Menu) },
+            )
         }
     }
 

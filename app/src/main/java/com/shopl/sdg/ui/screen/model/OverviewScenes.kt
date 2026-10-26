@@ -34,6 +34,7 @@ internal val componentScenes = persistentListOf(
     ComponentScene.Indicator.NumberIndicator,
     ComponentScene.Indicator.DotIndicator,
     ComponentScene.IconLabel,
+    ComponentScene.IconLabelBuilderTest,
     ComponentScene.NumberPicker,
     ComponentScene.Progress.SystemProgress,
     ComponentScene.Progress.CircularProgress,

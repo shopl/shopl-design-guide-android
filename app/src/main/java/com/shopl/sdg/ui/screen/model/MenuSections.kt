@@ -51,6 +51,7 @@ internal val componentMenuSection = MenuSectionUiModel(
             )
         ),
         ComponentScene.IconLabel.toMenuUiModel(),
+        ComponentScene.IconLabelBuilderTest.toMenuUiModel(),
         ComponentScene.NumberPicker.toMenuUiModel(),
         MenuUiModel.GroupMenu(
             groupName = "Progress",
