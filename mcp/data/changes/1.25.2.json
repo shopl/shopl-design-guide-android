@@ -1,0 +1,268 @@
+{
+  "from": "sdg-android:1.23.2:98dd48c0bea709f8",
+  "to": "sdg-android:1.25.2:3d4d8907ae8944e0",
+  "sourceCompare": "https://github.com/shopl/shopl-design-guide-android/compare/02dd6717822e86a1e4c83daa0aba67120e238fdd...dd414d90ab9d09890714cf1e9a93d2fb0b0c20e1",
+  "api": {
+    "added": [
+      {
+        "id": "com.shopl.sdg.component.avatar.SDGAvatar:5316ee3948ce36dc",
+        "value": "@Composable\nfun SDGAvatar(\n    avatarSize: SDGAvatarSize,\n    userRegImg: String?,\n    @DrawableRes emptyImage: Int? = null,\n    showFace: Boolean = true,\n    showOutline: Boolean = false,\n    outlineColor: Color = SDGColor.SpecialPK,\n    showIc: Boolean = true,\n    @DrawableRes iconResId: Int? = null,\n    iconColor: Color? = null,\n    showRetry: Boolean = false,\n    onClickRetry: (() -> Unit)? = null,\n    onClickAvatar: (() -> Unit)? = null,\n)"
+      },
+      {
+        "id": "com.shopl.sdg.component.avatar.SDGAvatar:494dbfb8b3e870fd",
+        "value": "@Deprecated(\"Avatar 2.3.50의 showOutline, iconResId, showRetry 기반 SDGAvatar를 사용하세요.\")\n@Composable\nfun SDGAvatar(\n    avatarSize: SDGAvatarSize,\n    avatarBadge: SDGAvatarBadge,\n    userRegImg: String?,\n    @DrawableRes emptyImage: Int? = null,\n    @DrawableRes badgeImage: Int? = null,\n    badgeImageTintColor: Color = SDGColor.Neutral700,\n    isMaternity: Boolean = false,\n    alpha: Float = 1f,\n    onClickAvatar: (() -> Unit)? = null\n)"
+      },
+      {
+        "id": "com.shopl.sdg.component.navigation.category.SDGCategoryNavi:5eae49801f0adccc",
+        "value": "@Composable\nfun SDGCategoryNavi(\n    label: SDGCategoryNaviLabel,\n    leftIcon: SDGCategoryNaviLeftIconItem?,\n    rightIcons: PersistentList<SDGCategoryNaviIconItem>?,\n    backgroundColor: Color,\n    hasDropdown: SDGCategoryNaviHasDropdown,\n    marginValues: PaddingValues = PaddingValues(),\n)"
+      },
+      {
+        "id": "com.shopl.sdg.component.progress.linear.SDGLinearProgress:0ecc710194457eec",
+        "value": "@Composable\nfun SDGLinearProgress(\n    type: SDGLinearProgressType,\n    showLabel: SDGLinearProgressShowLabel,\n)"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInput:d1fac541f0eddb90",
+        "value": "@Composable\nfun SDGSelectInput(\n    placeholder: String,\n    state: SDGSelectInputState,\n    inputField: SDGSelectInputField,\n    type: SDGSelectInputType,\n    showClearIcon: SDGSelectInputShowClearIcon,\n    marginValues: PaddingValues = PaddingValues(),\n    onClick: (() -> Unit)? = null,\n)"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInput:c0bebd03cd55069d",
+        "value": "@Deprecated(\n    message = \"SDGSelectInputShowClearIcon을 지정하는 API를 사용하세요.\",\n    replaceWith = ReplaceWith(\n        expression = \"SDGSelectInput(placeholder = placeholder, state = state, inputField = inputField, \" +\n            \"type = type, showClearIcon = SDGSelectInputShowClearIcon.False, \" +\n            \"marginValues = marginValues, onClick = onClick)\",\n        imports = [\n            \"com.shopl.sdg.component.select_input.SDGSelectInput\",\n            \"com.shopl.sdg.component.select_input.SDGSelectInputShowClearIcon\",\n        ],\n    ),\n)\n@Composable\nfun SDGSelectInput(\n    placeholder: String,\n    state: SDGSelectInputState,\n    inputField: SDGSelectInputField,\n    type: SDGSelectInputType,\n    marginValues: PaddingValues = PaddingValues(),\n    onClick: (() -> Unit)? = null,\n)"
+      },
+      {
+        "id": "com.shopl.sdg.template.popup.center.input.SDGInputCenterPopup:0bf3c92e51538a0f",
+        "value": "@Composable\nfun SDGInputCenterPopup(\n    buttonOption: SDGCenterPopupButtonOption,\n    title: String?,\n    description: String?,\n    showInputLabel: SDGInputCenterPopupShowInputLabel,\n    inputContent: String,\n    hint: String,\n    state: SDGFixedTextInputState,\n    onInputChange: (String) -> Unit,\n    focusRequester: FocusRequester? = null,\n    inputField: SDGFixedTextInputField = SDGFixedTextInputField.LightGray,\n    inputMaxLength: Int = Int.MAX_VALUE,\n    titleAlignment: TextAlign = TextAlign.Left,\n)"
+      },
+      {
+        "id": "com.shopl.sdg.template.popup.center.input.SDGInputCenterPopup:6238a58860aed4ad",
+        "value": "@Deprecated(\n    message = \"buttonOption과 showInputLabel을 사용하는 SDGInputCenterPopup을 사용하세요.\",\n)\n@Composable\nfun SDGInputCenterPopup(\n    title: String?,\n    description: String?,\n    confirmLabel: String,\n    onClickConfirm: () -> Unit,\n    inputLabel: String,\n    inputContent: String,\n    hint: String,\n    state: SDGFixedTextInputState,\n    onInputChange: (String) -> Unit,\n    focusRequester: FocusRequester? = null,\n    inputField: SDGFixedTextInputField = SDGFixedTextInputField.LightGray,\n    inputMaxLength: Int = Int.MAX_VALUE,\n    confirmLabelColor: Color = SDGColor.Neutral700,\n    titleAlignment: TextAlign = TextAlign.Left,\n    enabled: Boolean = true,\n)"
+      },
+      {
+        "id": "com.shopl.sdg.template.popup.center.input.SDGInputCenterPopup:2db2dc5b787c7754",
+        "value": "@Deprecated(\n    message = \"buttonOption, showInputLabel, state를 사용하는 SDGInputCenterPopup을 사용하세요.\",\n)\n@Composable\nfun SDGInputCenterPopup(\n    title: String?,\n    description: String?,\n    confirmLabel: String,\n    onClickConfirm: () -> Unit,\n    inputLabel: String,\n    inputContent: String,\n    hint: String,\n    inputState: InputState,\n    onInputChange: (String) -> Unit,\n    focusRequester: FocusRequester? = null,\n    inputBackgroundColor: Color = SDGColor.Neutral50,\n    inputMaxLength: Int = Int.MAX_VALUE,\n    enableOnError: Boolean = false,\n    confirmLabelColor: Color = SDGColor.Neutral700,\n    titleAlignment: TextAlign = TextAlign.Left,\n    enabled: Boolean = true,\n)"
+      }
+    ],
+    "removed": [
+      {
+        "id": "com.shopl.sdg.component.avatar.SDGAvatar:3d84fcdfd914af04",
+        "value": "@Composable\nfun SDGAvatar(\n    avatarSize: SDGAvatarSize,\n    avatarBadge: SDGAvatarBadge,\n    userRegImg: String?,\n    @DrawableRes emptyImage: Int? = null,\n    @DrawableRes badgeImage: Int? = null,\n    badgeImageTintColor: Color = SDGColor.Neutral700,\n    isMaternity: Boolean = false,\n    alpha: Float = 1f,\n    onClickAvatar: (() -> Unit)? = null\n)"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInput:445f65bc2d9a80eb",
+        "value": "@Composable\nfun SDGSelectInput(\n    placeholder: String,\n    state: SDGSelectInputState,\n    inputField: SDGSelectInputField,\n    type: SDGSelectInputType,\n    marginValues: PaddingValues = PaddingValues(),\n    onClick: (() -> Unit)? = null,\n)"
+      },
+      {
+        "id": "com.shopl.sdg.template.popup.center.input.SDGInputCenterPopup:13685ba1a86a8f37",
+        "value": "@Composable\nfun SDGInputCenterPopup(\n    title: String?,\n    description: String?,\n    confirmLabel: String,\n    onClickConfirm: () -> Unit,\n    inputLabel: String,\n    inputContent: String,\n    hint: String,\n    state: SDGFixedTextInputState,\n    onInputChange: (String) -> Unit,\n    focusRequester: FocusRequester? = null,\n    inputField: SDGFixedTextInputField = SDGFixedTextInputField.LightGray,\n    inputMaxLength: Int = Int.MAX_VALUE,\n    confirmLabelColor: Color = SDGColor.Neutral700,\n    titleAlignment: TextAlign = TextAlign.Left,\n    enabled: Boolean = true,\n)"
+      },
+      {
+        "id": "com.shopl.sdg.template.popup.center.input.SDGInputCenterPopup:7a67e6e1037cbe62",
+        "value": "@Deprecated(\n    message = \"inputState 대신 state를 사용하는 SDGInputCenterPopup을 사용하세요.\",\n)\n@Composable\nfun SDGInputCenterPopup(\n    title: String?,\n    description: String?,\n    confirmLabel: String,\n    onClickConfirm: () -> Unit,\n    inputLabel: String,\n    inputContent: String,\n    hint: String,\n    inputState: InputState,\n    onInputChange: (String) -> Unit,\n    focusRequester: FocusRequester? = null,\n    inputBackgroundColor: Color = SDGColor.Neutral50,\n    inputMaxLength: Int = Int.MAX_VALUE,\n    enableOnError: Boolean = false,\n    confirmLabelColor: Color = SDGColor.Neutral700,\n    titleAlignment: TextAlign = TextAlign.Left,\n    enabled: Boolean = true,\n)"
+      }
+    ],
+    "changed": []
+  },
+  "types": {
+    "added": [
+      {
+        "id": "com.shopl.sdg.component.navigation.category.SDGCategoryNaviHasDropdown",
+        "value": "sealed interface SDGCategoryNaviHasDropdown {\n    data class True(val onClick: () -> Unit) : SDGCategoryNaviHasDropdown\n    data object False : SDGCategoryNaviHasDropdown\n}"
+      },
+      {
+        "id": "com.shopl.sdg.component.navigation.category.SDGCategoryNaviHasDropdown.True",
+        "value": "data class True(val onClick: () -> Unit) : SDGCategoryNaviHasDropdown"
+      },
+      {
+        "id": "com.shopl.sdg.component.navigation.category.SDGCategoryNaviHasDropdown.False",
+        "value": "data object False : SDGCategoryNaviHasDropdown"
+      },
+      {
+        "id": "com.shopl.sdg.component.navigation.category.SDGCategoryNaviIconItem",
+        "value": "data class SDGCategoryNaviIconItem(\n    @param:DrawableRes val iconResId: Int,\n    val onClick: () -> Unit,\n    val iconColor: Color?,\n    val showDot: Boolean,\n)"
+      },
+      {
+        "id": "com.shopl.sdg.component.navigation.category.SDGCategoryNaviLabel",
+        "value": "data class SDGCategoryNaviLabel(\n    val text: String?,\n    val color: Color,\n)"
+      },
+      {
+        "id": "com.shopl.sdg.component.navigation.category.SDGCategoryNaviLeftIconItem",
+        "value": "data class SDGCategoryNaviLeftIconItem(\n    val onClick: () -> Unit,\n    val contentDescription: String? = null,\n)"
+      },
+      {
+        "id": "com.shopl.sdg.component.progress.linear.SDGLinearProgressShowLabel",
+        "value": "/** [SDGLinearProgress] 라벨의 표시 여부와 표시할 내용을 정의합니다. */\n@Immutable\nsealed interface SDGLinearProgressShowLabel {\n    data class True(\n        val text: String,\n        val textColor: Color,\n    ) : SDGLinearProgressShowLabel\n\n    data object False : SDGLinearProgressShowLabel\n}"
+      },
+      {
+        "id": "com.shopl.sdg.component.progress.linear.SDGLinearProgressShowLabel.True",
+        "value": "data class True(\n        val text: String,\n        val textColor: Color,\n    ) : SDGLinearProgressShowLabel"
+      },
+      {
+        "id": "com.shopl.sdg.component.progress.linear.SDGLinearProgressShowLabel.False",
+        "value": "data object False : SDGLinearProgressShowLabel"
+      },
+      {
+        "id": "com.shopl.sdg.component.progress.linear.SDGLinearProgressType",
+        "value": "/** Progress 동작 방식입니다. */\n@Immutable\nsealed interface SDGLinearProgressType {\n\n    /**\n     * 진행률에 따라 인디케이터가 채워집니다.\n     *\n     * @param progress 0f부터 1f까지의 진행률\n     */\n    data class Determinate(val progress: Float) : SDGLinearProgressType\n\n    /** 일정 길이의 인디케이터가 좌우로 반복 이동합니다. */\n    data object Indeterminate : SDGLinearProgressType\n}"
+      },
+      {
+        "id": "com.shopl.sdg.component.progress.linear.SDGLinearProgressType.Determinate",
+        "value": "/**\n     * 진행률에 따라 인디케이터가 채워집니다.\n     *\n     * @param progress 0f부터 1f까지의 진행률\n     */\n    data class Determinate(val progress: Float) : SDGLinearProgressType"
+      },
+      {
+        "id": "com.shopl.sdg.component.progress.linear.SDGLinearProgressType.Indeterminate",
+        "value": "/** 일정 길이의 인디케이터가 좌우로 반복 이동합니다. */\n    data object Indeterminate : SDGLinearProgressType"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputImageType.Companion",
+        "value": "@Suppress(\"DEPRECATION\")\n    companion object {\n        val WithCircular: SDGSelectInputImageType = Normal1\n        val Square: SDGSelectInputImageType = Normal2\n        val Rectangle: SDGSelectInputImageType = Special1\n    }"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputShowClearIcon",
+        "value": "sealed class SDGSelectInputShowClearIcon(\n    open val onClick: (() -> Unit)? = null,\n) {\n    data class True(\n        override val onClick: () -> Unit,\n    ) : SDGSelectInputShowClearIcon(onClick = onClick)\n\n    data object False : SDGSelectInputShowClearIcon()\n}"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputShowClearIcon.True",
+        "value": "data class True(\n        override val onClick: () -> Unit,\n    ) : SDGSelectInputShowClearIcon(onClick = onClick)"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputShowClearIcon.False",
+        "value": "data object False : SDGSelectInputShowClearIcon()"
+      },
+      {
+        "id": "com.shopl.sdg.template.popup.center.input.SDGInputCenterPopupShowInputLabel",
+        "value": "@Immutable\nsealed interface SDGInputCenterPopupShowInputLabel {\n    data class True(val text: AnnotatedString) : SDGInputCenterPopupShowInputLabel {\n        constructor(text: String) : this(AnnotatedString(text))\n    }\n\n    data object False : SDGInputCenterPopupShowInputLabel\n}"
+      },
+      {
+        "id": "com.shopl.sdg.template.popup.center.input.SDGInputCenterPopupShowInputLabel.True",
+        "value": "data class True(val text: AnnotatedString) : SDGInputCenterPopupShowInputLabel {\n        constructor(text: String) : this(AnnotatedString(text))\n    }"
+      },
+      {
+        "id": "com.shopl.sdg.template.popup.center.input.SDGInputCenterPopupShowInputLabel.False",
+        "value": "data object False : SDGInputCenterPopupShowInputLabel"
+      }
+    ],
+    "removed": [],
+    "changed": [
+      {
+        "id": "com.shopl.sdg.component.avatar.SDGAvatarSize",
+        "before": "/**\n * [SDGAvatar] Size\n * 직원의 얼굴 사진을 보여주는 컴포넌트 Size\n */\nsealed class SDGAvatarSize(\n    val size: Dp,\n    val badgeSize: Dp,\n    val borderSize: Dp,\n) {\n    @Stable\n    data object XXS: SDGAvatarSize(size = 20.dp, badgeSize = 8.dp, borderSize = 1.5.dp)\n    @Stable\n    data object XS: SDGAvatarSize(size = 24.dp, badgeSize = 10.dp, borderSize = 1.8.dp)\n    @Stable\n    data object S: SDGAvatarSize(size = 30.dp, badgeSize = 12.dp, borderSize = 2.4.dp)\n    @Stable\n    data object M: SDGAvatarSize(size = 40.dp, badgeSize = 14.dp, borderSize = 3.dp)\n    @Stable\n    data object L: SDGAvatarSize(size = 50.dp, badgeSize = 16.dp, borderSize = 3.6.dp)\n    @Stable\n    data object XL: SDGAvatarSize(size = 90.dp, badgeSize = 24.dp, borderSize = 6.dp)\n}",
+        "after": "/**\n * [SDGAvatar] Size\n * 직원의 얼굴 사진을 보여주는 컴포넌트 Size\n */\nsealed class SDGAvatarSize(\n    val size: Dp,\n    val badgeSize: Dp,\n    val borderSize: Dp,\n) {\n    /** 재시도 아이콘의 크기. Avatar 2.3.50의 크기별 규격을 따릅니다. */\n    val retryIconSize: Dp\n        get() = when (this) {\n            XXS -> 10.dp\n            XS -> 12.dp\n            S -> 16.dp\n            M -> 20.dp\n            L -> 22.dp\n            XL -> 28.dp\n        }\n\n    @Stable\n    data object XXS: SDGAvatarSize(size = 20.dp, badgeSize = 8.dp, borderSize = 1.5.dp)\n    @Stable\n    data object XS: SDGAvatarSize(size = 24.dp, badgeSize = 10.dp, borderSize = 1.8.dp)\n    @Stable\n    data object S: SDGAvatarSize(size = 30.dp, badgeSize = 12.dp, borderSize = 2.4.dp)\n    @Stable\n    data object M: SDGAvatarSize(size = 40.dp, badgeSize = 14.dp, borderSize = 3.dp)\n    @Stable\n    data object L: SDGAvatarSize(size = 50.dp, badgeSize = 16.dp, borderSize = 3.6.dp)\n    @Stable\n    data object XL: SDGAvatarSize(size = 90.dp, badgeSize = 24.dp, borderSize = 6.dp)\n}"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputImageType",
+        "before": "/**\n * [SDGSelectInputType.OneImage]와 [SDGSelectInputType.TwoImage]의 이미지 영역 규격입니다.\n */\nenum class SDGSelectInputImageType(\n    val width: Dp,\n    val height: Dp,\n) {\n    Normal1(\n        width = 30.dp,\n        height = 30.dp,\n    ),\n    Normal2(\n        width = 24.dp,\n        height = 24.dp,\n    ),\n    Special1(\n        width = 52.dp,\n        height = 10.dp,\n    ),\n}",
+        "after": "/**\n * [SDGSelectInputType.OneImage]와 [SDGSelectInputType.TwoImage]의 이미지 영역 규격입니다.\n *\n * 기존 import와 when 분기 호환성을 위해 enum 항목을 유지하고 새 명칭은 별칭으로 제공합니다.\n */\nenum class SDGSelectInputImageType(\n    val width: Dp,\n    val height: Dp,\n) {\n    @Deprecated(\n        message = \"Normal1 대신 WithCircular를 사용하세요.\",\n        replaceWith = ReplaceWith(\"com.shopl.sdg.component.select_input.SDGSelectInputImageType.WithCircular\"),\n    )\n    Normal1(\n        width = 30.dp,\n        height = 30.dp,\n    ),\n    @Deprecated(\n        message = \"Normal2 대신 Square를 사용하세요.\",\n        replaceWith = ReplaceWith(\"com.shopl.sdg.component.select_input.SDGSelectInputImageType.Square\"),\n    )\n    Normal2(\n        width = 24.dp,\n        height = 24.dp,\n    ),\n    @Deprecated(\n        message = \"Special1 대신 Rectangle을 사용하세요.\",\n        replaceWith = ReplaceWith(\"com.shopl.sdg.component.select_input.SDGSelectInputImageType.Rectangle\"),\n    )\n    Special1(\n        width = 52.dp,\n        height = 10.dp,\n    ),\n    ;\n\n    @Suppress(\"DEPRECATION\")\n    companion object {\n        val WithCircular: SDGSelectInputImageType = Normal1\n        val Square: SDGSelectInputImageType = Normal2\n        val Rectangle: SDGSelectInputImageType = Special1\n    }\n}"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputState",
+        "before": "/**\n * [SDGSelectInput]의 상태입니다.\n */\n@Stable\nsealed interface SDGSelectInputState {\n    data object Default : SDGSelectInputState\n    data object Selected : SDGSelectInputState\n    data object Disabled : SDGSelectInputState\n    data object Error : SDGSelectInputState\n}",
+        "after": "@Stable\nsealed interface SDGSelectInputState {\n    /** null이면 Input Field 또는 레거시 API에서 지정한 배경색을 사용합니다. */\n    val backgroundColor: Color?\n    val typographyColor: Color\n    val chevronColor: Color\n\n    data object Default : SDGSelectInputState {\n        override val backgroundColor: Color? = null\n        override val typographyColor: Color = SDGColor.Neutral350\n        override val chevronColor: Color = SDGColor.Neutral700\n    }\n\n    data object Selected : SDGSelectInputState {\n        override val backgroundColor: Color? = null\n        override val typographyColor: Color = SDGColor.Neutral700\n        override val chevronColor: Color = SDGColor.Neutral700\n    }\n\n    data object Disabled : SDGSelectInputState {\n        override val backgroundColor: Color? = null\n        override val typographyColor: Color = SDGColor.Neutral700_a30\n        override val chevronColor: Color = SDGColor.Neutral300\n    }\n\n    data object Error : SDGSelectInputState {\n        override val backgroundColor: Color? = SDGColor.Red300_a10\n        override val typographyColor: Color = SDGColor.Neutral700\n        override val chevronColor: Color = SDGColor.Neutral700\n    }\n}"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputState.Default",
+        "before": "data object Default : SDGSelectInputState",
+        "after": "data object Default : SDGSelectInputState {\n        override val backgroundColor: Color? = null\n        override val typographyColor: Color = SDGColor.Neutral350\n        override val chevronColor: Color = SDGColor.Neutral700\n    }"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputState.Selected",
+        "before": "data object Selected : SDGSelectInputState",
+        "after": "data object Selected : SDGSelectInputState {\n        override val backgroundColor: Color? = null\n        override val typographyColor: Color = SDGColor.Neutral700\n        override val chevronColor: Color = SDGColor.Neutral700\n    }"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputState.Disabled",
+        "before": "data object Disabled : SDGSelectInputState",
+        "after": "data object Disabled : SDGSelectInputState {\n        override val backgroundColor: Color? = null\n        override val typographyColor: Color = SDGColor.Neutral700_a30\n        override val chevronColor: Color = SDGColor.Neutral300\n    }"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputState.Error",
+        "before": "data object Error : SDGSelectInputState",
+        "after": "data object Error : SDGSelectInputState {\n        override val backgroundColor: Color? = SDGColor.Red300_a10\n        override val typographyColor: Color = SDGColor.Neutral700\n        override val chevronColor: Color = SDGColor.Neutral700\n    }"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputType",
+        "before": "/**\n * [SDGSelectInput]에 표시되는 Selected Element 유형과 유형별 데이터를 관리합니다.\n */\n@Immutable\nsealed class SDGSelectInputType {\n    /** 첫 번째 선택 항목의 텍스트입니다. */\n    abstract val text: SDGSelectInputText\n\n    abstract val typeName: String\n\n    data class Text(\n        override val text: SDGSelectInputText,\n    ) : SDGSelectInputType() {\n        override val typeName: String = \"Text\"\n\n        @Deprecated(\n            message = \"String 대신 SDGSelectInputText를 사용하세요.\",\n        )\n        constructor(text: String) : this(\n            text = SDGSelectInputText.Single(value = text),\n        )\n    }\n\n    data class Avatar(\n        override val text: SDGSelectInputText,\n        val selectedElementImage: SDGSelectInputImage,\n    ) : SDGSelectInputType() {\n        override val typeName: String = \"Avatar\"\n\n        @Deprecated(\n            message = \"String 대신 SDGSelectInputText를 사용하세요.\",\n        )\n        constructor(\n            text: String,\n            selectedElementImage: SDGSelectInputImage,\n        ) : this(\n            text = SDGSelectInputText.Single(value = text),\n            selectedElementImage = selectedElementImage,\n        )\n    }\n\n    data class OneImage(\n        override val text: SDGSelectInputText,\n        val image: SDGSelectInputImage,\n        val type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,\n    ) : SDGSelectInputType() {\n        override val typeName: String = \"1 Image\"\n\n        @Deprecated(\n            message = \"String 대신 SDGSelectInputText를 사용하세요.\",\n        )\n        constructor(\n            text: String,\n            image: SDGSelectInputImage,\n            type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,\n        ) : this(\n            text = SDGSelectInputText.Single(value = text),\n            image = image,\n            type = type,\n        )\n    }\n\n    data class TwoImage(\n        val first: SDGSelectInputImageElement,\n        val second: SDGSelectInputImageElement,\n    ) : SDGSelectInputType() {\n        override val text: SDGSelectInputText\n            get() = first.text\n\n        override val typeName: String = \"2 Image\"\n\n        @Deprecated(\n            message = \"first와 second에 SDGSelectInputImageElement를 사용하세요.\",\n        )\n        constructor(\n            text: String,\n            image: SDGSelectInputImage,\n            secondText: String,\n            secondImage: SDGSelectInputImage,\n            imageSize: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,\n        ) : this(\n            first = SDGSelectInputImageElement(\n                text = SDGSelectInputText.Single(value = text),\n                image = image,\n                type = imageSize,\n            ),\n            second = SDGSelectInputImageElement(\n                text = SDGSelectInputText.Single(value = secondText),\n                image = secondImage,\n                type = imageSize,\n            ),\n        )\n    }\n}",
+        "after": "/**\n * [SDGSelectInput]에 표시되는 Selected Element 유형과 유형별 데이터를 관리합니다.\n */\n@Immutable\nsealed class SDGSelectInputType {\n    /** 첫 번째 선택 항목의 텍스트입니다. */\n    abstract val text: SDGSelectInputText\n\n    abstract val typeName: String\n\n    data class Text(\n        override val text: SDGSelectInputText,\n    ) : SDGSelectInputType() {\n        override val typeName: String = \"Text\"\n\n        @Deprecated(\n            message = \"String 대신 SDGSelectInputText를 사용하세요.\",\n        )\n        constructor(text: String) : this(\n            text = SDGSelectInputText.Single(value = text),\n        )\n    }\n\n    data class Avatar(\n        override val text: SDGSelectInputText,\n        val selectedElementImage: SDGSelectInputImage,\n    ) : SDGSelectInputType() {\n        override val typeName: String = \"Avatar\"\n\n        @Deprecated(\n            message = \"String 대신 SDGSelectInputText를 사용하세요.\",\n        )\n        constructor(\n            text: String,\n            selectedElementImage: SDGSelectInputImage,\n        ) : this(\n            text = SDGSelectInputText.Single(value = text),\n            selectedElementImage = selectedElementImage,\n        )\n    }\n\n    data class OneImage(\n        override val text: SDGSelectInputText,\n        val image: SDGSelectInputImage,\n        val type: SDGSelectInputImageType = SDGSelectInputImageType.WithCircular,\n    ) : SDGSelectInputType() {\n        override val typeName: String = \"1 Image\"\n\n        @Deprecated(\n            message = \"String 대신 SDGSelectInputText를 사용하세요.\",\n        )\n        constructor(\n            text: String,\n            image: SDGSelectInputImage,\n            type: SDGSelectInputImageType = SDGSelectInputImageType.WithCircular,\n        ) : this(\n            text = SDGSelectInputText.Single(value = text),\n            image = image,\n            type = type,\n        )\n    }\n\n    data class TwoImage(\n        val first: SDGSelectInputImageElement,\n        val second: SDGSelectInputImageElement,\n    ) : SDGSelectInputType() {\n        override val text: SDGSelectInputText\n            get() = first.text\n\n        override val typeName: String = \"2 Image\"\n\n        @Deprecated(\n            message = \"first와 second에 SDGSelectInputImageElement를 사용하세요.\",\n        )\n        constructor(\n            text: String,\n            image: SDGSelectInputImage,\n            secondText: String,\n            secondImage: SDGSelectInputImage,\n            imageSize: SDGSelectInputImageType = SDGSelectInputImageType.WithCircular,\n        ) : this(\n            first = SDGSelectInputImageElement(\n                text = SDGSelectInputText.Single(value = text),\n                image = image,\n                type = imageSize,\n            ),\n            second = SDGSelectInputImageElement(\n                text = SDGSelectInputText.Single(value = secondText),\n                image = secondImage,\n                type = imageSize,\n            ),\n        )\n    }\n}"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputType.OneImage",
+        "before": "data class OneImage(\n        override val text: SDGSelectInputText,\n        val image: SDGSelectInputImage,\n        val type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,\n    ) : SDGSelectInputType() {\n        override val typeName: String = \"1 Image\"\n\n        @Deprecated(\n            message = \"String 대신 SDGSelectInputText를 사용하세요.\",\n        )\n        constructor(\n            text: String,\n            image: SDGSelectInputImage,\n            type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,\n        ) : this(\n            text = SDGSelectInputText.Single(value = text),\n            image = image,\n            type = type,\n        )\n    }",
+        "after": "data class OneImage(\n        override val text: SDGSelectInputText,\n        val image: SDGSelectInputImage,\n        val type: SDGSelectInputImageType = SDGSelectInputImageType.WithCircular,\n    ) : SDGSelectInputType() {\n        override val typeName: String = \"1 Image\"\n\n        @Deprecated(\n            message = \"String 대신 SDGSelectInputText를 사용하세요.\",\n        )\n        constructor(\n            text: String,\n            image: SDGSelectInputImage,\n            type: SDGSelectInputImageType = SDGSelectInputImageType.WithCircular,\n        ) : this(\n            text = SDGSelectInputText.Single(value = text),\n            image = image,\n            type = type,\n        )\n    }"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputType.TwoImage",
+        "before": "data class TwoImage(\n        val first: SDGSelectInputImageElement,\n        val second: SDGSelectInputImageElement,\n    ) : SDGSelectInputType() {\n        override val text: SDGSelectInputText\n            get() = first.text\n\n        override val typeName: String = \"2 Image\"\n\n        @Deprecated(\n            message = \"first와 second에 SDGSelectInputImageElement를 사용하세요.\",\n        )\n        constructor(\n            text: String,\n            image: SDGSelectInputImage,\n            secondText: String,\n            secondImage: SDGSelectInputImage,\n            imageSize: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,\n        ) : this(\n            first = SDGSelectInputImageElement(\n                text = SDGSelectInputText.Single(value = text),\n                image = image,\n                type = imageSize,\n            ),\n            second = SDGSelectInputImageElement(\n                text = SDGSelectInputText.Single(value = secondText),\n                image = secondImage,\n                type = imageSize,\n            ),\n        )\n    }",
+        "after": "data class TwoImage(\n        val first: SDGSelectInputImageElement,\n        val second: SDGSelectInputImageElement,\n    ) : SDGSelectInputType() {\n        override val text: SDGSelectInputText\n            get() = first.text\n\n        override val typeName: String = \"2 Image\"\n\n        @Deprecated(\n            message = \"first와 second에 SDGSelectInputImageElement를 사용하세요.\",\n        )\n        constructor(\n            text: String,\n            image: SDGSelectInputImage,\n            secondText: String,\n            secondImage: SDGSelectInputImage,\n            imageSize: SDGSelectInputImageType = SDGSelectInputImageType.WithCircular,\n        ) : this(\n            first = SDGSelectInputImageElement(\n                text = SDGSelectInputText.Single(value = text),\n                image = image,\n                type = imageSize,\n            ),\n            second = SDGSelectInputImageElement(\n                text = SDGSelectInputText.Single(value = secondText),\n                image = secondImage,\n                type = imageSize,\n            ),\n        )\n    }"
+      },
+      {
+        "id": "com.shopl.sdg.component.select_input.SDGSelectInputImageElement",
+        "before": "/** Two Image를 구성하는 독립적인 One Image Input 항목입니다. */\n@Immutable\ndata class SDGSelectInputImageElement(\n    val text: SDGSelectInputText,\n    val image: SDGSelectInputImage,\n    val type: SDGSelectInputImageType = SDGSelectInputImageType.Normal1,\n    val state: SDGSelectInputState? = null,\n)",
+        "after": "/** Two Image 필드에 표시하는 이미지 선택 항목입니다. */\n@Immutable\ndata class SDGSelectInputImageElement(\n    val text: SDGSelectInputText,\n    val image: SDGSelectInputImage,\n    val type: SDGSelectInputImageType = SDGSelectInputImageType.WithCircular,\n    /** 항목 상태를 재정의하더라도 필드가 Disabled이면 비활성화됩니다. */\n    val state: SDGSelectInputState? = null,\n)"
+      },
+      {
+        "id": "com.shopl.sdg.component.tab.box.SDGBoxTabItemState",
+        "before": "sealed interface SDGBoxTabItemState {\n    val labelTypography: SDGTypography\n    val labelTextColor: Color\n    val twoDepthColor: Color\n\n    data object Selected : SDGBoxTabItemState {\n        override val labelTypography = SDGTypography.Body2SB\n        override val labelTextColor = SDGColor.Neutral700\n        override val twoDepthColor = SDGColor.Neutral500\n    }\n\n    data object Unselected : SDGBoxTabItemState {\n        override val labelTypography = SDGTypography.Body2R\n        override val labelTextColor = SDGColor.Neutral300\n        override val twoDepthColor = SDGColor.Neutral300\n    }\n}",
+        "after": "sealed interface SDGBoxTabItemState {\n    val labelTypography: SDGTypography\n    val labelTextColor: Color\n    val twoDepthColor: Color\n\n    data object Selected : SDGBoxTabItemState {\n        override val labelTypography = SDGTypography.Body2SB\n        override val labelTextColor = SDGColor.Neutral700\n        override val twoDepthColor = SDGColor.Neutral500\n    }\n\n    data object Unselected : SDGBoxTabItemState {\n        override val labelTypography = SDGTypography.Body2R\n        override val labelTextColor = SDGColor.Neutral350\n        override val twoDepthColor = SDGColor.Neutral350\n    }\n}"
+      },
+      {
+        "id": "com.shopl.sdg.component.tab.box.SDGBoxTabItemState.Unselected",
+        "before": "data object Unselected : SDGBoxTabItemState {\n        override val labelTypography = SDGTypography.Body2R\n        override val labelTextColor = SDGColor.Neutral300\n        override val twoDepthColor = SDGColor.Neutral300\n    }",
+        "after": "data object Unselected : SDGBoxTabItemState {\n        override val labelTypography = SDGTypography.Body2R\n        override val labelTextColor = SDGColor.Neutral350\n        override val twoDepthColor = SDGColor.Neutral350\n    }"
+      },
+      {
+        "id": "com.shopl.sdg_common.foundation.spacing.SDGSpacing",
+        "before": "/**\n * SDG - Foundation - Spacing\n *\n * 컴포넌트 및 템플릿, 그리고 화면의 여백과 간격 값을 정의합니다.\n *\n * @see <a href=\"https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6764-15774&m=dev\">Figma</a>\n */\nobject SDGSpacing {\n    /** Common: 화면 구성의 기본 단위 **/\n    val Spacing2 = 2.dp\n    val Spacing4 = 4.dp\n    val Spacing6 = 6.dp\n    val Spacing8 = 8.dp\n    val Spacing10 = 10.dp\n    val Spacing12 = 12.dp\n    val Spacing16 = 16.dp\n    val Spacing20 = 20.dp\n    val Spacing24 = 24.dp\n    val Spacing40 = 40.dp\n\n    /** Special: 화면 구성의 예외 단위 **/\n    val Spacing1 = 1.dp\n    val Spacing3 = 3.dp\n    val Spacing5 = 5.dp\n    val Spacing11 = 11.dp\n    val Spacing18 = 18.dp\n    val Spacing28 = 28.dp\n    val Spacing32 = 32.dp\n    val Spacing60 = 60.dp\n    val Spacing100 = 100.dp\n    val Spacing104 = 104.dp\n}",
+        "after": "/**\n * SDG - Foundation - Spacing\n *\n * @version 2.3.47\n *\n * 컴포넌트 및 템플릿, 그리고 화면의 여백과 간격 값을 정의합니다.\n *\n * @see <a href=\"https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=6764-15774&m=dev\">Figma</a>\n */\nobject SDGSpacing {\n    /** Common: 화면 구성의 기본 단위 **/\n    val Spacing2 = 2.dp\n    val Spacing4 = 4.dp\n    val Spacing6 = 6.dp\n    val Spacing8 = 8.dp\n    val Spacing10 = 10.dp\n    val Spacing12 = 12.dp\n    val Spacing16 = 16.dp\n    val Spacing20 = 20.dp\n    val Spacing24 = 24.dp\n    val Spacing40 = 40.dp\n\n    /** Special: 화면 구성의 예외 단위 **/\n    val Spacing1 = 1.dp\n    val Spacing3 = 3.dp\n    val Spacing5 = 5.dp\n    val Spacing7 = 7.dp\n    val Spacing11 = 11.dp\n    val Spacing18 = 18.dp\n    val Spacing28 = 28.dp\n    val Spacing32 = 32.dp\n    val Spacing36 = 36.dp\n    val Spacing44 = 44.dp\n    val Spacing52 = 52.dp\n    val Spacing60 = 60.dp\n    val Spacing68 = 68.dp\n    val Spacing76 = 76.dp\n    val Spacing100 = 100.dp\n    val Spacing104 = 104.dp\n}"
+      }
+    ]
+  },
+  "assets": {
+    "added": [
+      {
+        "id": "com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing7",
+        "value": "{\"reference\":\"SDGSpacing.Spacing7\",\"value\":\"7.dp\"}"
+      },
+      {
+        "id": "com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing36",
+        "value": "{\"reference\":\"SDGSpacing.Spacing36\",\"value\":\"36.dp\"}"
+      },
+      {
+        "id": "com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing44",
+        "value": "{\"reference\":\"SDGSpacing.Spacing44\",\"value\":\"44.dp\"}"
+      },
+      {
+        "id": "com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing52",
+        "value": "{\"reference\":\"SDGSpacing.Spacing52\",\"value\":\"52.dp\"}"
+      },
+      {
+        "id": "com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing68",
+        "value": "{\"reference\":\"SDGSpacing.Spacing68\",\"value\":\"68.dp\"}"
+      },
+      {
+        "id": "com.shopl.sdg_common.foundation.spacing.SDGSpacing.Spacing76",
+        "value": "{\"reference\":\"SDGSpacing.Spacing76\",\"value\":\"76.dp\"}"
+      },
+      {
+        "id": "com.shopl.sdg_resource.R.drawable.ic_etc_annual:drawable",
+        "value": "{\"reference\":\"R.drawable.ic_etc_annual\"}"
+      },
+      {
+        "id": "com.shopl.sdg_resource.R.drawable.ic_menu_approval:drawable",
+        "value": "{\"reference\":\"R.drawable.ic_menu_approval\"}"
+      },
+      {
+        "id": "com.shopl.sdg_resource.R.drawable.ic_menu_leave:drawable",
+        "value": "{\"reference\":\"R.drawable.ic_menu_leave\"}"
+      },
+      {
+        "id": "com.shopl.sdg_resource.R.drawable.ic_menu_overtime:drawable",
+        "value": "{\"reference\":\"R.drawable.ic_menu_overtime\"}"
+      },
+      {
+        "id": "com.shopl.sdg_resource.R.drawable.ic_menu_schedule:drawable",
+        "value": "{\"reference\":\"R.drawable.ic_menu_schedule\"}"
+      }
+    ],
+    "removed": [],
+    "changed": []
+  },
+  "note": "Added/removed signatures are compatibility review candidates, not an automatic breaking-change classification."
+}

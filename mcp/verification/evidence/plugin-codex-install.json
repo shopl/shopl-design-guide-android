@@ -1,0 +1,89 @@
+{
+  "status": "passed",
+  "method": "real Codex App Server RPC; no model turn",
+  "cwd": "/tmp",
+  "manualServerRemoved": true,
+  "server": "sdg-android",
+  "runtimeStatus": "connected",
+  "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0",
+  "verificationId": "e49e4c4768294ca1",
+  "skillsDiscovered": [
+    "sdg-android-setup",
+    "sdg-android-components",
+    "sdg-android-foundation"
+  ],
+  "calls": [
+    {
+      "tool": "sdg_resolve_context",
+      "arguments": {},
+      "status": "ok",
+      "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0"
+    },
+    {
+      "tool": "sdg_search_components",
+      "arguments": {
+        "category": "component",
+        "query": "SDGBoxButton"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "componentId": "com.shopl.sdg.component.button.box.extension.SDGBoxButton",
+        "overloadId": "024638b9f3e9a837"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0"
+    },
+    {
+      "tool": "sdg_search_components",
+      "arguments": {
+        "category": "template",
+        "query": "SDGInputCenterPopup"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "componentId": "com.shopl.sdg.template.popup.center.input.SDGInputCenterPopup",
+        "overloadId": "0bf3c92e51538a0f"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0"
+    },
+    {
+      "tool": "sdg_get_recipe",
+      "arguments": {},
+      "status": "ok",
+      "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0"
+    },
+    {
+      "tool": "sdg_get_recipe",
+      "arguments": {
+        "recipeId": "input-save"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0"
+    },
+    {
+      "tool": "sdg_get_example",
+      "arguments": {
+        "exampleId": "curated:InputSaveExample"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0"
+    },
+    {
+      "tool": "sdg_search_assets",
+      "arguments": {
+        "kind": "icon"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "policy": "latest_only",
+  "version": "1.25.2",
+  "downgradeRejected": true,
+  "registryUnchangedOnRejection": true,
+  "sourceAndDistCatalogCount": 1,
+  "retiredPayloadRemoved": true,
+  "mavenMetadataRelease": "1.25.2"
+}

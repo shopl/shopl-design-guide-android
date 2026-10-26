@@ -1,0 +1,66 @@
+{
+  "sourceSha": "02dd6717822e86a1e4c83daa0aba67120e238fdd",
+  "version": "1.23.2",
+  "scope": "published_source_bytes_and_drawable_symbols",
+  "sourceCounts": {
+    "SDG-Android": 301,
+    "SDG-Android-Common": 25
+  },
+  "drawableSymbols": 156,
+  "artifacts": [
+    {
+      "artifact": "SDG-Android",
+      "file": "SDG-Android-1.23.2-sources.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android/1.23.2/SDG-Android-1.23.2-sources.jar",
+      "sha256": "c6fb15eb655581f44f8c7678fd60803f2ee303306f8abf6756dc686c0cea152a"
+    },
+    {
+      "artifact": "SDG-Android",
+      "file": "SDG-Android-1.23.2.aar",
+      "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android/1.23.2/SDG-Android-1.23.2.aar",
+      "sha256": "683cf56d96494e905d6ec4bd88b522748ee33e1975b50bb5180fd1baf3813599"
+    },
+    {
+      "artifact": "SDG-Android",
+      "file": "SDG-Android-1.23.2.pom",
+      "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android/1.23.2/SDG-Android-1.23.2.pom",
+      "sha256": "85c50adda5a09e4db84a27d2aca321015c32c5e7528f261d9c00f9d35ca4a78f"
+    },
+    {
+      "artifact": "SDG-Android-Common",
+      "file": "SDG-Android-Common-1.23.2-sources.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android-Common/1.23.2/SDG-Android-Common-1.23.2-sources.jar",
+      "sha256": "6467c67839f36a98eddb7b23fab85cefc630e06e92b077c1f40f401156902db8"
+    },
+    {
+      "artifact": "SDG-Android-Common",
+      "file": "SDG-Android-Common-1.23.2.aar",
+      "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android-Common/1.23.2/SDG-Android-Common-1.23.2.aar",
+      "sha256": "c8cb217c5c8f4682085a6c5b95896a9e225dfdfb339f6c5dc7a09ad2eb751062"
+    },
+    {
+      "artifact": "SDG-Android-Common",
+      "file": "SDG-Android-Common-1.23.2.pom",
+      "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android-Common/1.23.2/SDG-Android-Common-1.23.2.pom",
+      "sha256": "9b04c59d43d63b0292a3adb8e3e2473aef20bc799f15d21e4e80a6ece4ab7e89"
+    },
+    {
+      "artifact": "SDG-Android-Resource",
+      "file": "SDG-Android-Resource-1.23.2-sources.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android-Resource/1.23.2/SDG-Android-Resource-1.23.2-sources.jar",
+      "sha256": "c6deada2fac53b8ea6523dbda77597b128006674616f140f04df23264c6d1aa3"
+    },
+    {
+      "artifact": "SDG-Android-Resource",
+      "file": "SDG-Android-Resource-1.23.2.aar",
+      "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android-Resource/1.23.2/SDG-Android-Resource-1.23.2.aar",
+      "sha256": "a706ab584b54c8a876fa2950cf3d95e08e9057186039c561f9d6d214dccdf26f"
+    },
+    {
+      "artifact": "SDG-Android-Resource",
+      "file": "SDG-Android-Resource-1.23.2.pom",
+      "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android-Resource/1.23.2/SDG-Android-Resource-1.23.2.pom",
+      "sha256": "b646de4f5c5e51417532dc037813cecc7a777f6e1630b7923f340751b689d8ff"
+    }
+  ]
+}

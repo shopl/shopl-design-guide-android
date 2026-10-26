@@ -1,0 +1,10 @@
+{
+  "runtimeStatus": "connected",
+  "versions": [
+    {
+      "version": "1.25.2",
+      "context": "declared_only",
+      "spacing36": "ok"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "verifiedAt": "2026-10-26T00:25:05.449807+00:00",
+  "status": "passed_local_refactor",
+  "explicitRequirements": [
+    "MCP plus skills plugin packaging",
+    "independent user installation",
+    "latest released SDG only",
+    "component/template/local kit reuse",
+    "ask before PR"
+  ],
+  "implementationChoices": [
+    "GitHub marketplace and portable archive; no npm publishing",
+    "separate Android marketplace name",
+    "bundle dependencies with esbuild",
+    "publish verified workflow artifacts for review before main integration"
+  ],
+  "identity": {
+    "pluginVersion": "0.1.0",
+    "sdgVersion": "1.25.2",
+    "sourceSha": "dd414d90ab9d09890714cf1e9a93d2fb0b0c20e1",
+    "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0",
+    "verificationId": "e49e4c4768294ca1"
+  },
+  "checks": {
+    "fullVerify": {
+      "exitCode": 0,
+      "log": "/tmp/sdg-plugin-full-verify.log",
+      "sha256": "4cbc1a23900449a8bbf69257ec09a6641518f33bbda0cadf5146320fcd744ea4",
+      "scope": "published artifacts, source and consumer compilation, MCP diagnosis"
+    },
+    "pluginDiagnosis": {
+      "exitCode": 0,
+      "hosts": [
+        "codex",
+        "claude",
+        "cursor"
+      ],
+      "protocols": [
+        "2025-11-25",
+        "2026-07-28"
+      ],
+      "callsPerHostProtocol": 24,
+      "scope": "manifest launch in independent directory, not each GUI"
+    },
+    "minimumNode22": {
+      "exitCode": 0,
+      "log": "/tmp/sdg-plugin-node22.log"
+    },
+    "skillsValidation": {
+      "exitCode": 0,
+      "count": 3
+    },
+    "workflowLint": {
+      "mcpCheck": 0,
+      "mcpSyncRelease": 0,
+      "autoDeployCombined": 1,
+      "remaining": "existing ShellCheck warnings outside changed lines; no unrelated fixes"
+    },
+    "claudeManifestValidation": {
+      "exitCode": 0,
+      "warnings": [
+        "marketplace description omitted",
+        "plugin version intentionally omitted for commit-based updates"
+      ]
+    },
+    "deterministicBuild": "release metadata and every file hash unchanged on repeated build",
+    "codexInstallEvidence": "plugin-codex-install.json",
+    "gitUpdateEvidence": "plugin-git-update.json"
+  },
+  "archive": {
+    "file": "sdg-android-plugin-1.25.2.tar.gz",
+    "sha256": "42c157e6974879501a38b2de75c66e5f4754052792fd54766846bbea53de8943"
+  },
+  "notVerified": [
+    "new real SDG release through GitHub Actions",
+    "official GitHub marketplace installation before main integration",
+    "Claude Code and Cursor GUI installation/automatic refresh",
+    "plugin-driven autonomous model selection; prior autonomous run used repository instructions"
+  ],
+  "changes": {
+    "applicationLayers": [],
+    "newTests": false,
+    "commit": false,
+    "push": false,
+    "pullRequest": false
+  }
+}

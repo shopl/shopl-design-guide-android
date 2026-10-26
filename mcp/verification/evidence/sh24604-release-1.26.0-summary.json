@@ -1,0 +1,257 @@
+{
+  "verifiedAt": "2026-10-26T01:52:13.040608+00:00",
+  "status": "real_release_local_refresh_verified",
+  "ticket": "SH-24604",
+  "version": "1.26.0",
+  "sourceSha": "6b2ed256ac7ba7a03c4a8b6fc9ae4cfc865ff8e2",
+  "catalogId": "sdg-android:1.26.0:2753de67bba13d7a",
+  "verificationId": "bba4fc5146b78dde",
+  "deployment": {
+    "run": "https://github.com/shopl/shopl-design-guide-android/actions/runs/40254557428",
+    "pullRequest": "https://github.com/shopl/shopl-design-guide-android/pull/505",
+    "checkoutAndPublishedEvidence": [
+      "2026-10-26T01:30:47.4242881Z [command]/usr/bin/git log -1 --format=%H",
+      "2026-10-26T01:30:47.4271079Z 6b2ed256ac7ba7a03c4a8b6fc9ae4cfc865ff8e2",
+      "2026-10-26T01:48:23.0828036Z Current deploymentState: PUBLISHED"
+    ],
+    "tagCommit": "6b2ed256ac7ba7a03c4a8b6fc9ae4cfc865ff8e2"
+  },
+  "artifactVerification": {
+    "sourceSha": "6b2ed256ac7ba7a03c4a8b6fc9ae4cfc865ff8e2",
+    "version": "1.26.0",
+    "scope": "published_source_bytes_and_drawable_symbols",
+    "sourceCounts": {
+      "SDG-Android": 329,
+      "SDG-Android-Common": 26
+    },
+    "drawableSymbols": 161,
+    "artifacts": [
+      {
+        "artifact": "SDG-Android",
+        "file": "SDG-Android-1.26.0-sources.jar",
+        "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android/1.26.0/SDG-Android-1.26.0-sources.jar",
+        "sha256": "d31138c01e87ef21e8244d33043967ed093afe8dff11ebbaae0e2006196ec36d"
+      },
+      {
+        "artifact": "SDG-Android",
+        "file": "SDG-Android-1.26.0.aar",
+        "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android/1.26.0/SDG-Android-1.26.0.aar",
+        "sha256": "469d8ccc0ab7fa11491f6f0fc3b634b674ab3debedfed8bb7f212b32253b05d4"
+      },
+      {
+        "artifact": "SDG-Android",
+        "file": "SDG-Android-1.26.0.pom",
+        "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android/1.26.0/SDG-Android-1.26.0.pom",
+        "sha256": "113525266b41c6572c1ed29ea7f7a6c63ecfa733b97fc9fb2a60ecfca6222b43"
+      },
+      {
+        "artifact": "SDG-Android-Common",
+        "file": "SDG-Android-Common-1.26.0-sources.jar",
+        "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android-Common/1.26.0/SDG-Android-Common-1.26.0-sources.jar",
+        "sha256": "a861fa9bca2452988aceff766618ece32dfb45c79afd19ff7e80ccc6241e671b"
+      },
+      {
+        "artifact": "SDG-Android-Common",
+        "file": "SDG-Android-Common-1.26.0.aar",
+        "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android-Common/1.26.0/SDG-Android-Common-1.26.0.aar",
+        "sha256": "0d9f14fe692c7838725a545f5cc60fa546e69ab1f841f18d2b9765b743dc2130"
+      },
+      {
+        "artifact": "SDG-Android-Common",
+        "file": "SDG-Android-Common-1.26.0.pom",
+        "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android-Common/1.26.0/SDG-Android-Common-1.26.0.pom",
+        "sha256": "1c429ba3cc03009d3bee3aed81de0c77b3dfcfce4128b771cb277c2fb7252895"
+      },
+      {
+        "artifact": "SDG-Android-Resource",
+        "file": "SDG-Android-Resource-1.26.0-sources.jar",
+        "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android-Resource/1.26.0/SDG-Android-Resource-1.26.0-sources.jar",
+        "sha256": "c6deada2fac53b8ea6523dbda77597b128006674616f140f04df23264c6d1aa3"
+      },
+      {
+        "artifact": "SDG-Android-Resource",
+        "file": "SDG-Android-Resource-1.26.0.aar",
+        "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android-Resource/1.26.0/SDG-Android-Resource-1.26.0.aar",
+        "sha256": "47e50942be9713bdedffd0b02eb351f2578471af6b711c1a909444d4f9328cb6"
+      },
+      {
+        "artifact": "SDG-Android-Resource",
+        "file": "SDG-Android-Resource-1.26.0.pom",
+        "url": "https://repo.maven.apache.org/maven2/com/shoplworks/SDG-Android-Resource/1.26.0/SDG-Android-Resource-1.26.0.pom",
+        "sha256": "f091e81d9127077d51c3c017b374746203d2c7e6c3e57ed681d11a23e3407c83"
+      }
+    ]
+  },
+  "compilation": {
+    "sourceSha": "6b2ed256ac7ba7a03c4a8b6fc9ae4cfc865ff8e2",
+    "source": {
+      "task": ":app:compileDebugKotlin",
+      "exitCode": 0,
+      "log": "source-compile.log",
+      "logSha256": "cde7d3733244c4b134ed3d465864151cfab180936a4fcbf69461a75b061570a6"
+    },
+    "consumer": {
+      "task": "compileDebugKotlin",
+      "exitCode": 0,
+      "log": "consumer-compile.log",
+      "logSha256": "316bd899c5dbfcbaa2dd88eef26858da23fe451d050f38bbf216ac991c8e286c"
+    },
+    "inputHash": "061a47a0a09f6e8fe111e393331fec3bb88644381d1684ade3cd3cb3ba8126da",
+    "verifiedAt": "2026-10-26T01:49:26.943Z",
+    "apiOverloads": 194,
+    "assets": 301,
+    "sourceExamples": 245,
+    "curatedExamples": 6,
+    "environment": {
+      "kotlin": "2.1.20",
+      "androidGradlePlugin": "8.10.0",
+      "compileSdk": 36,
+      "minSdk": 28,
+      "sdg": "1.26.0",
+      "composeBom": "2025.05.01"
+    }
+  },
+  "protocol": {
+    "verifiedAt": "2026-10-26T01:49:29.090Z",
+    "status": "passed",
+    "sessions": [
+      {
+        "protocol": "2025-11-25",
+        "categoryChecks": [
+          {
+            "category": "component",
+            "componentId": "com.shopl.sdg.component.button.box.extension.SDGBoxButton",
+            "status": "passed"
+          },
+          {
+            "category": "template",
+            "componentId": "com.shopl.sdg.template.popup.center.input.SDGInputCenterPopup",
+            "status": "passed"
+          }
+        ],
+        "policy": "latest_only",
+        "checks": [
+          "default_latest",
+          "outdated_consumer_warning",
+          "stale_snapshot_rejected",
+          "all_tools_without_catalog_id"
+        ],
+        "tools": [
+          "sdg_resolve_context",
+          "sdg_search_components",
+          "sdg_get_component",
+          "sdg_get_example",
+          "sdg_search_assets",
+          "sdg_get_recipe"
+        ],
+        "calls": 24,
+        "catalogs": [
+          {
+            "version": "1.26.0",
+            "catalogId": "sdg-android:1.26.0:2753de67bba13d7a",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "protocol": "2026-07-28",
+        "categoryChecks": [
+          {
+            "category": "component",
+            "componentId": "com.shopl.sdg.component.button.box.extension.SDGBoxButton",
+            "status": "passed"
+          },
+          {
+            "category": "template",
+            "componentId": "com.shopl.sdg.template.popup.center.input.SDGInputCenterPopup",
+            "status": "passed"
+          }
+        ],
+        "policy": "latest_only",
+        "checks": [
+          "default_latest",
+          "outdated_consumer_warning",
+          "stale_snapshot_rejected",
+          "all_tools_without_catalog_id"
+        ],
+        "tools": [
+          "sdg_resolve_context",
+          "sdg_search_components",
+          "sdg_get_component",
+          "sdg_get_example",
+          "sdg_search_assets",
+          "sdg_get_recipe"
+        ],
+        "calls": 24,
+        "catalogs": [
+          {
+            "version": "1.26.0",
+            "catalogId": "sdg-android:1.26.0:2753de67bba13d7a",
+            "status": "passed"
+          }
+        ]
+      }
+    ]
+  },
+  "liveUpdate": {
+    "evidence": "sh24604-release-1.26.0-live-update.json",
+    "unchangedMcpPid": 88116,
+    "clientBundledVersion": "1.25.2",
+    "appliedDataVersion": "1.26.0",
+    "toolCalls": 40,
+    "sameCode": true,
+    "noRestart": true,
+    "noReinstall": true
+  },
+  "plugin": {
+    "status": "passed",
+    "hostDeclarations": [
+      "codex",
+      "claude",
+      "cursor"
+    ],
+    "toolCalls": 144,
+    "hostUIAndAutoUpdateImplied": false
+  },
+  "logs": {
+    "sync": {
+      "path": "/tmp/sdg-sh24604-release-1.26.0-sync.log",
+      "exitCode": 0,
+      "sha256": "3ec8d4b4e08c139f10ee45486f53528f24e7f5e81cdcc4d88e2d2a687758aacc"
+    },
+    "feed": {
+      "path": "/tmp/sdg-sh24604-release-1.26.0-feed.log",
+      "exitCode": 0,
+      "sha256": "7ff56f1f4e8a85cfedda8057f0a2952086265f1976cf967fd209f50cdf84e986"
+    },
+    "local-publish": {
+      "path": "/tmp/sdg-sh24604-release-1.26.0-local-publish.log",
+      "exitCode": 0,
+      "sha256": "b477c2d65f2665538599fbbb72607aa93ffcb7c2e0b537746fad42e0d12780b3"
+    },
+    "plugin": {
+      "path": "/tmp/sdg-sh24604-release-1.26.0-plugin.log",
+      "exitCode": 0,
+      "sha256": "0cb711c73e0d964fe32699f8aa0e065135c344cc54bcd1fe3ef8c6fc8a470352"
+    }
+  },
+  "explicitRequirementChanges": [
+    "사용자 배포 완료 후 Maven 및 GitHub에서 새 버전과 실제 소스 커밋을 직접 확인",
+    "최신 카탈로그와 최초 설치용 번들·문서 갱신",
+    "배포 전부터 실행한 MCP의 재시작 없는 데이터 적용 확인"
+  ],
+  "implementationInferences": [],
+  "verificationEnvironment": "previously prepared isolated local Git publication and loopback feed; not production GitHub hosting",
+  "remaining": [
+    "official main integration",
+    "official GitHub Actions token publication and user default URL end-to-end validation"
+  ],
+  "androidLayerHarness": "not applicable; no data/domain/features/ui product source changes",
+  "deviceRuntime": "not run",
+  "externalMutations": {
+    "officialFeedPublished": false,
+    "sourceCommit": false,
+    "sourcePush": false,
+    "pullRequestCreated": false
+  }
+}

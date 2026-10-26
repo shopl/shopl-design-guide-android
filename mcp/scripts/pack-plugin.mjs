@@ -1,0 +1,12 @@
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import path from 'node:path';
+import { mcp, repo } from './sync-context.mjs';
+const release = JSON.parse(readFileSync(path.join(repo, 'plugins/sdg-android/release.json'), 'utf8'));
+const out = path.join(mcp, '.cache/distribution');
+mkdirSync(out, { recursive: true });
+const filename = `sdg-android-plugin-${release.sdgVersion}.tar.gz`;
+execFileSync('tar', ['-czf', path.join(out, filename), '-C', repo, '.claude-plugin/marketplace.json', '.cursor-plugin/marketplace.json', 'plugins/sdg-android']);
+writeFileSync(path.join(out, `${filename}.sha256`), `${createHash('sha256').update(readFileSync(path.join(out, filename))).digest('hex')}  ${filename}\n`);
+console.log(path.join(out, filename));

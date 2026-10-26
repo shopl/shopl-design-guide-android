@@ -1,0 +1,70 @@
+{
+  "verifiedAt": "2026-10-26T01:10:43.987943+00:00",
+  "status": "implemented_and_locally_verified_not_activated_on_github",
+  "explicitRequirementChanges": [
+    "MCP automatically checks and loads latest SDG data before every tool request",
+    "verified SDG release data is automatically published by the deployment workflow",
+    "no per-user plugin update toggle required for normal SDG data updates",
+    "component/template/local kit preference preserved",
+    "no PR creation without confirmation"
+  ],
+  "implementationChoices": [
+    "public sdg-mcp-data Git branch as static JSON hosting",
+    "SHA-256 and schema/identity verification before adoption",
+    "immutable local cache and bundled fallback with explicit freshness state",
+    "four-second HTTP timeout and bounded downloads",
+    "reader compatibility version; no automatic remote code execution",
+    "read-only verification job and separate contents-write data publication job"
+  ],
+  "checks": {
+    "fullVerification": {
+      "exitCode": 0,
+      "log": "/tmp/sdg-auto-full-verify.log",
+      "sha256": "f04f53c8c46f17d379669a21802f17a7a67d3122a1a33d90f864c01a612ea0ab"
+    },
+    "historicalReleaseTransition": "automatic-data-update.json",
+    "node22ModernProtocolTransition": "automatic-data-update-node22.json",
+    "pluginPackageDiagnosis": {
+      "exitCode": 0,
+      "protocols": [
+        "2025-11-25",
+        "2026-07-28"
+      ],
+      "hosts": [
+        "codex",
+        "claude",
+        "cursor"
+      ],
+      "callsPerHostProtocol": 24,
+      "remoteDisabledForFixedArtifactChecks": true
+    },
+    "actualCodexPlugin": "automatic-data-codex-install.json",
+    "newWorkflowActionlintExitCode": 0,
+    "gitDiffCheckExitCode": 0,
+    "modifiedSkillsValidatorExitCode": 0,
+    "androidLayerHarness": "not applicable; no data/domain/features/ui source changes"
+  },
+  "currentProductionEndpoint": {
+    "state": "offline",
+    "source": "bundled",
+    "checkedAt": "2026-10-26T01:08:54.277Z",
+    "feedUrl": "https://raw.githubusercontent.com/shopl/shopl-design-guide-android/sdg-mcp-data/latest.json",
+    "detail": "SDG 정보 다운로드 실패: HTTP 404"
+  },
+  "remaining": [
+    "merge source/workflow changes into official repository",
+    "first verified data publication to the official data branch",
+    "real SDG PUBLISHED event through GitHub Actions and already-running user MCP"
+  ],
+  "externalMutations": {
+    "productionPublish": false,
+    "pullRequest": false,
+    "sourceCommitOrPush": false,
+    "localTemporaryGitPublicationForDiagnosis": true
+  },
+  "delivery": {
+    "archive": "/Users/shopl/Downloads/sdg-android-plugin-auto-update-20261026/sdg-android-plugin-1.25.2.tar.gz",
+    "sha256": "a8f3a94e91b549d69fae4b50775d6ebe9c7ec66af3a93f5a20fdd13e928e0345"
+  },
+  "installedRuntimeUpdated": true
+}

@@ -1,0 +1,148 @@
+name: SDG MCP 배포 카탈로그 동기화
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      source_sha:
+        required: true
+        type: string
+      deployment_state:
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 최신 Maven Central 배포 버전 (실패한 동기화 재실행용)
+        required: true
+        type: string
+      source_sha:
+        description: 실제 배포 소스의 전체 commit SHA
+        required: true
+        type: string
+
+# Serialize verification and data publication. Clients fetch the data branch automatically.
+concurrency:
+  group: sdg-mcp-catalog-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: >-
+      github.repository == 'shopl/shopl-design-guide-android' &&
+      (github.event_name == 'workflow_dispatch' || inputs.deployment_state == 'PUBLISHED')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: mcp/package-lock.json
+      - uses: android-actions/setup-android@v3
+      - name: Android SDK 설치
+        run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+      - name: MCP 빌드
+        run: |
+          npm ci --prefix mcp
+          npm run build --prefix mcp
+      - name: 배포 아티팩트와 카탈로그 검증
+        env:
+          SDG_DEPLOYED_VERSION: ${{ inputs.version }}
+          SDG_DEPLOYED_SHA: ${{ inputs.source_sha }}
+        run: |
+          set -euo pipefail
+          npm run sync --prefix mcp -- --version "$SDG_DEPLOYED_VERSION" --source-sha "$SDG_DEPLOYED_SHA"
+          npm run doctor --prefix mcp
+          git diff --check
+      - name: 독립 실행 플러그인 패키징 및 진단
+        env:
+          SDG_PLUGIN_REPORT: ${{ github.workspace }}/mcp/.cache/plugin-diagnostic.json
+        run: npm run plugin:pack --prefix mcp
+      - name: 사용자 설치 파일 보관
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdg-android-plugin-${{ inputs.version }}-${{ github.run_id }}
+          path: |
+            mcp/.cache/distribution/sdg-android-plugin-${{ inputs.version }}.tar.gz
+            mcp/.cache/distribution/sdg-android-plugin-${{ inputs.version }}.tar.gz.sha256
+            mcp/.cache/plugin-diagnostic.json
+          include-hidden-files: true
+          if-no-files-found: error
+      - name: 검증된 최신 카탈로그와 변경 기록 보관
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdg-mcp-verified-${{ inputs.version }}-${{ github.run_id }}
+          path: |
+            mcp/data/
+            plugins/sdg-android/
+            .claude-plugin/marketplace.json
+            .cursor-plugin/marketplace.json
+          include-hidden-files: true
+          if-no-files-found: error
+      - name: 자동 갱신 데이터 준비
+        run: npm run feed:prepare --prefix mcp
+      - name: 게시할 검증 데이터 보관
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdg-mcp-feed-${{ github.run_id }}
+          path: |
+            mcp/.cache/feed/latest.json
+            mcp/.cache/feed/catalogs/*.json
+          include-hidden-files: true
+          if-no-files-found: error
+      - name: 실패한 검증 로그 보관
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdg-mcp-sync-failure
+          path: mcp/.cache/runs/**/*.log
+          include-hidden-files: true
+          if-no-files-found: ignore
+
+  publish_data:
+    needs: sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: mcp/package-lock.json
+      - run: npm ci --prefix mcp
+      - run: npm run build --prefix mcp
+      - uses: actions/download-artifact@v4
+        with:
+          name: sdg-mcp-feed-${{ github.run_id }}
+          path: mcp/.cache/feed
+      - name: 검증된 SDG 정보 자동 게시
+        run: npm run feed:publish --prefix mcp
+      - name: 자동 갱신 안내
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ### SDG MCP 최신 정보 게시 완료
+
+          배포 아티팩트 대조·컴파일·MCP 진단을 통과한 정보를 sdg-mcp-data 브랜치에 게시했습니다.
+          MCP는 다음 도구 호출 전에 원격 정보를 자동으로 확인합니다.
+          사용자는 SDG 정보 갱신을 위해 플러그인을 재설치하거나 자동 업데이트를 설정할 필요가 없습니다.
+          네트워크 또는 GitHub 전파 지연은 도구 응답의 update 상태로 확인합니다.
+          이 workflow는 소스 브랜치 변경, PR 생성, npm 게시를 수행하지 않습니다.
+          EOF

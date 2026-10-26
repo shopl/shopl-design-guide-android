@@ -15,6 +15,10 @@ jobs:
         contains(join(github.event.pull_request.labels.*.name, ','), 'minor') ||
         contains(join(github.event.pull_request.labels.*.name, ','), 'patch')
       )
+    outputs:
+      deployment_state: ${{ steps.poll_status.outputs.deployment_state }}
+      version: ${{ steps.extract_info.outputs.version }}
+      source_sha: ${{ steps.extract_info.outputs.source_sha }}
     runs-on: ubuntu-latest
     env:
       POLL_INTERVAL_SECONDS: ${{ vars.SDG_MAVEN_POLL_INTERVAL_SECONDS }}
@@ -62,6 +66,7 @@ jobs:
           RESOURCE_ARTIFACT_ID=$(grep -m1 'SDG_RESOURCE_ARTIFACT_ID' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
           COMMON_ARTIFACT_ID=$(grep -m1 'SDG_COMMON_ARTIFACT_ID' build-logic/src/main/kotlin/com/shopl/sdg/build_logic/PublishingConfig.kt | sed 's/.*"\(.*\)".*/\1/')
           
+          echo "source_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           echo "group=$GROUP" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "sdg_artifactId=$SDG_ARTIFACT_ID" >> $GITHUB_OUTPUT
@@ -270,6 +275,7 @@ jobs:
             if [[ "$DEPLOYMENT_STATE" == "PUBLISHED" ]]; then
               echo "배포 성공"
               echo "result=success" >> $GITHUB_OUTPUT
+              echo "deployment_state=PUBLISHED" >> "$GITHUB_OUTPUT"
               break
             elif [[ "$DEPLOYMENT_STATE" == "FAILED" ]]; then
               echo "배포 실패"
@@ -299,3 +305,14 @@ jobs:
             :warning: *[배포 실패]*  
             *변경사항*: ${{ github.event.pull_request.title }}
           SLACK_COLOR: '#FFA726'
+
+  sync_mcp_catalog:
+    needs: publish
+    if: ${{ always() && needs.publish.outputs.deployment_state == 'PUBLISHED' }}
+    permissions:
+      contents: write
+    uses: ./.github/workflows/mcp-sync-release.yml
+    with:
+      version: ${{ needs.publish.outputs.version }}
+      source_sha: ${{ needs.publish.outputs.source_sha }}
+      deployment_state: ${{ needs.publish.outputs.deployment_state }}

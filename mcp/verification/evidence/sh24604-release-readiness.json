@@ -1,0 +1,64 @@
+{
+  "preparedAt": "2026-10-26T01:28:24.139555+00:00",
+  "status": "ready_waiting_for_user_release",
+  "baseline": {
+    "version": "1.25.2",
+    "sourceSha": "dd414d90ab9d09890714cf1e9a93d2fb0b0c20e1",
+    "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0",
+    "file": "1.25.2-3d4d8907ae8944e0.json",
+    "verificationId": "6ee5a35d16c90f7f"
+  },
+  "environment": "/Users/shopl/.codex/memories/worktrees/shopl-design-guide-mcp/mcp/.cache/deployment-rehearsal-x2jubemh",
+  "process": {
+    "state": "ready",
+    "startedAt": "2026-10-26T01:27:05.944811+00:00",
+    "expiresAt": "2026-10-26T13:27:05.944811+00:00",
+    "supervisorPid": 88101,
+    "mcpPid": 88116,
+    "feedUrl": "http://127.0.0.1:64133/latest.json",
+    "controlUrl": "http://127.0.0.1:64134",
+    "baselineVersion": "1.25.2",
+    "baselineCatalogId": "sdg-android:1.25.2:3d4d8907ae8944e0",
+    "counts": {
+      "manifest": 10,
+      "payload": 1,
+      "toolCalls": 10
+    },
+    "lastResponse": {
+      "tool": "sdg_search_assets",
+      "status": "ok",
+      "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0",
+      "update": {
+        "state": "current",
+        "source": "remote",
+        "checkedAt": "2026-10-26T01:27:25.770Z",
+        "feedUrl": "http://127.0.0.1:64133/latest.json",
+        "advertisedVersion": "1.25.2"
+      },
+      "mcpPid": 88116
+    },
+    "scope": "isolated local Git publication and long-lived MCP; no official remote mutation"
+  },
+  "readiness": {
+    "toolCount": 6,
+    "toolCalls": 9,
+    "allSucceeded": true,
+    "runtime": "Node 22.23.4",
+    "jdk": "21",
+    "androidSdk": "36",
+    "mavenModules": "all 1.25.2",
+    "releaseDiscovery": "read-only command ready; no continuous background release polling"
+  },
+  "explicitRequirementChanges": [
+    "새 SDG 배포 후 검증할 로컬 환경 준비",
+    "버전 번호를 사용자에게 요청하지 않고 Maven 및 GitHub에서 조회할 절차 준비"
+  ],
+  "implementationChoices": [
+    "새 배포 전후 같은 프로세스를 유지하기 위한 고정 플러그인 사본",
+    "운영 게시와 분리한 로컬 Git 원격 및 loopback JSON 주소",
+    "검증 세션은 최대 12시간 유지; 앱 설정은 변경하지 않음"
+  ],
+  "productSourceChanged": false,
+  "officialRepositoryMutated": false,
+  "pullRequestCreated": false
+}

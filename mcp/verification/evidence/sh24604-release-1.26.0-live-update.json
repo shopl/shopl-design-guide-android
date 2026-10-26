@@ -1,0 +1,385 @@
+{
+  "verifiedAt": "2026-10-26T01:50:25.663958+00:00",
+  "status": "passed",
+  "scope": "real Maven 1.26.0 release verified; actual publisher to isolated local Git; same running MCP over loopback; not official GitHub automated publication",
+  "before": {
+    "version": "1.25.2",
+    "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0",
+    "pid": 88116
+  },
+  "after": {
+    "version": "1.26.0",
+    "catalogId": "sdg-android:1.26.0:2753de67bba13d7a",
+    "pid": 88116,
+    "update": {
+      "state": "current",
+      "source": "remote",
+      "checkedAt": "2026-10-26T01:50:24.515Z",
+      "feedUrl": "http://127.0.0.1:64133/latest.json",
+      "advertisedVersion": "1.26.0"
+    }
+  },
+  "noRestart": true,
+  "noReinstall": true,
+  "unchangedClientCodeSha256": "0b0479f380353c69e28f242ea2b819fe73fffe7e3340c000c02979d118285751",
+  "clientStillBundles": "1.25.2",
+  "newPayloadDownloads": 1,
+  "apiChanges": {
+    "addedSignaturesChecked": 6,
+    "removedSignaturesRejected": 4,
+    "addedTypesChecked": 11
+  },
+  "toolCalls": 40,
+  "tools": [
+    "sdg_get_component",
+    "sdg_get_example",
+    "sdg_get_recipe",
+    "sdg_resolve_context",
+    "sdg_search_assets",
+    "sdg_search_components"
+  ],
+  "calls": [
+    {
+      "tool": "sdg_resolve_context",
+      "arguments": {},
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_search_components",
+      "arguments": {
+        "query": "SDGEmptyIcon",
+        "category": "component"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_search_components",
+      "arguments": {
+        "query": "SDGTextNavi",
+        "category": "component"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "componentId": "com.shopl.sdg.component.button.box.SDGBoxButton",
+        "overloadId": "d87cb99d10a22187"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "componentId": "com.shopl.sdg.component.empty_icon.SDGBasicEmpty",
+        "overloadId": "111b10e88af955ee"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "componentId": "com.shopl.sdg.component.empty_icon.SDGBasicEmpty",
+        "overloadId": "be592b3088edae8a"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "componentId": "com.shopl.sdg.component.empty_icon.SDGEmptyIcon",
+        "overloadId": "d9c5106683b6dd4e"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "componentId": "com.shopl.sdg.component.navigation.text.SDGTextNavi",
+        "overloadId": "3f3a76fcf10d08c9"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "componentId": "com.shopl.sdg.template.navigation.top.SDGTopTextNavi",
+        "overloadId": "909bff2e6c05a0f0"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "componentId": "com.shopl.sdg.component.button.box.SDGBoxButton",
+        "overloadId": "c6f90302eb59d356"
+      },
+      "status": "not_found",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "componentId": "com.shopl.sdg.component.empty_icon.SDGBasicEmpty",
+        "overloadId": "04ea0df12b5a0a1f"
+      },
+      "status": "not_found",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "componentId": "com.shopl.sdg.component.empty_icon.SDGBasicEmpty",
+        "overloadId": "ee6be6d43af25c24"
+      },
+      "status": "not_found",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "componentId": "com.shopl.sdg.template.navigation.top.SDGTopTextNavi",
+        "overloadId": "58934e638ae1eaeb"
+      },
+      "status": "not_found",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "typeId": "com.shopl.sdg.component.navigation.text.SDGTextNaviActionItem"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "typeId": "com.shopl.sdg.component.navigation.text.SDGTextNaviActionItem.Label"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "typeId": "com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "typeId": "com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton.True"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "typeId": "com.shopl.sdg.component.navigation.text.SDGTextNaviBackButton.False"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "typeId": "com.shopl.sdg.component.navigation.text.SDGTextNaviLabel"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "typeId": "com.shopl.sdg.component.navigation.text.SDGTextNaviLabel.True"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "typeId": "com.shopl.sdg.component.navigation.text.SDGTextNaviLabel.False"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "typeId": "com.shopl.sdg.component.navigation.text.ShowActionIcon"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "typeId": "com.shopl.sdg.component.navigation.text.ShowActionIcon.True"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_component",
+      "arguments": {
+        "typeId": "com.shopl.sdg.component.navigation.text.ShowActionIcon.False"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_recipe",
+      "arguments": {
+        "catalogId": "sdg-android:1.25.2:3d4d8907ae8944e0"
+      },
+      "status": "catalog_unavailable",
+      "catalogId": null
+    },
+    {
+      "tool": "sdg_get_recipe",
+      "arguments": {},
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_recipe",
+      "arguments": {
+        "recipeId": "input-save"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_example",
+      "arguments": {
+        "exampleId": "curated:InputSaveExample"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_recipe",
+      "arguments": {
+        "recipeId": "single-choice"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_example",
+      "arguments": {
+        "exampleId": "curated:SingleChoiceExample"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_recipe",
+      "arguments": {
+        "recipeId": "multi-choice"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_example",
+      "arguments": {
+        "exampleId": "curated:MultiChoiceExample"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_recipe",
+      "arguments": {
+        "recipeId": "confirmation"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_example",
+      "arguments": {
+        "exampleId": "curated:ConfirmationExample"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_recipe",
+      "arguments": {
+        "recipeId": "tabs"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_example",
+      "arguments": {
+        "exampleId": "curated:TabsExample"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_recipe",
+      "arguments": {
+        "recipeId": "list-states"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_get_example",
+      "arguments": {
+        "exampleId": "curated:ListStatesExample"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_search_assets",
+      "arguments": {
+        "kind": "icon"
+      },
+      "status": "ok",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    },
+    {
+      "tool": "sdg_resolve_context",
+      "arguments": {
+        "module": ":consumer",
+        "variant": "debug",
+        "dependencyEvidence": [
+          {
+            "group": "com.shoplworks",
+            "artifact": "SDG-Android",
+            "version": "1.25.2",
+            "kind": "declared",
+            "source": "pre-deployment diagnostic baseline"
+          }
+        ]
+      },
+      "status": "version_mismatch",
+      "catalogId": "sdg-android:1.26.0:2753de67bba13d7a"
+    }
+  ],
+  "deploymentRun": "https://github.com/shopl/shopl-design-guide-android/actions/runs/40254557428",
+  "sourceSha": "6b2ed256ac7ba7a03c4a8b6fc9ae4cfc865ff8e2",
+  "verificationId": "bba4fc5146b78dde",
+  "officialDataPublished": false
+}

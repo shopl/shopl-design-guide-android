@@ -1,0 +1,33 @@
+{
+  "name": "sdg-android-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local read-only Android SDG catalog for coding agents",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "catalog": "npm run sync -- --current",
+    "build": "tsc && node scripts/copy-data.mjs && node dist/validate.js",
+    "check": "tsc --noEmit",
+    "start": "node dist/index.js",
+    "verify": "npm run build && node scripts/sync-release.mjs --current && npm run build && npm run doctor",
+    "sync": "npm run build && node scripts/sync-release.mjs",
+    "doctor": "node scripts/doctor.mjs",
+    "plugin:build": "npm run build && node scripts/bundle-plugin.mjs",
+    "plugin:doctor": "node scripts/doctor-plugin.mjs",
+    "plugin:pack": "npm run plugin:build && npm run plugin:doctor && node scripts/pack-plugin.mjs",
+    "feed:prepare": "npm run build && node scripts/prepare-feed.mjs",
+    "feed:publish": "node scripts/publish-feed.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.3.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2"
+  }
+}
