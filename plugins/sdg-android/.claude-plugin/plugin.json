@@ -1,0 +1,18 @@
+{
+  "name": "sdg-android",
+  "description": "Android UI 구현 시 최신 배포 SDG component·template와 앱 저장소 kit을 우선 재사용하도록 돕는 MCP 서버와 스킬.",
+  "author": {
+    "name": "Shopl"
+  },
+  "homepage": "https://github.com/shopl/shopl-design-guide-android/tree/main/plugins/sdg-android",
+  "repository": "https://github.com/shopl/shopl-design-guide-android",
+  "license": "Apache-2.0",
+  "mcpServers": {
+    "sdg-android": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/server/index.mjs"
+      ]
+    }
+  }
+}

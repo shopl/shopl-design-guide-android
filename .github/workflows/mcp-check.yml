@@ -1,0 +1,59 @@
+name: Android SDG MCP 검증
+on:
+  pull_request:
+    paths:
+      - 'mcp/**'
+      - 'plugins/sdg-android/**'
+      - '.claude-plugin/**'
+      - '.cursor-plugin/**'
+      - '.github/workflows/mcp-*.yml'
+      - '.github/workflows/auto-deploy.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: mcp/package-lock.json
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
+      - run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+      - run: npm ci --prefix mcp
+      - name: 커밋된 플러그인 진단
+        run: npm run plugin:doctor --prefix mcp
+      - name: 플러그인 생성물 최신 여부 확인
+        run: |
+          npm run plugin:build --prefix mcp
+          git diff --exit-code -- plugins/sdg-android
+          test -z "$(git ls-files --others --exclude-standard -- plugins/sdg-android)"
+      - run: npm run verify --prefix mcp
+      - run: npm run feed:prepare --prefix mcp
+      - name: 재검증 카탈로그 패키징
+        run: npm run plugin:pack --prefix mcp
+      - run: git diff --check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sdg-mcp-verification
+          path: |
+            mcp/.cache/runs/**/protocol.json
+            mcp/.cache/runs/**/changes.json
+            mcp/.cache/runs/**/*.log
+            mcp/.cache/distribution/*
+          include-hidden-files: true
+          if-no-files-found: ignore

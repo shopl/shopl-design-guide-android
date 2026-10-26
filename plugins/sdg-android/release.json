@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "pluginVersion": "0.1.0",
+  "node": ">=22",
+  "catalogUpdate": {
+    "mode": "automatic",
+    "readerVersion": 1,
+    "feedUrl": "https://raw.githubusercontent.com/shopl/shopl-design-guide-android/sdg-mcp-data/latest.json"
+  },
+  "sdgVersion": "1.26.0",
+  "sourceSha": "6b2ed256ac7ba7a03c4a8b6fc9ae4cfc865ff8e2",
+  "catalogId": "sdg-android:1.26.0:2753de67bba13d7a",
+  "verificationId": "b13fa99176213886",
+  "files": {
+    ".claude-plugin/plugin.json": "ee681fd70fc4d91d53f8267d0ae47dc6aaf98b79a62a3c88b5f146ad6b4519af",
+    ".codex-plugin/plugin.json": "1f80fb35c6d11e99bf615a9a24612c6c2376a63d0f6eb4bfa29526b2ed57d762",
+    ".codex.mcp.json": "15852650123677fc1a577fbea16fd0e277bc1b73c18c817be85c65322617a3a3",
+    ".cursor-plugin/plugin.json": "ab8f4cf9984e9287763ae5b517dcff91dfc8bfdc73d93918a34a5e90f7ea516a",
+    "LICENSE": "94ff4af51928a934636eb7df6ee766583821f0c3f7560cd91d724ae0738df712",
+    "README.md": "fa753a56c0c9db33f580f2aa8230c391f9ca9d29cb641da0b51e6cfbef88517a",
+    "server/data/1.26.0-2753de67bba13d7a.json": "7f9ddfebaee519f353d1f8dd13c4adbf117c1f8446fc05e043ddb9cd94092624",
+    "server/data/registry.json": "5f615f43c31c18ed03f2359003f0bf4b6654b2b23dd83c23447d7c7ef1c9cd00",
+    "server/index.mjs": "7e8171292b213203bc72157f6cf7b3c988445f0c346eaef17e325508d948debc",
+    "skills/sdg-android-components/SKILL.md": "04038a061ab7313b7d71a0b2f738ea9e99c77b1c4a9878e7cb92bd29a7ff66e6",
+    "skills/sdg-android-foundation/SKILL.md": "209337651b25cf779daaa3037a04a5c187bd5602ed16b1136f64031553359747",
+    "skills/sdg-android-setup/SKILL.md": "ee15820cb232992ae142f68366cbd17f7d6176c8fa767c382bf6cfcae524003c"
+  }
+}

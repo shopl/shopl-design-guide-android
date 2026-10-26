@@ -1,0 +1,13 @@
+{
+  "name": "sdg-android-marketplace",
+  "owner": {
+    "name": "Shopl"
+  },
+  "plugins": [
+    {
+      "name": "sdg-android",
+      "source": "plugins/sdg-android",
+      "description": "Android UI 구현 시 최신 배포 SDG component·template와 앱 저장소 kit을 우선 재사용하도록 돕는 MCP 서버와 스킬."
+    }
+  ]
+}
