@@ -52,6 +52,9 @@ jobs:
           cache: npm
           cache-dependency-path: mcp/package-lock.json
       - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
       - name: Android SDK 설치
         run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
       - name: MCP 빌드
@@ -86,7 +89,8 @@ jobs:
         with:
           name: sdg-mcp-verified-${{ inputs.version }}-${{ github.run_id }}
           path: |
-            mcp/data/
+            mcp/.cache/runs/**/changes.json
+            mcp/.cache/runs/**/protocol.json
             plugins/sdg-android/
             .claude-plugin/marketplace.json
             .cursor-plugin/marketplace.json

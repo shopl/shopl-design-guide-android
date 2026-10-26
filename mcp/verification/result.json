@@ -1,0 +1,91 @@
+{
+  "verifiedAt": "2026-10-26",
+  "version": "1.26.0",
+  "sourceSha": "6b2ed256ac7ba7a03c4a8b6fc9ae4cfc865ff8e2",
+  "catalogId": "sdg-android:1.26.0:2753de67bba13d7a",
+  "verificationId": "b13fa99176213886",
+  "verifyExitCode": 0,
+  "losslessStorage": {
+    "losslessCandidate": true,
+    "unchangedFactsFromOriginal": true,
+    "roundTrip": true,
+    "invalidStorageRejected": 5,
+    "catalogId": "sdg-android:1.26.0:2753de67bba13d7a",
+    "counts": {
+      "components": 194,
+      "types": 370,
+      "assets": 301,
+      "examples": 245,
+      "curatedExamples": 6
+    },
+    "before": {
+      "bytes": 2922124,
+      "lines": 62430
+    },
+    "after": {
+      "bytes": 1690547,
+      "lines": 36563
+    }
+  },
+  "plugin": {
+    "status": "passed",
+    "hosts": [
+      "codex",
+      "claude",
+      "cursor"
+    ],
+    "calls": 144,
+    "hostUiVerified": false
+  },
+  "legacyReader": {
+    "version": 1,
+    "sameProcess": true,
+    "fetchedNewPayload": true,
+    "updateState": "current"
+  },
+  "automaticUpdate": [
+    {
+      "protocol": "2025-11-25",
+      "runtime": "v22.23.4",
+      "status": "passed",
+      "checks": [
+        "initial_old_real_release",
+        "same_process_updates_to_real_1.26.0",
+        "conditional_manifest_without_payload_redownload",
+        "old_catalog_id_rejected_after_update",
+        "component_and_template_from_new_catalog",
+        "offline",
+        "corrupt",
+        "incompatible",
+        "rollback",
+        "offline_restart_restores_last_verified_cache",
+        "corrupt_cache_falls_back_with_warning",
+        "network_recovery_without_restart",
+        "publisher_rejects_delayed_older_release",
+        "publisher_same_payload_is_noop"
+      ]
+    },
+    {
+      "protocol": "2026-07-28",
+      "runtime": "v22.23.4",
+      "status": "passed",
+      "checks": [
+        "initial_old_real_release",
+        "same_process_updates_to_real_1.26.0",
+        "conditional_manifest_without_payload_redownload",
+        "old_catalog_id_rejected_after_update",
+        "component_and_template_from_new_catalog",
+        "offline",
+        "corrupt",
+        "incompatible",
+        "rollback",
+        "offline_restart_restores_last_verified_cache",
+        "corrupt_cache_falls_back_with_warning",
+        "network_recovery_without_restart",
+        "publisher_rejects_delayed_older_release",
+        "publisher_same_payload_is_noop"
+      ]
+    }
+  ],
+  "scope": "Local compilation, manifest launches, actual MCP processes and isolated local Git publication. Production GitHub publication and host UI acceptance remain separate."
+}

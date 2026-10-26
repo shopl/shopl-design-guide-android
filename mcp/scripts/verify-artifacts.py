@@ -58,11 +58,12 @@ with zipfile.ZipFile(cache / f'SDG-Android-Resource-{version}.aar') as aar:
 receipt = {'sourceSha': catalog['sourceSha'], 'version': version, 'scope': 'published_source_bytes_and_drawable_symbols',
            'sourceCounts': source_counts, 'drawableSymbols': len(names), 'artifacts': downloads}
 target = run / 'artifacts.json'
-registry = json.loads((root / 'data/registry.json').read_text())
+data = root.parent / 'plugins/sdg-android/server/data'
+registry = json.loads((data / 'registry.json').read_text())
 for entry in registry['catalogs']:
     if entry['version'] != version:
         continue
-    previous_catalog = json.loads((root / 'data' / entry['file']).read_text())
+    previous_catalog = json.loads((data / entry['file']).read_text())
     previous = previous_catalog['provenance'].get('artifactVerification')
     if previous and previous['artifacts'] != receipt['artifacts']:
         raise RuntimeError('Published artifact bytes changed for an existing version')

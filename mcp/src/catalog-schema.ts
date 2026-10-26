@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { decodeCatalog } from './catalog-storage.js';
 
 export const sourceSchema = z.object({
   repository: z.string(), sha: z.string(), path: z.string(), line: z.number().int(), kind: z.enum(['source_fact', 'curated_example']),
@@ -61,7 +62,7 @@ function unique(values: string[], label: string) {
 }
 export type Catalog = z.infer<typeof catalogSchema>;
 export function parseCatalog(value: unknown): Catalog {
-  const catalog = catalogSchema.parse(value);
+  const catalog = catalogSchema.parse(decodeCatalog(value));
   unique(catalog.components.map(c => `${c.id}:${c.overloadId}`), 'overload');
   unique(catalog.types.map(t => t.id), 'type');
   unique(catalog.assets.map(a => a.id), 'asset');

@@ -29,6 +29,9 @@ jobs:
           cache: npm
           cache-dependency-path: mcp/package-lock.json
       - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
       - run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
       - run: npm ci --prefix mcp
       - name: 커밋된 플러그인 진단
@@ -48,7 +51,8 @@ jobs:
         with:
           name: sdg-mcp-verification
           path: |
-            mcp/data/*-protocol.json
+            mcp/.cache/runs/**/protocol.json
+            mcp/.cache/runs/**/changes.json
             mcp/.cache/runs/**/*.log
             mcp/.cache/distribution/*
           include-hidden-files: true

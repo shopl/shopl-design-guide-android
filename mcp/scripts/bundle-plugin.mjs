@@ -1,39 +1,37 @@
 // Build the self-contained consumer artifact from the already verified current catalog.
 import { build } from 'esbuild';
-import { cpSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
-import { mcp, repo } from './sync-context.mjs';
+import { mcp, repo, catalogDir } from './sync-context.mjs';
 import { READER_VERSION, DEFAULT_FEED } from '../dist/catalog-update.js';
 import { parseCatalog } from '../dist/catalog.js';
 
 const plugin = path.join(repo, 'plugins/sdg-android');
 const pkg = JSON.parse(readFileSync(path.join(mcp, 'package.json'), 'utf8'));
-const registry = JSON.parse(readFileSync(path.join(mcp, 'data/registry.json'), 'utf8'));
+const registry = JSON.parse(readFileSync(path.join(catalogDir, 'registry.json'), 'utf8'));
 if (registry.catalogs.length !== 1) throw new Error('Exactly one released catalog is required');
 const entry = registry.catalogs[0];
 if (!/^[a-zA-Z0-9._-]+\.json$/.test(entry.file)) throw new Error('Unsafe catalog filename');
-const catalog = parseCatalog(JSON.parse(readFileSync(path.join(mcp, 'data', entry.file), 'utf8')));
+const catalog = parseCatalog(JSON.parse(readFileSync(path.join(catalogDir, entry.file), 'utf8')));
 if (catalog.catalogId !== entry.catalogId || catalog.sourceSha !== entry.sourceSha || catalog.version !== entry.version || !catalog.provenance.artifactVerified || !catalog.verification.receipt) {
   throw new Error('Catalog identity or published-artifact verification is missing');
 }
-const stage = path.join(plugin, `.server-${process.pid}`);
-mkdirSync(path.join(stage, 'data'), { recursive: true });
+const stage = path.join(plugin, `server/.index-${process.pid}.mjs`);
+mkdirSync(path.dirname(stage), { recursive: true });
 try {
   await build({
-    entryPoints: [path.join(mcp, 'src/index.ts')], outfile: path.join(stage, 'index.mjs'),
+    entryPoints: [path.join(mcp, 'src/index.ts')], outfile: stage,
     bundle: true, platform: 'node', format: 'esm', target: 'node22', minify: true, legalComments: 'eof',
     define: { __SDG_MCP_VERSION__: JSON.stringify(pkg.version) },
     banner: { js: "#!/usr/bin/env node\nimport { createRequire as sdgCreateRequire } from 'node:module';\nconst require = sdgCreateRequire(import.meta.url);" },
   });
-  for (const file of ['registry.json', entry.file]) cpSync(path.join(mcp, 'data', file), path.join(stage, 'data', file));
   const manifest = path.join(plugin, '.codex-plugin/plugin.json');
   const codex = JSON.parse(readFileSync(manifest, 'utf8'));
   codex.version = pkg.version;
   writeFileSync(manifest, JSON.stringify(codex, null, 2) + '\n');
-  // Only generated server output is replaced; skills and host manifests remain source files.
-  rmSync(path.join(plugin, 'server'), { recursive: true, force: true });
-  renameSync(stage, path.join(plugin, 'server'));
+  // Canonical data already lives here; bundling replaces only the executable.
+  renameSync(stage, path.join(plugin, 'server/index.mjs'));
   const files = {};
   function collect(dir) {
     for (const item of readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name, 'en'))) {

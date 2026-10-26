@@ -10,7 +10,7 @@
   "sdgVersion": "1.26.0",
   "sourceSha": "6b2ed256ac7ba7a03c4a8b6fc9ae4cfc865ff8e2",
   "catalogId": "sdg-android:1.26.0:2753de67bba13d7a",
-  "verificationId": "bba4fc5146b78dde",
+  "verificationId": "b13fa99176213886",
   "files": {
     ".claude-plugin/plugin.json": "ee681fd70fc4d91d53f8267d0ae47dc6aaf98b79a62a3c88b5f146ad6b4519af",
     ".codex-plugin/plugin.json": "1f80fb35c6d11e99bf615a9a24612c6c2376a63d0f6eb4bfa29526b2ed57d762",
@@ -18,9 +18,9 @@
     ".cursor-plugin/plugin.json": "ab8f4cf9984e9287763ae5b517dcff91dfc8bfdc73d93918a34a5e90f7ea516a",
     "LICENSE": "94ff4af51928a934636eb7df6ee766583821f0c3f7560cd91d724ae0738df712",
     "README.md": "0eee5dc46f3af87ee7aa573df5b771d626cec58fc35abf34c7c29af8b410550c",
-    "server/data/1.26.0-2753de67bba13d7a.json": "daef974e91ce0b7b4a187cf065e31cf699325887bc9ad665fea1277f03ce5211",
-    "server/data/registry.json": "b58c4883f9442ab9a24bb6f3ea57cc17b3af328873b2865bf7ce153b7e33f871",
-    "server/index.mjs": "0b0479f380353c69e28f242ea2b819fe73fffe7e3340c000c02979d118285751",
+    "server/data/1.26.0-2753de67bba13d7a.json": "7f9ddfebaee519f353d1f8dd13c4adbf117c1f8446fc05e043ddb9cd94092624",
+    "server/data/registry.json": "5f615f43c31c18ed03f2359003f0bf4b6654b2b23dd83c23447d7c7ef1c9cd00",
+    "server/index.mjs": "ecdd6e9fe818dbc0881d436e9bffa65e2750f182e54fd4518f45d4093672aa35",
     "skills/sdg-android-components/SKILL.md": "a461232cdf05ad5d0818120f65f1053d1f54c182d37006c191203e904662ac6e",
     "skills/sdg-android-foundation/SKILL.md": "e2e25143fa3df7e72f51cbb2a2200e1dd6c5511406d3fb5869a39dc5d62a95e8",
     "skills/sdg-android-setup/SKILL.md": "fb9450282938a5fa6b8fcd65f7d663d96386ad38c52327663c3d7322fad379fd"

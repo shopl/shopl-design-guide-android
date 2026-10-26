@@ -2,9 +2,11 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, readFileSync, rmdirSync, unlinkSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
-import { mcp, repo, atomicJson } from './sync-context.mjs';
+import { mcp, repo, catalogDir, atomicJson } from './sync-context.mjs';
 import { diagnose } from './doctor.mjs';
 import { catalogDiff } from './catalog-diff.mjs';
+import { parseCatalog } from '../dist/catalog-schema.js';
+import { encodeCatalog } from '../dist/catalog-storage.js';
 
 const argv = process.argv.slice(2);
 const current = argv.length === 1 && argv[0] === '--current';
@@ -13,7 +15,7 @@ if (!current) {
   if (argv.length !== 4 || argv[0] !== '--version' || argv[2] !== '--source-sha') throw new Error('Usage: sync --version X.Y.Z --source-sha FULL_SHA, or --current');
   request = { version: argv[1], sourceSha: argv[3] };
 }
-const data = path.join(mcp, 'data');
+const data = catalogDir;
 const registryPath = path.join(data, 'registry.json');
 const initial = JSON.parse(readFileSync(registryPath, 'utf8'));
 if (initial.catalogs.length !== 1) throw new Error('Exactly one latest catalog is required');
@@ -52,18 +54,15 @@ try {
     // All potentially failing compilation and RPC checks finish before the served registry changes.
     const filename = `${version}-${catalog.catalogId.split(':').at(-1)}.json`;
     const verificationId = createHash('sha256').update(JSON.stringify(catalog.verification)).digest('hex').slice(0, 16);
-    const previous = JSON.parse(readFileSync(path.join(data, previousEntry.file), 'utf8'));
+    const previous = parseCatalog(JSON.parse(readFileSync(path.join(data, previousEntry.file), 'utf8')));
     const diff = catalogDiff(previous, catalog);
-    mkdirSync(path.join(data, 'changes'), { recursive: true });
-    // Keep the original cross-version report when an unchanged catalog is only reverified.
-    if (existing?.catalogId !== catalog.catalogId) atomicJson(path.join(data, 'changes', `${version}.json`), diff);
-    atomicJson(path.join(data, filename), catalog);
-    atomicJson(path.join(data, `${version}-protocol.json`), protocol);
+    // Detailed diagnostics belong to the run/CI artifact, not the installed plugin.
+    atomicJson(path.join(run, 'changes.json'), diff);
+    atomicJson(path.join(data, filename), encodeCatalog(parseCatalog(catalog)));
     const entry = { version, sourceSha, catalogId: catalog.catalogId, file: filename, verificationId };
     atomicJson(registryPath, { schemaVersion: 1, catalogs: [entry] });
     // Retire the previous payload only after the new pointer is safely published.
     if (previousEntry.file !== filename) unlinkSync(path.join(data, previousEntry.file));
-    if (previousEntry.version !== version) unlinkSync(path.join(data, `${previousEntry.version}-protocol.json`));
     console.log(`Promoted ${catalog.catalogId}; latest release only`);
   }
   execFileSync(process.execPath, [path.join(mcp, 'scripts/copy-data.mjs')], { stdio: 'inherit' });
