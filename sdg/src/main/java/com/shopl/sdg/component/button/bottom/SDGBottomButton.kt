@@ -46,8 +46,12 @@ private const val BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP = 80
  * 화면 하단에 고정으로 위치한 버튼 컴포넌트
  *
  * @version 2.0.0
+ * @param size 가용 너비를 채우는 Full 또는 라벨 길이에 맞추는 Adaptive 크기
+ * @param style Primary, Neutral, Point, Normal 중 버튼의 색상 유형
  * @param label 한 줄로 표시하며, 가용 너비를 넘으면 말줄임하는 버튼명
+ * @param onClick 버튼 클릭 시 실행할 동작
  * @param marginValues 호출부에서 지정하는 외부 여백. 화면 배치 가이드는 좌우 12dp, 하단 10dp를 사용한다.
+ * @param enabled 버튼 활성화 여부
  * @param debounce 중복 클릭 방지 사용 여부
  * @param debounceTime 중복 클릭 방지 대기 시간. 기본값은 1,000ms이다.
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19481-1283&m=dev">Figma</a>
@@ -138,6 +142,15 @@ fun SDGBottomButton(
  * POSITIVE는 Primary, NEGATIVE는 Point, NORMAL은 Normal, NORMAL_DARK는 Neutral로 변환합니다.
  * 레거시 호출에도 새 가이드의 한 줄 말줄임과 기본·눌림·비활성 색상을 적용합니다.
  * 기존 외부 여백, 활성 상태, 콜백과 중복 클릭 방지 설정은 그대로 전달합니다.
+ *
+ * @param title 버튼명
+ * @param onClick 버튼 클릭 시 실행할 동작
+ * @param marginValues 버튼 외부 여백
+ * @param spec 기존 Full 또는 Adaptive 크기
+ * @param type 신규 색상 유형으로 변환할 기존 버튼 유형
+ * @param enabled 버튼 활성화 여부
+ * @param debounce 중복 클릭 방지 사용 여부
+ * @param debounceTime 중복 클릭 방지 대기 시간. 기본값은 1,000ms이다.
  */
 @Deprecated(
     message = "title/spec/type 대신 label/size/style을 사용하는 신규 SDGBottomButton API를 사용하세요.",
