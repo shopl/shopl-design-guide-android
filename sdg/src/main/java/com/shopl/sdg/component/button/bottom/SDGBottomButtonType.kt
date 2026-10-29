@@ -3,11 +3,11 @@ package com.shopl.sdg.component.button.bottom
 /**
  * [SDGBottomButton] Type
  *
- * TODO 가이드 최신화 필요
+ * 공개 enum 항목은 유지하고 유형명은 Figma 가이드에 맞춘다.
  */
 enum class SDGBottomButtonType(val typeName: String) {
-    POSITIVE("Positive"),
-    NEGATIVE("Negative"),
+    POSITIVE("Primary"),
+    NEGATIVE("Point"),
     NORMAL("Normal"),
-    NORMAL_DARK("Normal Dark")
+    NORMAL_DARK("Neutral")
 }

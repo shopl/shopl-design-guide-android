@@ -1,5 +1,7 @@
 package com.shopl.sdg.component.button.bottom
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -8,7 +10,10 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,27 +28,30 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameter
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameterProvider
 import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.coroutines.delay
 
-/**
- * SDG - Button - Bottom Button [2.0.0]
- *
- * 화면 하단에 고정으로 위치한 버튼 컴포넌트
- *
- * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19481-1283&m=dev">Figma</a>
- */
-
 private const val DEFAULT_DEBOUNCE_TIME = 1000L
-private const val FULL_WIDTH_FRACTION = 1f
-private const val MAX_TITLE_LINES = 2
 private const val BOTTOM_BUTTON_HEIGHT_DP = 50
 private const val BOTTOM_BUTTON_CORNER_RADIUS_DP = 25
 private const val BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP = 80
-private const val BOTTOM_BUTTON_HORIZONTAL_PADDING_DP = 16
-private const val BOTTOM_BUTTON_VERTICAL_PADDING_DP = 4
 
+/**
+ * SDG - Button - Bottom Button
+ *
+ * 화면 하단에 고정으로 위치한 버튼 컴포넌트
+ *
+ * @version 2.0.0
+ * @param title 한 줄로 표시하며, 가용 너비를 넘으면 말줄임하는 버튼명
+ * @param marginValues 호출부에서 지정하는 외부 여백. 화면 배치 가이드는 좌우 12dp, 하단 10dp를 사용한다.
+ * @param type POSITIVE는 Primary, NORMAL_DARK는 Neutral, NEGATIVE는 Point, NORMAL은 Normal에 대응한다.
+ * Neutral 배경은 기본 Neutral700, 눌림 Neutral900, 비활성 Neutral300이며 Normal 비활성 라벨은 Neutral350이다.
+ * @param debounce 중복 클릭 방지 사용 여부. 기존 기본값과 대기 시간을 유지한다.
+ * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19481-1283&m=dev">Figma</a>
+ */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SDGBottomButton(
     title: String,
@@ -55,25 +63,32 @@ fun SDGBottomButton(
     debounce: Boolean = true,
     debounceTime: Long = DEFAULT_DEBOUNCE_TIME,
 ) {
-    val (activeColor, disabledColor, textColor) = when (type) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+    val (activeColor, pressedColor, disabledColor) = when (type) {
         SDGBottomButtonType.POSITIVE -> Triple(
             SDGColor.Primary300,
+            SDGColor.Primary400,
             SDGColor.Primary50,
-            SDGColor.Neutral0
         )
 
-        SDGBottomButtonType.NEGATIVE -> Triple(SDGColor.Red300, SDGColor.Red50, SDGColor.Neutral0)
+        SDGBottomButtonType.NEGATIVE -> Triple(SDGColor.Red300, SDGColor.Red400, SDGColor.Red50)
         SDGBottomButtonType.NORMAL -> Triple(
             SDGColor.Neutral200,
+            SDGColor.Neutral300,
             SDGColor.Neutral200,
-            SDGColor.Neutral700
         )
 
         SDGBottomButtonType.NORMAL_DARK -> Triple(
-            SDGColor.Neutral600,
-            SDGColor.Neutral200,
-            SDGColor.Neutral0
+            SDGColor.Neutral700,
+            SDGColor.Neutral900,
+            SDGColor.Neutral300,
         )
+    }
+    val textColor = when {
+        type != SDGBottomButtonType.NORMAL -> SDGColor.Neutral0
+        enabled -> SDGColor.Neutral700
+        else -> SDGColor.Neutral350
     }
 
     val debouncedClick = if (debounce) {
@@ -85,35 +100,35 @@ fun SDGBottomButton(
     }
 
     val sizeModifier = when (spec) {
-        SDGBottomButtonSpec.FULL -> Modifier.fillMaxWidth(FULL_WIDTH_FRACTION)
+        SDGBottomButtonSpec.FULL -> Modifier.fillMaxWidth()
         SDGBottomButtonSpec.ADAPTIVE -> Modifier.widthIn(min = BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP.dp)
     }
 
-    Button(
-        enabled = enabled,
-        shape = RoundedCornerShape(BOTTOM_BUTTON_CORNER_RADIUS_DP.dp),
-        onClick = debouncedClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = activeColor,
-            disabledContainerColor = disabledColor
-        ),
-        contentPadding = PaddingValues(
-            horizontal = BOTTOM_BUTTON_HORIZONTAL_PADDING_DP.dp,
-            vertical = BOTTOM_BUTTON_VERTICAL_PADDING_DP.dp
-        ),
-        modifier = Modifier
-            .padding(marginValues)
-            .then(sizeModifier)
-            .height(BOTTOM_BUTTON_HEIGHT_DP.dp),
-    ) {
-        SDGText(
-            text = title,
-            textAlign = TextAlign.Center,
-            textColor = textColor,
-            typography = SDGTypography.Body1R,
-            maxLines = MAX_TITLE_LINES,
-            overflow = TextOverflow.Ellipsis,
-        )
+    CompositionLocalProvider(LocalRippleConfiguration provides null) {
+        Button(
+            enabled = enabled,
+            shape = RoundedCornerShape(BOTTOM_BUTTON_CORNER_RADIUS_DP.dp),
+            onClick = debouncedClick,
+            interactionSource = interactionSource,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = if (pressed) pressedColor else activeColor,
+                disabledContainerColor = disabledColor,
+            ),
+            contentPadding = PaddingValues(horizontal = SDGSpacing.Spacing16),
+            modifier = Modifier
+                .padding(marginValues)
+                .then(sizeModifier)
+                .height(BOTTOM_BUTTON_HEIGHT_DP.dp),
+        ) {
+            SDGText(
+                text = title,
+                textAlign = TextAlign.Center,
+                textColor = textColor,
+                typography = SDGTypography.Body1R,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
     }
 }
 
