@@ -2,6 +2,7 @@ package com.shopl.sdg.component.button.bottom
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -154,19 +156,24 @@ private fun rememberDebouncedClick(
     }
 }
 
-@Preview
+@Preview(showBackground = true, widthDp = 375)
 @Composable
 private fun PreviewBottomButton(
     @PreviewParameter(SDGBottomButtonPreviewParameterProvider::class)
     param: SDGBottomButtonPreviewParameter
 ) {
-    SDGBottomButton(
-        title = param.title,
-        onClick = {},
-        marginValues = param.marginValues,
-        spec = param.spec,
-        type = param.type,
-        enabled = param.enabled,
-        debounce = false,
-    )
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.BottomEnd,
+    ) {
+        SDGBottomButton(
+            title = param.title,
+            onClick = {},
+            marginValues = param.marginValues,
+            spec = param.spec,
+            type = param.type,
+            enabled = param.enabled,
+            debounce = false,
+        )
+    }
 }
