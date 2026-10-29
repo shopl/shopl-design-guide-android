@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.bottom.SDGBottomButton
 import com.shopl.sdg.component.button.bottom.SDGBottomButtonSize
-import com.shopl.sdg.component.button.bottom.SDGBottomButtonSpec
 import com.shopl.sdg.component.button.bottom.model.SDGBottomButtonType
 import com.shopl.sdg.enums.SDGSampleStatus
 import com.shopl.sdg.model.SDGSampleBaseTabItem
@@ -31,8 +30,6 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.persistentListOf
-import com.shopl.sdg.component.button.bottom.SDGBottomButtonType as LegacySDGBottomButtonType
-import com.shopl.sdg.component.button.bottom.extension.SDGBottomButton as LegacyBottomButton
 
 private val BottomButtonSampleAreaHeight = 100.dp
 
@@ -175,61 +172,6 @@ private fun ComponentContent(
                     )
                 }
             }
-        }
-        LegacyBottomButtonSamples(
-            enabled = enabled,
-            onClick = { clickCount++ },
-            areaModifier = areaModifier,
-        )
-    }
-}
-
-@Composable
-@Suppress("DEPRECATION")
-private fun LegacyBottomButtonSamples(
-    enabled: Boolean,
-    onClick: () -> Unit,
-    areaModifier: Modifier,
-) {
-    SDGText(
-        modifier = Modifier.padding(horizontal = SDGSpacing.Spacing12),
-        text = "기존 API 호환",
-        textColor = SDGColor.Neutral700,
-        typography = SDGTypography.Body2R,
-    )
-    Box(modifier = areaModifier, contentAlignment = Alignment.BottomEnd) {
-        SDGBottomButton(
-            title = "기존 일반 API",
-            enabled = enabled,
-            onClick = onClick,
-        )
-    }
-    Box(modifier = areaModifier) {
-        LegacyBottomButton(
-            align = Alignment.BottomEnd,
-            title = "기존 BoxScope API",
-            spec = SDGBottomButtonSpec.ADAPTIVE,
-            type = LegacySDGBottomButtonType.NEGATIVE,
-            enabled = enabled,
-            onClick = onClick,
-        )
-    }
-    Box(modifier = areaModifier, contentAlignment = Alignment.BottomEnd) {
-        Row(horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10)) {
-            LegacyBottomButton(
-                weight = 1f,
-                title = "기존 Row 1",
-                type = LegacySDGBottomButtonType.NORMAL,
-                enabled = enabled,
-                onClick = onClick,
-            )
-            LegacyBottomButton(
-                weight = 1f,
-                title = "기존 Row 2",
-                type = LegacySDGBottomButtonType.NORMAL_DARK,
-                enabled = enabled,
-                onClick = onClick,
-            )
         }
     }
 }
