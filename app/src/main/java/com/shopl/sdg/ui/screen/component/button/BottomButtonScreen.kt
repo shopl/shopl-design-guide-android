@@ -82,16 +82,6 @@ internal fun BottomButtonScreen(
         componentDescription = "화면 하단에 고정으로 위치한 버튼 컴포넌트",
         types = types,
         specs = specs,
-        guideLineDescriptions = persistentListOf(
-            "Primary, Neutral, Point, Normal 유형별 기본·눌림·비활성 컬러를 사용합니다.",
-            "높이는 50dp, 모서리 반경은 25dp이며, 내부 좌우 여백은 16dp입니다.",
-            "버튼명은 한 줄로 표시하고 가용 너비를 넘으면 말줄임합니다.",
-            "Full은 가용 너비를 채우고, Adaptive는 라벨 길이에 맞추되 최소 80dp를 유지합니다.",
-            "좌우 12dp, 하단 10dp를 띄워 하단에 배치합니다.",
-            "두 버튼은 서로 다른 유형을 사용하며, Full은 같은 너비로, Adaptive는 우측 정렬로 배치합니다.",
-            "버튼을 눌러 눌림 색상과 클릭 횟수를 확인할 수 있습니다.",
-            "기존 일반·BoxScope·RowScope API도 같은 구현에 연결되며 클릭 횟수로 동작을 확인합니다.",
-        ),
         componentContent = { currentType, currentSpec, currentStatus ->
             if (currentType != null && currentSpec != null) {
                 ComponentContent(
