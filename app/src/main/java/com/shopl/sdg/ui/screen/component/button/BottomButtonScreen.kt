@@ -20,8 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.bottom.SDGBottomButton
 import com.shopl.sdg.component.button.bottom.SDGBottomButtonSize
 import com.shopl.sdg.component.button.bottom.SDGBottomButtonSpec
-import com.shopl.sdg.component.button.bottom.SDGBottomButtonStyle
-import com.shopl.sdg.component.button.bottom.SDGBottomButtonType
+import com.shopl.sdg.component.button.bottom.model.SDGBottomButtonType
 import com.shopl.sdg.enums.SDGSampleStatus
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.scene.ComponentScene
@@ -32,6 +31,7 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.collections.immutable.persistentListOf
+import com.shopl.sdg.component.button.bottom.SDGBottomButtonType as LegacySDGBottomButtonType
 import com.shopl.sdg.component.button.bottom.extension.SDGBottomButton as LegacyBottomButton
 
 private val BottomButtonSampleAreaHeight = 100.dp
@@ -49,20 +49,20 @@ internal fun BottomButtonScreen(
 
     val types = persistentListOf(
         SDGSampleBaseTabItem(
-            title = SDGBottomButtonStyle.Primary.styleName,
-            item = SDGBottomButtonStyle.Primary
+            title = SDGBottomButtonType.Primary.typeName,
+            item = SDGBottomButtonType.Primary
         ),
         SDGSampleBaseTabItem(
-            title = SDGBottomButtonStyle.Neutral.styleName,
-            item = SDGBottomButtonStyle.Neutral
+            title = SDGBottomButtonType.Neutral.typeName,
+            item = SDGBottomButtonType.Neutral
         ),
         SDGSampleBaseTabItem(
-            title = SDGBottomButtonStyle.Point.styleName,
-            item = SDGBottomButtonStyle.Point
+            title = SDGBottomButtonType.Point.typeName,
+            item = SDGBottomButtonType.Point
         ),
         SDGSampleBaseTabItem(
-            title = SDGBottomButtonStyle.Normal.styleName,
-            item = SDGBottomButtonStyle.Normal
+            title = SDGBottomButtonType.Normal.typeName,
+            item = SDGBottomButtonType.Normal
         ),
     )
 
@@ -95,7 +95,7 @@ internal fun BottomButtonScreen(
         componentContent = { currentType, currentSpec, currentStatus ->
             if (currentType != null && currentSpec != null) {
                 ComponentContent(
-                    style = currentType,
+                    type = currentType,
                     size = currentSpec,
                     status = currentStatus
                 )
@@ -108,16 +108,16 @@ internal fun BottomButtonScreen(
 
 @Composable
 private fun ComponentContent(
-    style: SDGBottomButtonStyle,
+    type: SDGBottomButtonType,
     size: SDGBottomButtonSize,
     status: SDGSampleStatus,
 ) {
     var clickCount by remember { mutableIntStateOf(0) }
     val enabled = status != SDGSampleStatus.DISABLED
-    val secondaryStyle = if (style == SDGBottomButtonStyle.Normal) {
-        SDGBottomButtonStyle.Neutral
+    val secondaryType = if (type == SDGBottomButtonType.Normal) {
+        SDGBottomButtonType.Neutral
     } else {
-        SDGBottomButtonStyle.Normal
+        SDGBottomButtonType.Normal
     }
     val areaModifier = Modifier
         .fillMaxWidth()
@@ -146,7 +146,7 @@ private fun ComponentContent(
                 label = "Label",
                 onClick = { clickCount++ },
                 size = size,
-                style = style,
+                type = type,
                 enabled = enabled,
             )
         }
@@ -155,7 +155,7 @@ private fun ComponentContent(
                 label = "한 줄로 표시할 수 있는 너비를 넘은 긴 버튼명은 말줄임으로 표시합니다",
                 onClick = { clickCount++ },
                 size = size,
-                style = style,
+                type = type,
                 enabled = enabled,
             )
         }
@@ -170,7 +170,7 @@ private fun ComponentContent(
                         label = "이전",
                         onClick = { clickCount++ },
                         size = size,
-                        style = secondaryStyle,
+                        type = secondaryType,
                         enabled = enabled,
                     )
                 }
@@ -180,7 +180,7 @@ private fun ComponentContent(
                         label = "다음",
                         onClick = { clickCount++ },
                         size = size,
-                        style = style,
+                        type = type,
                         enabled = enabled,
                     )
                 }
@@ -219,7 +219,7 @@ private fun LegacyBottomButtonSamples(
             align = Alignment.BottomEnd,
             title = "기존 BoxScope API",
             spec = SDGBottomButtonSpec.ADAPTIVE,
-            type = SDGBottomButtonType.NEGATIVE,
+            type = LegacySDGBottomButtonType.NEGATIVE,
             enabled = enabled,
             onClick = onClick,
         )
@@ -229,14 +229,14 @@ private fun LegacyBottomButtonSamples(
             LegacyBottomButton(
                 weight = 1f,
                 title = "기존 Row 1",
-                type = SDGBottomButtonType.NORMAL,
+                type = LegacySDGBottomButtonType.NORMAL,
                 enabled = enabled,
                 onClick = onClick,
             )
             LegacyBottomButton(
                 weight = 1f,
                 title = "기존 Row 2",
-                type = SDGBottomButtonType.NORMAL_DARK,
+                type = LegacySDGBottomButtonType.NORMAL_DARK,
                 enabled = enabled,
                 onClick = onClick,
             )

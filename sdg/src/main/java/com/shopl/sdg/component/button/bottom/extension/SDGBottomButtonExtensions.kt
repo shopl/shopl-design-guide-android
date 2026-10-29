@@ -29,7 +29,7 @@ import com.shopl.sdg_common.foundation.spacing.SDGSpacing
  * @param enabled 버튼 활성화 여부
  * @param onClick 버튼 클릭 시 실행할 동작
  */
-@Deprecated("BoxScope에서 size/style/label을 사용하는 신규 SDGBottomButton을 배치하세요.")
+@Deprecated("BoxScope에서 size/type/label을 사용하는 신규 SDGBottomButton을 배치하세요.")
 @Composable
 @Suppress("DEPRECATION")
 fun BoxScope.SDGBottomButton(
@@ -46,7 +46,7 @@ fun BoxScope.SDGBottomButton(
             label = title,
             marginValues = marginValues,
             size = spec.toSize(),
-            style = type.toStyle(),
+            type = type.toType(),
             enabled = enabled,
             onClick = onClick,
         )
@@ -65,7 +65,7 @@ fun BoxScope.SDGBottomButton(
  * @param enabled 버튼 활성화 여부
  * @param onClick 버튼 클릭 시 실행할 동작
  */
-@Deprecated("RowScope에서 size/style/label을 사용하는 신규 SDGBottomButton을 배치하세요.")
+@Deprecated("RowScope에서 size/type/label을 사용하는 신규 SDGBottomButton을 배치하세요.")
 @Composable
 @Suppress("DEPRECATION")
 fun RowScope.SDGBottomButton(
@@ -82,7 +82,7 @@ fun RowScope.SDGBottomButton(
             label = title,
             marginValues = marginValues,
             size = size.toSize(),
-            style = type.toStyle(),
+            type = type.toType(),
             enabled = enabled,
             onClick = onClick,
         )

@@ -21,12 +21,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.button.bottom.model.SDGBottomButtonType
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameter
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameterProvider
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+import com.shopl.sdg.component.button.bottom.SDGBottomButtonType as LegacySDGBottomButtonType
 
 private const val DEFAULT_DEBOUNCE_TIME = 1000L
 private const val BOTTOM_BUTTON_HEIGHT_DP = 50
@@ -41,7 +43,7 @@ private const val BOTTOM_BUTTON_PREVIEW_WIDTH_DP = 375
  *
  * @version 2.0.0
  * @param size 가용 너비를 채우는 Full 또는 라벨 길이에 맞추는 Adaptive 크기
- * @param style Primary, Neutral, Point, Normal 중 버튼의 색상 유형
+ * @param type Primary, Neutral, Point, Normal 중 버튼의 색상 유형
  * @param label 한 줄로 표시하며, 가용 너비를 넘으면 말줄임하는 버튼명
  * @param onClick 버튼 클릭 시 실행할 동작
  * @param marginValues 호출부에서 지정하는 외부 여백. 화면 배치 가이드는 좌우 12dp, 하단 10dp를 사용한다.
@@ -53,7 +55,7 @@ private const val BOTTOM_BUTTON_PREVIEW_WIDTH_DP = 375
 @Composable
 fun SDGBottomButton(
     size: SDGBottomButtonSize,
-    style: SDGBottomButtonStyle,
+    type: SDGBottomButtonType,
     label: String,
     onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
@@ -77,9 +79,9 @@ fun SDGBottomButton(
             .clip(RoundedCornerShape(BOTTOM_BUTTON_CORNER_RADIUS_DP.dp))
             .background(
                 when {
-                    !enabled -> style.disabledColor
-                    pressed -> style.pressedColor
-                    else -> style.activeColor
+                    !enabled -> type.disabledColor
+                    pressed -> type.pressedColor
+                    else -> type.activeColor
                 }
             )
             .clickable(
@@ -95,7 +97,7 @@ fun SDGBottomButton(
         SDGText(
             text = label,
             textAlign = TextAlign.Center,
-            textColor = if (enabled) style.textColor else style.disabledTextColor,
+            textColor = if (enabled) type.textColor else type.disabledTextColor,
             typography = SDGTypography.Body1R,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -119,7 +121,7 @@ fun SDGBottomButton(
  * @param debounceTime 중복 클릭 방지 대기 시간. 기본값은 1,000ms이다.
  */
 @Deprecated(
-    message = "title/spec/type 대신 label/size/style을 사용하는 신규 SDGBottomButton API를 사용하세요.",
+    message = "label/size와 model 패키지의 SDGBottomButtonType을 사용하는 신규 SDGBottomButton API를 사용하세요.",
 )
 @Composable
 @Suppress("DEPRECATION")
@@ -128,14 +130,14 @@ fun SDGBottomButton(
     onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
     spec: SDGBottomButtonSpec = SDGBottomButtonSpec.FULL,
-    type: SDGBottomButtonType = SDGBottomButtonType.POSITIVE,
+    type: LegacySDGBottomButtonType = LegacySDGBottomButtonType.POSITIVE,
     enabled: Boolean = true,
     debounce: Boolean = true,
     debounceTime: Long = DEFAULT_DEBOUNCE_TIME,
 ) {
     SDGBottomButton(
         size = spec.toSize(),
-        style = type.toStyle(),
+        type = type.toType(),
         label = title,
         onClick = onClick,
         marginValues = marginValues,
@@ -160,7 +162,7 @@ private fun PreviewBottomButton(
             onClick = {},
             marginValues = param.marginValues,
             size = param.size,
-            style = param.style,
+            type = param.type,
             enabled = param.enabled,
             debounce = false,
         )

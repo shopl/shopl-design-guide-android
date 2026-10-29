@@ -1,10 +1,10 @@
-package com.shopl.sdg.component.button.bottom
+package com.shopl.sdg.component.button.bottom.model
 
 import androidx.compose.ui.graphics.Color
 import com.shopl.sdg_common.foundation.SDGColor
 
-enum class SDGBottomButtonStyle(
-    val styleName: String,
+enum class SDGBottomButtonType(
+    val typeName: String,
     val activeColor: Color,
     val pressedColor: Color,
     val disabledColor: Color,
@@ -12,7 +12,7 @@ enum class SDGBottomButtonStyle(
     val disabledTextColor: Color,
 ) {
     Primary(
-        styleName = "Primary",
+        typeName = "Primary",
         activeColor = SDGColor.Primary300,
         pressedColor = SDGColor.Primary400,
         disabledColor = SDGColor.Primary50,
@@ -20,7 +20,7 @@ enum class SDGBottomButtonStyle(
         disabledTextColor = SDGColor.Neutral0,
     ),
     Neutral(
-        styleName = "Neutral",
+        typeName = "Neutral",
         activeColor = SDGColor.Neutral700,
         pressedColor = SDGColor.Neutral900,
         disabledColor = SDGColor.Neutral300,
@@ -28,7 +28,7 @@ enum class SDGBottomButtonStyle(
         disabledTextColor = SDGColor.Neutral0,
     ),
     Point(
-        styleName = "Point",
+        typeName = "Point",
         activeColor = SDGColor.Red300,
         pressedColor = SDGColor.Red400,
         disabledColor = SDGColor.Red50,
@@ -36,7 +36,7 @@ enum class SDGBottomButtonStyle(
         disabledTextColor = SDGColor.Neutral0,
     ),
     Normal(
-        styleName = "Normal",
+        typeName = "Normal",
         activeColor = SDGColor.Neutral200,
         pressedColor = SDGColor.Neutral300,
         disabledColor = SDGColor.Neutral200,
