@@ -1,6 +1,7 @@
 package com.shopl.sdg.component.button.bottom
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
@@ -12,7 +13,10 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,10 +28,11 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.bottom.model.SDGBottomButtonType
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameter
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameterProvider
-import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import com.shopl.sdg.component.button.bottom.SDGBottomButtonType as LegacySDGBottomButtonType
 
 private const val DEFAULT_DEBOUNCE_TIME = 1000L
@@ -65,6 +70,8 @@ fun SDGBottomButton(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
+    val scope = rememberCoroutineScope()
+    var isClickable by remember { mutableStateOf(true) }
 
     val sizeModifier = when (size) {
         SDGBottomButtonSize.Full -> Modifier.fillMaxWidth()
@@ -86,10 +93,20 @@ fun SDGBottomButton(
             )
             .clickable(
                 interactionSource = interactionSource,
+                indication = null,
                 enabled = enabled,
-                debounce = debounce,
-                debounceTimeMills = debounceTime,
-                onClick = onClick,
+                onClick = {
+                    if (!debounce || isClickable) {
+                        if (debounce) {
+                            isClickable = false
+                            scope.launch {
+                                delay(debounceTime)
+                                isClickable = true
+                            }
+                        }
+                        onClick()
+                    }
+                },
             )
             .padding(horizontal = SDGSpacing.Spacing16),
         contentAlignment = Alignment.Center,

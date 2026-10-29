@@ -46,57 +46,12 @@ import com.shopl.sdg_common.foundation.SDGColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/**
- * 중복 클릭 방지를 적용하는 공통 클릭 Modifier입니다.
- *
- * @param hasRipple 리플 표시 여부
- * @param rippleColor 리플 색상
- * @param enabled 클릭 활성화 여부
- * @param onClickLabel 클릭 동작 설명
- * @param debounceTimeMills 중복 클릭 방지 대기 시간
- * @param role 클릭 요소의 역할
- * @param onClick 클릭 시 실행할 동작
- */
 fun Modifier.clickable(
     hasRipple: Boolean = false,
     rippleColor: Color = SDGColor.Neutral900_a10,
     enabled: Boolean = true,
     onClickLabel: String? = null,
     debounceTimeMills: Long = 500,
-    role: Role? = null,
-    onClick: () -> Unit
-) = clickable(
-    interactionSource = null,
-    hasRipple = hasRipple,
-    rippleColor = rippleColor,
-    enabled = enabled,
-    onClickLabel = onClickLabel,
-    debounceTimeMills = debounceTimeMills,
-    role = role,
-    onClick = onClick,
-)
-
-/**
- * 눌림 상태를 공유하고 중복 클릭 방지를 설정할 수 있는 클릭 Modifier입니다.
- *
- * @param interactionSource 눌림 상태를 공유할 소스. null이면 내부에서 생성한다.
- * @param hasRipple 리플 표시 여부
- * @param rippleColor 리플 색상
- * @param enabled 클릭 활성화 여부
- * @param onClickLabel 클릭 동작 설명
- * @param debounceTimeMills 중복 클릭 방지 대기 시간
- * @param debounce 중복 클릭 방지 사용 여부
- * @param role 클릭 요소의 역할
- * @param onClick 클릭 시 실행할 동작
- */
-fun Modifier.clickable(
-    interactionSource: MutableInteractionSource?,
-    hasRipple: Boolean = false,
-    rippleColor: Color = SDGColor.Neutral900_a10,
-    enabled: Boolean = true,
-    onClickLabel: String? = null,
-    debounceTimeMills: Long = 500,
-    debounce: Boolean = true,
     role: Role? = null,
     onClick: () -> Unit
 ) = composed(
@@ -108,18 +63,15 @@ fun Modifier.clickable(
         properties["onClick"] = onClick
     }
 ) {
-    val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
     val scope = rememberCoroutineScope()
     val isClickable = remember { mutableStateOf(true) }
     val handleClick: () -> Unit = {
-        if (!debounce || isClickable.value) {
+        if (isClickable.value) {
             onClick()
-            if (debounce) {
-                isClickable.value = false
-                scope.launch {
-                    delay(debounceTimeMills)
-                    isClickable.value = true
-                }
+            isClickable.value = false
+            scope.launch {
+                delay(debounceTimeMills)
+                isClickable.value = true
             }
         }
     }
@@ -133,7 +85,7 @@ fun Modifier.clickable(
             indication = ripple(
                 color = rippleColor
             ),
-            interactionSource = resolvedInteractionSource
+            interactionSource = remember { MutableInteractionSource() }
         )
     } else {
         Modifier.clickable(
@@ -142,7 +94,7 @@ fun Modifier.clickable(
             onClick = { handleClick() },
             role = role,
             indication = null,
-            interactionSource = resolvedInteractionSource
+            interactionSource = remember { MutableInteractionSource() }
         )
     }
 }
