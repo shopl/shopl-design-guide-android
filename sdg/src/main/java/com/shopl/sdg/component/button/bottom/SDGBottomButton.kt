@@ -39,6 +39,7 @@ private const val DEFAULT_DEBOUNCE_TIME = 1000L
 private const val BOTTOM_BUTTON_HEIGHT_DP = 50
 private const val BOTTOM_BUTTON_CORNER_RADIUS_DP = 25
 private const val BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP = 80
+private const val BOTTOM_BUTTON_LABEL_MAX_LINES = 1
 private const val BOTTOM_BUTTON_PREVIEW_WIDTH_DP = 375
 
 /**
@@ -116,7 +117,7 @@ fun SDGBottomButton(
             textAlign = TextAlign.Center,
             textColor = if (enabled) type.textColor else type.disabledTextColor,
             typography = SDGTypography.Body1R,
-            maxLines = 1,
+            maxLines = BOTTOM_BUTTON_LABEL_MAX_LINES,
             overflow = TextOverflow.Ellipsis,
         )
     }
