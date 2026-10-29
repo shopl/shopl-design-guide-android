@@ -1,157 +1,173 @@
 package com.shopl.sdg.component.button.bottom
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.button.bottom.model.SDGBottomButtonType
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameter
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameterProvider
-import com.shopl.sdg_common.foundation.SDGColor
+import com.shopl.sdg_common.foundation.SDGCornerRadius
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
+import com.shopl.sdg.component.button.bottom.SDGBottomButtonType as LegacySDGBottomButtonType
+
+private const val DEFAULT_DEBOUNCE_TIME = 1000L
+private const val BOTTOM_BUTTON_HEIGHT_DP = 50
+private const val BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP = 80
+private const val BOTTOM_BUTTON_LABEL_MAX_LINES = 1
+private const val BOTTOM_BUTTON_PREVIEW_WIDTH_DP = 375
 
 /**
- * SDG - Button - Bottom Button [2.0.0]
+ * SDG - Button - Bottom Button
  *
  * 화면 하단에 고정으로 위치한 버튼 컴포넌트
  *
+ * @version 2.0.0
+ *
+ * @param size 가용 너비를 채우는 Full 또는 라벨 길이에 맞추는 Adaptive 크기
+ * @param type Primary, Neutral, Point, Normal 중 버튼의 색상 유형
+ * @param onClick 버튼 클릭 시 실행할 동작
+ * @param marginValues 호출부에서 지정하는 외부 여백. 화면 배치 가이드는 좌우 12dp, 하단 10dp를 사용한다.
+ * @param enabled 버튼 활성화 여부
+ * @param debounce 중복 클릭 방지 사용 여부
+ * @param debounceTime 중복 클릭 방지 대기 시간. 기본값은 1,000ms이다.
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19481-1283&m=dev">Figma</a>
  */
-
-private const val DEFAULT_DEBOUNCE_TIME = 1000L
-private const val FULL_WIDTH_FRACTION = 1f
-private const val MAX_TITLE_LINES = 2
-private const val BOTTOM_BUTTON_HEIGHT_DP = 50
-private const val BOTTOM_BUTTON_CORNER_RADIUS_DP = 25
-private const val BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP = 80
-private const val BOTTOM_BUTTON_HORIZONTAL_PADDING_DP = 16
-private const val BOTTOM_BUTTON_VERTICAL_PADDING_DP = 4
-
 @Composable
 fun SDGBottomButton(
-    title: String,
+    size: SDGBottomButtonSize,
+    type: SDGBottomButtonType,
+    label: String,
     onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
-    spec: SDGBottomButtonSpec = SDGBottomButtonSpec.FULL,
-    type: SDGBottomButtonType = SDGBottomButtonType.POSITIVE,
     enabled: Boolean = true,
     debounce: Boolean = true,
     debounceTime: Long = DEFAULT_DEBOUNCE_TIME,
 ) {
-    val (activeColor, disabledColor, textColor) = when (type) {
-        SDGBottomButtonType.POSITIVE -> Triple(
-            SDGColor.Primary300,
-            SDGColor.Primary50,
-            SDGColor.Neutral0
-        )
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+    val scope = rememberCoroutineScope()
+    var isClickable by remember { mutableStateOf(true) }
 
-        SDGBottomButtonType.NEGATIVE -> Triple(SDGColor.Red300, SDGColor.Red50, SDGColor.Neutral0)
-        SDGBottomButtonType.NORMAL -> Triple(
-            SDGColor.Neutral200,
-            SDGColor.Neutral200,
-            SDGColor.Neutral700
-        )
-
-        SDGBottomButtonType.NORMAL_DARK -> Triple(
-            SDGColor.Neutral600,
-            SDGColor.Neutral200,
-            SDGColor.Neutral0
-        )
+    val sizeModifier = when (size) {
+        SDGBottomButtonSize.Full -> Modifier.fillMaxWidth()
+        SDGBottomButtonSize.Adaptive -> Modifier.widthIn(min = BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP.dp)
     }
 
-    val debouncedClick = if (debounce) {
-        rememberDebouncedClick(
-            delayMs = debounceTime
-        ) { onClick() }
-    } else {
-        onClick
-    }
-
-    val sizeModifier = when (spec) {
-        SDGBottomButtonSpec.FULL -> Modifier.fillMaxWidth(FULL_WIDTH_FRACTION)
-        SDGBottomButtonSpec.ADAPTIVE -> Modifier.widthIn(min = BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP.dp)
-    }
-
-    Button(
-        enabled = enabled,
-        shape = RoundedCornerShape(BOTTOM_BUTTON_CORNER_RADIUS_DP.dp),
-        onClick = debouncedClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = activeColor,
-            disabledContainerColor = disabledColor
-        ),
-        contentPadding = PaddingValues(
-            horizontal = BOTTOM_BUTTON_HORIZONTAL_PADDING_DP.dp,
-            vertical = BOTTOM_BUTTON_VERTICAL_PADDING_DP.dp
-        ),
+    Box(
         modifier = Modifier
             .padding(marginValues)
             .then(sizeModifier)
-            .height(BOTTOM_BUTTON_HEIGHT_DP.dp),
+            .height(BOTTOM_BUTTON_HEIGHT_DP.dp)
+            .clip(SDGCornerRadius.BoxRadius.Radius25)
+            .background(
+                when {
+                    !enabled -> type.disabledColor
+                    pressed -> type.pressedColor
+                    else -> type.activeColor
+                }
+            )
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                enabled = enabled,
+                onClick = {
+                    if (!debounce || isClickable) {
+                        if (debounce) {
+                            isClickable = false
+                            scope.launch {
+                                delay(debounceTime.milliseconds)
+                                isClickable = true
+                            }
+                        }
+                        onClick()
+                    }
+                },
+            )
+            .padding(horizontal = SDGSpacing.Spacing16),
+        contentAlignment = Alignment.Center,
     ) {
         SDGText(
-            text = title,
+            text = label,
             textAlign = TextAlign.Center,
-            textColor = textColor,
+            textColor = if (enabled) type.textColor else type.disabledTextColor,
             typography = SDGTypography.Body1R,
-            maxLines = MAX_TITLE_LINES,
+            maxLines = BOTTOM_BUTTON_LABEL_MAX_LINES,
             overflow = TextOverflow.Ellipsis,
         )
     }
 }
 
+@Deprecated(
+    message = "label/size와 model 패키지의 SDGBottomButtonType을 사용하는 신규 SDGBottomButton API를 사용하세요.",
+)
 @Composable
-private fun rememberDebouncedClick(
-    delayMs: Long = DEFAULT_DEBOUNCE_TIME,
-    onClick: () -> Unit
-): () -> Unit {
-    var enabled by remember { mutableStateOf(true) }
-
-    LaunchedEffect(enabled) {
-        if (!enabled) {
-            delay(delayMs)
-            enabled = true
-        }
-    }
-
-    return {
-        if (enabled) {
-            enabled = false
-            onClick()
-        }
-    }
+@Suppress("DEPRECATION")
+fun SDGBottomButton(
+    title: String,
+    onClick: () -> Unit,
+    marginValues: PaddingValues = PaddingValues(),
+    spec: SDGBottomButtonSpec = SDGBottomButtonSpec.FULL,
+    type: LegacySDGBottomButtonType = LegacySDGBottomButtonType.POSITIVE,
+    enabled: Boolean = true,
+    debounce: Boolean = true,
+    debounceTime: Long = DEFAULT_DEBOUNCE_TIME,
+) {
+    SDGBottomButton(
+        size = spec.toSize(),
+        type = type.toType(),
+        label = title,
+        onClick = onClick,
+        marginValues = marginValues,
+        enabled = enabled,
+        debounce = debounce,
+        debounceTime = debounceTime,
+    )
 }
 
-@Preview
+@Preview(showBackground = true, widthDp = BOTTOM_BUTTON_PREVIEW_WIDTH_DP)
 @Composable
 private fun PreviewBottomButton(
     @PreviewParameter(SDGBottomButtonPreviewParameterProvider::class)
     param: SDGBottomButtonPreviewParameter
 ) {
-    SDGBottomButton(
-        title = param.title,
-        onClick = {},
-        marginValues = param.marginValues,
-        spec = param.spec,
-        type = param.type,
-        enabled = param.enabled,
-        debounce = false,
-    )
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.BottomEnd,
+    ) {
+        SDGBottomButton(
+            label = param.label,
+            onClick = {},
+            marginValues = param.marginValues,
+            size = param.size,
+            type = param.type,
+            enabled = param.enabled,
+            debounce = false,
+        )
+    }
 }
