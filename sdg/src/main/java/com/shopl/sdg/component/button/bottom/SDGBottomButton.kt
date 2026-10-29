@@ -33,6 +33,7 @@ import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 import com.shopl.sdg.component.button.bottom.SDGBottomButtonType as LegacySDGBottomButtonType
 
 private const val DEFAULT_DEBOUNCE_TIME = 1000L
@@ -101,7 +102,7 @@ fun SDGBottomButton(
                         if (debounce) {
                             isClickable = false
                             scope.launch {
-                                delay(debounceTime)
+                                delay(debounceTime.milliseconds)
                                 isClickable = true
                             }
                         }
