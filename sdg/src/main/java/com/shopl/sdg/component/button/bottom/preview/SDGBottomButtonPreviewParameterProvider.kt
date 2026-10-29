@@ -1,8 +1,8 @@
 package com.shopl.sdg.component.button.bottom.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.shopl.sdg.component.button.bottom.SDGBottomButtonSpec
-import com.shopl.sdg.component.button.bottom.SDGBottomButtonType
+import com.shopl.sdg.component.button.bottom.SDGBottomButtonSize
+import com.shopl.sdg.component.button.bottom.SDGBottomButtonStyle
 
 internal class SDGBottomButtonPreviewParameterProvider :
     PreviewParameterProvider<SDGBottomButtonPreviewParameter> {
@@ -29,128 +29,128 @@ internal class SDGBottomButtonPreviewParameterProvider :
     )
 
     private fun 기본_Full_Primary() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.POSITIVE,
-        spec = SDGBottomButtonSpec.FULL,
+        label = "Label",
+        style = SDGBottomButtonStyle.Primary,
+        size = SDGBottomButtonSize.Full,
         enabled = true,
     )
 
     private fun 비활성_Full_Primary() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.POSITIVE,
-        spec = SDGBottomButtonSpec.FULL,
+        label = "Label",
+        style = SDGBottomButtonStyle.Primary,
+        size = SDGBottomButtonSize.Full,
         enabled = false,
     )
 
     private fun 기본_Full_Neutral() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.NORMAL_DARK,
-        spec = SDGBottomButtonSpec.FULL,
+        label = "Label",
+        style = SDGBottomButtonStyle.Neutral,
+        size = SDGBottomButtonSize.Full,
         enabled = true,
     )
 
     private fun 비활성_Full_Neutral() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.NORMAL_DARK,
-        spec = SDGBottomButtonSpec.FULL,
+        label = "Label",
+        style = SDGBottomButtonStyle.Neutral,
+        size = SDGBottomButtonSize.Full,
         enabled = false,
     )
 
     private fun 기본_Full_Point() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.NEGATIVE,
-        spec = SDGBottomButtonSpec.FULL,
+        label = "Label",
+        style = SDGBottomButtonStyle.Point,
+        size = SDGBottomButtonSize.Full,
         enabled = true,
     )
 
     private fun 비활성_Full_Point() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.NEGATIVE,
-        spec = SDGBottomButtonSpec.FULL,
+        label = "Label",
+        style = SDGBottomButtonStyle.Point,
+        size = SDGBottomButtonSize.Full,
         enabled = false,
     )
 
     private fun 기본_Full_Normal() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.NORMAL,
-        spec = SDGBottomButtonSpec.FULL,
+        label = "Label",
+        style = SDGBottomButtonStyle.Normal,
+        size = SDGBottomButtonSize.Full,
         enabled = true,
     )
 
     private fun 비활성_Full_Normal() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.NORMAL,
-        spec = SDGBottomButtonSpec.FULL,
+        label = "Label",
+        style = SDGBottomButtonStyle.Normal,
+        size = SDGBottomButtonSize.Full,
         enabled = false,
     )
 
     private fun 기본_Adaptive_Primary() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.POSITIVE,
-        spec = SDGBottomButtonSpec.ADAPTIVE,
+        label = "Label",
+        style = SDGBottomButtonStyle.Primary,
+        size = SDGBottomButtonSize.Adaptive,
         enabled = true,
     )
 
     private fun 비활성_Adaptive_Primary() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.POSITIVE,
-        spec = SDGBottomButtonSpec.ADAPTIVE,
+        label = "Label",
+        style = SDGBottomButtonStyle.Primary,
+        size = SDGBottomButtonSize.Adaptive,
         enabled = false,
     )
 
     private fun 기본_Adaptive_Neutral() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.NORMAL_DARK,
-        spec = SDGBottomButtonSpec.ADAPTIVE,
+        label = "Label",
+        style = SDGBottomButtonStyle.Neutral,
+        size = SDGBottomButtonSize.Adaptive,
         enabled = true,
     )
 
     private fun 비활성_Adaptive_Neutral() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.NORMAL_DARK,
-        spec = SDGBottomButtonSpec.ADAPTIVE,
+        label = "Label",
+        style = SDGBottomButtonStyle.Neutral,
+        size = SDGBottomButtonSize.Adaptive,
         enabled = false,
     )
 
     private fun 기본_Adaptive_Point() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.NEGATIVE,
-        spec = SDGBottomButtonSpec.ADAPTIVE,
+        label = "Label",
+        style = SDGBottomButtonStyle.Point,
+        size = SDGBottomButtonSize.Adaptive,
         enabled = true,
     )
 
     private fun 비활성_Adaptive_Point() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.NEGATIVE,
-        spec = SDGBottomButtonSpec.ADAPTIVE,
+        label = "Label",
+        style = SDGBottomButtonStyle.Point,
+        size = SDGBottomButtonSize.Adaptive,
         enabled = false,
     )
 
     private fun 기본_Adaptive_Normal() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.NORMAL,
-        spec = SDGBottomButtonSpec.ADAPTIVE,
+        label = "Label",
+        style = SDGBottomButtonStyle.Normal,
+        size = SDGBottomButtonSize.Adaptive,
         enabled = true,
     )
 
     private fun 비활성_Adaptive_Normal() = SDGBottomButtonPreviewParameter(
-        title = "Label",
-        type = SDGBottomButtonType.NORMAL,
-        spec = SDGBottomButtonSpec.ADAPTIVE,
+        label = "Label",
+        style = SDGBottomButtonStyle.Normal,
+        size = SDGBottomButtonSize.Adaptive,
         enabled = false,
     )
 
     private fun 긴_라벨_Full() = SDGBottomButtonPreviewParameter(
-        title = "한 줄로 표시할 수 있는 너비를 넘은 긴 버튼명은 말줄임으로 표시합니다",
-        type = SDGBottomButtonType.POSITIVE,
-        spec = SDGBottomButtonSpec.FULL,
+        label = "한 줄로 표시할 수 있는 너비를 넘은 긴 버튼명은 말줄임으로 표시합니다",
+        style = SDGBottomButtonStyle.Primary,
+        size = SDGBottomButtonSize.Full,
         enabled = true,
     )
 
     private fun 긴_라벨_Adaptive() = SDGBottomButtonPreviewParameter(
-        title = "한 줄로 표시할 수 있는 너비를 넘은 긴 버튼명은 말줄임으로 표시합니다",
-        type = SDGBottomButtonType.NORMAL_DARK,
-        spec = SDGBottomButtonSpec.ADAPTIVE,
+        label = "한 줄로 표시할 수 있는 너비를 넘은 긴 버튼명은 말줄임으로 표시합니다",
+        style = SDGBottomButtonStyle.Neutral,
+        size = SDGBottomButtonSize.Adaptive,
         enabled = true,
     )
 }

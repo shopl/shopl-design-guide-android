@@ -199,11 +199,11 @@ private fun PreviewBottomButton(
         contentAlignment = Alignment.BottomEnd,
     ) {
         SDGBottomButton(
-            title = param.title,
+            label = param.label,
             onClick = {},
             marginValues = param.marginValues,
-            spec = param.spec,
-            type = param.type,
+            size = param.size,
+            style = param.style,
             enabled = param.enabled,
             debounce = false,
         )
