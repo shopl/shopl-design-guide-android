@@ -1,5 +1,6 @@
 package com.shopl.sdg.component.button.bottom
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
@@ -9,19 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,10 +23,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameter
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameterProvider
+import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
-import kotlinx.coroutines.delay
 
 private const val DEFAULT_DEBOUNCE_TIME = 1000L
 private const val BOTTOM_BUTTON_HEIGHT_DP = 50
@@ -56,7 +50,6 @@ private const val BOTTOM_BUTTON_PREVIEW_WIDTH_DP = 375
  * @param debounceTime 중복 클릭 방지 대기 시간. 기본값은 1,000ms이다.
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19481-1283&m=dev">Figma</a>
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SDGBottomButton(
     size: SDGBottomButtonSize,
@@ -71,44 +64,42 @@ fun SDGBottomButton(
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
 
-    val debouncedClick = if (debounce) {
-        rememberDebouncedClick(
-            delayMs = debounceTime
-        ) { onClick() }
-    } else {
-        onClick
-    }
-
     val sizeModifier = when (size) {
         SDGBottomButtonSize.Full -> Modifier.fillMaxWidth()
         SDGBottomButtonSize.Adaptive -> Modifier.widthIn(min = BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP.dp)
     }
 
-    CompositionLocalProvider(LocalRippleConfiguration provides null) {
-        Button(
-            enabled = enabled,
-            shape = RoundedCornerShape(BOTTOM_BUTTON_CORNER_RADIUS_DP.dp),
-            onClick = debouncedClick,
-            interactionSource = interactionSource,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = if (pressed) style.pressedColor else style.activeColor,
-                disabledContainerColor = style.disabledColor,
-            ),
-            contentPadding = PaddingValues(horizontal = SDGSpacing.Spacing16),
-            modifier = Modifier
-                .padding(marginValues)
-                .then(sizeModifier)
-                .height(BOTTOM_BUTTON_HEIGHT_DP.dp),
-        ) {
-            SDGText(
-                text = label,
-                textAlign = TextAlign.Center,
-                textColor = if (enabled) style.textColor else style.disabledTextColor,
-                typography = SDGTypography.Body1R,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+    Box(
+        modifier = Modifier
+            .padding(marginValues)
+            .then(sizeModifier)
+            .height(BOTTOM_BUTTON_HEIGHT_DP.dp)
+            .clip(RoundedCornerShape(BOTTOM_BUTTON_CORNER_RADIUS_DP.dp))
+            .background(
+                when {
+                    !enabled -> style.disabledColor
+                    pressed -> style.pressedColor
+                    else -> style.activeColor
+                }
             )
-        }
+            .clickable(
+                interactionSource = interactionSource,
+                enabled = enabled,
+                debounce = debounce,
+                debounceTimeMills = debounceTime,
+                onClick = onClick,
+            )
+            .padding(horizontal = SDGSpacing.Spacing16),
+        contentAlignment = Alignment.Center,
+    ) {
+        SDGText(
+            text = label,
+            textAlign = TextAlign.Center,
+            textColor = if (enabled) style.textColor else style.disabledTextColor,
+            typography = SDGTypography.Body1R,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 
@@ -152,28 +143,6 @@ fun SDGBottomButton(
         debounce = debounce,
         debounceTime = debounceTime,
     )
-}
-
-@Composable
-private fun rememberDebouncedClick(
-    delayMs: Long = DEFAULT_DEBOUNCE_TIME,
-    onClick: () -> Unit
-): () -> Unit {
-    var enabled by remember { mutableStateOf(true) }
-
-    LaunchedEffect(enabled) {
-        if (!enabled) {
-            delay(delayMs)
-            enabled = true
-        }
-    }
-
-    return {
-        if (enabled) {
-            enabled = false
-            onClick()
-        }
-    }
 }
 
 @Preview(showBackground = true, widthDp = BOTTOM_BUTTON_PREVIEW_WIDTH_DP)
