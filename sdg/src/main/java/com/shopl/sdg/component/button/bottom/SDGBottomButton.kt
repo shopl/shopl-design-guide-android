@@ -46,49 +46,48 @@ private const val BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP = 80
  * 화면 하단에 고정으로 위치한 버튼 컴포넌트
  *
  * @version 2.0.0
- * @param title 한 줄로 표시하며, 가용 너비를 넘으면 말줄임하는 버튼명
+ * @param label 한 줄로 표시하며, 가용 너비를 넘으면 말줄임하는 버튼명
  * @param marginValues 호출부에서 지정하는 외부 여백. 화면 배치 가이드는 좌우 12dp, 하단 10dp를 사용한다.
- * @param type POSITIVE는 Primary, NORMAL_DARK는 Neutral, NEGATIVE는 Point, NORMAL은 Normal에 대응한다.
- * Neutral 배경은 기본 Neutral700, 눌림 Neutral900, 비활성 Neutral300이며 Normal 비활성 라벨은 Neutral350이다.
- * @param debounce 중복 클릭 방지 사용 여부. 기존 기본값과 대기 시간을 유지한다.
+ * @param debounce 중복 클릭 방지 사용 여부
+ * @param debounceTime 중복 클릭 방지 대기 시간. 기본값은 1,000ms이다.
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19481-1283&m=dev">Figma</a>
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SDGBottomButton(
-    title: String,
+    size: SDGBottomButtonSize,
+    style: SDGBottomButtonStyle,
+    label: String,
     onClick: () -> Unit,
     marginValues: PaddingValues = PaddingValues(),
-    spec: SDGBottomButtonSpec = SDGBottomButtonSpec.FULL,
-    type: SDGBottomButtonType = SDGBottomButtonType.POSITIVE,
     enabled: Boolean = true,
     debounce: Boolean = true,
     debounceTime: Long = DEFAULT_DEBOUNCE_TIME,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    val (activeColor, pressedColor, disabledColor) = when (type) {
-        SDGBottomButtonType.POSITIVE -> Triple(
+    val (activeColor, pressedColor, disabledColor) = when (style) {
+        SDGBottomButtonStyle.Primary -> Triple(
             SDGColor.Primary300,
             SDGColor.Primary400,
             SDGColor.Primary50,
         )
 
-        SDGBottomButtonType.NEGATIVE -> Triple(SDGColor.Red300, SDGColor.Red400, SDGColor.Red50)
-        SDGBottomButtonType.NORMAL -> Triple(
+        SDGBottomButtonStyle.Point -> Triple(SDGColor.Red300, SDGColor.Red400, SDGColor.Red50)
+        SDGBottomButtonStyle.Normal -> Triple(
             SDGColor.Neutral200,
             SDGColor.Neutral300,
             SDGColor.Neutral200,
         )
 
-        SDGBottomButtonType.NORMAL_DARK -> Triple(
+        SDGBottomButtonStyle.Neutral -> Triple(
             SDGColor.Neutral700,
             SDGColor.Neutral900,
             SDGColor.Neutral300,
         )
     }
     val textColor = when {
-        type != SDGBottomButtonType.NORMAL -> SDGColor.Neutral0
+        style != SDGBottomButtonStyle.Normal -> SDGColor.Neutral0
         enabled -> SDGColor.Neutral700
         else -> SDGColor.Neutral350
     }
@@ -101,9 +100,9 @@ fun SDGBottomButton(
         onClick
     }
 
-    val sizeModifier = when (spec) {
-        SDGBottomButtonSpec.FULL -> Modifier.fillMaxWidth()
-        SDGBottomButtonSpec.ADAPTIVE -> Modifier.widthIn(min = BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP.dp)
+    val sizeModifier = when (size) {
+        SDGBottomButtonSize.Full -> Modifier.fillMaxWidth()
+        SDGBottomButtonSize.Adaptive -> Modifier.widthIn(min = BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP.dp)
     }
 
     CompositionLocalProvider(LocalRippleConfiguration provides null) {
@@ -123,7 +122,7 @@ fun SDGBottomButton(
                 .height(BOTTOM_BUTTON_HEIGHT_DP.dp),
         ) {
             SDGText(
-                text = title,
+                text = label,
                 textAlign = TextAlign.Center,
                 textColor = textColor,
                 typography = SDGTypography.Body1R,
@@ -132,6 +131,39 @@ fun SDGBottomButton(
             )
         }
     }
+}
+
+/**
+ * 기존 패키지, 시그니처와 기본값을 유지하는 Bottom Button 호환 API입니다.
+ * POSITIVE는 Primary, NEGATIVE는 Point, NORMAL은 Normal, NORMAL_DARK는 Neutral로 변환합니다.
+ * 레거시 호출에도 새 가이드의 한 줄 말줄임과 기본·눌림·비활성 색상을 적용합니다.
+ * 기존 외부 여백, 활성 상태, 콜백과 중복 클릭 방지 설정은 그대로 전달합니다.
+ */
+@Deprecated(
+    message = "title/spec/type 대신 label/size/style을 사용하는 신규 SDGBottomButton API를 사용하세요.",
+)
+@Composable
+@Suppress("DEPRECATION")
+fun SDGBottomButton(
+    title: String,
+    onClick: () -> Unit,
+    marginValues: PaddingValues = PaddingValues(),
+    spec: SDGBottomButtonSpec = SDGBottomButtonSpec.FULL,
+    type: SDGBottomButtonType = SDGBottomButtonType.POSITIVE,
+    enabled: Boolean = true,
+    debounce: Boolean = true,
+    debounceTime: Long = DEFAULT_DEBOUNCE_TIME,
+) {
+    SDGBottomButton(
+        size = spec.toSize(),
+        style = type.toStyle(),
+        label = title,
+        onClick = onClick,
+        marginValues = marginValues,
+        enabled = enabled,
+        debounce = debounce,
+        debounceTime = debounceTime,
+    )
 }
 
 @Composable

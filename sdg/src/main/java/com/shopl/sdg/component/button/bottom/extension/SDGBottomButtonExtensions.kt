@@ -20,7 +20,9 @@ import com.shopl.sdg.component.button.bottom.SDGBottomButtonType
 /**
  * [BoxScope] [SDGBottomButton]
  */
+@Deprecated("BoxScope에서 size/style/label을 사용하는 신규 SDGBottomButton을 배치하세요.")
 @Composable
+@Suppress("DEPRECATION")
 fun BoxScope.SDGBottomButton(
     align: Alignment,
     title: String,
@@ -32,10 +34,10 @@ fun BoxScope.SDGBottomButton(
 ) {
     Box(Modifier.align(align)) {
         SDGBottomButton(
-            title = title,
+            label = title,
             marginValues = marginValues,
-            spec = spec,
-            type = type,
+            size = spec.toSize(),
+            style = type.toStyle(),
             enabled = enabled,
             onClick = onClick,
         )
@@ -45,7 +47,9 @@ fun BoxScope.SDGBottomButton(
 /**
  * [RowScope] [SDGBottomButton]
  */
+@Deprecated("RowScope에서 size/style/label을 사용하는 신규 SDGBottomButton을 배치하세요.")
 @Composable
+@Suppress("DEPRECATION")
 fun RowScope.SDGBottomButton(
     weight: Float,
     title: String,
@@ -57,10 +61,10 @@ fun RowScope.SDGBottomButton(
 ) {
     Box(Modifier.weight(weight)) {
         SDGBottomButton(
-            title = title,
+            label = title,
             marginValues = marginValues,
-            spec = size,
-            type = type,
+            size = size.toSize(),
+            style = type.toStyle(),
             enabled = enabled,
             onClick = onClick,
         )
@@ -69,6 +73,7 @@ fun RowScope.SDGBottomButton(
 
 @Preview
 @Composable
+@Suppress("DEPRECATION")
 fun PreviewBottomButton() {
     Surface {
         Column(
