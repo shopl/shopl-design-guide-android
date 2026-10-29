@@ -77,7 +77,7 @@ fun RowScope.SDGBottomButton(
     enabled: Boolean = true,
     onClick: () -> Unit
 ) {
-    Box(Modifier.weight(weight)) {
+    Box(Modifier.weight(weight = weight, fill = true)) {
         SDGBottomButton(
             label = title,
             marginValues = marginValues,

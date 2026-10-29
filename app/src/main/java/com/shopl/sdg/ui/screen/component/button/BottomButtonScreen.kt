@@ -18,10 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.bottom.SDGBottomButton
-import com.shopl.sdg.component.button.bottom.SDGBottomButtonSpec
-import com.shopl.sdg.component.button.bottom.SDGBottomButtonType
 import com.shopl.sdg.component.button.bottom.SDGBottomButtonSize
+import com.shopl.sdg.component.button.bottom.SDGBottomButtonSpec
 import com.shopl.sdg.component.button.bottom.SDGBottomButtonStyle
+import com.shopl.sdg.component.button.bottom.SDGBottomButtonType
 import com.shopl.sdg.enums.SDGSampleStatus
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.scene.ComponentScene
@@ -41,7 +41,6 @@ private val BottomButtonSampleAreaHeight = 100.dp
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=19481-1283&m=dev">Figma</a>
  */
-
 @Composable
 internal fun BottomButtonScreen(
     onClickBack: () -> Unit,
@@ -162,7 +161,11 @@ private fun ComponentContent(
         }
         Box(modifier = areaModifier, contentAlignment = Alignment.BottomEnd) {
             Row(horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10)) {
-                Box(modifier = if (size == SDGBottomButtonSize.Full) Modifier.weight(1f) else Modifier) {
+                val buttonModifier = Modifier.then(
+                    if (size == SDGBottomButtonSize.Full) Modifier.weight(1f, fill = true) else Modifier
+                )
+
+                Box(modifier = buttonModifier) {
                     SDGBottomButton(
                         label = "이전",
                         onClick = { clickCount++ },
@@ -172,7 +175,7 @@ private fun ComponentContent(
                     )
                 }
 
-                Box(modifier = if (size == SDGBottomButtonSize.Full) Modifier.weight(1f) else Modifier) {
+                Box(modifier = buttonModifier) {
                     SDGBottomButton(
                         label = "다음",
                         onClick = { clickCount++ },
