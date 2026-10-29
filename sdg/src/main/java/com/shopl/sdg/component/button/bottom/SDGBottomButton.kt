@@ -71,26 +71,6 @@ fun SDGBottomButton(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    val (activeColor, pressedColor, disabledColor) = when (style) {
-        SDGBottomButtonStyle.Primary -> Triple(
-            SDGColor.Primary300,
-            SDGColor.Primary400,
-            SDGColor.Primary50,
-        )
-
-        SDGBottomButtonStyle.Point -> Triple(SDGColor.Red300, SDGColor.Red400, SDGColor.Red50)
-        SDGBottomButtonStyle.Normal -> Triple(
-            SDGColor.Neutral200,
-            SDGColor.Neutral300,
-            SDGColor.Neutral200,
-        )
-
-        SDGBottomButtonStyle.Neutral -> Triple(
-            SDGColor.Neutral700,
-            SDGColor.Neutral900,
-            SDGColor.Neutral300,
-        )
-    }
     val textColor = when {
         style != SDGBottomButtonStyle.Normal -> SDGColor.Neutral0
         enabled -> SDGColor.Neutral700
@@ -117,8 +97,8 @@ fun SDGBottomButton(
             onClick = debouncedClick,
             interactionSource = interactionSource,
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (pressed) pressedColor else activeColor,
-                disabledContainerColor = disabledColor,
+                containerColor = if (pressed) style.pressedColor else style.activeColor,
+                disabledContainerColor = style.disabledColor,
             ),
             contentPadding = PaddingValues(horizontal = SDGSpacing.Spacing16),
             modifier = Modifier
