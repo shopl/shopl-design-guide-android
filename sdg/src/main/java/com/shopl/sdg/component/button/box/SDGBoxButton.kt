@@ -43,6 +43,7 @@ import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 private val SDGBoxButtonBorderWidth = 1.dp
 private const val SDGBoxButtonDisabledAlpha = 0.3f
@@ -134,7 +135,7 @@ fun SDGBoxButton(
                             onClick()
                             isClickable = false
                             scope.launch {
-                                delay(debounceTimeMills)
+                                delay(debounceTimeMills.milliseconds)
                                 isClickable = true
                             }
                         }
