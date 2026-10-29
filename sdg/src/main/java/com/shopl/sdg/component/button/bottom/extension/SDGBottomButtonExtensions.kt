@@ -12,10 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.bottom.SDGBottomButton
 import com.shopl.sdg.component.button.bottom.SDGBottomButtonSpec
 import com.shopl.sdg.component.button.bottom.SDGBottomButtonType
+import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 
 /**
  * Box 내부에서 지정한 위치에 Bottom Button을 배치하는 기존 API입니다.
@@ -92,37 +92,37 @@ fun RowScope.SDGBottomButton(
 @Preview
 @Composable
 @Suppress("DEPRECATION")
-fun PreviewBottomButton() {
+private fun PreviewBottomButton() {
     Surface {
         Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10)
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10)
             ) {
                 SDGBottomButton(
                     title = "NORMAL",
                     type = SDGBottomButtonType.NORMAL,
-                    weight = 0.5F
+                    weight = 1f
                 ) {}
                 SDGBottomButton(
                     title = "POSITIVE",
                     type = SDGBottomButtonType.POSITIVE,
-                    weight = 0.5F
+                    weight = 1f
                 ) {}
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing10)
             ) {
                 SDGBottomButton(
                     title = "NEGATIVE",
                     type = SDGBottomButtonType.NEGATIVE,
-                    weight = 0.5F
+                    weight = 1f
                 ) {}
                 SDGBottomButton(
                     title = "POSITIVE",
                     type = SDGBottomButtonType.POSITIVE,
-                    weight = 0.5F
+                    weight = 1f
                 ) {}
             }
         }

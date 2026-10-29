@@ -39,6 +39,7 @@ private const val DEFAULT_DEBOUNCE_TIME = 1000L
 private const val BOTTOM_BUTTON_HEIGHT_DP = 50
 private const val BOTTOM_BUTTON_CORNER_RADIUS_DP = 25
 private const val BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP = 80
+private const val BOTTOM_BUTTON_PREVIEW_WIDTH_DP = 375
 
 /**
  * SDG - Button - Bottom Button
@@ -201,7 +202,7 @@ private fun rememberDebouncedClick(
     }
 }
 
-@Preview(showBackground = true, widthDp = 375)
+@Preview(showBackground = true, widthDp = BOTTOM_BUTTON_PREVIEW_WIDTH_DP)
 @Composable
 private fun PreviewBottomButton(
     @PreviewParameter(SDGBottomButtonPreviewParameterProvider::class)
