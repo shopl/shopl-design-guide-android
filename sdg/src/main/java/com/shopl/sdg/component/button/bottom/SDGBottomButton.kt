@@ -29,7 +29,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameter
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameterProvider
-import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
@@ -71,11 +70,6 @@ fun SDGBottomButton(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    val textColor = when {
-        style != SDGBottomButtonStyle.Normal -> SDGColor.Neutral0
-        enabled -> SDGColor.Neutral700
-        else -> SDGColor.Neutral350
-    }
 
     val debouncedClick = if (debounce) {
         rememberDebouncedClick(
@@ -109,7 +103,7 @@ fun SDGBottomButton(
             SDGText(
                 text = label,
                 textAlign = TextAlign.Center,
-                textColor = textColor,
+                textColor = if (enabled) style.textColor else style.disabledTextColor,
                 typography = SDGTypography.Body1R,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
