@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.bottom.model.SDGBottomButtonType
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameter
 import com.shopl.sdg.component.button.bottom.preview.SDGBottomButtonPreviewParameterProvider
+import com.shopl.sdg_common.foundation.SDGCornerRadius
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 import com.shopl.sdg_common.ui.components.SDGText
@@ -38,7 +38,6 @@ import com.shopl.sdg.component.button.bottom.SDGBottomButtonType as LegacySDGBot
 
 private const val DEFAULT_DEBOUNCE_TIME = 1000L
 private const val BOTTOM_BUTTON_HEIGHT_DP = 50
-private const val BOTTOM_BUTTON_CORNER_RADIUS_DP = 25
 private const val BOTTOM_BUTTON_ADAPTIVE_MIN_WIDTH_DP = 80
 private const val BOTTOM_BUTTON_LABEL_MAX_LINES = 1
 private const val BOTTOM_BUTTON_PREVIEW_WIDTH_DP = 375
@@ -85,7 +84,7 @@ fun SDGBottomButton(
             .padding(marginValues)
             .then(sizeModifier)
             .height(BOTTOM_BUTTON_HEIGHT_DP.dp)
-            .clip(RoundedCornerShape(BOTTOM_BUTTON_CORNER_RADIUS_DP.dp))
+            .clip(SDGCornerRadius.BoxRadius.Radius25)
             .background(
                 when {
                     !enabled -> type.disabledColor
