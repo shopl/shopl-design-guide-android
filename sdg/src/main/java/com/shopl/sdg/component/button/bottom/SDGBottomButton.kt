@@ -123,21 +123,6 @@ fun SDGBottomButton(
     }
 }
 
-/**
- * 기존 패키지, 시그니처와 기본값을 유지하는 Bottom Button 호환 API입니다.
- * POSITIVE는 Primary, NEGATIVE는 Point, NORMAL은 Normal, NORMAL_DARK는 Neutral로 변환합니다.
- * 레거시 호출에도 새 가이드의 한 줄 말줄임과 기본·눌림·비활성 색상을 적용합니다.
- * 기존 외부 여백, 활성 상태, 콜백과 중복 클릭 방지 설정은 그대로 전달합니다.
- *
- * @param title 버튼명
- * @param onClick 버튼 클릭 시 실행할 동작
- * @param marginValues 버튼 외부 여백
- * @param spec 기존 Full 또는 Adaptive 크기
- * @param type 신규 색상 유형으로 변환할 기존 버튼 유형
- * @param enabled 버튼 활성화 여부
- * @param debounce 중복 클릭 방지 사용 여부
- * @param debounceTime 중복 클릭 방지 대기 시간. 기본값은 1,000ms이다.
- */
 @Deprecated(
     message = "label/size와 model 패키지의 SDGBottomButtonType을 사용하는 신규 SDGBottomButton API를 사용하세요.",
 )

@@ -18,16 +18,7 @@ import com.shopl.sdg.component.button.bottom.SDGBottomButtonType
 import com.shopl.sdg_common.foundation.spacing.SDGSpacing
 
 /**
- * Box 내부에서 지정한 위치에 Bottom Button을 배치하는 기존 API입니다.
- * 크기와 유형을 변환해 신규 [SDGBottomButton]에 직접 위임합니다.
- *
- * @param align Box 내부에서 버튼을 정렬할 위치
- * @param title 버튼명
- * @param marginValues 버튼 외부 여백
- * @param spec 기존 Full 또는 Adaptive 크기
- * @param type 신규 색상 유형으로 변환할 기존 버튼 유형
- * @param enabled 버튼 활성화 여부
- * @param onClick 버튼 클릭 시 실행할 동작
+ * [BoxScope] [SDGBottomButton]
  */
 @Deprecated("BoxScope에서 size/type/label을 사용하는 신규 SDGBottomButton을 배치하세요.")
 @Composable
@@ -54,16 +45,7 @@ fun BoxScope.SDGBottomButton(
 }
 
 /**
- * Row 내부에서 지정한 너비 비율로 Bottom Button을 배치하는 기존 API입니다.
- * 크기와 유형을 변환해 신규 [SDGBottomButton]에 직접 위임합니다.
- *
- * @param weight Row의 남은 너비를 나눠 가질 비율
- * @param title 버튼명
- * @param marginValues 버튼 외부 여백
- * @param size 기존 Full 또는 Adaptive 크기
- * @param type 신규 색상 유형으로 변환할 기존 버튼 유형
- * @param enabled 버튼 활성화 여부
- * @param onClick 버튼 클릭 시 실행할 동작
+ * [RowScope] [SDGBottomButton]
  */
 @Deprecated("RowScope에서 size/type/label을 사용하는 신규 SDGBottomButton을 배치하세요.")
 @Composable
