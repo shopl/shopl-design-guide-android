@@ -14,7 +14,8 @@ sealed interface SDGBoxButtonShowIcon {
 }
 
 /**
- * 기존 nullable 아이콘 리소스를 Box Button의 표시 모델로 변환합니다.
+ * Deprecated SDGBoxButton 래퍼 전용으로, 기존 nullable 아이콘 리소스를 표시 모델로 변환합니다.
+ * 신규 코드에서는 이 함수를 사용하지 않고 [SDGBoxButtonShowIcon.True] 또는 [SDGBoxButtonShowIcon.False]를 직접 지정합니다.
  *
  * @param iconColor 아이콘에 적용할 색상. null이면 리소스 색상을 유지합니다.
  * @param iconSize 버튼 크기와 무관한 아이콘 크기

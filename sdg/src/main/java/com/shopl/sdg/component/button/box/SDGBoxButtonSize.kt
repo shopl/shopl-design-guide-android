@@ -71,7 +71,8 @@ sealed class SDGBoxButtonSize(
 }
 
 /**
- * 기존 버튼 크기별 기본 아이콘 크기를 신규 아이콘 크기로 변환합니다.
+ * Deprecated SDGBoxButton 래퍼 전용으로, 기존 버튼 크기별 기본 아이콘 크기를 신규 아이콘 크기로 변환합니다.
+ * 신규 코드에서는 이 함수를 사용하지 않고 [SDGBoxButtonIconSize]를 직접 지정합니다.
  *
  * @param iconDownSize 기존 기본 크기를 2dp 줄일지 여부
  */
