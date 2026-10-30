@@ -29,7 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -85,7 +90,9 @@ fun SDGBoxButton(
     val isPressed = interactionSource.collectIsPressedAsState()
     val scope = rememberCoroutineScope()
     var isClickable by remember { mutableStateOf(true) }
-    val contentAlpha = if (!enable && labelColor == SDGColor.Neutral0) SDGBoxButtonDisabledAlpha else 1f
+    val preserveWhiteLabel = !enable && labelColor == SDGColor.Neutral0
+    var labelLayout by remember { mutableStateOf<TextLayoutResult?>(null) }
+    var labelPosition by remember { mutableStateOf(Offset.Zero) }
 
     Box(
         modifier = Modifier
@@ -103,16 +110,27 @@ fun SDGBoxButton(
             modifier = Modifier
                 .then(if (isFillMaxWidth) Modifier.fillMaxWidth() else Modifier)
                 .height(size.height)
-                .alpha(if (enable || labelColor == SDGColor.Neutral0) 1f else SDGBoxButtonDisabledAlpha)
+                .drawWithContent {
+                    drawContent()
+                    if (preserveWhiteLabel) {
+                        labelLayout?.let { layout ->
+                            drawText(
+                                textLayoutResult = layout,
+                                topLeft = labelPosition + Offset(size.horizontalSpacing.toPx(), 0f),
+                            )
+                        }
+                    }
+                }
+                .alpha(if (enable) 1f else SDGBoxButtonDisabledAlpha)
                 .background(
-                    color = backgroundColor.copy(alpha = backgroundColor.alpha * contentAlpha),
+                    color = backgroundColor,
                     shape = size.shape
                 )
                 .then(
                     if (type is SDGBoxButtonType.Line) {
                         Modifier.border(
                             width = SDGBoxButtonBorderWidth,
-                            color = type.lineColor.copy(alpha = type.lineColor.alpha * contentAlpha),
+                            color = type.lineColor,
                             shape = size.shape
                         )
                     } else {
@@ -146,23 +164,29 @@ fun SDGBoxButton(
             horizontalArrangement = Arrangement.Center
         ) {
             if (leftIc is SDGBoxButtonShowIcon.True) {
-                SDGBoxButtonIcon(icon = leftIc, alpha = contentAlpha)
+                SDGBoxButtonIcon(icon = leftIc)
                 Spacer(modifier = Modifier.width(size.iconGap))
             }
 
             SDGText(
-                modifier = Modifier.weight(1f, fill = false),
+                modifier = Modifier
+                    .weight(1f, fill = false)
+                    .onPlaced { labelPosition = it.positionInParent() }
+                    .drawWithContent {
+                        if (!preserveWhiteLabel) drawContent()
+                    },
                 text = label,
                 textColor = labelColor,
                 textAlign = TextAlign.Center,
                 typography = size.typography,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                onTextLayout = { labelLayout = it },
             )
 
             if (rightIc is SDGBoxButtonShowIcon.True) {
                 Spacer(modifier = Modifier.width(size.iconGap))
-                SDGBoxButtonIcon(icon = rightIc, alpha = contentAlpha)
+                SDGBoxButtonIcon(icon = rightIc)
             }
         }
     }
@@ -218,13 +242,11 @@ fun SDGBoxButton(
 @Composable
 private fun SDGBoxButtonIcon(
     icon: SDGBoxButtonShowIcon.True,
-    alpha: Float,
 ) {
     SDGImage(
         modifier = Modifier.size(icon.iconSize.size),
         resId = icon.iconResId,
         color = icon.iconColor,
-        alpha = alpha,
     )
 }
 
