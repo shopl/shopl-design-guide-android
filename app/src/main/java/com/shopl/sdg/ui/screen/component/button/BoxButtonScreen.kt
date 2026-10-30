@@ -80,11 +80,7 @@ internal fun BoxButtonScreen(
         types = types,
         specs = specs,
         guideLineDescriptions = persistentListOf(
-            "SDG 컬러 시스템의 모든 컬러를 사용할 수 있습니다.",
-            "아이콘 크기 M(16dp), S(14dp), XS(12dp)는 버튼 크기와 무관하게 지정합니다.",
-            "Line은 배경색과 테두리색을 다르게 지정하거나 배경을 투명하게 사용할 수 있습니다.",
-            "길어진 라벨은 한 줄로 말줄임하며, 아이콘과 라벨은 수평 중앙 정렬합니다.",
-            "선택 상태는 색상으로 표현합니다. 버튼을 눌러 선택 상태와 클릭 횟수를 확인할 수 있습니다.",
+            "아이콘과 Label은 수평으로 중앙 정렬합니다.",
         ),
         componentContent = { currentType, currentSpec, currentStatus ->
             if (currentType != null && currentSpec != null) {
