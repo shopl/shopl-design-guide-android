@@ -192,14 +192,6 @@ fun SDGBoxButton(
     }
 }
 
-/**
- * iconDownSize 기반의 기존 API입니다. 버튼 크기별 기본 아이콘 크기와 2dp 축소를 신규 아이콘 모델로 변환합니다.
- * 눌림 상태는 Neutral900_a10 레이어를 적용하고 비활성 상태에서도 투명 배경의 투명도를 유지합니다.
- *
- * @param iconDownSize 기본 아이콘 크기를 2dp 줄일지 여부
- * @param debounceTimeMills 중복 클릭 방지 시간
- * @param maxWidth 외부 여백을 제외한 버튼의 최대 너비
- */
 @Deprecated("leftIc/rightIc에 SDGBoxButtonShowIcon과 SDGBoxButtonIconSize를 지정하는 API를 사용하세요.")
 @Composable
 fun SDGBoxButton(

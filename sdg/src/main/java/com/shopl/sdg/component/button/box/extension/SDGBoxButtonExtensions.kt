@@ -56,9 +56,6 @@ fun RowScope.SDGBoxButton(
     }
 }
 
-/**
- * iconDownSize 기반의 기존 Scope API입니다. 신규 아이콘 모델을 사용하는 SDGBoxButton으로 위임합니다.
- */
 @Deprecated("leftIc/rightIc에 SDGBoxButtonShowIcon을 지정하는 API를 사용하세요.")
 @Composable
 fun RowScope.SDGBoxButton(
@@ -131,9 +128,6 @@ fun BoxScope.SDGBoxButton(
     }
 }
 
-/**
- * iconDownSize 기반의 기존 Scope API입니다. 신규 아이콘 모델을 사용하는 SDGBoxButton으로 위임합니다.
- */
 @Deprecated("leftIc/rightIc에 SDGBoxButtonShowIcon을 지정하는 API를 사용하세요.")
 @Composable
 fun BoxScope.SDGBoxButton(
