@@ -1,0 +1,12 @@
+{
+  "feedVersion": 1,
+  "catalogSchemaVersion": 1,
+  "minimumReaderVersion": 1,
+  "version": "1.26.1",
+  "sourceSha": "ea682f81af41f807be644965b20aef0243a3dec0",
+  "catalogId": "sdg-android:1.26.1:eb5710950171932a",
+  "sha256": "c54dea9f2841f3853952a62d58427ede04e578861ce9c3e8a194bae8ebd02826",
+  "bytes": 2372099,
+  "file": "catalogs/c54dea9f2841f3853952a62d58427ede04e578861ce9c3e8a194bae8ebd02826.json",
+  "publishedAt": "2026-10-30T02:18:41.589Z"
+}
