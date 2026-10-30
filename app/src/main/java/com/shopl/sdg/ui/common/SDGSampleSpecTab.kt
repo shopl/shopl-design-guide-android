@@ -42,6 +42,10 @@ private fun PreviewSDGSampleSpecTab() {
             item = SDGBoxButtonSize.Small
         ),
         SDGSampleBaseTabItem(
+            title = SDGBoxButtonSize.SSmall::class.simpleName.orEmpty(),
+            item = SDGBoxButtonSize.SSmall
+        ),
+        SDGSampleBaseTabItem(
             title = SDGBoxButtonSize.XSmall::class.simpleName.orEmpty(),
             item = SDGBoxButtonSize.XSmall
         ),

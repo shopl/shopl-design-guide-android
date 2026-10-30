@@ -3,6 +3,8 @@ package com.shopl.sdg.component.button.box.preview
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import com.shopl.sdg.component.button.box.SDGBoxButtonIconSize
+import com.shopl.sdg.component.button.box.SDGBoxButtonShowIcon
 import com.shopl.sdg.component.button.box.SDGBoxButtonSize
 import com.shopl.sdg.component.button.box.SDGBoxButtonType
 import com.shopl.sdg_common.foundation.SDGColor
@@ -18,6 +20,12 @@ internal class SDGBoxButtonPreviewParameterProvider :
         활성_Medium_Solid(),
         활성_Small_Solid(),
         활성_Small_Line(),
+        활성_SSmall_Solid(),
+        비활성_SSmall_Line(),
+        작은_버튼_M_아이콘(),
+        큰_버튼_XS_아이콘(),
+        투명_배경_비활성_Line(),
+        선택_상태(),
         비활성_Medium_Solid(),
         흰색_비활성_Medium_Solid(),
         긴_활성_XSmall_Line(),
@@ -39,8 +47,11 @@ internal class SDGBoxButtonPreviewParameterProvider :
         type = SDGBoxButtonType.Solid,
         isFillMaxWidth = true,
         marginValues = PaddingValues(horizontal = Spacing16, vertical = Spacing8),
-        leftIcon = R.drawable.ic_common_prev_s,
-        leftIconTint = SDGColor.Neutral0,
+        leftIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_prev_s,
+            iconColor = SDGColor.Neutral0,
+            iconSize = SDGBoxButtonIconSize.M,
+        ),
     )
 
     private fun 활성_Small_Solid() = SDGBoxButtonPreviewParameter(
@@ -49,8 +60,11 @@ internal class SDGBoxButtonPreviewParameterProvider :
         backgroundColor = SDGColor.Neutral350,
         size = SDGBoxButtonSize.Small,
         type = SDGBoxButtonType.Solid,
-        rightIcon = R.drawable.ic_common_next_s,
-        rightIconTint = SDGColor.Neutral500,
+        rightIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_next_s,
+            iconColor = SDGColor.Neutral500,
+            iconSize = SDGBoxButtonIconSize.S,
+        ),
     )
 
     private fun 활성_Small_Line() = SDGBoxButtonPreviewParameter(
@@ -59,10 +73,63 @@ internal class SDGBoxButtonPreviewParameterProvider :
         backgroundColor = SDGColor.Neutral0,
         size = SDGBoxButtonSize.Small,
         type = SDGBoxButtonType.Line(SDGColor.Primary400),
-        rightIcon = R.drawable.ic_common_next_s,
-        rightIconTint = SDGColor.Neutral500,
-        iconDownSize = true,
+        rightIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_next_s,
+            iconColor = SDGColor.Neutral500,
+            iconSize = SDGBoxButtonIconSize.XS,
+        ),
         marginValues = PaddingValues(horizontal = Spacing16, vertical = Spacing4),
+    )
+
+    private fun 활성_SSmall_Solid() = SDGBoxButtonPreviewParameter(
+        label = "Label",
+        labelColor = SDGColor.Neutral600,
+        backgroundColor = SDGColor.Neutral200,
+        size = SDGBoxButtonSize.SSmall,
+        type = SDGBoxButtonType.Solid,
+        leftIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_prev_s,
+            iconColor = SDGColor.Neutral600,
+            iconSize = SDGBoxButtonIconSize.S,
+        ),
+        rightIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_next_s,
+            iconColor = SDGColor.Neutral600,
+            iconSize = SDGBoxButtonIconSize.S,
+        ),
+    )
+
+    private fun 비활성_SSmall_Line() = 활성_SSmall_Solid().copy(
+        type = SDGBoxButtonType.Line(SDGColor.Neutral250),
+        backgroundColor = SDGColor.Neutral0,
+        enable = false,
+    )
+
+    private fun 작은_버튼_M_아이콘() = 활성_SSmall_Solid().copy(
+        size = SDGBoxButtonSize.XSmall,
+        leftIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_prev_s,
+            iconColor = null,
+            iconSize = SDGBoxButtonIconSize.M,
+        ),
+        rightIc = SDGBoxButtonShowIcon.False,
+    )
+
+    private fun 큰_버튼_XS_아이콘() = 활성_Medium_Solid().copy(
+        leftIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_prev_s,
+            iconColor = SDGColor.Neutral0,
+            iconSize = SDGBoxButtonIconSize.XS,
+        ),
+    )
+
+    private fun 투명_배경_비활성_Line() = 비활성_SSmall_Line().copy(
+        backgroundColor = SDGColor.Transparent,
+    )
+
+    private fun 선택_상태() = 활성_SSmall_Solid().copy(
+        backgroundColor = SDGColor.Neutral300,
+        labelColor = SDGColor.Neutral900,
     )
 
     private fun 비활성_Medium_Solid() = SDGBoxButtonPreviewParameter(
@@ -72,8 +139,11 @@ internal class SDGBoxButtonPreviewParameterProvider :
         size = SDGBoxButtonSize.Medium,
         type = SDGBoxButtonType.Solid,
         enable = false,
-        rightIcon = R.drawable.ic_common_next_s,
-        rightIconTint = SDGColor.Neutral0,
+        rightIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_next_s,
+            iconColor = SDGColor.Neutral0,
+            iconSize = SDGBoxButtonIconSize.M,
+        ),
     )
 
     private fun 흰색_비활성_Medium_Solid() = SDGBoxButtonPreviewParameter(
@@ -83,8 +153,11 @@ internal class SDGBoxButtonPreviewParameterProvider :
         size = SDGBoxButtonSize.Medium,
         type = SDGBoxButtonType.Solid,
         enable = false,
-        rightIcon = R.drawable.ic_common_next_s,
-        rightIconTint = SDGColor.Neutral0,
+        rightIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_next_s,
+            iconColor = SDGColor.Neutral0,
+            iconSize = SDGBoxButtonIconSize.M,
+        ),
     )
 
     private fun 긴_활성_XSmall_Line() = SDGBoxButtonPreviewParameter(
@@ -93,8 +166,11 @@ internal class SDGBoxButtonPreviewParameterProvider :
         backgroundColor = SDGColor.Neutral0,
         size = SDGBoxButtonSize.XSmall,
         type = SDGBoxButtonType.Line(SDGColor.Neutral300),
-        rightIcon = R.drawable.ic_common_edit,
-        iconDownSize = true,
+        rightIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_edit,
+            iconColor = null,
+            iconSize = SDGBoxButtonIconSize.XS,
+        ),
         isFillMaxWidth = false,
     )
 
@@ -105,7 +181,11 @@ internal class SDGBoxButtonPreviewParameterProvider :
         size = SDGBoxButtonSize.XSmall,
         type = SDGBoxButtonType.Solid,
         maxWidth = 120.dp,
-        rightIcon = R.drawable.ic_common_help2,
+        rightIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_help2,
+            iconColor = null,
+            iconSize = SDGBoxButtonIconSize.S,
+        ),
     )
 
     private fun 최대너비_한글_오른쪽_아이콘() = SDGBoxButtonPreviewParameter(
@@ -115,7 +195,11 @@ internal class SDGBoxButtonPreviewParameterProvider :
         size = SDGBoxButtonSize.XSmall,
         type = SDGBoxButtonType.Solid,
         maxWidth = 120.dp,
-        rightIcon = R.drawable.ic_common_help2,
+        rightIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_help2,
+            iconColor = null,
+            iconSize = SDGBoxButtonIconSize.S,
+        ),
     )
 
     private fun 최대너비_영문_넓은_글자() = SDGBoxButtonPreviewParameter(
@@ -125,7 +209,11 @@ internal class SDGBoxButtonPreviewParameterProvider :
         size = SDGBoxButtonSize.XSmall,
         type = SDGBoxButtonType.Solid,
         maxWidth = 120.dp,
-        rightIcon = R.drawable.ic_common_help2,
+        rightIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_help2,
+            iconColor = null,
+            iconSize = SDGBoxButtonIconSize.S,
+        ),
     )
 
     private fun 최대너비_영문_좁은_글자() = SDGBoxButtonPreviewParameter(
@@ -135,7 +223,11 @@ internal class SDGBoxButtonPreviewParameterProvider :
         size = SDGBoxButtonSize.XSmall,
         type = SDGBoxButtonType.Solid,
         maxWidth = 120.dp,
-        rightIcon = R.drawable.ic_common_help2,
+        rightIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_help2,
+            iconColor = null,
+            iconSize = SDGBoxButtonIconSize.S,
+        ),
     )
 
     private fun 최대너비_아랍어_양쪽_아이콘() = SDGBoxButtonPreviewParameter(
@@ -145,8 +237,16 @@ internal class SDGBoxButtonPreviewParameterProvider :
         size = SDGBoxButtonSize.XSmall,
         type = SDGBoxButtonType.Solid,
         maxWidth = 120.dp,
-        leftIcon = R.drawable.ic_common_prev_s,
-        rightIcon = R.drawable.ic_common_help2,
+        leftIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_prev_s,
+            iconColor = null,
+            iconSize = SDGBoxButtonIconSize.S,
+        ),
+        rightIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_help2,
+            iconColor = null,
+            iconSize = SDGBoxButtonIconSize.S,
+        ),
     )
 
     private fun 최대너비_일본어_왼쪽_아이콘() = SDGBoxButtonPreviewParameter(
@@ -156,7 +256,11 @@ internal class SDGBoxButtonPreviewParameterProvider :
         size = SDGBoxButtonSize.XSmall,
         type = SDGBoxButtonType.Solid,
         maxWidth = 120.dp,
-        leftIcon = R.drawable.ic_common_prev_s,
+        leftIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_prev_s,
+            iconColor = null,
+            iconSize = SDGBoxButtonIconSize.S,
+        ),
     )
 
     private fun 최대너비_아이콘_없음() = SDGBoxButtonPreviewParameter(
@@ -175,8 +279,16 @@ internal class SDGBoxButtonPreviewParameterProvider :
         size = SDGBoxButtonSize.XSmall,
         type = SDGBoxButtonType.Solid,
         maxWidth = 120.dp,
-        leftIcon = R.drawable.ic_common_prev_s,
-        rightIcon = R.drawable.ic_common_help2,
+        leftIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_prev_s,
+            iconColor = null,
+            iconSize = SDGBoxButtonIconSize.S,
+        ),
+        rightIc = SDGBoxButtonShowIcon.True(
+            iconResId = R.drawable.ic_common_help2,
+            iconColor = null,
+            iconSize = SDGBoxButtonIconSize.S,
+        ),
         isFillMaxWidth = true,
     )
 }

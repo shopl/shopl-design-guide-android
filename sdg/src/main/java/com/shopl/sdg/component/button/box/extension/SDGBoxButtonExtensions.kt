@@ -15,13 +15,48 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.button.box.SDGBoxButton
+import com.shopl.sdg.component.button.box.SDGBoxButtonShowIcon
 import com.shopl.sdg.component.button.box.SDGBoxButtonSize
 import com.shopl.sdg.component.button.box.SDGBoxButtonType
+import com.shopl.sdg.component.button.box.toBoxButtonShowIcon
+import com.shopl.sdg.component.button.box.toLegacyIconSize
 import com.shopl.sdg_common.foundation.SDGColor
 
 /**
  * [RowScope] [SDGBoxButton]
  */
+@Composable
+fun RowScope.SDGBoxButton(
+    weight: Float,
+    enable: Boolean = true,
+    size: SDGBoxButtonSize,
+    type: SDGBoxButtonType,
+    label: String,
+    labelColor: Color,
+    backgroundColor: Color,
+    onClick: () -> Unit,
+    leftIc: SDGBoxButtonShowIcon,
+    rightIc: SDGBoxButtonShowIcon,
+    marginValues: PaddingValues = PaddingValues(),
+) {
+    Box(Modifier.weight(weight)) {
+        SDGBoxButton(
+            isFillMaxWidth = true,
+            enable = enable,
+            size = size,
+            type = type,
+            label = label,
+            labelColor = labelColor,
+            backgroundColor = backgroundColor,
+            leftIc = leftIc,
+            rightIc = rightIc,
+            marginValues = marginValues,
+            onClick = onClick,
+        )
+    }
+}
+
+@Deprecated("leftIc/rightIc에 SDGBoxButtonShowIcon을 지정하는 API를 사용하세요.")
 @Composable
 fun RowScope.SDGBoxButton(
     weight: Float,
@@ -39,6 +74,8 @@ fun RowScope.SDGBoxButton(
     rightIconTint: Color? = null,
     marginValues: PaddingValues = PaddingValues(),
 ) {
+    val iconSize = size.toLegacyIconSize(iconDownSize)
+
     Box(Modifier.weight(weight)) {
         SDGBoxButton(
             isFillMaxWidth = true,
@@ -48,11 +85,8 @@ fun RowScope.SDGBoxButton(
             label = label,
             labelColor = labelColor,
             backgroundColor = backgroundColor,
-            iconDownSize = iconDownSize,
-            leftIcon = leftIcon,
-            leftIconTint = leftIconTint,
-            rightIcon = rightIcon,
-            rightIconTint = rightIconTint,
+            leftIc = leftIcon.toBoxButtonShowIcon(leftIconTint, iconSize),
+            rightIc = rightIcon.toBoxButtonShowIcon(rightIconTint, iconSize),
             marginValues = marginValues,
             onClick = onClick,
         )
@@ -73,11 +107,8 @@ fun BoxScope.SDGBoxButton(
     labelColor: Color,
     backgroundColor: Color,
     onClick: () -> Unit,
-    iconDownSize: Boolean = false,
-    @DrawableRes leftIcon: Int? = null,
-    leftIconTint: Color? = null,
-    @DrawableRes rightIcon: Int? = null,
-    rightIconTint: Color? = null,
+    leftIc: SDGBoxButtonShowIcon,
+    rightIc: SDGBoxButtonShowIcon,
     marginValues: PaddingValues = PaddingValues(),
 ) {
     Box(Modifier.align(alignment)) {
@@ -89,11 +120,46 @@ fun BoxScope.SDGBoxButton(
             label = label,
             labelColor = labelColor,
             backgroundColor = backgroundColor,
-            iconDownSize = iconDownSize,
-            leftIcon = leftIcon,
-            leftIconTint = leftIconTint,
-            rightIcon = rightIcon,
-            rightIconTint = rightIconTint,
+            leftIc = leftIc,
+            rightIc = rightIc,
+            marginValues = marginValues,
+            onClick = onClick,
+        )
+    }
+}
+
+@Deprecated("leftIc/rightIc에 SDGBoxButtonShowIcon을 지정하는 API를 사용하세요.")
+@Composable
+fun BoxScope.SDGBoxButton(
+    alignment: Alignment,
+    isFillMaxWidth: Boolean,
+    enable: Boolean = true,
+    size: SDGBoxButtonSize,
+    type: SDGBoxButtonType,
+    label: String,
+    labelColor: Color,
+    backgroundColor: Color,
+    onClick: () -> Unit,
+    iconDownSize: Boolean = false,
+    @DrawableRes leftIcon: Int? = null,
+    leftIconTint: Color? = null,
+    @DrawableRes rightIcon: Int? = null,
+    rightIconTint: Color? = null,
+    marginValues: PaddingValues = PaddingValues(),
+) {
+    val iconSize = size.toLegacyIconSize(iconDownSize)
+
+    Box(Modifier.align(alignment)) {
+        SDGBoxButton(
+            isFillMaxWidth = isFillMaxWidth,
+            enable = enable,
+            size = size,
+            type = type,
+            label = label,
+            labelColor = labelColor,
+            backgroundColor = backgroundColor,
+            leftIc = leftIcon.toBoxButtonShowIcon(leftIconTint, iconSize),
+            rightIc = rightIcon.toBoxButtonShowIcon(rightIconTint, iconSize),
             marginValues = marginValues,
             onClick = onClick,
         )
@@ -113,6 +179,8 @@ private fun PreviewRowScopeSDGBoxButton() {
             label = "RowScope Button",
             labelColor = SDGColor.Neutral0,
             backgroundColor = SDGColor.Primary300,
+            leftIc = SDGBoxButtonShowIcon.False,
+            rightIc = SDGBoxButtonShowIcon.False,
             onClick = { }
         )
     }
@@ -132,6 +200,8 @@ private fun PreviewBoxScopeSDGBoxButton() {
             labelColor = SDGColor.Neutral700,
             backgroundColor = Color.Transparent,
             isFillMaxWidth = false,
+            leftIc = SDGBoxButtonShowIcon.False,
+            rightIc = SDGBoxButtonShowIcon.False,
             onClick = { }
         )
     }
