@@ -2,10 +2,12 @@ package com.shopl.sdg.component.icon_label
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +54,7 @@ fun SDGIconLabel(
                     Modifier
                 },
             )
+            .width(IntrinsicSize.Max)
             .then(
                 if (onClick != null) {
                     Modifier.clickable { onClick() }
@@ -75,13 +78,7 @@ fun SDGIconLabel(
         SDGText(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .then(
-                    if (isFillMaxWidth) {
-                        Modifier.weight(1f)
-                    } else {
-                        Modifier
-                    },
-                ),
+                .weight(weight = 1f, fill = isFillMaxWidth),
             text = label,
             textColor = labelColor,
             typography = fontWeight.typography(size),
