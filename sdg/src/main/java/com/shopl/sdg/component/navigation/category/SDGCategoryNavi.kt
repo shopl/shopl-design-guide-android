@@ -91,7 +91,18 @@ fun SDGCategoryNavi(
         Row(
             modifier = Modifier
                 .weight(1f, true)
-                .padding(start = Spacing2),
+                .padding(start = Spacing2)
+                .then(
+                    if (hasDropdown is SDGCategoryNaviHasDropdown.True) {
+                        Modifier.clickable(
+                            role = Role.Button,
+                            onClickLabel = stringResource(R.string.select),
+                            onClick = hasDropdown.onClick,
+                        )
+                    } else {
+                        Modifier
+                    },
+                ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             label.text?.let {
@@ -109,13 +120,7 @@ fun SDGCategoryNavi(
                 SDGImage(
                     resId = R.drawable.ic_common_dropdown,
                     color = label.color,
-                    modifier = Modifier
-                        .size(DROPDOWN_ICON_SIZE)
-                        .clickable(
-                            role = Role.Button,
-                            onClickLabel = stringResource(R.string.select),
-                            onClick = hasDropdown.onClick,
-                        ),
+                    modifier = Modifier.size(DROPDOWN_ICON_SIZE),
                 )
             }
         }
