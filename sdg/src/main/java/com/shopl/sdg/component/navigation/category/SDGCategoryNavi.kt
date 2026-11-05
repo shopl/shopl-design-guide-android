@@ -12,11 +12,11 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -91,7 +91,15 @@ fun SDGCategoryNavi(
         Row(
             modifier = Modifier
                 .weight(1f, true)
-                .padding(start = Spacing2),
+                .padding(start = Spacing2)
+                .wrapContentWidth(Alignment.Start)
+                .then(
+                    if (hasDropdown is SDGCategoryNaviHasDropdown.True) {
+                        Modifier.clickable(onClick = hasDropdown.onClick)
+                    } else {
+                        Modifier
+                    },
+                ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             label.text?.let {
@@ -109,13 +117,7 @@ fun SDGCategoryNavi(
                 SDGImage(
                     resId = R.drawable.ic_common_dropdown,
                     color = label.color,
-                    modifier = Modifier
-                        .size(DROPDOWN_ICON_SIZE)
-                        .clickable(
-                            role = Role.Button,
-                            onClickLabel = stringResource(R.string.select),
-                            onClick = hasDropdown.onClick,
-                        ),
+                    modifier = Modifier.size(DROPDOWN_ICON_SIZE),
                 )
             }
         }
