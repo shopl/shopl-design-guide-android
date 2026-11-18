@@ -18,12 +18,28 @@ import com.shopl.sdg.component.icon_label.SDGIconLabelGap
 import com.shopl.sdg.component.icon_label.SDGIconLabelIcon
 import com.shopl.sdg.component.icon_label.SDGIconLabelOverflow
 import com.shopl.sdg.component.icon_label.SDGIconLabelSize
+import com.shopl.sdg.component.icon_label.resolve
 import com.shopl.sdg_common.ext.clickable
 import com.shopl.sdg_common.ui.components.SDGImage
 import com.shopl.sdg_common.ui.components.SDGText
 
 /**
  * AnnotatedString을 사용하는 Icon Label입니다.
+ *
+ * 좌우 아이콘을 모두 노출하면 [labelOverflow] 값과 관계없이 Truncate(1줄 말줄임)로 표시합니다.
+ * 아이콘 tint가 없으면 [labelColor]를 따릅니다.
+ *
+ * @param label 표시할 Label 텍스트
+ * @param labelColor Label 색상
+ * @param size Icon Label 크기
+ * @param fontWeight Label 굵기
+ * @param gap 아이콘과 Label 사이 간격
+ * @param modifier Modifier
+ * @param leftIc 좌측 아이콘
+ * @param rightIc 우측 아이콘
+ * @param labelOverflow Label이 길어지는 경우 노출 방식(Text Mode)
+ * @param isFillMaxWidth 가용 너비를 모두 채울지 여부
+ * @param onClick 클릭 이벤트
  */
 @Composable
 fun SDGIconLabel(
@@ -39,6 +55,11 @@ fun SDGIconLabel(
     isFillMaxWidth: Boolean = false,
     onClick: (() -> Unit)?,
 ) {
+    val appliedOverflow = labelOverflow.resolve(
+        hasLeftIc = leftIc != null,
+        hasRightIc = rightIc != null,
+    )
+
     Row(
         modifier = modifier
             .then(
@@ -65,19 +86,17 @@ fun SDGIconLabel(
                     .padding(vertical = size.iconVerticalPadding)
                     .size(SDGIconLabelIconSize),
                 resId = leftIc.resId,
-                color = leftIc.tint,
+                color = leftIc.tint ?: labelColor,
             )
         }
 
         SDGText(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .weight(weight = 1f, fill = isFillMaxWidth),
+            modifier = Modifier.weight(weight = 1f, fill = isFillMaxWidth),
             text = label,
             textColor = labelColor,
             typography = fontWeight.typography(size),
-            maxLines = labelOverflow.maxLines,
-            overflow = labelOverflow.textOverflow,
+            maxLines = appliedOverflow.maxLines,
+            overflow = appliedOverflow.textOverflow,
         )
 
         if (rightIc != null) {
@@ -86,7 +105,7 @@ fun SDGIconLabel(
                     .padding(vertical = size.iconVerticalPadding)
                     .size(SDGIconLabelIconSize),
                 resId = rightIc.resId,
-                color = rightIc.tint,
+                color = rightIc.tint ?: labelColor,
             )
         }
     }

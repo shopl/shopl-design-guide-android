@@ -62,7 +62,6 @@ internal class SDGIconLabelPreviewParameterProvider : PreviewParameterProvider<S
             fontWeight = SDGIconLabelFontWeight.Normal,
             gap = SDGIconLabelGap.Spacing4,
             leftIc = SDGIconLabelIcon(resId = R.drawable.ic_common_list),
-            rightIc = SDGIconLabelIcon(resId = R.drawable.ic_common_next_s),
             labelOverflow = SDGIconLabelOverflow.Full,
             isFillMaxWidth = true,
         ),

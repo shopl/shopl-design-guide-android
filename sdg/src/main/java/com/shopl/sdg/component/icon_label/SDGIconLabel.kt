@@ -23,11 +23,13 @@ import com.shopl.sdg_common.ui.components.SDGText
 /**
  * SDG - Icon Label
  *
- * 아이콘과 텍스트를 조합하여 보여주는 컴포넌트
+ * 아이콘과 텍스트를 조합하여 정보를 간결하게 전달하는 컴포넌트
  *
- * @version 2.1.29
+ * @version 2.3.57
  *
- * @param labelOverflow Label이 길어지는 경우 노출 방식
+ * @param labelOverflow Label이 길어지는 경우 노출 방식(Text Mode). 좌우 아이콘을 모두 노출하면 값과 관계없이 Truncate로 표시합니다.
+ * @param leftIc 좌측 아이콘. tint가 없으면 labelColor를 따릅니다.
+ * @param rightIc 우측 아이콘. tint가 없으면 labelColor를 따릅니다.
  *
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=10507-19135&m=dev">Figma</a>
  */
@@ -45,6 +47,11 @@ fun SDGIconLabel(
     rightIc: SDGIconLabelIcon? = null,
     isFillMaxWidth: Boolean = false,
 ) {
+    val appliedOverflow = labelOverflow.resolve(
+        hasLeftIc = leftIc != null,
+        hasRightIc = rightIc != null,
+    )
+
     Row(
         modifier = modifier
             .then(
@@ -71,19 +78,17 @@ fun SDGIconLabel(
                     .padding(vertical = size.iconVerticalPadding)
                     .size(SDGIconLabelIconSize),
                 resId = leftIc.resId,
-                color = leftIc.tint,
+                color = leftIc.tint ?: labelColor,
             )
         }
 
         SDGText(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .weight(weight = 1f, fill = isFillMaxWidth),
+            modifier = Modifier.weight(weight = 1f, fill = isFillMaxWidth),
             text = label,
             textColor = labelColor,
             typography = fontWeight.typography(size),
-            maxLines = labelOverflow.maxLines,
-            overflow = labelOverflow.textOverflow,
+            maxLines = appliedOverflow.maxLines,
+            overflow = appliedOverflow.textOverflow,
         )
 
         if (rightIc != null) {
@@ -92,7 +97,7 @@ fun SDGIconLabel(
                     .padding(vertical = size.iconVerticalPadding)
                     .size(SDGIconLabelIconSize),
                 resId = rightIc.resId,
-                color = rightIc.tint,
+                color = rightIc.tint ?: labelColor,
             )
         }
     }
