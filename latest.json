@@ -2,11 +2,11 @@
   "feedVersion": 1,
   "catalogSchemaVersion": 1,
   "minimumReaderVersion": 1,
-  "version": "1.26.4",
-  "sourceSha": "1e17d5f19073a85f55e79994a33b3447f639d13e",
-  "catalogId": "sdg-android:1.26.4:b2dd779b7223bb2e",
-  "sha256": "ecbcc6b39e43835983a6b4f0a801b90206116db4ee54a4c27ebf2389701ad341",
-  "bytes": 2373527,
-  "file": "catalogs/ecbcc6b39e43835983a6b4f0a801b90206116db4ee54a4c27ebf2389701ad341.json",
-  "publishedAt": "2026-11-12T01:15:24.266Z"
+  "version": "1.26.5",
+  "sourceSha": "126251331cd054131bf3e20f3110c733db2b8ab3",
+  "catalogId": "sdg-android:1.26.5:89bcc9907a8a5720",
+  "sha256": "7a3fe6c717ff53244c0446f639275600d751d0d659aac4fd4b7231d60f55780d",
+  "bytes": 2373962,
+  "file": "catalogs/7a3fe6c717ff53244c0446f639275600d751d0d659aac4fd4b7231d60f55780d.json",
+  "publishedAt": "2026-11-19T23:38:39.195Z"
 }
