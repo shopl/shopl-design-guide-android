@@ -48,4 +48,5 @@
     <string name="no_registered_members">No hay miembros registrados.</string>
     <string name="sdg_cm_single_group">Grupo</string>
     <string name="sdg_cm_position">Posición</string>
+    <string name="rich_text_input_placeholder">Escribe aquí</string>
 </resources>
