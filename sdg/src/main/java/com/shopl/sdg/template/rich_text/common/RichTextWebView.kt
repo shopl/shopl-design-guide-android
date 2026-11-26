@@ -89,11 +89,7 @@ internal class RichTextWebView(context: Context) : WebView(context) {
             }
         }
 
-        addJavascriptInterface(RichTextMessages { message ->
-            post {
-                if (!released) receive(message)
-            }
-        }, BRIDGE)
+        addJavascriptInterface(RichTextMessages(::receive), BRIDGE)
         loadUrl("https://$HOST$PATH/index.html")
     }
 
@@ -141,7 +137,8 @@ internal class RichTextWebView(context: Context) : WebView(context) {
         try {
             val message = JSONObject(raw)
             when (message.getString("type")) {
-                "ready" -> {
+                "ready" -> post {
+                    if (released) return@post
                     ready = true
                     displayContent()
                 }
