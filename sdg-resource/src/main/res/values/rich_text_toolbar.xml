@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_url_label">Enter URL</string>
+    <string name="rich_text_undo">Undo</string>
+    <string name="rich_text_redo">Redo</string>
+    <string name="rich_text_h1">Heading 1</string>
+    <string name="rich_text_h2">Heading 2</string>
+    <string name="rich_text_h3">Heading 3</string>
+    <string name="rich_text_bold">Bold</string>
+    <string name="rich_text_italic">Italic</string>
+    <string name="rich_text_underline">Underline</string>
+    <string name="rich_text_strikethrough">Strikethrough</string>
+    <string name="rich_text_highlight">Highlight</string>
+    <string name="rich_text_bulletlist">Bulleted list</string>
+    <string name="rich_text_numberlist">Numbered list</string>
+    <string name="rich_text_leftalign">Align left</string>
+    <string name="rich_text_centeralign">Align center</string>
+    <string name="rich_text_rightalign">Align right</string>
+    <string name="rich_text_justify">Justify</string>
+    <string name="rich_text_indent">Indent</string>
+    <string name="rich_text_link">Link</string>
+</resources>

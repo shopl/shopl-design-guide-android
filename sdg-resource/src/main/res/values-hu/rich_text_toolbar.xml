@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_url_label">URL megadása</string>
+    <string name="rich_text_undo">Visszavonás</string>
+    <string name="rich_text_redo">Újra</string>
+    <string name="rich_text_h1">Címsor 1</string>
+    <string name="rich_text_h2">Címsor 2</string>
+    <string name="rich_text_h3">Címsor 3</string>
+    <string name="rich_text_bold">Félkövér</string>
+    <string name="rich_text_italic">Dőlt</string>
+    <string name="rich_text_underline">Aláhúzás</string>
+    <string name="rich_text_strikethrough">Áthúzás</string>
+    <string name="rich_text_highlight">Kiemelés</string>
+    <string name="rich_text_bulletlist">Felsorolás</string>
+    <string name="rich_text_numberlist">Számozott lista</string>
+    <string name="rich_text_leftalign">Balra igazítás</string>
+    <string name="rich_text_centeralign">Középre igazítás</string>
+    <string name="rich_text_rightalign">Jobbra igazítás</string>
+    <string name="rich_text_justify">Sorkizárás</string>
+    <string name="rich_text_indent">Behúzás növelése</string>
+    <string name="rich_text_link">Hivatkozás</string>
+</resources>

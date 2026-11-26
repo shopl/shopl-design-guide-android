@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_url_label">URL 입력</string>
+    <string name="rich_text_undo">실행 취소</string>
+    <string name="rich_text_redo">다시 실행</string>
+    <string name="rich_text_h1">제목 1</string>
+    <string name="rich_text_h2">제목 2</string>
+    <string name="rich_text_h3">제목 3</string>
+    <string name="rich_text_bold">굵게</string>
+    <string name="rich_text_italic">기울임</string>
+    <string name="rich_text_underline">밑줄</string>
+    <string name="rich_text_strikethrough">취소선</string>
+    <string name="rich_text_highlight">형광펜</string>
+    <string name="rich_text_bulletlist">글머리 기호 목록</string>
+    <string name="rich_text_numberlist">번호 목록</string>
+    <string name="rich_text_leftalign">왼쪽 정렬</string>
+    <string name="rich_text_centeralign">가운데 정렬</string>
+    <string name="rich_text_rightalign">오른쪽 정렬</string>
+    <string name="rich_text_justify">양쪽 정렬</string>
+    <string name="rich_text_indent">들여쓰기</string>
+    <string name="rich_text_link">링크</string>
+</resources>
