@@ -167,7 +167,10 @@ internal val templateMenuSection = MenuSectionUiModel(
         ),
         MenuUiModel.GroupMenu(
             groupName = "Rich Text",
-            sceneMenus = persistentListOf(TemplateScene.RichTextView.toMenuUiModel()),
+            sceneMenus = persistentListOf(
+                TemplateScene.RichTextView.toMenuUiModel(),
+                TemplateScene.RichTextToolbar.toMenuUiModel(),
+            ),
         ),
         TemplateScene.RadioLabel.toMenuUiModel(),
     )
