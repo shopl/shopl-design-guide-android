@@ -1,0 +1,20 @@
+{
+  "name": "sdg-rich-text-editor",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "@tiptap/core": "3.35.0",
+    "@tiptap/extension-highlight": "3.35.0",
+    "@tiptap/extension-text-align": "3.35.0",
+    "@tiptap/extensions": "3.35.0",
+    "@tiptap/pm": "3.35.0",
+    "@tiptap/starter-kit": "3.35.0",
+    "core-js": "3.46.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.27.7"
+  }
+}
