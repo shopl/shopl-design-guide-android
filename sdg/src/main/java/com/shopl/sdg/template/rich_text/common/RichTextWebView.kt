@@ -33,6 +33,7 @@ internal class RichTextWebView(context: Context) : WebView(context) {
     init {
         setBackgroundColor(android.graphics.Color.TRANSPARENT)
         isHorizontalScrollBarEnabled = false
+        isVerticalScrollBarEnabled = false
         scrollBarStyle = SCROLLBARS_INSIDE_OVERLAY
         settings.apply {
             javaScriptEnabled = true
@@ -105,9 +106,17 @@ internal class RichTextWebView(context: Context) : WebView(context) {
         return super.onTouchEvent(event)
     }
 
+    override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
+        if (t > 0 && t != oldt && !isVerticalScrollBarEnabled) {
+            isVerticalScrollBarEnabled = true
+        }
+        super.onScrollChanged(l, t, oldl, oldt)
+    }
+
     fun render(html: String) {
         if (html == lastHtml) return
 
+        isVerticalScrollBarEnabled = false
         lastHtml = html
         if (ready) displayContent()
     }
