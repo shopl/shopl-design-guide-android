@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -20,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.shopl.sdg.model.SDGSampleBaseTabItem
 import com.shopl.sdg.scene.TemplateScene
 import com.shopl.sdg.template.rich_text.view.SDGRichTextView
-import com.shopl.sdg.template.rich_text.view.SDGRichTextViewState
 import com.shopl.sdg.ui.base.SDGSampleBaseGuideLinesContent
 import com.shopl.sdg.ui.base.SDGSampleBaseScaffold
 import com.shopl.sdg.ui.base.SDGSampleBaseTab
@@ -42,16 +39,15 @@ private const val FORMATTED_HTML = """
 
 private enum class RichTextViewExample(
     val title: String,
-    val initialHtml: String,
-    val initialState: SDGRichTextViewState,
+    val html: String,
+    val bodyHeightModifier: Modifier = Modifier.heightIn(max = 200.dp),
 ) {
-    Input("Default", "", SDGRichTextViewState.Default),
-    Completed("Completed", FORMATTED_HTML, SDGRichTextViewState.Completed),
-    Disabled("Disabled", "<p>텍스트 입력</p>", SDGRichTextViewState.Disabled),
+    Plain("Text", "<p>한 줄 본문입니다.</p>"),
+    Formatted("Formatted", FORMATTED_HTML),
     Scroll(
         "Scroll",
         FORMATTED_HTML + (1..SCROLL_SAMPLE_PARAGRAPHS).joinToString("") { "<p>스크롤 예시 $it</p>" },
-        SDGRichTextViewState.Completed,
+        Modifier.height(200.dp),
     ),
 }
 
@@ -59,7 +55,7 @@ private val sampleTabs = RichTextViewExample.entries.map { example ->
     SDGSampleBaseTabItem(title = example.title, item = example)
 }.toPersistentList()
 
-/** Rich Text View의 입력 상태, 서식, 비활성 상태와 본문 내부 스크롤을 확인합니다. */
+/** Rich Text View의 일반 본문과 서식, 본문 내부 스크롤을 확인합니다. */
 @Composable
 internal fun RichTextViewScreen(
     onClickBack: () -> Unit,
@@ -78,46 +74,29 @@ internal fun RichTextViewScreen(
                 verticalArrangement = Arrangement.spacedBy(SDGSpacing.Spacing16),
             ) {
                 SDGSampleBaseTab(
-                    tabTitle = "State",
+                    tabTitle = "Content",
                     tabs = sampleTabs,
                     selectedTabIndex = selectedTab,
                     onTabClick = { selectedTab = it },
                 )
                 val example = sampleTabs[selectedTab].item
-                key(example) {
-                    var html by rememberSaveable { mutableStateOf(example.initialHtml) }
-                    var state by remember { mutableStateOf(example.initialState) }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(1.dp, SDGColor.Neutral200)
-                            .padding(SDGSpacing.Spacing12)
-                            .then(if (example == RichTextViewExample.Scroll) Modifier.height(200.dp) else Modifier),
-                        propagateMinConstraints = true,
-                    ) {
-                        SDGRichTextView(
-                            text = html,
-                            placeholder = "입력",
-                            state = state,
-                            onEditorStateChange = { editorState ->
-                                html = editorState.html
-                                state = when {
-                                    example == RichTextViewExample.Disabled -> SDGRichTextViewState.Disabled
-                                    editorState.hasFocus -> SDGRichTextViewState.Focused
-                                    editorState.isEmpty -> SDGRichTextViewState.Default
-                                    else -> SDGRichTextViewState.Completed
-                                }
-                            },
-                        )
-                    }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, SDGColor.Neutral200)
+                        .padding(SDGSpacing.Spacing12)
+                        .then(example.bodyHeightModifier),
+                    propagateMinConstraints = true,
+                ) {
+                    SDGRichTextView(text = example.html)
                 }
             }
         },
         usageGuideLinesContent = {
             SDGSampleBaseGuideLinesContent(
                 guideLineDescriptions = persistentListOf(
-                    "Default 탭의 본문을 눌러 Focused 상태를 확인합니다.",
-                    "본문 높이는 내용에 맞춰 늘어납니다. Scroll 탭은 Rich Text Input처럼 본문을 200dp로 고정하며, 넘치는 내용은 내부에서 스크롤합니다.",
+                    "Text와 Formatted 탭은 본문 길이에 맞춰 최대 200dp까지 표시합니다.",
+                    "Scroll 탭은 Rich Text Input처럼 처음부터 본문 높이를 200dp로 고정합니다.",
                 ),
             )
         },

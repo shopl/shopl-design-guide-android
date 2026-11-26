@@ -9,8 +9,6 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.shopl.sdg.template.rich_text.style.richTextDocument
-import com.shopl.sdg.template.rich_text.view.SDGRichTextEditorState
-import com.shopl.sdg.template.rich_text.view.SDGRichTextViewState
 import com.shopl.sdg_resource.R
 import org.json.JSONException
 import org.json.JSONObject
@@ -22,18 +20,11 @@ private const val HOST = "appassets.androidplatform.net"
 private const val ASSET_DIRECTORY = "shopl/sdg/rich-text"
 private const val PATH = "/$ASSET_DIRECTORY"
 
-// Compose의 AndroidView에서 상태 콜백과 함께 생성하므로 XML 인플레이션용 생성자는 사용하지 않는다.
-@SuppressLint("ViewConstructor", "SetJavaScriptEnabled")
-internal class RichTextWebView(
-    context: Context,
-    private val onStateChange: (SDGRichTextEditorState) -> Unit,
-) : WebView(context) {
+@SuppressLint("SetJavaScriptEnabled")
+internal class RichTextWebView(context: Context) : WebView(context) {
     private var ready = false
     private var released = false
     private var lastHtml: String? = null
-    private var reportedHtml: String? = null
-    private var lastPlaceholder: String? = null
-    private var lastState: SDGRichTextViewState? = null
 
     init {
         setBackgroundColor(android.graphics.Color.TRANSPARENT)
@@ -101,20 +92,11 @@ internal class RichTextWebView(
         return super.onTouchEvent(event)
     }
 
-    fun render(html: String, placeholder: String, state: SDGRichTextViewState) {
-        if (html == lastHtml && placeholder == lastPlaceholder && state == lastState) return
+    fun render(html: String) {
+        if (html == lastHtml) return
 
-        if (ready) {
-            // 편집기가 방금 알린 본문을 다시 보내면 뒤이어 입력한 글자를 덮어쓸 수 있다.
-            sendUpdate(
-                html = html.takeIf { it != lastHtml && it != reportedHtml },
-                placeholder = placeholder.takeIf { it != lastPlaceholder },
-                state = state.takeIf { it != lastState },
-            )
-        }
         lastHtml = html
-        lastPlaceholder = placeholder
-        lastState = state
+        if (ready) displayContent()
     }
 
     private fun receive(raw: String) {
@@ -123,18 +105,7 @@ internal class RichTextWebView(
             when (message.getString("type")) {
                 "ready" -> {
                     ready = true
-                    sendUpdate(lastHtml, lastPlaceholder, lastState)
-                }
-
-                "state" -> {
-                    val state = SDGRichTextEditorState(
-                        html = message.getString("html"),
-                        plainText = message.getString("plainText"),
-                        isEmpty = message.getBoolean("isEmpty"),
-                        hasFocus = message.getBoolean("hasFocus"),
-                    )
-                    reportedHtml = state.html
-                    onStateChange(state)
+                    displayContent()
                 }
 
                 "error" -> Log.e(TAG, "Rich text editor update failed.")
@@ -144,19 +115,22 @@ internal class RichTextWebView(
         }
     }
 
-    private fun sendUpdate(html: String?, placeholder: String?, state: SDGRichTextViewState?) {
-        val message = JSONObject()
-        html?.let { message.put("html", it) }
-        placeholder?.let { message.put("placeholder", it) }
-        state?.let {
-            message.put("enabled", it.isEditable)
-            message.put("showPlaceholder", it.showsPlaceholder)
-        }
-        if (message.length() == 0) return
-
+    private fun displayContent() {
+        val html = lastHtml ?: return
+        val update = JSONObject().put("html", html).put("enabled", false)
         evaluateJavascript(
-            "window.sdgRichText.update(${JSONObject.quote(message.toString())})",
-            null
+            """
+            (function() {
+                window.sdgRichText.update(${JSONObject.quote(update.toString())});
+                const content = document.querySelector('.tiptap');
+                if (content) {
+                    content.removeAttribute('role');
+                    content.removeAttribute('aria-label');
+                    content.removeAttribute('aria-multiline');
+                }
+            })()
+            """.trimIndent(),
+            null,
         )
     }
 

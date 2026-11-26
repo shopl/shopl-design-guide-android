@@ -21,17 +21,12 @@ internal fun richTextDocument(): String =
         html, body { margin: 0; padding: 0; }
         body {
           --ink: ${SDGColor.Neutral700.cssColor()};
-          --placeholder: ${SDGColor.Neutral350.cssColor()};
           --link: ${SDGColor.Primary300.cssColor()};
           --highlight: ${SDGColor.YellowY_a10.cssColor()};
           color: var(--ink);
           font-family: Pretendard, sans-serif;
           ${SDGTypography.Body1R.cssTypography()}
           overflow-wrap: break-word;
-        }
-        body[data-disabled] {
-          --ink: ${SDGColor.Neutral300.cssColor()};
-          --link: var(--ink);
         }
         .tiptap {
           min-height: 100vh;
@@ -50,28 +45,11 @@ internal fun richTextDocument(): String =
         .tiptap a { color: var(--link); text-decoration: underline; }
         .tiptap a, .tiptap u, .tiptap s { text-decoration-skip-ink: none; }
         .tiptap ol, .tiptap ul { padding-inline-start: 24px; }
-        body[data-show-placeholder] .tiptap:not(.ProseMirror-focused) > .is-editor-empty:first-child::before {
-          color: var(--placeholder);
-          content: attr(data-placeholder);
-          float: left;
-          height: 0;
-          pointer-events: none;
-        }
-        body[data-composing] .tiptap { caret-color: var(--ink); }
-        #caret {
-          display: none;
-          position: fixed;
-          width: 2px;
-          height: 20px;
-          background: var(--ink);
-          pointer-events: none;
-        }
-        #caret[data-visible] { display: block; }
       </style>
     </head>
     <body>
       <div id="editor"></div>
-      <div id="caret" aria-hidden="true"></div>
+      <div id="caret" hidden></div>
       <script src="./editor.js" defer></script>
     </body>
     </html>
