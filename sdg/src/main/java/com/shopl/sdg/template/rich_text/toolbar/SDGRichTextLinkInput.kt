@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInput
 import com.shopl.sdg.component.text_input.simple.SDGSimpleTextInputField
@@ -112,5 +113,20 @@ private fun LinkActionButton(
         contentAlignment = Alignment.Center,
     ) {
         SDGImage(resId = icon, color = tint, modifier = Modifier.size(16.dp), contentDescription = description)
+    }
+}
+
+@Preview(showBackground = true, widthDp = 375)
+@Composable
+private fun PreviewSDGRichTextLinkInput() {
+    Column {
+        listOf("", "https://www.shoplworks.com").forEach { url ->
+            SDGRichTextLinkInput(
+                url = url,
+                onUrlChange = {},
+                onConfirm = {},
+                onDismiss = {},
+            )
+        }
     }
 }

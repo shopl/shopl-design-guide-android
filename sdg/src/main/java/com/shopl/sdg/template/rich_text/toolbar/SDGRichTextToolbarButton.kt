@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,6 +14,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.SDGCornerRadius
@@ -59,6 +61,20 @@ fun SDGRichTextToolbarButton(
                 resId = action.icon,
                 color = state.iconColor,
                 modifier = Modifier.size(24.dp),
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewSDGRichTextToolbarButton() {
+    Row {
+        SDGRichTextToolbarButtonState.entries.forEach { state ->
+            SDGRichTextToolbarButton(
+                action = SDGRichTextToolbarAction.Bold,
+                state = state,
+                onClick = {},
             )
         }
     }
