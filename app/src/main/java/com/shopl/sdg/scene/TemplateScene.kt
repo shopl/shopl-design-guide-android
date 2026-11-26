@@ -6,6 +6,7 @@ import com.shopl.sdg.ui.screen.template.CategoryNaviScreen
 import com.shopl.sdg.ui.screen.template.CenterPopupScreen
 import com.shopl.sdg.ui.screen.template.CheckboxLabelScreen
 import com.shopl.sdg.ui.screen.template.CustomHistoryScreen
+import com.shopl.sdg.ui.screen.template.RichTextInputScreen
 import com.shopl.sdg.ui.screen.template.RichTextToolbarScreen
 import com.shopl.sdg.ui.screen.template.RichTextViewScreen
 import com.shopl.sdg.ui.screen.template.TextNaviScreen
@@ -432,6 +433,16 @@ internal sealed class TemplateScene(
         @Composable
         override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
             RichTextToolbarScreen(onClickBack = backToScene, onClickMenu = { moveToScene(Menu) })
+        }
+    }
+
+    data object RichTextInput : TemplateScene(
+        displayLabel = "Rich Text Input",
+        implemented = true,
+    ) {
+        @Composable
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+            RichTextInputScreen(onClickBack = backToScene, onClickMenu = { moveToScene(Menu) })
         }
     }
 

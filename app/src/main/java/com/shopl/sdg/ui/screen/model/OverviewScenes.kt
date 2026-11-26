@@ -97,5 +97,6 @@ internal val templateScenes = persistentListOf(
     TemplateScene.Profile.MiniProfile,
     TemplateScene.RichTextView,
     TemplateScene.RichTextToolbar,
+    TemplateScene.RichTextInput,
     TemplateScene.RadioLabel,
 )
