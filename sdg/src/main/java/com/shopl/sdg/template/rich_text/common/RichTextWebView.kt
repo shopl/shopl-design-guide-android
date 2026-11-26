@@ -29,6 +29,7 @@ internal class RichTextWebView(context: Context) : WebView(context) {
     private var ready = false
     private var released = false
     private var lastHtml: String? = null
+    private var lastTouchY = 0f
 
     init {
         setBackgroundColor(android.graphics.Color.TRANSPARENT)
@@ -97,11 +98,26 @@ internal class RichTextWebView(context: Context) : WebView(context) {
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (event.actionMasked == MotionEvent.ACTION_DOWN &&
-            (canScrollVertically(-1) || canScrollVertically(1))
-        ) {
-            // 긴 본문을 스크롤할 때 상위 Compose 스크롤 영역이 제스처를 가로채지 않게 한다.
-            parent?.requestDisallowInterceptTouchEvent(true)
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                lastTouchY = event.y
+                // 드래그 방향이 정해질 때까지는 스크롤 가능한 본문이 터치를 먼저 받는다.
+                parent?.requestDisallowInterceptTouchEvent(
+                    canScrollVertically(-1) || canScrollVertically(1)
+                )
+            }
+
+            MotionEvent.ACTION_MOVE -> {
+                val direction = lastTouchY.compareTo(event.y)
+                if (direction != 0) {
+                    parent?.requestDisallowInterceptTouchEvent(canScrollVertically(direction))
+                    lastTouchY = event.y
+                }
+            }
+
+            MotionEvent.ACTION_POINTER_UP -> {
+                if (event.actionIndex == 0) lastTouchY = event.getY(1)
+            }
         }
         return super.onTouchEvent(event)
     }
