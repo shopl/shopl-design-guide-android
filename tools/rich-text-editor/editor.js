@@ -5,6 +5,7 @@ import { Editor, Extension } from '@tiptap/core'
 import { Highlight } from '@tiptap/extension-highlight'
 import { TextAlign } from '@tiptap/extension-text-align'
 import { Placeholder } from '@tiptap/extensions'
+import { finishLink, runAction, toolbarState } from './toolbar.js'
 import StarterKit from '@tiptap/starter-kit'
 
 const post = (type, fields = {}) => window.SDGRichTextHost.postMessage(JSON.stringify({ type, ...fields }))
@@ -32,6 +33,10 @@ const ParagraphIndent = Extension.create({
 const caret = document.querySelector('#caret')
 let editor
 let placeholder = ''
+let input = false
+let linkSelection
+let previousToolbar
+let previousDoc
 let previousState
 let caretFrame = 0
 
@@ -55,6 +60,14 @@ function refreshCaret() {
 }
 
 function publishState(current) {
+  if (input) {
+    const doc = current.state.doc
+    if (doc === previousDoc) return
+    previousDoc = doc
+    const text = doc.textBetween(0, doc.content.size, '\n', node => node.type.name === 'hardBreak' ? '\n' : '')
+    post('content', { html: current.getHTML(), count: Array.from(text).length })
+    return
+  }
   const state = {
     html: current.getHTML(),
     plainText: current.getText({ blockSeparator: '\n' }),
@@ -68,9 +81,21 @@ function publishState(current) {
   }
 }
 
+function refreshToolbar(current) {
+  if (input) {
+    const state = toolbarState(current)
+    const serialized = JSON.stringify(state)
+    if (serialized !== previousToolbar) {
+      previousToolbar = serialized
+      post('toolbar', state)
+    }
+  }
+  refreshCaret()
+}
+
 function updateAppearance(current) {
   publishState(current)
-  refreshCaret()
+  refreshToolbar(current)
 }
 
 function createEditor(html, enabled) {
@@ -81,6 +106,8 @@ function createEditor(html, enabled) {
     extensions: [
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
+        // Formatting the last block should not append a newline to the user's text.
+        ...(input ? { trailingNode: false } : {}),
         link: { openOnClick: false, autolink: false, linkOnPaste: false },
       }),
       Highlight,
@@ -96,6 +123,7 @@ function createEditor(html, enabled) {
         role: 'textbox',
         'aria-label': placeholder,
         'aria-multiline': 'true',
+        ...(input ? { 'aria-disabled': String(document.body.hasAttribute('data-disabled')) } : {}),
       }),
       handleDOMEvents: {
         compositionstart: refreshCaret,
@@ -103,10 +131,11 @@ function createEditor(html, enabled) {
       },
     },
     onCreate: ({ editor }) => updateAppearance(editor),
-    onUpdate: ({ editor }) => updateAppearance(editor),
+    onUpdate: ({ editor }) => publishState(editor),
     onFocus: ({ editor }) => updateAppearance(editor),
     onBlur: ({ editor }) => updateAppearance(editor),
-    onSelectionUpdate: refreshCaret,
+    onTransaction: ({ editor }) => { if (input) refreshToolbar(editor) },
+    onSelectionUpdate: () => { if (!input) refreshCaret() },
   })
 }
 
@@ -115,9 +144,28 @@ window.addEventListener('resize', refreshCaret)
 document.fonts.ready.then(refreshCaret)
 
 window.sdgRichText = {
+  action(action, value) {
+    if (!input || !editor?.isEditable) return
+    if (action === 'SaveLink') {
+      const { from, to } = editor.state.selection
+      linkSelection = { from, to }
+    } else if (action === 'FinishLink') {
+      if (linkSelection) finishLink(editor, linkSelection, value)
+      linkSelection = undefined
+    } else if (action === 'Blur') {
+      linkSelection = undefined
+      editor.commands.blur()
+    } else {
+      runAction(editor, action)
+    }
+  },
   update(raw) {
     try {
       const update = JSON.parse(raw)
+      if (update.input !== undefined) {
+        input = update.input
+        document.body.toggleAttribute('data-input', input)
+      }
       if (update.placeholder !== undefined) placeholder = update.placeholder
       if (update.showPlaceholder !== undefined) {
         document.body.toggleAttribute('data-show-placeholder', update.showPlaceholder)
