@@ -6,6 +6,7 @@ import com.shopl.sdg.ui.screen.template.CategoryNaviScreen
 import com.shopl.sdg.ui.screen.template.CenterPopupScreen
 import com.shopl.sdg.ui.screen.template.CheckboxLabelScreen
 import com.shopl.sdg.ui.screen.template.CustomHistoryScreen
+import com.shopl.sdg.ui.screen.template.RichTextViewScreen
 import com.shopl.sdg.ui.screen.template.TextNaviScreen
 
 /**
@@ -407,6 +408,19 @@ internal sealed class TemplateScene(
             override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
                 throw IllegalStateException("Not implemented")
             }
+        }
+    }
+
+    data object RichTextView : TemplateScene(
+        displayLabel = "Rich Text View",
+        implemented = true
+    ) {
+        @Composable
+        override fun Screen(moveToScene: (SDGScene) -> Unit, backToScene: () -> Unit) {
+            RichTextViewScreen(
+                onClickBack = backToScene,
+                onClickMenu = { moveToScene(Menu) },
+            )
         }
     }
 
