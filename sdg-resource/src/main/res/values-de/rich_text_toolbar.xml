@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_url_label">URL eingeben</string>
+    <string name="rich_text_undo">Rückgängig</string>
+    <string name="rich_text_redo">Wiederholen</string>
+    <string name="rich_text_h1">Überschrift 1</string>
+    <string name="rich_text_h2">Überschrift 2</string>
+    <string name="rich_text_h3">Überschrift 3</string>
+    <string name="rich_text_bold">Fett</string>
+    <string name="rich_text_italic">Kursiv</string>
+    <string name="rich_text_underline">Unterstreichen</string>
+    <string name="rich_text_strikethrough">Durchstreichen</string>
+    <string name="rich_text_highlight">Hervorheben</string>
+    <string name="rich_text_bulletlist">Aufzählung</string>
+    <string name="rich_text_numberlist">Nummerierte Liste</string>
+    <string name="rich_text_leftalign">Linksbündig</string>
+    <string name="rich_text_centeralign">Zentriert</string>
+    <string name="rich_text_rightalign">Rechtsbündig</string>
+    <string name="rich_text_justify">Blocksatz</string>
+    <string name="rich_text_indent">Einrücken</string>
+    <string name="rich_text_link">Link</string>
+</resources>

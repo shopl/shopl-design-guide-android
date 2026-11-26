@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_url_label">URLを入力</string>
+    <string name="rich_text_undo">元に戻す</string>
+    <string name="rich_text_redo">やり直す</string>
+    <string name="rich_text_h1">見出し1</string>
+    <string name="rich_text_h2">見出し2</string>
+    <string name="rich_text_h3">見出し3</string>
+    <string name="rich_text_bold">太字</string>
+    <string name="rich_text_italic">斜体</string>
+    <string name="rich_text_underline">下線</string>
+    <string name="rich_text_strikethrough">取り消し線</string>
+    <string name="rich_text_highlight">ハイライト</string>
+    <string name="rich_text_bulletlist">箇条書き</string>
+    <string name="rich_text_numberlist">番号付きリスト</string>
+    <string name="rich_text_leftalign">左揃え</string>
+    <string name="rich_text_centeralign">中央揃え</string>
+    <string name="rich_text_rightalign">右揃え</string>
+    <string name="rich_text_justify">両端揃え</string>
+    <string name="rich_text_indent">インデントを増やす</string>
+    <string name="rich_text_link">リンク</string>
+</resources>

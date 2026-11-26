@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_url_label">Inserir URL</string>
+    <string name="rich_text_undo">Desfazer</string>
+    <string name="rich_text_redo">Refazer</string>
+    <string name="rich_text_h1">Título 1</string>
+    <string name="rich_text_h2">Título 2</string>
+    <string name="rich_text_h3">Título 3</string>
+    <string name="rich_text_bold">Negrito</string>
+    <string name="rich_text_italic">Itálico</string>
+    <string name="rich_text_underline">Sublinhado</string>
+    <string name="rich_text_strikethrough">Tachado</string>
+    <string name="rich_text_highlight">Realçar</string>
+    <string name="rich_text_bulletlist">Lista com marcadores</string>
+    <string name="rich_text_numberlist">Lista numerada</string>
+    <string name="rich_text_leftalign">Alinhar à esquerda</string>
+    <string name="rich_text_centeralign">Centralizar</string>
+    <string name="rich_text_rightalign">Alinhar à direita</string>
+    <string name="rich_text_justify">Justificar</string>
+    <string name="rich_text_indent">Aumentar recuo</string>
+    <string name="rich_text_link">Link</string>
+</resources>

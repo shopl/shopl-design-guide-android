@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_url_label">输入网址</string>
+    <string name="rich_text_undo">撤销</string>
+    <string name="rich_text_redo">重做</string>
+    <string name="rich_text_h1">标题 1</string>
+    <string name="rich_text_h2">标题 2</string>
+    <string name="rich_text_h3">标题 3</string>
+    <string name="rich_text_bold">粗体</string>
+    <string name="rich_text_italic">斜体</string>
+    <string name="rich_text_underline">下划线</string>
+    <string name="rich_text_strikethrough">删除线</string>
+    <string name="rich_text_highlight">高亮</string>
+    <string name="rich_text_bulletlist">项目符号列表</string>
+    <string name="rich_text_numberlist">编号列表</string>
+    <string name="rich_text_leftalign">左对齐</string>
+    <string name="rich_text_centeralign">居中对齐</string>
+    <string name="rich_text_rightalign">右对齐</string>
+    <string name="rich_text_justify">两端对齐</string>
+    <string name="rich_text_indent">增加缩进</string>
+    <string name="rich_text_link">链接</string>
+</resources>

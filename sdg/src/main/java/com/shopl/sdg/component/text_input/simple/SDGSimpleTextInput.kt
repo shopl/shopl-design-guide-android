@@ -201,9 +201,7 @@ fun SDGSimpleTextInput(
     )
 
     LaunchedEffect(isKeyboardOpen, isEnabled) {
-        if (!isEnabled && isFocused) {
-            focusManager.clearFocus()
-        } else if (isKeyboardOpen == Keyboard.Closed) {
+        if (isFocused && (!isEnabled || isKeyboardOpen == Keyboard.Closed)) {
             focusManager.clearFocus()
         }
     }

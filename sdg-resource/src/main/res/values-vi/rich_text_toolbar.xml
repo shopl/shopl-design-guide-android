@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_url_label">Nhập URL</string>
+    <string name="rich_text_undo">Hoàn tác</string>
+    <string name="rich_text_redo">Làm lại</string>
+    <string name="rich_text_h1">Tiêu đề 1</string>
+    <string name="rich_text_h2">Tiêu đề 2</string>
+    <string name="rich_text_h3">Tiêu đề 3</string>
+    <string name="rich_text_bold">In đậm</string>
+    <string name="rich_text_italic">In nghiêng</string>
+    <string name="rich_text_underline">Gạch chân</string>
+    <string name="rich_text_strikethrough">Gạch ngang</string>
+    <string name="rich_text_highlight">Tô sáng</string>
+    <string name="rich_text_bulletlist">Danh sách có dấu đầu dòng</string>
+    <string name="rich_text_numberlist">Danh sách đánh số</string>
+    <string name="rich_text_leftalign">Căn trái</string>
+    <string name="rich_text_centeralign">Căn giữa</string>
+    <string name="rich_text_rightalign">Căn phải</string>
+    <string name="rich_text_justify">Căn đều hai bên</string>
+    <string name="rich_text_indent">Tăng thụt lề</string>
+    <string name="rich_text_link">Liên kết</string>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_url_label">Masukkan URL</string>
+    <string name="rich_text_undo">Urungkan</string>
+    <string name="rich_text_redo">Ulangi</string>
+    <string name="rich_text_h1">Judul 1</string>
+    <string name="rich_text_h2">Judul 2</string>
+    <string name="rich_text_h3">Judul 3</string>
+    <string name="rich_text_bold">Tebal</string>
+    <string name="rich_text_italic">Miring</string>
+    <string name="rich_text_underline">Garis bawah</string>
+    <string name="rich_text_strikethrough">Coret</string>
+    <string name="rich_text_highlight">Sorot</string>
+    <string name="rich_text_bulletlist">Daftar berpoin</string>
+    <string name="rich_text_numberlist">Daftar bernomor</string>
+    <string name="rich_text_leftalign">Rata kiri</string>
+    <string name="rich_text_centeralign">Rata tengah</string>
+    <string name="rich_text_rightalign">Rata kanan</string>
+    <string name="rich_text_justify">Rata kiri kanan</string>
+    <string name="rich_text_indent">Tambah inden</string>
+    <string name="rich_text_link">Tautan</string>
+</resources>

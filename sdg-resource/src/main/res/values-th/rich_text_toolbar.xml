@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rich_text_url_label">ป้อน URL</string>
+    <string name="rich_text_undo">เลิกทำ</string>
+    <string name="rich_text_redo">ทำซ้ำ</string>
+    <string name="rich_text_h1">หัวเรื่อง 1</string>
+    <string name="rich_text_h2">หัวเรื่อง 2</string>
+    <string name="rich_text_h3">หัวเรื่อง 3</string>
+    <string name="rich_text_bold">ตัวหนา</string>
+    <string name="rich_text_italic">ตัวเอียง</string>
+    <string name="rich_text_underline">ขีดเส้นใต้</string>
+    <string name="rich_text_strikethrough">ขีดทับ</string>
+    <string name="rich_text_highlight">ไฮไลต์</string>
+    <string name="rich_text_bulletlist">รายการหัวข้อย่อย</string>
+    <string name="rich_text_numberlist">รายการลำดับเลข</string>
+    <string name="rich_text_leftalign">จัดชิดซ้าย</string>
+    <string name="rich_text_centeralign">จัดกึ่งกลาง</string>
+    <string name="rich_text_rightalign">จัดชิดขวา</string>
+    <string name="rich_text_justify">จัดข้อความชิดขอบทั้งสองด้าน</string>
+    <string name="rich_text_indent">เพิ่มการเยื้อง</string>
+    <string name="rich_text_link">ลิงก์</string>
+</resources>
