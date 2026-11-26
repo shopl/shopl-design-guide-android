@@ -30,7 +30,7 @@ private const val SCROLL_SAMPLE_PARAGRAPHS = 20
 
 private const val FORMATTED_HTML = """
 <h1>제목 1</h1>
-<p>기본, <strong>Bold</strong>, <u>밑줄</u>, <s>취소선</s>, <a href="https://www.shoplworks.com">링크</a></p>
+<p>기본, <strong>Bold</strong>, <u>밑줄</u>, <s>취소선</s>, <a href="http://www.google.com">www.google.com</a></p>
 <ul><li><p>글머리 기호 목록</p></li></ul>
 <ol><li><p>번호 목록</p></li></ol>
 <h2>제목 2</h2>

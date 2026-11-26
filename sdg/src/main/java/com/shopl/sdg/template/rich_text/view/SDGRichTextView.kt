@@ -30,6 +30,8 @@ import com.shopl.sdg_common.ui.components.SDGText
  *
  * 서식 있는 본문을 읽기 전용으로 표시합니다. 본문 높이는 내용에 맞춰 늘어나며, 부모가 높이를 제한하면 내부에서 스크롤합니다.
  *
+ * 본문의 HTTP 또는 HTTPS 링크를 누르면 외부 브라우저에서 엽니다.
+ *
  * @param text 표시할 HTML 본문.
  * @version 2.4.61
  * @see <a href="https://www.figma.com/design/qWVshatQ9eqoIn4fdEZqWy/SDG?node-id=30814-2612&m=dev">Figma</a>

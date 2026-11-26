@@ -1,7 +1,11 @@
 package com.shopl.sdg.template.rich_text.common
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.MotionEvent
 import android.webkit.WebResourceRequest
@@ -40,7 +44,16 @@ internal class RichTextWebView(context: Context) : WebView(context) {
             override fun shouldOverrideUrlLoading(
                 view: WebView,
                 request: WebResourceRequest,
-            ): Boolean = true
+            ): Boolean {
+                val url = request.url
+                if (request.isForMainFrame && request.hasGesture() &&
+                    (url.scheme == "https" || url.scheme == "http") &&
+                    !url.host.isNullOrBlank() && !HOST.equals(url.host, ignoreCase = true)
+                ) {
+                    openInBrowser(url)
+                }
+                return true
+            }
 
             override fun shouldInterceptRequest(
                 view: WebView,
@@ -132,6 +145,21 @@ internal class RichTextWebView(context: Context) : WebView(context) {
             """.trimIndent(),
             null,
         )
+    }
+
+    private fun openInBrowser(url: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW, url).apply {
+            addCategory(Intent.CATEGORY_BROWSABLE)
+            selector = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_BROWSER)
+            if (context !is Activity) addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        try {
+            context.startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Log.e(TAG, "No browser available to open rich text link.", e)
+        } catch (e: SecurityException) {
+            Log.e(TAG, "Unable to open rich text link.", e)
+        }
     }
 
     private fun fontResponse(font: Int, japaneseFont: Int): WebResourceResponse {
