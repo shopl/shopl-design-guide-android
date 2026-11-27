@@ -3,7 +3,6 @@ package com.shopl.sdg.template.rich_text.input
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -16,8 +15,11 @@ import kotlinx.collections.immutable.PersistentMap
 class SDGRichTextInputState(initialHtml: String = "") {
     var html by mutableStateOf(initialHtml)
         internal set
-    var characterCount by mutableIntStateOf(0)
+
+    /** 에디터가 계산한 본문 글자 수입니다. 첫 계산이 끝나기 전에는 null입니다. */
+    var characterCount by mutableStateOf<Int?>(null)
         internal set
+
     var isFocused by mutableStateOf(false)
         internal set
     internal var buttons by mutableStateOf(SDGRichTextToolbarAction.defaultButtons)

@@ -45,6 +45,8 @@ import com.shopl.sdg_resource.R
  *
  * 본문을 편집하면 키보드 위에 서식 툴바가 표시됩니다. 링크 입력을 확인하거나 취소하면 본문의 선택 영역으로 돌아갑니다.
  *
+ * 글자 수는 에디터의 첫 계산이 끝나면 표시합니다.
+ *
  * @param state HTML 본문과 글자 수를 보관하는 상태.
  * @param maxCount 화면에서 허용하는 글자 수. 초과하면 오류를 표시하며 계속 입력할 수 있습니다.
  * @param placeholder 비어 있고 포커스가 없을 때 표시할 안내 문구.
@@ -67,7 +69,7 @@ fun SDGRichTextInput(
     val previewText = if (preview) remember(state.html) { AnnotatedString.fromHtml(state.html) } else null
     val count = previewText?.let { it.text.trimEnd('\n').let { text -> text.codePointCount(0, text.length) } }
         ?: state.characterCount
-    val error = enabled && (isError || count > maxCount)
+    val error = enabled && (isError || (count != null && count > maxCount))
     val countColor = when {
         !enabled -> SDGColor.Neutral300
         error -> SDGColor.Red300
@@ -98,14 +100,16 @@ fun SDGRichTextInput(
             modifier = Modifier.align(Alignment.End).heightIn(min = SDGTypography.Body3R.style.lineHeight.value.dp),
             contentAlignment = Alignment.CenterEnd,
         ) {
-            SDGText(
-                text = buildAnnotatedString {
-                    withStyle(SpanStyle(color = countColor)) { append(count.toString()) }
-                    append("/$maxCount")
-                },
-                typography = SDGTypography.Body3R,
-                textColor = if (enabled) SDGColor.Neutral350 else SDGColor.Neutral300,
-            )
+            if (count != null) {
+                SDGText(
+                    text = buildAnnotatedString {
+                        withStyle(SpanStyle(color = countColor)) { append(count.toString()) }
+                        append("/$maxCount")
+                    },
+                    typography = SDGTypography.Body3R,
+                    textColor = if (enabled) SDGColor.Neutral350 else SDGColor.Neutral300,
+                )
+            }
         }
     }
     if (enabled && !preview) SDGRichTextInputToolbar(state)
