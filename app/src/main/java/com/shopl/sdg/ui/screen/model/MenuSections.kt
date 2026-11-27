@@ -170,6 +170,7 @@ internal val templateMenuSection = MenuSectionUiModel(
             sceneMenus = persistentListOf(
                 TemplateScene.RichTextView.toMenuUiModel(),
                 TemplateScene.RichTextToolbar.toMenuUiModel(),
+                TemplateScene.RichTextInput.toMenuUiModel(),
             ),
         ),
         TemplateScene.RadioLabel.toMenuUiModel(),

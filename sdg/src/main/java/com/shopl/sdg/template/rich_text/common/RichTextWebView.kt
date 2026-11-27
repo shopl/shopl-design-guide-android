@@ -25,9 +25,12 @@ private const val ASSET_DIRECTORY = "shopl/sdg/rich-text"
 private const val PATH = "/$ASSET_DIRECTORY"
 
 @SuppressLint("SetJavaScriptEnabled")
-internal class RichTextWebView(context: Context) : WebView(context) {
-    private var ready = false
-    private var released = false
+internal open class RichTextWebView(context: Context) : WebView(context) {
+    protected var ready = false
+        private set
+    protected open val openLinksInBrowser = true
+    protected var released = false
+        private set
     private var lastHtml: String? = null
     private var lastTouchY = 0f
 
@@ -48,7 +51,7 @@ internal class RichTextWebView(context: Context) : WebView(context) {
                 request: WebResourceRequest,
             ): Boolean {
                 val url = request.url
-                if (request.isForMainFrame && request.hasGesture() &&
+                if (openLinksInBrowser && request.isForMainFrame && request.hasGesture() &&
                     (url.scheme == "https" || url.scheme == "http") &&
                     !url.host.isNullOrBlank() && !HOST.equals(url.host, ignoreCase = true)
                 ) {
@@ -136,7 +139,7 @@ internal class RichTextWebView(context: Context) : WebView(context) {
     private fun receive(raw: String) {
         try {
             val message = JSONObject(raw)
-            when (message.getString("type")) {
+            when (val type = message.getString("type")) {
                 "ready" -> post {
                     if (released) return@post
                     ready = true
@@ -144,13 +147,16 @@ internal class RichTextWebView(context: Context) : WebView(context) {
                 }
 
                 "error" -> Log.e(TAG, "Rich text editor update failed.")
+                else -> onEditorMessage(type, message)
             }
         } catch (_: JSONException) {
             Log.e(TAG, "Invalid message from the rich text editor.")
         }
     }
 
-    private fun displayContent() {
+    protected open fun onEditorMessage(type: String, message: JSONObject) = Unit
+
+    protected open fun displayContent() {
         val html = lastHtml ?: return
         val update = JSONObject().put("html", html).put("enabled", false)
         evaluateJavascript(

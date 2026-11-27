@@ -48,4 +48,5 @@
     <string name="no_registered_members">Tidak ada anggota terdaftar</string>
     <string name="sdg_cm_single_group">Grup</string>
     <string name="sdg_cm_position">Jabatan</string>
+    <string name="rich_text_input_placeholder">Masukkan teks</string>
 </resources>

@@ -5,6 +5,8 @@ import androidx.compose.ui.graphics.toArgb
 import com.shopl.sdg_common.foundation.SDGColor
 import com.shopl.sdg_common.foundation.typography.SDGTypography
 
+internal const val RICH_TEXT_INPUT_HEIGHT = 200
+
 internal fun richTextDocument(): String =
     """
     <!doctype html>
@@ -45,11 +47,35 @@ internal fun richTextDocument(): String =
         .tiptap a { color: var(--link); text-decoration: underline; }
         .tiptap a, .tiptap u, .tiptap s { text-decoration-skip-ink: none; }
         .tiptap ol, .tiptap ul { padding-inline-start: 24px; }
+        body[data-input] .tiptap { min-height: ${RICH_TEXT_INPUT_HEIGHT}px; }
+        body[data-input][data-disabled] {
+          --ink: ${SDGColor.Neutral300.cssColor()};
+          --link: var(--ink);
+        }
+        .tiptap > .is-editor-empty:first-child::before {
+          color: ${SDGColor.Neutral350.cssColor()};
+          content: attr(data-placeholder);
+          float: left;
+          height: 0;
+          pointer-events: none;
+        }
+        .tiptap.ProseMirror-focused > .is-editor-empty:first-child::before,
+        body[data-disabled] .tiptap > .is-editor-empty:first-child::before { content: none; }
+        body[data-composing] .tiptap { caret-color: var(--ink); }
+        #caret {
+          display: none;
+          position: fixed;
+          width: 2px;
+          height: 20px;
+          background: var(--ink);
+          pointer-events: none;
+        }
+        #caret[data-visible] { display: block; }
       </style>
     </head>
     <body>
       <div id="editor"></div>
-      <div id="caret" hidden></div>
+      <div id="caret" aria-hidden="true"></div>
       <script src="./editor.js" defer></script>
     </body>
     </html>

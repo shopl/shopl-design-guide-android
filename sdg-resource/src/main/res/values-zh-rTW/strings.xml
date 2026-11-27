@@ -48,4 +48,5 @@
     <string name="no_registered_members">沒有註冊的成員</string>
     <string name="sdg_cm_single_group">群組</string>
     <string name="sdg_cm_position">職務/職級</string>
+    <string name="rich_text_input_placeholder">輸入</string>
 </resources>
