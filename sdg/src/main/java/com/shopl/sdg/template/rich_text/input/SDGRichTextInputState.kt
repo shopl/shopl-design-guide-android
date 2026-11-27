@@ -11,7 +11,7 @@ import com.shopl.sdg.template.rich_text.toolbar.SDGRichTextToolbarAction
 import com.shopl.sdg.template.rich_text.toolbar.SDGRichTextToolbarButtonState
 import kotlinx.collections.immutable.PersistentMap
 
-/** 한 입력창의 HTML과 글자 수를 보관하고, 같은 상태를 받은 툴바에 선택 영역의 서식을 전달합니다. */
+/** 한 입력창의 HTML과 글자 수, 현재 선택 영역의 서식을 보관합니다. */
 @Stable
 class SDGRichTextInputState(initialHtml: String = "") {
     var html by mutableStateOf(initialHtml)

@@ -43,7 +43,9 @@ import com.shopl.sdg_resource.R
 /**
  * Rich Text 입력 화면에 배치하여 사용하는, 서식을 적용해 텍스트를 입력하는 입력창 형태의 컴포넌트
  *
- * @param state HTML 본문과 글자 수를 보관하는 상태. 키보드 위의 [SDGRichTextInputToolbar]에도 전달합니다.
+ * 본문을 편집하면 키보드 위에 서식 툴바가 표시됩니다. 링크 입력을 확인하거나 취소하면 본문의 선택 영역으로 돌아갑니다.
+ *
+ * @param state HTML 본문과 글자 수를 보관하는 상태.
  * @param maxCount 화면에서 허용하는 글자 수. 초과하면 오류를 표시하며 계속 입력할 수 있습니다.
  * @param placeholder 비어 있고 포커스가 없을 때 표시할 안내 문구.
  * @param enabled 본문 편집 가능 여부.
@@ -106,6 +108,7 @@ fun SDGRichTextInput(
             )
         }
     }
+    if (enabled && !preview) SDGRichTextInputToolbar(state)
 }
 
 /** Preview에서 HTML 본문과 포커스 상태를 표시합니다. */
