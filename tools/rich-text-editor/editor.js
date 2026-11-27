@@ -147,8 +147,8 @@ window.sdgRichText = {
   action(action, value) {
     if (!input || !editor?.isEditable) return
     if (action === 'SaveLink') {
-      const { from, to } = editor.state.selection
-      linkSelection = { from, to }
+      const { anchor, head } = editor.state.selection
+      linkSelection = { anchor, head }
     } else if (action === 'FinishLink') {
       if (linkSelection) finishLink(editor, linkSelection, value)
       linkSelection = undefined

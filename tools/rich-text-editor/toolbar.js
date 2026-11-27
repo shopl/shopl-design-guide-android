@@ -51,7 +51,8 @@ export function runAction(editor, action) {
 }
 
 export function finishLink(editor, selection, value) {
-  const chain = editor.chain().setTextSelection(selection).focus()
+  const { anchor, head } = selection
+  const chain = editor.chain().setTextSelection({ from: anchor, to: head }).focus()
   if (value == null) return chain.run()
   const href = /^[a-z][a-z\d+.-]*:/i.test(value) ? value : 'https://' + value
   try {
@@ -59,9 +60,9 @@ export function finishLink(editor, selection, value) {
   } catch {
     return chain.run()
   }
-  if (selection.from !== selection.to) return chain.setLink({ href }).run()
+  if (anchor !== head) return chain.setLink({ href }).run()
   if (editor.isActive('link')) {
-    return chain.extendMarkRange('link').setLink({ href }).run()
+    return chain.extendMarkRange('link').setLink({ href }).setTextSelection(anchor).run()
   }
   return chain.insertContent({ type: 'text', text: value, marks: [{ type: 'link', attrs: { href } }] }).run()
 }
